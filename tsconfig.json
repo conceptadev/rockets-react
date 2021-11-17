@@ -18,7 +18,7 @@
   "files": [],
   "references": [
     {
-      "path": "packages/react-dataprovider"
+      "path": "packages/react-common"
     },
     {
       "path": "packages/react-samples"
