@@ -31,12 +31,12 @@ export const AuthProvider: React.FC<PropsWithChildren<any>> = ({
     setIsFetching(false);
   };
 
-  const logOut = async (loginData: LoginParams) => {
+  const doLogout = async (loginData: LoginParams) => {
     localStorage.removeItem('access_token');
   };
 
   return (
-    <AuthContext.Provider value={{ user, doLogin, isFetching }}>
+    <AuthContext.Provider value={{ user, doLogin, doLogout, isFetching }}>
       {children}
     </AuthContext.Provider>
   );
