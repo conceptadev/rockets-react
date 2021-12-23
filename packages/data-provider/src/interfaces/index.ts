@@ -35,3 +35,28 @@ export interface HttpClient {
   defaultConfig(config: HttpBaseConfigs): void;
   executeRequest(params: RequestParams): Promise<HttpResponse>;
 }
+
+export enum AsyncStatus {
+  pending = 'pending',
+  success = 'success',
+  error = 'error',
+  idle = 'idle',
+}
+
+export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never;
+
+export interface AsyncFunction {
+  (params?: any): Promise<any>;
+}
+
+export type AsyncReturnType<T extends (...args: any) => Promise<any>> = T extends (
+  ...args: any
+) => Promise<infer R>
+  ? R
+  : any;
+
+export interface DataProviderRequestProps {
+  onError?(error: Error): void;
+  onSuccess?(success: AsyncReturnType<any>): void;
+  onFinish?(status: AsyncStatus): void;
+}

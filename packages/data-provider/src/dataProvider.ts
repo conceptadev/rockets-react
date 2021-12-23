@@ -1,3 +1,4 @@
+
 import axiosClient from './axiosClient';
 import {
   HttpClient,
@@ -66,7 +67,7 @@ const handleServerError = (err: HttpError) => {
   throw err;
 };
 
-const dataProvider = {
+const DataProvider = {
   post: async (requestParams: Omit<RequestParams, 'method'>) => {
     return makeRequest({
       ...requestParams,
@@ -75,4 +76,4 @@ const dataProvider = {
   },
 };
 
-export default dataProvider;
+export default DataProvider;
