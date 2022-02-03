@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2017",
+    "target": "es6",
     "sourceMap": true,
     "incremental": true,
     "skipLibCheck": true,
@@ -11,6 +11,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "jsx": "react",
     "typeRoots": [
       "./node_modules/@types"
     ]
@@ -22,6 +23,18 @@
     },
     {
       "path": "packages/react-samples"
+    },
+    {
+      "path": "packages/auth-provider"
+    },
+    {
+      "path": "packages/data-provider"
+    },
+    {
+      "path": "packages/notification-provider"
+    },
+    {
+      "path": "packages/react-router"
     }
   ]
 }
