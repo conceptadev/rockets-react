@@ -12,9 +12,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./node_modules/@types"]
   },
   "files": [],
   "references": [
@@ -25,13 +23,13 @@
       "path": "packages/react-samples"
     },
     {
-      "path": "packages/auth-provider"
+      "path": "packages/react-auth-provider"
     },
     {
-      "path": "packages/data-provider"
+      "path": "packages/react-data-provider"
     },
     {
-      "path": "packages/notification-provider"
+      "path": "packages/react-notification-provider"
     },
     {
       "path": "packages/react-router"

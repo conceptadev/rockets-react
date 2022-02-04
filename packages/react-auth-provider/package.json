@@ -1,5 +1,5 @@
 {
-  "name": "@rockts-org/notification-provider",
+  "name": "@rockts-org/react-auth-provider",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,8 @@
     "dist"
   ],
   "dependencies": {
-    "react": "^17.0.2"
+    "react": "^17.0.2",
+    "@rockts-org/react-data-provider": "0.0.1"
   },
   "devDependencies": {}
 }
