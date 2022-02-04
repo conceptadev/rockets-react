@@ -4,10 +4,10 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import DataProvider, { useDataProvider } from '@rockts-org/data-provider';
+import DataProvider, { useDataProvider } from '@rockts-org/react-data-provider';
 import { LoginParams } from './interfaces';
 
-const AuthContext = createContext<any>({});
+const AuthContext = createContext<unknown>({});
 
 export const useAuth = () => useContext(AuthContext);
 
@@ -17,13 +17,13 @@ const authLogin = (loginData: LoginParams) =>
     body: loginData,
   });
 
-export const AuthProvider: React.FC<PropsWithChildren<any>> = ({
+export const AuthProvider: React.FC<PropsWithChildren<unknown>> = ({
   children,
 }) => {
   const [user, setUser] = useState<string>();
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  const { data, error, execute } = useDataProvider(authLogin, false, {
+  const { execute } = useDataProvider(authLogin, false, {
     onSuccess: (data) => {
       if (data) {
         localStorage.setItem('access_token', data['access_token']);
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<PropsWithChildren<any>> = ({
       }
     },
     onError: (error: Error) => {
-      console.log({error});
+      console.error({ error });
     },
     onFinish: () => {
       setIsFetching(false);
@@ -54,7 +54,7 @@ export const AuthProvider: React.FC<PropsWithChildren<any>> = ({
     // setIsFetching(false);
   };
 
-  const doLogout = async (loginData: LoginParams) => {
+  const doLogout = async () => {
     localStorage.removeItem('access_token');
   };
 
