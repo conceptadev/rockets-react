@@ -1,14 +1,16 @@
 {
   "name": "@rockts-org/react-data-provider",
-  "version": "0.0.1",
+  "version": "1.0.0-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "dist"
   ],
   "dependencies": {
     "axios": "^0.24.0"
-  },
-  "devDependencies": {}
+  }
 }
