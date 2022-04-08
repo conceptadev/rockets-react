@@ -1,0 +1,12 @@
+---
+exclude_paths:
+  - '**/node_modules/**'
+  - '**/__mocks__/**'
+  - '**/__stubs__/**'
+  - '**/__fixtures__/**'
+  - '**/**.spec.js'
+  - '**/**.e2e-spec.js'
+  - '.devcontainer/**'
+  - '.github/**'
+  - '.husky/**'
+  - '.vscode/**'
