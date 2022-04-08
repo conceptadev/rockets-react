@@ -22,13 +22,13 @@ These are very rough examples. We intend to improve them ASAP.
 ### Simple User Login
 
 ```typescript
-import {useAuth } from "@rockts-org/auth-provider";
-import { NotificationProvider, useNotification } from "@rockts-org/notification-provider";
+import { useAuth } from "@concepta/auth-provider";
+import { NotificationProvider, useNotification } from "@concepta/notification-provider";
 
 const LoginForm = () => {
   const {doLogin, user } = useAuth();
   const {notification, notify} = useNotification();
-  
+
   React.useEffect(()=>{
     if(user){
       notify({
@@ -50,7 +50,7 @@ const LoginForm = () => {
 }
 
 const AppWrapper: React.FC = () => {
-  return 
+  return
   <NotificationProvider>
     <LoginForm />
   </NotificationProvider>

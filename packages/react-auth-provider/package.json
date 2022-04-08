@@ -1,5 +1,5 @@
 {
-  "name": "@rockts-org/react-auth-provider",
+  "name": "@concepta/react-auth-provider",
   "version": "1.0.0-alpha.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "@rockts-org/react-data-provider": "^1.0.0-alpha.0",
+    "@concepta/react-data-provider": "^1.0.0-alpha.0",
     "react": "^17.0.2"
   }
 }

@@ -23,22 +23,23 @@ These are very rough examples. We intend to improve them ASAP.
 ### Simple User Login
 
 ```typescript
-import { AuthProvider, useAuth } from "@rockts-org/auth-provider";
+import { AuthProvider, useAuth } from '@concepta/auth-provider';
 
 const AppWrapper: React.FC = () => {
-  const {doLogin, user } = useAuth();
+  const { doLogin, user } = useAuth();
 
- const onClickSignIn = async (user: string, password: string) => {
+  const onClickSignIn = async (user: string, password: string) => {
     doLogin({ email: user, password });
-  }
+  };
 
   return (
     <AuthProvider>
-        {user 
-            ? <div>LOGGED IN!</div>
-            : <SimpleLoginForm onClickSignIn={onClickSignIn} />
-        }
+      {user ? (
+        <div>LOGGED IN!</div>
+      ) : (
+        <SimpleLoginForm onClickSignIn={onClickSignIn} />
+      )}
     </AuthProvider>
   );
-}
+};
 ```

@@ -27,46 +27,54 @@ These are very rough examples. We intend to improve them ASAP.
 ### Simple User Login
 
 ```typescript
-import { ProtectedRoute, PublicRoute, Router, useNavigate } from "@rockts-org/react-router";
+import {
+  ProtectedRoute,
+  PublicRoute,
+  Router,
+  useNavigate,
+} from '@concepta/react-router';
 
 const NotFound = () => {
-    return <div>Not Found</div>
-}
+  return <div>Not Found</div>;
+};
 
 const Unauthorized = () => {
-    return <div>Unauthorized</div>
-}
+  return <div>Unauthorized</div>;
+};
 
 const Home = () => {
-  return  <div>
-      LOGGED IN!
-    </div>
-}
+  return <div>LOGGED IN!</div>;
+};
 
 const LoginForm = () => {
-  const {doLogin, user } = useAuth();
+  const { doLogin, user } = useAuth();
   const navigateTo = useNavigate();
 
-  React.useEffect(()=>{
-    if(user){
-      navigateTo("/", {replace: true});
+  React.useEffect(() => {
+    if (user) {
+      navigateTo('/', { replace: true });
     }
-  }, [user])
+  }, [user]);
 
   const onClickSignIn = async (user: string, password: string) => {
     doLogin({ email: user, password });
-  }
+  };
 
   return <SimpleLoginForm onClickSignIn={onClickSignIn} />;
-}
+};
 
 const AppWrapper: React.FC = () => {
-  const { user} = useAuth();
+  const { user } = useAuth();
 
-  return <Router isAuth={!!user} NotFoundComponent={NotFound} UnauthorizedComponent={Unauthorized}>
-        <ProtectedRoute path="/" Component={Home} />
-        <PublicRoute path="/login" Component={LoginForm} />
+  return (
+    <Router
+      isAuth={!!user}
+      NotFoundComponent={NotFound}
+      UnauthorizedComponent={Unauthorized}
+    >
+      <ProtectedRoute path="/" Component={Home} />
+      <PublicRoute path="/login" Component={LoginForm} />
     </Router>
-}
-
+  );
+};
 ```
