@@ -1,13 +1,15 @@
 {
   "name": "@concepta/react-material-ui",
   "version": "1.0.0-alpha.1",
-  "description": "Rockets customized Material UI Components",
-  "main": "index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "BSD-3-Clause",
-  "private": false,
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
