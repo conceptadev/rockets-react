@@ -30,4 +30,5 @@ export interface RouterProps {
   isAuth: boolean;
   NotFoundComponent: React.FC;
   UnauthorizedComponent: React.FC;
+  children?: React.ReactNode;
 }
