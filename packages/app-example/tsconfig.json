@@ -22,10 +22,10 @@
     "jsx": "react-jsx",
     "baseUrl": "src",
     "paths": {
-      "@rjsf/material-ui/*": ["../node_modules/@rjsf/material-ui/dist/*"]
+      "@rjsf/material-ui/*": ["../../../node_modules/@rjsf/material-ui/dist/*"]
     }
   },
-  "include": ["src", "src/**/*.ts", "src/**/*.tsx"],
+  "include": ["src", "src/**/*", "src/custom.d.ts"],
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -36,7 +36,12 @@ export const Router: React.FC<RouterProps> = ({
       const { Component, requireAuth, ...restProps } = child?.props;
 
       if (!requireAuth && child.type.name !== 'ProtectedRoute') {
-        return <ReactRouter.Route {...restProps} element={<Component />} />;
+        return (
+          <ReactRouter.Route
+            {...restProps}
+            element={<Component {...restProps} />}
+          />
+        );
       }
 
       if (!isAuth) {
@@ -47,7 +52,12 @@ export const Router: React.FC<RouterProps> = ({
           />
         );
       }
-      return <ReactRouter.Route {...restProps} element={<Component />} />;
+      return (
+        <ReactRouter.Route
+          {...restProps}
+          element={<Component {...restProps} />}
+        />
+      );
     });
   }, [children, isAuth]);
 
