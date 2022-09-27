@@ -1,6 +1,6 @@
 import Login from 'app/screens/Login'
-// import Main from 'app/screens/Main'
-// import Theme from 'app/screens/Theme'
+import Main from 'app/screens/Main'
+import Theme from 'app/screens/Theme'
 // import Table from 'app/screens/Table'
 // import Jsonform from 'app/screens/Jsonform'
 
@@ -17,16 +17,16 @@ const routes = [
     component: Login,
     props: { type: 'signUp' },
   },
-  // {
-  //   name: 'Main',
-  //   route: '/home',
-  //   component: Main,
-  // },
-  // {
-  //   name: 'Theme',
-  //   route: '/theme',
-  //   component: Theme,
-  // },
+  {
+    name: 'Main',
+    route: '/home',
+    component: Main,
+  },
+  {
+    name: 'Theme',
+    route: '/theme',
+    component: Theme,
+  },
   // {
   //   name: 'Table',
   //   route: '/table',
