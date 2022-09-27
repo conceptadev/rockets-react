@@ -2,7 +2,7 @@ import {
   RowsProps,
   CustomTableCell,
   Order,
-} from '../../Components/Table/Table';
+} from '../../components/Table/Table';
 
 const descendingComparator = (a: string | number, b: string | number) => {
   if (b < a) {

@@ -36,6 +36,9 @@
     },
     {
       "path": "packages/react-material-ui"
+    },
+    {
+      "path": "packages/app-example"
     }
   ]
 }
