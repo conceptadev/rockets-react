@@ -1,7 +1,7 @@
 import Login from 'app/screens/Login'
 import Main from 'app/screens/Main'
 import Theme from 'app/screens/Theme'
-// import Table from 'app/screens/Table'
+import Table from 'app/screens/Table'
 // import Jsonform from 'app/screens/Jsonform'
 
 const routes = [
@@ -27,11 +27,11 @@ const routes = [
     route: '/theme',
     component: Theme,
   },
-  // {
-  //   name: 'Table',
-  //   route: '/table',
-  //   component: Table,
-  // },
+  {
+    name: 'Table',
+    route: '/table',
+    component: Table,
+  },
   // {
   //   name: 'Jsonform',
   //   route: '/jsonform',
