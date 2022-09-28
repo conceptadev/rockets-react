@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Box, Table, Switch } from '@concepta/react-material-ui'
+import { Box, Table, Switch, Text, Divider } from '@concepta/react-material-ui'
 import {
   RowsProps,
   SimpleActionButton,
@@ -8,8 +8,8 @@ import {
 import ScreenWithContainer from 'app/components/ScreenWithContainer'
 import { rows, headers } from './fakeData'
 import { CustomNameCell, CustomStatusCell } from './CustomCells'
-// import CustomToolbarActionButtons from './CustomToolbarActionButtons'
-// import CustomRowOptions from './CustomRowOptions'
+import CustomToolbarActionButtons from './CustomToolbarActionButtons'
+import CustomRowOptions from './CustomRowOptions'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 
@@ -101,23 +101,40 @@ const TableScreen: FC = () => {
         </Box>
       </Box>
 
+      <Box display="flex">
+        <Text>
+          Table with Custom Toolbar items array and Custom options items array
+        </Text>
+      </Box>
+
       <Table
         rows={customRows()}
         headers={headers}
         hasCheckboxes={showCheckboxes}
         hasOptions={showOptions}
-        //
-        // customToolbarActionButtons={({ selectedRows }) => ( // Custom toolbar component
-        //   <CustomToolbarActionButtons selectedRows={selectedRows} />
-        // )}
-        //
         customToolbarActionButtons={actionButtons} // Custom Toolbar items
-        //
-        // customRowOptions={({ row, close }) => ( // Custom options component
-        //   <CustomRowOptions row={row} close={close} />
-        // )}
-        //
         customRowOptions={optionButtons} // Custom options items
+      />
+
+      <Divider />
+
+      <Box display="flex" mt={2}>
+        <Text>
+          Table with Custom Toolbar component and Custom options component
+        </Text>
+      </Box>
+
+      <Table
+        rows={customRows()}
+        headers={headers}
+        hasCheckboxes={showCheckboxes}
+        hasOptions={showOptions}
+        customToolbarActionButtons={(
+          { selectedRows }, // Custom toolbar component
+        ) => <CustomToolbarActionButtons selectedRows={selectedRows} />}
+        customRowOptions={(
+          { row, close }, // Custom options component
+        ) => <CustomRowOptions row={row} close={close} />}
       />
     </ScreenWithContainer>
   )

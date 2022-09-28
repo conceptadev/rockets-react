@@ -1,6 +1,6 @@
 import { FC } from 'react'
+import { MenuItem } from '@concepta/react-material-ui/'
 import { CustomRowOptionsProps } from '@concepta/react-material-ui/dist/components/Table/Table'
-import MenuItem from '@mui/material/MenuItem'
 import Settings from '@mui/icons-material/Settings'
 
 const CustomRowOptions: FC<CustomRowOptionsProps> = ({ row, close }) => {
