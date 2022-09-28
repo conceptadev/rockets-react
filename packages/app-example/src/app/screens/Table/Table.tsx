@@ -102,7 +102,7 @@ const TableScreen: FC = () => {
       </Box>
 
       <Box display="flex">
-        <Text>
+        <Text fontFamily="Inter" fontSize={20} fontWeight={800} mt={1}>
           Table with Custom Toolbar items array and Custom options items array
         </Text>
       </Box>
@@ -119,7 +119,7 @@ const TableScreen: FC = () => {
       <Divider />
 
       <Box display="flex" mt={2}>
-        <Text>
+        <Text fontFamily="Inter" fontSize={20} fontWeight={800} mt={1}>
           Table with Custom Toolbar component and Custom options component
         </Text>
       </Box>

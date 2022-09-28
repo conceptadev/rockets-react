@@ -16,7 +16,7 @@ import { withTheme, FormValidation, UiSchema } from '@rjsf/core'
 import { Theme } from '@rjsf/material-ui/v5'
 import { JSONSchema7 } from 'json-schema'
 
-// import { CustomTextField } from 'app/styles/CustomWidgets'
+import { CustomTextField } from 'app/styles/CustomWidgets'
 import emailValidation from 'app/utils/emailValidation/emailValidation'
 
 import './styles.css'
@@ -39,7 +39,7 @@ const Login: FC<Props> = ({ type }) => {
   const Form = withTheme(Theme)
 
   const widgets = {
-    // TextWidget: CustomTextField,
+    TextWidget: CustomTextField,
   }
 
   const validate = (formData: FormData, errors: FormValidation) => {

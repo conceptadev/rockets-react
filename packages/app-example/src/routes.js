@@ -2,7 +2,7 @@ import Login from 'app/screens/Login'
 import Main from 'app/screens/Main'
 import Theme from 'app/screens/Theme'
 import Table from 'app/screens/Table'
-// import Jsonform from 'app/screens/Jsonform'
+import Jsonform from 'app/screens/Jsonform'
 
 const routes = [
   {
@@ -32,11 +32,11 @@ const routes = [
     route: '/table',
     component: Table,
   },
-  // {
-  //   name: 'Jsonform',
-  //   route: '/jsonform',
-  //   component: Jsonform,
-  // },
+  {
+    name: 'Jsonform',
+    route: '/jsonform',
+    component: Jsonform,
+  },
 ]
 
 export default routes

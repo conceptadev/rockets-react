@@ -64,7 +64,7 @@ const ScreenWithContainer: FC<Props> = ({ currentId, children }) => {
       onClick: () => navigate('/table'),
     },
     {
-      id: 'Jsonform',
+      id: 'jsonform',
       icon: <CodeIcon />,
       text: 'Jsonform',
       onClick: () => navigate('/jsonform'),
