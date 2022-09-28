@@ -3,7 +3,7 @@ import { Box, Button, Text } from '@concepta/react-material-ui'
 import { withTheme, UiSchema, ISubmitEvent } from '@rjsf/core'
 import { Theme } from '@rjsf/material-ui/v5'
 import { JSONSchema7 } from 'json-schema'
-import { CustomSwitchWidget } from 'app/styles/CustomWidgets'
+import { CustomSwitchWidget } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 type FormData = {
   checkboxSolo: boolean

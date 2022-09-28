@@ -8,7 +8,7 @@ import {
   CustomCheckboxesWidget,
   CustomRadioWidget,
   CustomSelectWidget,
-} from 'app/styles/CustomWidgets'
+} from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 type FormData = {
   checkboxSolo: boolean

@@ -3,7 +3,10 @@ import { Box, Button, Text } from '@concepta/react-material-ui'
 import { withTheme, UiSchema } from '@rjsf/core'
 import { Theme } from '@rjsf/material-ui/v5'
 import { JSONSchema7 } from 'json-schema'
-import { CustomTextField, ArrayFieldTemplate } from 'app/styles/CustomWidgets'
+import {
+  CustomTextField,
+  ArrayFieldTemplate,
+} from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 const ArrayForm: FC = () => {
   const Form = withTheme(Theme)

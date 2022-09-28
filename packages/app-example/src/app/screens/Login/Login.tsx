@@ -10,13 +10,12 @@ import {
   Link,
   Divider,
 } from '@concepta/react-material-ui'
+import { CustomTextField } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 import logo from 'app/assets/images/logo.svg'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import { withTheme, FormValidation, UiSchema } from '@rjsf/core'
 import { Theme } from '@rjsf/material-ui/v5'
 import { JSONSchema7 } from 'json-schema'
-
-import { CustomTextField } from 'app/styles/CustomWidgets'
 import emailValidation from 'app/utils/emailValidation/emailValidation'
 
 import './styles.css'
