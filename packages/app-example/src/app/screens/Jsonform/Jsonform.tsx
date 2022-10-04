@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Text, Container, Divider } from '@concepta/react-material-ui'
 import ScreenWithContainer from 'app/components/ScreenWithContainer'
 import ArrayForm from './ArrayForm'
+import ArrayMultiForm from './ArrayMultiForm'
 import SimpleForm from './SimpleForm'
 import OtherFormElements from './OtherFormElements'
 import SwitchElementForm from './SwitchElementForm'
@@ -33,6 +34,10 @@ const Jsonform: FC = () => (
       <Divider sx={{ my: 8 }} />
 
       <SwitchElementForm />
+
+      <ArrayForm />
+
+      <ArrayMultiForm />
     </Container>
   </ScreenWithContainer>
 )
