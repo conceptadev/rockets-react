@@ -99,7 +99,7 @@ const ArrayForm: FC = () => {
         mt={4}
         gutterBottom
       >
-        Multiple input Array form
+        Multiple Fields Array form
       </Text>
 
       <Box>
