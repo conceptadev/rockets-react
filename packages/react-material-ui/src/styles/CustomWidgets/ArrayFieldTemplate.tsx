@@ -1,13 +1,20 @@
 import React, { FC } from 'react';
-import Box from '../../components/Box';
 import { ArrayFieldTemplateProps } from '@rjsf/core';
+import Box from '../../components/Box';
 import ArrayFieldActionButton from './ArrayFieldActionButton';
 
 const ArrayFieldTemplate: FC<ArrayFieldTemplateProps> = (props) => {
   const { items, canAdd, onAddClick } = props;
 
   return (
-    <Box>
+    <Box
+      id="BOX_WRAP"
+      sx={{
+        '& .MuiGrid-container': {
+          marginTop: '0 !important',
+        },
+      }}
+    >
       {items.map((el, i) => {
         const child = {
           ...el.children,

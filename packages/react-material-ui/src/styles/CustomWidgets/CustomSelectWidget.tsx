@@ -3,7 +3,7 @@ import Select from '../../components/Select';
 import { WidgetProps } from '@rjsf/core';
 import { processSelectValue } from '@rjsf/utils';
 
-const SelectWidget: FC = ({
+const SelectWidget: FC<WidgetProps> = ({
   schema,
   id,
   options,
@@ -15,7 +15,7 @@ const SelectWidget: FC = ({
   multiple,
   onChange,
   rawErrors = [],
-}: WidgetProps) => {
+}) => {
   const { enumOptions, enumDisabled } = options;
 
   const emptyValue = multiple ? [] : '';
