@@ -547,6 +547,13 @@ const ArrayForm: FC = () => {
 If you need your array to be a group of items, you can add `type: 'object'` to your array's item object, and add a `properties` object containing the field you want to repeat inside the array.
 
 ```typescript
+const Form = withTheme(Theme)
+
+const widgets = {
+  TextWidget: CustomTextField,
+  SelectWidget: CustomSelectWidget,
+}
+
 const schema: JSONSchema7 = {
   type: 'object',
   required: ['name', 'address'],
@@ -583,15 +590,37 @@ const schema: JSONSchema7 = {
   },
 }
 
-<Form
-  schema={schema}
-  onSubmit={values => console.log('values', values)}
-  ArrayFieldTemplate={ArrayFieldTemplate}
->
-  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-    Send
-  </Button>
-</Form>
+const uiSchema: UiSchema = {
+  adress: {
+    items: {
+      isPrimaryAddress: {
+        'ui:widget': 'radio',
+      },
+      addressType: {
+        'ui:widget': 'select',
+      },
+    },
+  },
+}
+
+const formData = {
+  address: [{ name: '', city: '' }],
+}
+
+<Box>
+  <Form
+    schema={schema}
+    uiSchema={uiSchema}
+    formData={formData}
+    onSubmit={values => console.log('values', values)}
+    widgets={widgets}
+    ArrayFieldTemplate={ArrayFieldTemplate}
+  >
+    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+      Send
+    </Button>
+  </Form>
+</Box>
 ```
 
 ### Other input types
