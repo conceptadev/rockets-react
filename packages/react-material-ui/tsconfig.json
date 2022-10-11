@@ -4,9 +4,11 @@
     "composite": true,
     "rootDir": "./src",
     "outDir": "./dist",
+    "baseUrl": "src",
     "typeRoots": ["./node_modules/@types", "../../node_modules/@types"],
     "paths": {
-      "styles": ["./dist/styles"]
+      "styles": ["./dist/styles"],
+      "@rjsf/material-ui/*": ["../../../node_modules/@rjsf/material-ui/dist/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx"]

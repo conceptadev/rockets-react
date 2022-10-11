@@ -70,6 +70,12 @@ const ScreenWithContainer: FC<Props> = ({ currentId, children }) => {
       onClick: () => navigate('/jsonform'),
     },
     {
+      id: 'simpleform',
+      icon: <CodeIcon />,
+      text: 'Simple Forms',
+      onClick: () => navigate('/simple-forms'),
+    },
+    {
       id: 'theme',
       icon: <ColorLensOutlinedIcon />,
       text: 'Theme',

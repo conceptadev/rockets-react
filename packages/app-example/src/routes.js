@@ -3,6 +3,7 @@ import Main from 'app/screens/Main'
 import Theme from 'app/screens/Theme'
 import Table from 'app/screens/Table'
 import Jsonform from 'app/screens/Jsonform'
+import SimpleForm from 'app/screens/SimpleForm'
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     name: 'Jsonform',
     route: '/jsonform',
     component: Jsonform,
+  },
+  {
+    name: 'Simple Forms',
+    route: '/simple-forms',
+    component: SimpleForm,
   },
 ]
 
