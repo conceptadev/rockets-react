@@ -3,7 +3,7 @@ import TextField from '../../components/TextField';
 import { WidgetProps } from '@rjsf/core';
 import { filterProps } from './utils';
 
-const CustomTextField: FC<WidgetProps> = (props) => (
+const CustomTextFieldWidget: FC<WidgetProps> = (props) => (
   <TextField
     {...filterProps(props)}
     variant="outlined"
@@ -16,4 +16,4 @@ const CustomTextField: FC<WidgetProps> = (props) => (
   />
 );
 
-export default CustomTextField;
+export default CustomTextFieldWidget;

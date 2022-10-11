@@ -10,7 +10,7 @@ import {
   Link,
   Divider,
 } from '@concepta/react-material-ui'
-import { CustomTextField } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
+import { CustomTextFieldWidget } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 import logo from 'app/assets/images/logo.svg'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import { withTheme, FormValidation, UiSchema } from '@rjsf/core'
@@ -38,7 +38,7 @@ const Login: FC<Props> = ({ type }) => {
   const Form = withTheme(Theme)
 
   const widgets = {
-    TextWidget: CustomTextField,
+    TextWidget: CustomTextFieldWidget,
   }
 
   const validate = (formData: FormData, errors: FormValidation) => {

@@ -3,14 +3,14 @@ import { Box, Button, Text } from '@concepta/react-material-ui'
 import { withTheme, FormValidation, UiSchema, ISubmitEvent } from '@rjsf/core'
 import { Theme } from '@rjsf/material-ui/v5'
 import { JSONSchema7 } from 'json-schema'
-import { CustomTextField } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
+import { CustomTextFieldWidget } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 import emailValidation from 'app/utils/emailValidation/emailValidation'
 
 const FormElements: FC = () => {
   const Form = withTheme(Theme)
 
   const widgets = {
-    TextWidget: CustomTextField,
+    TextWidget: CustomTextFieldWidget,
   }
 
   type FormData = {

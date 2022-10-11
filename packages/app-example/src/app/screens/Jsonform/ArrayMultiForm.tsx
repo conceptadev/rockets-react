@@ -4,7 +4,7 @@ import { withTheme, FormValidation, UiSchema } from '@rjsf/core'
 import { Theme } from '@rjsf/material-ui/v5'
 import { JSONSchema7 } from 'json-schema'
 import {
-  CustomTextField,
+  CustomTextFieldWidget,
   ArrayFieldTemplate,
   CustomSelectWidget,
 } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
@@ -23,7 +23,7 @@ const ArrayForm: FC = () => {
   const Form = withTheme(Theme)
 
   const widgets = {
-    TextWidget: CustomTextField,
+    TextWidget: CustomTextFieldWidget,
     SelectWidget: CustomSelectWidget,
   }
 

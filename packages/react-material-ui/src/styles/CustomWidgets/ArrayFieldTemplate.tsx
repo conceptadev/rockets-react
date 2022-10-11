@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { ArrayFieldTemplateProps } from '@rjsf/core';
 import Box from '../../components/Box';
+import Typography from '@mui/material/Typography';
 import ArrayFieldActionButton from './ArrayFieldActionButton';
 
 const ArrayFieldTemplate: FC<ArrayFieldTemplateProps> = (props) => {
-  const { items, canAdd, onAddClick } = props;
+  const { items, canAdd, onAddClick, schema } = props;
 
   return (
     <Box
-      id="BOX_WRAP"
       sx={{
         '& .MuiGrid-container': {
           marginTop: '0 !important',
@@ -40,6 +40,11 @@ const ArrayFieldTemplate: FC<ArrayFieldTemplateProps> = (props) => {
           </Box>
         );
       })}
+      {schema.description && (
+        <Typography component="span" variant="caption" color="#9CA3AF">
+          {schema.description}
+        </Typography>
+      )}
     </Box>
   );
 };
