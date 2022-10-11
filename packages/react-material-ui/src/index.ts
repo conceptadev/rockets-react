@@ -21,3 +21,4 @@ export { default as Switch } from './components/Switch';
 export { default as Table } from './components/Table';
 export { default as Text } from './components/Text';
 export { default as TextField } from './components/TextField';
+export { default as SimpleForm } from './components/SimpleForm';
