@@ -1,6 +1,6 @@
 import React, { FC, Fragment } from 'react';
 import { Box, Button, Text } from '../../';
-import { withTheme, UiSchema } from '@rjsf/core';
+import { withTheme, UiSchema, FormValidation } from '@rjsf/core';
 import { Theme } from '@rjsf/material-ui/v5';
 import {
   JSONSchema7,
@@ -55,10 +55,12 @@ export type FormType = {
 type Props = {
   form: FormType;
   onSubmit?: (values: any) => any;
+  validate?: (formData: any, errors: FormValidation) => FormValidation;
+  onError?: (error: any) => any;
 };
 
 const SimpleForm: FC<Props> = (props) => {
-  const { form, onSubmit } = props;
+  const { form, onSubmit, validate, onError } = props;
   const { fields } = form;
 
   const Form = withTheme(Theme);
@@ -224,9 +226,10 @@ const SimpleForm: FC<Props> = (props) => {
           formData={generateFormData()}
           noHtml5Validate={true}
           showErrorList={false}
-          onError={(err) => console.log('errors', err)}
           onSubmit={onSubmit}
           ArrayFieldTemplate={ArrayFieldTemplate}
+          validate={validate}
+          onError={onError}
         >
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
             {form.submitButtonLabel || 'Submit'}
