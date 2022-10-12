@@ -1,8 +1,38 @@
 import { FC } from 'react'
 import { SimpleForm } from '@concepta/react-material-ui'
 import { FormType } from '@concepta/react-material-ui/dist/components/SimpleForm'
+import { FormValidation } from '@rjsf/core'
+
+type FormData = {
+  email: string
+  password: string
+  checkbox: boolean
+  checkboxes: string[]
+  character: string
+  address: string[]
+  multiAddress: {
+    name: string
+    city: string
+    addressType: string
+    isPrimaryAddress: boolean
+  }[]
+  radio: string
+  switch: boolean
+}
 
 const Form: FC = () => {
+  const validate = (formData: FormData, errors: FormValidation) => {
+    if (!formData.switch) {
+      errors.switch.addError('You must accept to proceed')
+    }
+
+    return errors
+  }
+
+  const onError = (error: any) => {
+    console.log('error', error)
+  }
+
   const form: FormType = {
     title: 'Simplest form ever',
     submitButtonLabel: 'Send',
@@ -68,6 +98,8 @@ const Form: FC = () => {
     <SimpleForm
       form={form}
       onSubmit={values => console.log('values', values)}
+      validate={validate}
+      onError={onError}
     />
   )
 }
