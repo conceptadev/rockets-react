@@ -54,13 +54,14 @@ export type FormType = {
 
 type Props = {
   form: FormType;
+  initialData?: Record<string, any>;
   onSubmit?: (values: any) => any;
   validate?: (formData: any, errors: FormValidation) => FormValidation;
   onError?: (error: any) => any;
 };
 
 const SimpleForm: FC<Props> = (props) => {
-  const { form, onSubmit, validate, onError } = props;
+  const { form, initialData, onSubmit, validate, onError } = props;
   const { fields } = form;
 
   const Form = withTheme(Theme);
@@ -187,12 +188,14 @@ const SimpleForm: FC<Props> = (props) => {
   };
 
   const generateFormData = () => {
-    const formData: Record<string, any> = {};
+    const formData: Record<string, any> = {
+      ...initialData,
+    };
 
     Object.keys(fields).map((key) => {
       const field = fields[key];
       if (['stringArray', 'array'].includes(field.type)) {
-        formData[key] = [''];
+        formData[key] = initialData?.[key] || [''];
       }
     });
 

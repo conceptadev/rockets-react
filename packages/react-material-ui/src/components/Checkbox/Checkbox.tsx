@@ -8,15 +8,15 @@ type Props = {
 };
 
 const Checkbox: FC<CheckboxProps & Props> = (props) => {
-  const { label } = props;
+  const { label, checked } = props;
   return (
     <>
       {label ? (
         <FormGroup>
           <FormControlLabel
             control={<MuiCheckbox onChange={props.onChange} />}
-            label={props.label}
-            value={props.value}
+            label={label}
+            checked={checked}
           />
         </FormGroup>
       ) : (

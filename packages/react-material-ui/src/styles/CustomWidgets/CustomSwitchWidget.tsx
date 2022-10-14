@@ -4,7 +4,7 @@ import { WidgetProps } from '@rjsf/core';
 
 const CustomSwitchWidget: FC<WidgetProps> = (props) => (
   <Switch
-    value={props.value}
+    checked={props.value}
     label={props.label}
     onChange={(evt) => props.onChange(evt.target.checked)}
   />

@@ -94,12 +94,32 @@ const Form: FC = () => {
     },
   }
 
+  const initialData = {
+    email: 'myemail@gomail.com',
+    password: '213123',
+    checkbox: true,
+    checkboxes: ['Beer', 'Rum'],
+    character: 'Sonic',
+    address: ['ministro calogeras'],
+    multiAddress: [
+      {
+        addressType: 'Apartment',
+        city: 'Joinville',
+        isPrimaryAddress: true,
+        name: '12',
+      },
+    ],
+    radio: 'PS5',
+    switch: true,
+  }
+
   return (
     <SimpleForm
       form={form}
       onSubmit={values => console.log('values', values)}
       validate={validate}
       onError={onError}
+      initialData={initialData}
     />
   )
 }
