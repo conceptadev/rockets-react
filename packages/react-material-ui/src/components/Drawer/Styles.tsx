@@ -1,10 +1,8 @@
-import MuiDrawer from '@mui/material/Drawer'
-import MuiButton from '@mui/material/Button'
-import { styled } from '@mui/material/styles'
+import MuiDrawer from '@mui/material/Drawer';
+import MuiButton from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 
-export const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: prop => prop !== 'open',
-})(({ theme, open }) => ({
+export const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
   '& .MuiDrawer-paper': {
     backgroundColor: theme.system.drawerBg,
     position: 'relative',
@@ -27,12 +25,12 @@ export const Drawer = styled(MuiDrawer, {
       },
     }),
   },
-}))
+}));
 
 type DrawerButtonProps = {
-  active?: boolean
-  collapsed?: boolean
-}
+  active?: boolean;
+  collapsed?: boolean;
+};
 
 export const DrawerButton = styled(MuiButton)<DrawerButtonProps>(
   ({ theme, active, collapsed }) => ({
@@ -57,4 +55,4 @@ export const DrawerButton = styled(MuiButton)<DrawerButtonProps>(
       transition: 'opacity 300ms',
     },
   }),
-)
+);

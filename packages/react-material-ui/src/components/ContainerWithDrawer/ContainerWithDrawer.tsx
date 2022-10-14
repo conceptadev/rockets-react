@@ -1,18 +1,39 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useState } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
+import Drawer from '../Drawer';
+import { DrawerItemProps } from '../Drawer/DrawerItem';
 import Navbar from '../Navbar';
 
 type Props = {
-  drawer: ReactNode;
+  drawerItems: DrawerItemProps[];
+  currentId: string;
+  logo?: string;
   children: ReactNode;
 };
 
-const ContainerWithDrawer: FC<Props> = ({ drawer, children }) => {
+const ContainerWithDrawer: FC<Props> = ({
+  drawerItems,
+  currentId,
+  logo,
+  children,
+}) => {
+  const [mobileIsOpen, setMobileIsOpen] = useState(false);
+
+  const toggleMobileDrawer = () => {
+    setMobileIsOpen((prv) => !prv);
+  };
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      {drawer}
+    <Box sx={{ display: 'flex' }} id="ContainerWithDrawer">
+      <Drawer
+        items={drawerItems}
+        currentId={currentId}
+        toggleMobileDrawer={toggleMobileDrawer}
+        mobileIsOpen={mobileIsOpen}
+        logo={logo}
+      />
 
       <Box
         component="main"
@@ -23,7 +44,7 @@ const ContainerWithDrawer: FC<Props> = ({ drawer, children }) => {
           overflow: 'auto',
         }}
       >
-        <Navbar />
+        <Navbar drawerToggle={toggleMobileDrawer} />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {children}
         </Container>

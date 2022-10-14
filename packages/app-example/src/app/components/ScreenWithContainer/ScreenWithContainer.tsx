@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react'
-import { ContainerWithDrawer, Drawer } from '@concepta/react-material-ui'
+import { ContainerWithDrawer } from '@concepta/react-material-ui'
 import { useNavigate } from '@concepta/react-router'
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined'
 import BusinessOutlinedIcon from '@mui/icons-material/BusinessOutlined'
@@ -10,6 +10,7 @@ import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined'
 import GridOnIcon from '@mui/icons-material/GridOn'
 import CodeIcon from '@mui/icons-material/Code'
+import rocketsIcon from 'app/assets/images/rocketsIcon.png'
 
 type Props = {
   currentId: string
@@ -96,7 +97,9 @@ const ScreenWithContainer: FC<Props> = ({ currentId, children }) => {
   ]
   return (
     <ContainerWithDrawer
-      drawer={<Drawer items={drawerMenuItems} currentId={currentId} />}
+      drawerItems={drawerMenuItems}
+      currentId={currentId}
+      logo={rocketsIcon}
     >
       {children}
     </ContainerWithDrawer>

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useCallback } from 'react';
 import { Drawer as CustomDrawer } from './Styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -7,57 +7,99 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 import DrawerItem, { DrawerItemProps } from './DrawerItem';
 import Image from '../Image';
 import Text from '../Text';
+import Box from '../Box';
 
 type Props = {
   items: DrawerItemProps[];
   currentId: string;
   logo?: string;
+  toggleMobileDrawer: () => void;
+  mobileIsOpen: boolean;
 };
 
 const Drawer: FC<Props> = (props) => {
-  const { items, currentId, logo } = props;
+  const { items, currentId, logo, toggleMobileDrawer, mobileIsOpen } = props;
 
-  const [open, setOpen] = useState(true);
+  const [collapsed, setCollapsed] = useState<boolean>(false);
+
   const toggleDrawer = () => {
-    setOpen(!open);
+    setCollapsed((prev) => !prev);
   };
 
+  const drawer = useCallback(
+    (hideToggle?: boolean) => (
+      <Box display="flex" flexDirection="column">
+        <Toolbar
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            p: '20px 16px 17px !important',
+          }}
+        >
+          {logo && <Image src={logo} alt="Logo" />}
+        </Toolbar>
+
+        {items.map((item) => (
+          <DrawerItem
+            key={item.id}
+            {...item}
+            collapsed={!mobileIsOpen && collapsed}
+            active={item.id === currentId}
+          />
+        ))}
+
+        {!hideToggle && (
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              px: [1],
+            }}
+          >
+            <IconButton onClick={toggleDrawer}>
+              <Text color="primary.contrastText">
+                {collapsed ? <ChevronRight /> : <ChevronLeft />}
+              </Text>
+            </IconButton>
+          </Toolbar>
+        )}
+      </Box>
+    ),
+    [collapsed, mobileIsOpen],
+  );
+
   return (
-    <CustomDrawer variant="permanent" open={open}>
-      <Toolbar
+    <>
+      <CustomDrawer
+        variant="temporary"
+        open={mobileIsOpen}
+        onClose={toggleMobileDrawer}
+        ModalProps={{
+          keepMounted: true,
+        }}
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          p: '20px 16px 17px !important',
+          display: { xs: 'block', sm: 'none' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+          },
         }}
       >
-        {logo && <Image src={logo} alt="Logo" />}
-      </Toolbar>
-
-      {items.map((item) => (
-        <DrawerItem
-          key={item.id}
-          {...item}
-          collapsed={!open}
-          active={item.id === currentId}
-        />
-      ))}
-
-      <Toolbar
+        {drawer(true)}
+      </CustomDrawer>
+      <CustomDrawer
+        variant="permanent"
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          px: [1],
+          display: { xs: 'none', sm: 'block' },
+          '& .MuiDrawer-paper': {
+            boxSizing: 'border-box',
+          },
         }}
+        open={!collapsed}
       >
-        <IconButton onClick={toggleDrawer}>
-          <Text fontSize={14} fontWeight={500} color="primary.contrastText">
-            {open ? <ChevronLeft /> : <ChevronRight />}
-          </Text>
-        </IconButton>
-      </Toolbar>
-    </CustomDrawer>
+        {drawer()}
+      </CustomDrawer>
+    </>
   );
 };
 
