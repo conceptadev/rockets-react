@@ -9,6 +9,7 @@
   - [Components](#components)
 - [Tables](#tables)
 - [Forms](#forms)
+- [Simple Forms](#simple-forms)
 
 ## Introduction
 
@@ -259,8 +260,8 @@ To have access to the selected checkboxes you have to pass custom action buttons
 
 There are two ways of doing so:
 
-- 1. Creating your own custom action buttons component.
-- 2. Providing an array of objects containing `key`, `onClick` and `renderItem`.
+1. Creating your own custom action buttons component.
+2. Providing an array of objects containing `key`, `onClick` and `renderItem`.
 
 ### 1) Custom action buttons component
 
@@ -316,8 +317,8 @@ Similar to the selected checkboxes, you have to pass custom options to the table
 
 There are two ways of doing so:
 
-- 1. Creating your own custom options component.
-- 2. Providing an array of objects containing `key`, `onClick` and `renderItem`.
+1. Creating your own custom options component.
+2. Providing an array of objects containing `key`, `onClick` and `renderItem`.
 
 ### 1) Custom options component
 
@@ -339,7 +340,7 @@ const CustomRowOptions: FC<CustomRowOptionsProps> = ({ row, close }) => {
   )
 }
 
-;<Table
+<Table
   // ...other props
   hasOptions
   customRowOptions={({ row, close }) => (
@@ -474,7 +475,7 @@ const validate = (formData: FormData, errors: FormValidation) => {
   return errors
 }
 
-;<Form
+<Form
   // ...other props
   validate={validate}
 >
@@ -781,5 +782,166 @@ const OtherFormElements: FC = () => {
   }
 
   return <Form schema={schema} uiSchema={uiSchema} widgets={widgets} />
+}
+```
+
+## Simple Forms
+
+Rockets provides an even simpler way to create forms that will fulfill your need in most simple forms cases on your project.
+
+You must provide a single object with sub objects for each field you want in your form. If you add the `required` param, the form will automatically validate if the input is filled when the user clicks on submit.
+
+```typescript
+import { SimpleForm } from '@concepta/react-material-ui'
+
+const form: FormType = {
+  title: 'Simplest form ever',
+  submitButtonLabel: 'Send',
+  fields: {
+    email: {
+      type: 'string',
+      title: 'Email',
+      required: true,
+    },
+    password: {
+      type: 'password',
+      title: 'Password',
+      required: true,
+    },
+  },
+}
+
+<SimpleForm
+  form={form}
+  onSubmit={values => console.log('values', values)}
+  onError={error => console.log('error', error)}
+/>
+```
+
+Each field must receive a type. The type can be any of: `string`, `email`, `password`, `array`, `stringArray`, `select`, `radio`, `checkbox`, `checkboxes` or `switch`.
+
+```typescript
+Address: {
+  type: 'string',
+  title: 'Address',
+}
+```
+
+The following parameters are optional for each field: `title`, `description`, `required`, `options` and `fields`.
+- `title` works as a label for the field.
+- `description` is a simple text that is displayed right after the field.
+- `options` is used to create the choices for `checkboxes`, `radio` and `select` fields.
+- `fields` are used for the `array` type.
+
+### Field Types
+
+`string`, `email` and `password` are all text inputs, with the correct configuration for the field. For example, the `password` field will hide the text filled. They will return a string value.
+
+`checkbox` and `switch` are simple boolean fields. They will return true or false on the formData.
+
+```typescript
+checkbox: { type: 'checkbox', title: 'Subscribe' },
+switch: {
+  type: 'switch',
+  title: 'Is this thing on?',
+},
+```
+
+`select`, `radio` and `checkboxes` requires the `options` parameter with an array of strings. `radio` and `select` will return the selected string, while `checkboxes` will return an array with the selected strings.
+
+```typescript
+checkboxes: {
+  type: 'checkboxes',
+  title: 'Your favorites drinks',
+  options: ['Beer', 'Vodka', 'Champagne', 'Rum', 'Gin'],
+},
+character: {
+  type: 'select',
+  title: "Who's your favorite character",
+  options: ['Mario', 'Sonic', 'Lara Croft', 'Pac-man'],
+},
+radio: {
+  type: 'radio',
+  title: 'Which is your favorite for gaming?',
+  options: ['PS5', 'Xbox', 'PC', 'Mobile'],
+},
+```
+
+`stringArray` will create a "+" button on the right side of the text field which will add more text fields as the user clicks. From the second item on, there will be a delete button for that field. It doesn't require any options and will return an array of the texts that the user filled in each field.
+
+```typescript
+address: { type: 'stringArray', title: 'Address' },
+```
+
+
+`array` is a little more complex, but still very easy to create. Think of it like multiple fields inside that field. This is the only field that needs the `fields` parameter.
+
+Just like the stringArray, it'll show a "+" button on the right side and will return an array, but this time with and object with each field you created.
+
+```typescript
+multiAddress: {
+  type: 'array',
+  title: 'Address',
+  fields: {
+    name: {
+      title: 'Adress',
+      type: 'string',
+    },
+    city: {
+      title: 'City',
+      type: 'string',
+    },
+    addressType: {
+      title: 'Type of address',
+      type: 'select',
+      options: ['House', 'Apartment', 'Commercial building'],
+    },
+    isPrimaryAddress: {
+      title: 'Is home address',
+      type: 'checkbox',
+    },
+  },
+},
+```
+
+
+You'll need to pass a `onSubmit` prop to handle `SimpleForm`'s data. You can pass a validate function to create your custom validations for each field with the `validate` prop. And there is also a `onError` prop that expects a function to handle the errors.
+
+```typescript
+import { FormValidation } from '@rjsf/core'
+
+const onSubmit = values => console.log('values', values)
+
+const validate = (formData: FormData, errors: FormValidation) => {
+  if (!formData.switch) {
+    errors.switch.addError('You must accept to proceed')
+  }
+
+  return errors
+}
+
+const onError = (error: any) => {
+  console.log('error', error)
+}
+
+<SimpleForm
+  form={form}
+  onSubmit={onSubmit}
+  validate={validate}
+  onError={onError}
+/>
+```
+
+### Title and Submit button label
+
+The form object also accepts a `title` that will be shown at the top of the form and a `submitButtonLabel` to override the regular "submit" text.
+
+```typescript
+const form: FormType = {
+  title: 'Simplest form ever',
+  submitButtonLabel: 'Send',
+  fields: {
+     // ...
+  }
 }
 ```

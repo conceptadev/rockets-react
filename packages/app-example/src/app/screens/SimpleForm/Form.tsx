@@ -74,7 +74,7 @@ const Form: FC = () => {
           addressType: {
             title: 'Type of address',
             type: 'select',
-            options: ['House', 'Apartment', 'Comercial building'],
+            options: ['House', 'Apartment', 'Commercial building'],
           },
           isPrimaryAddress: {
             title: 'Is home address',
