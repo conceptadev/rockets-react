@@ -53,7 +53,7 @@ const ArrayForm: FC = () => {
               enum: ['House', 'Apartment', 'Comercial building'],
             },
             isPrimaryAddress: {
-              title: 'Is home address',
+              title: 'Home address',
               type: 'boolean',
               enum: [true, false],
             },

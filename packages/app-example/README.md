@@ -8,6 +8,8 @@
   - [Default theme](#default-theme)
   - [Components](#components)
 - [Tables](#tables)
+- [Drawer Menu](#drawer-menu)
+- [Navbar](#navbar)
 - [Forms](#forms)
 - [Simple Forms](#simple-forms)
 
@@ -377,6 +379,129 @@ const optionButtons: SimpleOptionButton[] = [
 />
 ```
 
+### Custom Rows
+
+Sometimes you need to customize things. So you can create your own custom rows.
+
+```typescript
+const CustomNameCell = ({ name, email }) => (
+  <>
+    <Text fontSize={14} fontWeight={500} color="text.primary">
+      {name}
+    </Text>
+    <Text fontSize={14} fontWeight={500} color="text.secondary">
+      {email}
+    </Text>
+  </>
+)
+
+const customRows = () => {
+  return rows.map(row => {
+    const { id, name, email, status, role, lastLogin } = row
+
+    return {
+      id,
+      name: {
+        sortableValue: name,
+        component: <CustomNameCell name={name} email={email} />,
+      },
+      status: {
+        sortableValue: status,
+        component: <CustomStatusCell status={status} />,
+      },
+      role,
+      lastLogin,
+    }
+  })
+}
+
+<Table
+  rows={customRows()}
+  // ...
+/>
+```
+
+## Drawer Menu
+
+Rockets provides a pre-built Drawer with customizable DrawerItems. The easiest way to use it, is to import the ContainerWithDrawer component which handles the display of the Drawer menu and the responsive drawer.
+
+`currentId` is used to highlight the current active button on the Drawer.
+
+`showNotifications` will show a notifications icon at the navbar.
+
+```typescript
+import { ContainerWithDrawer } from '@concepta/react-material-ui'
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
+import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined'
+
+const drawerMenuItems = [
+  {
+    id: 'home',
+    icon: <HomeOutlinedIcon />,
+    text: 'Home',
+    onClick: () => navigate('/home'),
+  },
+  {
+    id: 'theme',
+    icon: <ColorLensOutlinedIcon />,
+    text: 'Theme',
+    onClick: () => navigate('/theme'),
+  },
+]
+
+<ContainerWithDrawer
+  drawerItems={drawerMenuItems}
+  currentId="home"
+  showNotifications
+  notificationsNumber={6}
+  notificationsOnClick={() => console.log('click')}
+  avatar="https://source.unsplash.com/random"
+  text="John Smith"
+  subText="Amazing Inc."
+>
+  {/* Your page goes here */}
+</ContainerWithDrawer>
+```
+
+The Drawer Menu has two states: Compact and expanded. It's also responsive. If the user is accessing from a device with a smaller screen, it'll hide and you can open it with the prop `mobileIsOpen`. You'll also have to pass a `toggleMobileDrawer` function to allow it to open and close the drawer menu.
+
+```typescript
+const [mobileIsOpen, setMobileIsOpen] = useState(false);
+
+const toggleMobileDrawer = () => {
+  setMobileIsOpen((prv) => !prv);
+};
+
+<Drawer
+  items={drawerItems}
+  currentId={currentId}
+  toggleMobileDrawer={toggleMobileDrawer}
+  mobileIsOpen={mobileIsOpen}
+/>
+```
+
+## Navbar
+
+The Navbar is a simple top navbar that contains a notification icon with badge and a simple Avatar component with image, title and subtitle.
+You'll have to provide a `drawerToggle` function if you want your navbar to handle the Drawer open/close state. This will automatically create a toggle button to open and close your Drawer menu
+
+```typescript
+const toggleMobileDrawer = () => {
+  setMobileIsOpen((prv) => !prv);
+};
+
+<Navbar
+  drawerToggle={toggleMobileDrawer}
+  showNotifications={showNotifications}
+  notificationsNumber={notificationsNumber}
+  notificationsOnClick={notificationsOnClick}
+  avatar={avatar}
+  text={text}
+  subText={subText}
+/>
+```
+
+
 ## Forms
 
 Rockets forms are powered by [react-jsonschema-form](https://github.com/rjsf-team/react-jsonschema-form) which is based on [json-schema](https://json-schema.org/).
@@ -391,9 +516,17 @@ First, you'll need to install v4 of "@rjsf/core" and "@rjsf/material-ui"
 $ npm install @rjsf/core @rjsf/utils --save
 ```
 
-To be able to pass Rocket's custom components, you'll have yo provide the components overrides for each type through the `widgets` props of the form. But this is not mandatory. If you don't override it, the form will be populated with plain Material UI components.
+To be able to pass Rocket's custom components, you'll have to provide the components overrides for each type through the `widgets` props of the form. But this is not mandatory. If you don't override it, the form will be populated with plain Material UI components.
 
 ```typescript
+import {
+  TextFieldWidget
+  CustomCheckboxWidget
+  CustomCheckboxesWidget
+  CustomRadioWidget
+  CustomSelectWidget
+} from '@concepta/react-material-ui/dist/styles/CustomWidgets'
+
 const widgets = {
   TextWidget: CustomTextFieldWidget,
   CheckboxWidget: CustomCheckboxWidget,
@@ -411,6 +544,7 @@ const widgets = {
 ### Simplest form
 
 ```typescript
+import { Theme } from '@rjsf/material-ui/v5'
 import { withTheme, UiSchema, ISubmitEvent } from '@rjsf/core'
 
 type FormData = {
@@ -443,21 +577,15 @@ const SimpleForm: FC = () => {
   }
 
   return (
-    <>
-      <Form
-        schema={schema}
-        uiSchema={uiSchema}
-        onSubmit={handleSubmit}
-        widgets={widgets}
-        noHtml5Validate={true}
-        showErrorList={false}
-        onError={err => console.log('errors', err)}
-      >
-        <Button type="submit" fullWidth variant="contained">
-          Add contact
-        </Button>
-      </Form>
-    </>
+    <Form
+      schema={schema}
+      uiSchema={uiSchema}
+      onSubmit={handleSubmit}
+      widgets={widgets}
+      noHtml5Validate={true}
+      showErrorList={false}
+      onError={err => console.log('errors', err)}
+    />
   )
 }
 ```
@@ -495,7 +623,7 @@ For this, you'll have to specify the `type: 'array'` inside the field.
 import {
   CustomTextFieldWidget,
   ArrayFieldTemplate,
-} from 'app/styles/CustomWidgets'
+} from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 const ArrayForm: FC = () => {
   const Form = withTheme(Theme)
@@ -551,7 +679,7 @@ If you need your array to be a group of items, you can add `type: 'object'` to y
 const Form = withTheme(Theme)
 
 const widgets = {
-  TextWidget: CustomTextField,
+  TextWidget: CustomTextFieldWidget,
   SelectWidget: CustomSelectWidget,
 }
 
@@ -578,10 +706,10 @@ const schema: JSONSchema7 = {
           addressType: {
             title: 'Type of address',
             type: 'string',
-            enum: ['House', 'Apartment', 'Comercial building'],
+            enum: ['House', 'Apartment', 'Commercial building'],
           },
           isPrimaryAddress: {
-            title: 'Is home address',
+            title: 'Home address',
             type: 'boolean',
             enum: [true, false],
           },
@@ -636,7 +764,7 @@ import {
   CustomCheckboxesWidget,
   CustomRadioWidget,
   CustomSelectWidget,
-} from 'app/styles/CustomWidgets'
+} from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 type FormData = {
   checkboxSolo: boolean
@@ -705,34 +833,19 @@ const OtherFormElements: FC = () => {
   }
 
   return (
-    <>
-      <Text
-        variant="h4"
-        fontFamily="Inter"
-        fontSize={24}
-        fontWeight={800}
-        mt={4}
-        gutterBottom
-      >
-        Other Form Elements
-      </Text>
-
-      <Box>
-        <Form
-          schema={schema}
-          uiSchema={uiSchema}
-          onSubmit={handleSubmit}
-          widgets={widgets}
-          noHtml5Validate={true}
-          showErrorList={false}
-          onError={err => console.log('errors', err)}
-        >
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-            Submit
-          </Button>
-        </Form>
-      </Box>
-    </>
+    <Form
+      schema={schema}
+      uiSchema={uiSchema}
+      onSubmit={handleSubmit}
+      widgets={widgets}
+      noHtml5Validate={true}
+      showErrorList={false}
+      onError={err => console.log('errors', err)}
+    >
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+        Submit
+      </Button>
+    </Form>
   )
 }
 ```
@@ -772,12 +885,12 @@ const OtherFormElements: FC = () => {
   }
 
   const widgets = {
-    CheckboxWidget: CustomSwitchWidget,
+    switchWidget: CustomSwitchWidget,
   }
 
   const uiSchema: UiSchema = {
     checkboxSolo: {
-      'ui:widget': 'checkbox', // Not really needed. Checkbox is default for boolean types.
+      switch: 'switchWidget',
     },
   }
 
@@ -828,6 +941,7 @@ Address: {
 ```
 
 The following parameters are optional for each field: `title`, `description`, `required`, `options` and `fields`.
+
 - `title` works as a label for the field.
 - `description` is a simple text that is displayed right after the field.
 - `options` is used to create the choices for `checkboxes`, `radio` and `select` fields.
@@ -873,7 +987,6 @@ radio: {
 address: { type: 'stringArray', title: 'Address' },
 ```
 
-
 `array` is a little more complex, but still very easy to create. Think of it like multiple fields inside that field. This is the only field that needs the `fields` parameter.
 
 Just like the stringArray, it'll show a "+" button on the right side and will return an array, but this time with and object with each field you created.
@@ -903,7 +1016,6 @@ multiAddress: {
   },
 },
 ```
-
 
 You'll need to pass a `onSubmit` prop to handle `SimpleForm`'s data. You can pass a validate function to create your custom validations for each field with the `validate` prop. And there is also a `onError` prop that expects a function to handle the errors.
 
@@ -941,8 +1053,8 @@ const form: FormType = {
   title: 'Simplest form ever',
   submitButtonLabel: 'Send',
   fields: {
-     // ...
-  }
+    // ...
+  },
 }
 ```
 
@@ -951,7 +1063,6 @@ const form: FormType = {
 You can pass initial data for your SimpleForm component.
 
 Just create an object with the same data format that the form would output. SimpleForm will fill each field with your data.
-
 
 ```typescript
 type FormData = {
