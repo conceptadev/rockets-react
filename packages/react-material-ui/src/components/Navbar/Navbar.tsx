@@ -29,26 +29,30 @@ const Navbar: FC<Props> = ({
   return (
     <CustomNavbar>
       <Toolbar>
-        <Text color="text.primary">
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={drawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Text>
-        <Box display="flex" flex={1} justifyContent="flex-end">
-          {showNotifications && (
-            <Notifications
-              amount={notificationsNumber}
-              onClick={notificationsOnClick}
-            />
+        <>
+          {drawerToggle && (
+            <Text color="text.primary">
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={drawerToggle}
+                sx={{ mr: 2, display: { sm: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Text>
           )}
-          <HeaderAccount avatar={avatar} text={text} subText={subText} />
-        </Box>
+          <Box display="flex" flex={1} justifyContent="flex-end">
+            {showNotifications && (
+              <Notifications
+                amount={notificationsNumber}
+                onClick={notificationsOnClick}
+              />
+            )}
+            <HeaderAccount avatar={avatar} text={text} subText={subText} />
+          </Box>
+        </>
       </Toolbar>
     </CustomNavbar>
   );
