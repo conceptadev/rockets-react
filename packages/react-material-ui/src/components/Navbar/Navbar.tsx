@@ -9,9 +9,23 @@ import Text from '../Text';
 
 type Props = {
   drawerToggle?: () => void;
+  showNotifications?: boolean;
+  notificationsNumber?: number;
+  notificationsOnClick?: () => void;
+  avatar?: string;
+  text?: string;
+  subText?: string;
 };
 
-const Navbar: FC<Props> = ({ drawerToggle }) => {
+const Navbar: FC<Props> = ({
+  drawerToggle,
+  showNotifications,
+  notificationsNumber,
+  notificationsOnClick,
+  avatar,
+  text,
+  subText,
+}) => {
   return (
     <CustomNavbar>
       <Toolbar>
@@ -27,12 +41,13 @@ const Navbar: FC<Props> = ({ drawerToggle }) => {
           </IconButton>
         </Text>
         <Box display="flex" flex={1} justifyContent="flex-end">
-          <Notifications amount={4} />
-          <HeaderAccount
-            avatar="https://source.unsplash.com/random"
-            text="John Smith"
-            subText="Amazing Inc."
-          />
+          {showNotifications && (
+            <Notifications
+              amount={notificationsNumber}
+              onClick={notificationsOnClick}
+            />
+          )}
+          <HeaderAccount avatar={avatar} text={text} subText={subText} />
         </Box>
       </Toolbar>
     </CustomNavbar>

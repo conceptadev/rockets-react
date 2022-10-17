@@ -100,6 +100,12 @@ const ScreenWithContainer: FC<Props> = ({ currentId, children }) => {
       drawerItems={drawerMenuItems}
       currentId={currentId}
       logo={rocketsIcon}
+      showNotifications
+      notificationsNumber={6}
+      notificationsOnClick={() => console.log('click')}
+      avatar="https://source.unsplash.com/random"
+      text="John Smith"
+      subText="Amazing Inc."
     >
       {children}
     </ContainerWithDrawer>

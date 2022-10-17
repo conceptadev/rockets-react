@@ -11,6 +11,12 @@ type Props = {
   currentId: string;
   logo?: string;
   children: ReactNode;
+  showNotifications?: boolean;
+  notificationsNumber?: number;
+  notificationsOnClick?: () => void;
+  avatar?: string;
+  text?: string;
+  subText?: string;
 };
 
 const ContainerWithDrawer: FC<Props> = ({
@@ -18,6 +24,12 @@ const ContainerWithDrawer: FC<Props> = ({
   currentId,
   logo,
   children,
+  showNotifications,
+  notificationsNumber,
+  notificationsOnClick,
+  avatar,
+  text,
+  subText,
 }) => {
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
@@ -44,7 +56,15 @@ const ContainerWithDrawer: FC<Props> = ({
           overflow: 'auto',
         }}
       >
-        <Navbar drawerToggle={toggleMobileDrawer} />
+        <Navbar
+          drawerToggle={toggleMobileDrawer}
+          showNotifications={showNotifications}
+          notificationsNumber={notificationsNumber}
+          notificationsOnClick={notificationsOnClick}
+          avatar={avatar}
+          text={text}
+          subText={subText}
+        />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
           {children}
         </Container>

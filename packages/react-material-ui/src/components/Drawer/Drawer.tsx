@@ -12,9 +12,9 @@ import Box from '../Box';
 type Props = {
   items: DrawerItemProps[];
   currentId: string;
-  logo?: string;
   toggleMobileDrawer: () => void;
   mobileIsOpen: boolean;
+  logo?: string;
 };
 
 const Drawer: FC<Props> = (props) => {

@@ -4,7 +4,7 @@ import Text from '../Text';
 
 export type DrawerItemProps = {
   id: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   text: string;
   active?: boolean;
   collapsed?: boolean;
