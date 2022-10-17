@@ -13,7 +13,7 @@ import CodeIcon from '@mui/icons-material/Code'
 import rocketsIcon from 'app/assets/images/rocketsIcon.png'
 
 type Props = {
-  currentId: string
+  currentId?: string
   children: ReactNode
 }
 

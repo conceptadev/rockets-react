@@ -11,7 +11,7 @@ import Box from '../Box';
 
 type Props = {
   items: DrawerItemProps[];
-  currentId: string;
+  currentId?: string;
   toggleMobileDrawer: () => void;
   mobileIsOpen: boolean;
   logo?: string;
@@ -44,7 +44,7 @@ const Drawer: FC<Props> = (props) => {
             key={item.id}
             {...item}
             collapsed={!mobileIsOpen && collapsed}
-            active={item.id === currentId}
+            active={currentId && item.id === currentId}
           />
         ))}
 

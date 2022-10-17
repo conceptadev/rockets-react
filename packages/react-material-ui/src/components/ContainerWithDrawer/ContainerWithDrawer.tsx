@@ -8,7 +8,7 @@ import Navbar from '../Navbar';
 
 type Props = {
   drawerItems: DrawerItemProps[];
-  currentId: string;
+  currentId?: string;
   logo?: string;
   children: ReactNode;
   showNotifications?: boolean;
