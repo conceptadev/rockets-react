@@ -12,7 +12,7 @@ import Box from '../Box';
 import { sortTable } from '../../utils/table';
 import TableToolbar from './TableToolbar';
 import TableHeaders from './TableHeaders';
-import Dropdown from '../Dropdown';
+import TableOptions from './TableOptions';
 
 export type HeadersProps = {
   disablePadding?: boolean;
@@ -49,7 +49,8 @@ export type SimpleActionButton = {
 export type SimpleOptionButton = {
   key: string;
   onClick: (row: RowsProps) => void;
-  renderItem: ReactNode;
+  text?: string;
+  icon?: ReactNode;
 };
 
 type Props = {
@@ -244,7 +245,7 @@ const TableComponent: FC<Props> = ({
 
                       {hasOptions && (
                         <TableCell>
-                          <Dropdown
+                          <TableOptions
                             row={row}
                             customRowOptions={customRowOptions}
                           />

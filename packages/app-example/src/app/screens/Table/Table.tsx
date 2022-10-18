@@ -62,17 +62,18 @@ const TableScreen: FC = () => {
     {
       key: 'edit',
       onClick: row => console.log('row:', row),
-      renderItem: <EditIcon />,
+      icon: <EditIcon />,
+      text: 'Edit',
     },
     {
       key: 'delete',
       onClick: row => console.log('row:', row),
-      renderItem: <DeleteIcon />,
+      icon: <DeleteIcon />,
     },
     {
       key: 'click',
       onClick: row => console.log('row:', row),
-      renderItem: 'click',
+      text: 'click',
     },
   ]
 

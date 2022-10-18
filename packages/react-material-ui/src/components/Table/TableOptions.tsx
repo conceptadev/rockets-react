@@ -5,71 +5,58 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Box from '../Box';
+import {
+  RowsProps,
+  SimpleOptionButton,
+  CustomRowOptionsProps,
+} from '../Table/Table';
 import { IconContainer } from './Styles';
 import MenuItem from '@mui/material/MenuItem';
 
-export type DropdownItem = {
-  key: string;
-  onClick: () => void;
-  text?: string;
-  icon?: ReactNode;
-  iconPosition?: 'left' | 'right';
-};
-
 type Props = {
-  options: DropdownItem[];
+  row: RowsProps;
+  customRowOptions?:
+    | SimpleOptionButton[]
+    | (({ row, close }: CustomRowOptionsProps) => ReactNode);
 };
 
-const Dropdown: FC<Props> = ({ options }) => {
+const Dropdown: FC<Props> = ({ row, customRowOptions }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleToggleClick = (event: MouseEvent<HTMLElement>) => {
-    if (!options) return;
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
+    if (!customRowOptions) return;
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleCustomItemClick = (item: DropdownItem) => () => {
-    item.onClick();
+  const handleCustomItemClick = (item: SimpleOptionButton) => () => {
+    item.onClick(row);
     handleClose();
   };
 
   const renderOptions = useMemo(() => {
-    if (Array.isArray(options)) {
+    if (typeof customRowOptions === 'function') {
+      return customRowOptions({ row, close: handleClose });
+    }
+
+    if (Array.isArray(customRowOptions)) {
       return (
         <Box display="flex" flexDirection="column" sx={{ p: 0, m: 0 }}>
-          {options.map((item) => {
-            const { key, icon, iconPosition = 'left', text } = item;
-
-            const isLeftSide = iconPosition === 'left';
-
-            return (
-              <MenuItem key={key} onClick={handleCustomItemClick(item)}>
-                <Box
-                  display="flex"
-                  flexDirection={
-                    iconPosition === 'left' ? 'row' : 'row-reverse'
-                  }
-                >
-                  {icon && (
-                    <IconContainer isLeftSide={isLeftSide}>
-                      {icon}
-                    </IconContainer>
-                  )}
-                  {text}
-                </Box>
-              </MenuItem>
-            );
-          })}
+          {customRowOptions.map((item) => (
+            <MenuItem key={item.key} onClick={handleCustomItemClick(item)}>
+              {item.icon && <IconContainer>{item.icon}</IconContainer>}
+              {item.text}
+            </MenuItem>
+          ))}
         </Box>
       );
     }
 
     return;
-  }, [options]);
+  }, [customRowOptions]);
 
   return (
     <>
@@ -79,7 +66,7 @@ const Dropdown: FC<Props> = ({ options }) => {
           aria-controls={open ? 'fade-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
-          onClick={handleToggleClick}
+          onClick={handleClick}
         >
           <MoreHorizIcon />
         </IconButton>

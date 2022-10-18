@@ -1,5 +1,6 @@
-import MuiTable from '@mui/material/Table'
-import { styled } from '@mui/material/styles'
+import MuiTable from '@mui/material/Table';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
 
 export const Table = styled(MuiTable)(({ theme }) => ({
   borderCollapse: 'separate',
@@ -28,4 +29,10 @@ export const Table = styled(MuiTable)(({ theme }) => ({
     borderBottomRightRadius: '10px',
     borderTopRightRadius: '10px',
   },
-}))
+}));
+
+export const IconContainer = styled(Box)(() => ({
+  display: 'flex',
+  marginRight: '8px',
+  marginLeft: '-4px',
+}));
