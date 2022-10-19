@@ -4,6 +4,7 @@ import Fade from '@mui/material/Fade';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '../Box';
 import { IconContainer } from './Styles';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,9 +19,10 @@ export type DropdownItem = {
 
 type Props = {
   options: DropdownItem[];
+  toggleDirection?: 'horizontal' | 'vertical';
 };
 
-const Dropdown: FC<Props> = ({ options }) => {
+const Dropdown: FC<Props> = ({ options, toggleDirection = 'horizontal' }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -81,7 +83,11 @@ const Dropdown: FC<Props> = ({ options }) => {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleToggleClick}
         >
-          <MoreHorizIcon />
+          {toggleDirection === 'horizontal' ? (
+            <MoreHorizIcon />
+          ) : (
+            <MoreVertIcon />
+          )}
         </IconButton>
       </Tooltip>
       <Menu
