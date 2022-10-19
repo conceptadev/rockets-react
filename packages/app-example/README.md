@@ -12,6 +12,7 @@
 - [Navbar](#navbar)
 - [Forms](#forms)
 - [Simple Forms](#simple-forms)
+- [Dropdown](#dropdown)
 
 ## Introduction
 
@@ -353,22 +354,25 @@ const CustomRowOptions: FC<CustomRowOptionsProps> = ({ row, close }) => {
 
 ### 2) Custom options array
 
+The Custom options array accepts icons and or texts.
+
 ```typescript
 const optionButtons: SimpleOptionButton[] = [
   {
     key: 'edit',
     onClick: row => console.log('row:', row),
-    renderItem: <EditIcon />,
+    icon: <EditIcon />,
+    text: 'Edit',
   },
   {
     key: 'delete',
     onClick: row => console.log('row:', row),
-    renderItem: <DeleteIcon />,
+    icon: <DeleteIcon />,
   },
   {
     key: 'click',
     onClick: row => console.log('row:', row),
-    renderItem: 'click',
+    text: 'click',
   },
 ]
 
@@ -466,11 +470,11 @@ const drawerMenuItems = [
 The Drawer Menu has two states: Compact and expanded. It's also responsive. If the user is accessing from a device with a smaller screen, it'll hide and you can open it with the prop `mobileIsOpen`. You'll also have to pass a `toggleMobileDrawer` function to allow it to open and close the drawer menu.
 
 ```typescript
-const [mobileIsOpen, setMobileIsOpen] = useState(false);
+const [mobileIsOpen, setMobileIsOpen] = useState(false)
 
 const toggleMobileDrawer = () => {
-  setMobileIsOpen((prv) => !prv);
-};
+  setMobileIsOpen(prv => !prv)
+}
 
 <Drawer
   items={drawerItems}
@@ -487,8 +491,8 @@ You'll have to provide a `drawerToggle` function if you want your navbar to hand
 
 ```typescript
 const toggleMobileDrawer = () => {
-  setMobileIsOpen((prv) => !prv);
-};
+  setMobileIsOpen(prv => !prv)
+}
 
 <Navbar
   drawerToggle={toggleMobileDrawer}
@@ -500,7 +504,6 @@ const toggleMobileDrawer = () => {
   subText={subText}
 />
 ```
-
 
 ## Forms
 
@@ -1162,4 +1165,37 @@ const initialData = {
   onError={onError}
   initialData={initialData}
 />
+```
+
+## Dropdown
+
+The Dropdown component is a popup menu that shows the array of options you pass to it's `options` prop.
+
+You can determine the dropdown's toggle icon direction with the prop `toggleDirection`.
+
+Each DropdownItem requires a unique `key` prop and accepts the following optional props:
+
+- `onClick` is the function that will be called when the user clicks the option.
+- `text` is the text displayed in the option button.
+- `icon` is the icon displayed in the option button.
+- `iconPosition` is used to determine if the icon will be on the left or the right.
+
+```typescript
+  const options: DropdownItem[] = [
+    {
+      key: 'apple',
+      onClick: () => console.log('click apple'),
+      icon: <Apple />,
+      text: 'Apple',
+    },
+    {
+      key: 'google',
+      onClick: () => console.log('click google'),
+      icon: <Google />,
+      text: 'google',
+      iconPosition: 'right',
+    },
+  ]
+
+<Dropdown options={options} toggleDirection="vertical" />
 ```
