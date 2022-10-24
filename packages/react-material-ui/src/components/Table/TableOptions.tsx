@@ -4,6 +4,7 @@ import Fade from '@mui/material/Fade';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '../Box';
 import {
   RowsProps,
@@ -18,9 +19,14 @@ type Props = {
   customRowOptions?:
     | SimpleOptionButton[]
     | (({ row, close }: CustomRowOptionsProps) => ReactNode);
+  toggleDirection?: 'horizontal' | 'vertical';
 };
 
-const Dropdown: FC<Props> = ({ row, customRowOptions }) => {
+const TableOptions: FC<Props> = ({
+  row,
+  customRowOptions,
+  toggleDirection = 'horizontal',
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -68,7 +74,11 @@ const Dropdown: FC<Props> = ({ row, customRowOptions }) => {
           aria-expanded={open ? 'true' : undefined}
           onClick={handleClick}
         >
-          <MoreHorizIcon />
+          {toggleDirection === 'horizontal' ? (
+            <MoreHorizIcon />
+          ) : (
+            <MoreVertIcon />
+          )}
         </IconButton>
       </Tooltip>
       <Menu
@@ -87,4 +97,4 @@ const Dropdown: FC<Props> = ({ row, customRowOptions }) => {
   );
 };
 
-export default Dropdown;
+export default TableOptions;

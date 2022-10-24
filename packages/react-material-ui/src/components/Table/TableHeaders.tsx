@@ -1,26 +1,26 @@
-import React, { FC } from 'react'
-import Box from '@mui/material/Box'
-import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
-import TableSortLabel from '@mui/material/TableSortLabel'
-import Checkbox from '@mui/material/Checkbox'
-import { visuallyHidden } from '@mui/utils'
-import TableRow from '@mui/material/TableRow'
-import { HeadersProps, Order } from './Table'
+import React, { FC } from 'react';
+import Box from '@mui/material/Box';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableSortLabel from '@mui/material/TableSortLabel';
+import Checkbox from '@mui/material/Checkbox';
+import { visuallyHidden } from '@mui/utils';
+import TableRow from '@mui/material/TableRow';
+import { HeadersProps, Order } from './Table';
 
 interface Props {
-  numSelected: number
-  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
-  order: Order
-  orderBy: string
-  rowCount: number
-  headers: HeadersProps[]
-  hasCheckboxes?: boolean
-  hasOptions?: boolean
+  numSelected: number;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+  headers: HeadersProps[];
+  hasCheckboxes?: boolean;
+  hasOptions?: boolean;
 }
 
-const TableHeaders: FC<Props> = props => {
+const TableHeaders: FC<Props> = (props) => {
   const {
     onSelectAllClick,
     order,
@@ -31,11 +31,11 @@ const TableHeaders: FC<Props> = props => {
     headers,
     hasCheckboxes,
     hasOptions,
-  } = props
+  } = props;
   const createSortHandler =
     (property: string) => (event: React.MouseEvent<unknown>) => {
-      onRequestSort(event, property)
-    }
+      onRequestSort(event, property);
+    };
 
   return (
     <TableHead>
@@ -54,10 +54,10 @@ const TableHeaders: FC<Props> = props => {
           </TableCell>
         )}
 
-        {headers.map(headCell => (
+        {headers.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell?.textAlign || headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -78,7 +78,7 @@ const TableHeaders: FC<Props> = props => {
         {hasOptions && <TableCell key="options" align="left" padding="none" />}
       </TableRow>
     </TableHead>
-  )
-}
+  );
+};
 
-export default TableHeaders
+export default TableHeaders;

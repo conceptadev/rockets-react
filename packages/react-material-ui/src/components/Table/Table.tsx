@@ -6,19 +6,21 @@ import TablePagination from '@mui/material/TablePagination';
 import Checkbox from '@mui/material/Checkbox';
 
 import TableRow from '@mui/material/TableRow';
-import { Table } from './Styles';
+import { Table, TableProps } from './Styles';
 import Text from '../Text';
 import Box from '../Box';
 import { sortTable } from '../../utils/table';
 import TableToolbar from './TableToolbar';
 import TableHeaders from './TableHeaders';
 import TableOptions from './TableOptions';
+import { useTheme } from '@mui/material/styles';
 
 export type HeadersProps = {
   disablePadding?: boolean;
   id: string;
   label: string;
   numeric?: boolean;
+  textAlign?: 'left' | 'center' | 'right';
 };
 
 export type CustomTableCell = {
@@ -64,6 +66,8 @@ type Props = {
   customRowOptions?:
     | SimpleOptionButton[]
     | (({ row, close }: CustomRowOptionsProps) => ReactNode);
+  variant?: TableProps['variant'];
+  toggleDirection?: 'horizontal' | 'vertical';
 };
 
 export type Order = 'asc' | 'desc';
@@ -75,7 +79,11 @@ const TableComponent: FC<Props> = ({
   hasOptions,
   customToolbarActionButtons,
   customRowOptions,
+  variant = 'contained',
+  toggleDirection = 'horizontal',
 }) => {
+  const theme = useTheme();
+
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<string>('id');
   const [selected, setSelected] = React.useState<RowsProps[]>([]);
@@ -148,7 +156,7 @@ const TableComponent: FC<Props> = ({
       );
     }
 
-    if ('component' in cell && cell.sortableValue) {
+    if ('component' in cell && typeof cell.sortableValue !== 'undefined') {
       return cell.component;
     }
   };
@@ -198,6 +206,7 @@ const TableComponent: FC<Props> = ({
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size="medium"
+            variant={variant}
           >
             <TableHeaders
               numSelected={selected.length}
@@ -248,6 +257,7 @@ const TableComponent: FC<Props> = ({
                           <TableOptions
                             row={row}
                             customRowOptions={customRowOptions}
+                            toggleDirection={toggleDirection}
                           />
                         </TableCell>
                       )}
@@ -274,6 +284,20 @@ const TableComponent: FC<Props> = ({
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
+          sx={{
+            ...(variant === 'outlined' && {
+              backgroundColor:
+                theme.palette.mode === 'light'
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[800],
+              border: `solid 1px #e5e7eb`,
+              borderTop: 'none',
+              borderBottomLeftRadius: '10px',
+              borderBottomRightRadius: '10px',
+              borderLeftStyle: 'solid',
+              borderRightStyle: 'solid',
+            }),
+          }}
         />
       </>
     </Box>
