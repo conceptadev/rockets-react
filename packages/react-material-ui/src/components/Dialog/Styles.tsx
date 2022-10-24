@@ -5,7 +5,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+const CustomDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     minWidth: 300,
     padding: theme.spacing(2),
@@ -20,7 +20,7 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-const BootstrapDialogTitle: FC<DialogTitleProps> = (props) => {
+const CustomDialogTitle: FC<DialogTitleProps> = (props) => {
   const { children, onClose, ...other } = props;
 
   return (
@@ -44,4 +44,4 @@ const BootstrapDialogTitle: FC<DialogTitleProps> = (props) => {
   );
 };
 
-export { BootstrapDialog, BootstrapDialogTitle };
+export { CustomDialog, CustomDialogTitle };

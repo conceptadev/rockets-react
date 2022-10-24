@@ -35,12 +35,6 @@ const ScreenWithContainer: FC<Props> = ({ currentId, children }) => {
       active: true,
     },
     {
-      id: 'teamMembers',
-      icon: <GroupsOutlinedIcon />,
-      text: 'Team Members',
-      onClick: () => alert('foo'),
-    },
-    {
       id: 'billing',
       icon: <PaymentsOutlinedIcon />,
       text: 'Billing',
@@ -66,7 +60,7 @@ const ScreenWithContainer: FC<Props> = ({ currentId, children }) => {
     },
     {
       id: 'teamMembers',
-      icon: <GridOnIcon />,
+      icon: <GroupsOutlinedIcon />,
       text: 'TeamMembers',
       onClick: () => navigate('/team-members'),
     },

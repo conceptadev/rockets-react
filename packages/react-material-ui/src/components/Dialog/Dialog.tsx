@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { BootstrapDialog, BootstrapDialogTitle } from './Styles';
+import { CustomDialog, CustomDialogTitle } from './Styles';
 
 export interface DialogProps {
   open: boolean;
@@ -12,7 +14,7 @@ export interface DialogProps {
   dividers?: boolean;
 }
 
-const CustomDialog: FC<DialogProps> = (props) => {
+const Dialog: FC<DialogProps> = (props) => {
   const {
     open,
     handleClose,
@@ -22,12 +24,13 @@ const CustomDialog: FC<DialogProps> = (props) => {
     dividers = false,
   } = props;
 
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <BootstrapDialog onClose={handleClose} open={open}>
+    <CustomDialog onClose={handleClose} open={open} fullScreen={fullScreen}>
       {title && (
-        <BootstrapDialogTitle onClose={handleClose}>
-          {title}
-        </BootstrapDialogTitle>
+        <CustomDialogTitle onClose={handleClose}>{title}</CustomDialogTitle>
       )}
 
       {children && (
@@ -35,8 +38,8 @@ const CustomDialog: FC<DialogProps> = (props) => {
       )}
 
       {footer && <DialogActions>{footer}</DialogActions>}
-    </BootstrapDialog>
+    </CustomDialog>
   );
 };
 
-export default CustomDialog;
+export default Dialog;
