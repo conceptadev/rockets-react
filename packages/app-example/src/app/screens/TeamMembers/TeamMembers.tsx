@@ -1,13 +1,23 @@
-import { FC } from 'react'
-import { Box, Button, Table, Text } from '@concepta/react-material-ui'
+import { FC, useState } from 'react'
+import { Box, Button, Dialog, Table, Text } from '@concepta/react-material-ui'
 import { useTheme } from '@concepta/react-material-ui/dist/styles'
 import { RowsProps } from '@concepta/react-material-ui/dist/components/Table/Table'
 import ScreenWithContainer from 'app/components/ScreenWithContainer'
 import { rows, headers } from './fakeData'
 import { CustomNameCell, CustomRoleCell } from './CustomCells'
+import { MemberForm } from './Styles'
 
 const TeamMembers: FC = () => {
   const theme = useTheme()
+
+  const [addMemberModalOpen, setAddMemberModalOpen] = useState<boolean>(false)
+
+  const openMemberModal = () => {
+    setAddMemberModalOpen(true)
+  }
+  const closeMemberModal = () => {
+    setAddMemberModalOpen(false)
+  }
 
   const customRows: () => RowsProps[] = () => {
     return rows.map(row => {
@@ -49,11 +59,22 @@ const TeamMembers: FC = () => {
           </Text>
         </Box>
         <Box display="flex" alignItems="flex-end">
-          <Button variant="contained">Invite New Member</Button>
+          <Button variant="contained" onClick={openMemberModal}>
+            Invite New Member
+          </Button>
         </Box>
       </Box>
 
       <Table rows={customRows()} headers={headers} variant="outlined" />
+
+      <Dialog
+        open={addMemberModalOpen}
+        handleClose={closeMemberModal}
+        title="Invite New Member"
+        dividers
+      >
+        <MemberForm closeMemberModal={closeMemberModal} />
+      </Dialog>
     </ScreenWithContainer>
   )
 }

@@ -5,6 +5,7 @@ export { default as Card } from './components/Card';
 export { default as Checkbox } from './components/Checkbox';
 export { default as Container } from './components/Container';
 export { default as ContainerWithDrawer } from './components/ContainerWithDrawer';
+export { default as Dialog } from './components/Dialog';
 export { default as Divider } from './components/Divider';
 export { default as Drawer } from './components/Drawer';
 export { default as Dropdown } from './components/Dropdown';

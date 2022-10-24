@@ -13,6 +13,7 @@
 - [Forms](#forms)
 - [Simple Forms](#simple-forms)
 - [Dropdown](#dropdown)
+- [Dialog](#dialog)
 
 ## Introduction
 
@@ -1198,4 +1199,47 @@ Each DropdownItem requires a unique `key` prop and accepts the following optiona
   ]
 
 <Dropdown options={options} toggleDirection="vertical" />
+```
+
+## Dialog
+
+Dilog is a simple way to use modal. It's very customizable. You're required to pass the `open` and the `handleClose` props.
+
+`title`, `children`, `footer` and `dividers` are optional props.
+
+The `title` is, of course, the modal title.
+
+`children` is everything you pass inside the `<Dialog>` and the `</Dialog>` tags. It'll be rendered as the dialog's body.
+
+The `footer` expects any ReactNode to be rendered at the footer of the dialog. We suggest you add your action buttons here.
+
+`dividers` is a boolean which will automatically render dividers between the title, the body and the footer for you.
+
+```typescript
+const [addMemberModalOpen, setAddMemberModalOpen] = useState<boolean>(false)
+
+const openMemberModal = () => {
+  setAddMemberModalOpen(true)
+}
+const closeMemberModal = () => {
+  setAddMemberModalOpen(false)
+}
+
+const Footer: FC = () => (
+  <Button onClick={() => console.log('click')}>Save changes</Button>
+)
+
+<Button onClick={openMemberModal}>
+  Invite New Member
+</Button>
+
+<Dialog
+  open={addMemberModalOpen}
+  handleClose={closeMemberModal}
+  title="Invite New Member"
+  footer={<Footer />}
+  dividers
+>
+  <MemberForm closeMemberModal={closeMemberModal} />
+</Dialog>
 ```
