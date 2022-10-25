@@ -5,6 +5,7 @@ import Table from 'app/screens/Table'
 import Jsonform from 'app/screens/Jsonform'
 import SimpleForm from 'app/screens/SimpleForm'
 import TeamMembers from 'app/screens/TeamMembers'
+import Profile from 'app/screens/Profile'
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     name: 'Team Members',
     route: '/team-members',
     component: TeamMembers,
+  },
+  {
+    name: 'Profile',
+    route: '/profile',
+    component: Profile,
   },
 ]
 

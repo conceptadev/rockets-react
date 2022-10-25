@@ -25,7 +25,7 @@ const ScreenWithContainer: FC<Props> = ({ currentId, children }) => {
       id: 'profile',
       icon: <PersonOutlineOutlinedIcon />,
       text: 'Profile',
-      onClick: () => alert('foo'),
+      onClick: () => navigate('/profile'),
     },
     {
       id: 'account',
