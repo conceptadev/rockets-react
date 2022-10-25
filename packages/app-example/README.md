@@ -344,7 +344,7 @@ const CustomRowOptions: FC<CustomRowOptionsProps> = ({ row, close }) => {
   )
 }
 
-<Table
+;<Table
   // ...other props
   hasOptions
   customRowOptions={({ row, close }) => (
@@ -420,7 +420,7 @@ const customRows = () => {
   })
 }
 
-<Table
+;<Table
   rows={customRows()}
   // ...
 />
@@ -477,7 +477,7 @@ const toggleMobileDrawer = () => {
   setMobileIsOpen(prv => !prv)
 }
 
-<Drawer
+;<Drawer
   items={drawerItems}
   currentId={currentId}
   toggleMobileDrawer={toggleMobileDrawer}
@@ -495,7 +495,7 @@ const toggleMobileDrawer = () => {
   setMobileIsOpen(prv => !prv)
 }
 
-<Navbar
+;<Navbar
   drawerToggle={toggleMobileDrawer}
   showNotifications={showNotifications}
   notificationsNumber={notificationsNumber}
@@ -607,7 +607,7 @@ const validate = (formData: FormData, errors: FormValidation) => {
   return errors
 }
 
-<Form
+;<Form
   // ...other props
   validate={validate}
 >
@@ -1040,7 +1040,7 @@ const onError = (error: any) => {
   console.log('error', error)
 }
 
-<SimpleForm
+;<SimpleForm
   form={form}
   onSubmit={onSubmit}
   validate={validate}
@@ -1243,3 +1243,7 @@ const Footer: FC = () => (
   <MemberForm closeMemberModal={closeMemberModal} />
 </Dialog>
 ```
+
+The Rockets Dialog component is automatically responsive for screens under the "sm" breakpoint. Check [here](https://mui.com/material-ui/customization/breakpoints/) for more.
+
+It will take the full width of the device to allow beter reading.
