@@ -29,12 +29,17 @@ type FieldTypeTypes =
   | 'checkboxes'
   | 'switch';
 
+type SelectOption = {
+  value: string;
+  label: string;
+};
+
 type FieldType = {
   type: FieldTypeTypes;
   title?: string;
   description?: string;
   required?: boolean;
-  options?: string[];
+  options?: (SelectOption | string)[];
   fields?: Fields;
 };
 
@@ -132,8 +137,30 @@ const SimpleForm: FC<Props> = (props) => {
         fieldProperties['uniqueItems'] = true;
       }
 
-      if (['select', 'radio'].includes(field.type)) {
+      if (field.type === 'radio') {
         fieldProperties['enum'] = field.options;
+      }
+
+      if (field.type === 'select') {
+        field?.options?.map((opt, i) => {
+          if (typeof opt === 'string') {
+            if (!fieldProperties.enum) {
+              fieldProperties.enum = [];
+            }
+            fieldProperties.enum[i] = opt;
+          }
+
+          if (typeof opt === 'object' && opt.value) {
+            if (!fieldProperties.enum) {
+              fieldProperties.enum = [];
+            }
+            if (!fieldProperties.enumNames) {
+              fieldProperties.enumNames = [];
+            }
+            fieldProperties['enum'][i] = opt.value;
+            fieldProperties['enumNames'][i] = opt.label;
+          }
+        });
       }
 
       if (field.type === 'stringArray') {

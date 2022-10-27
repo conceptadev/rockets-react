@@ -9,6 +9,7 @@ type FormData = {
   checkbox: boolean
   checkboxes: string[]
   character: string
+  series: string
   address: string[]
   multiAddress: {
     name: string
@@ -58,6 +59,17 @@ const Form: FC = () => {
         type: 'select',
         options: ['Mario', 'Sonic', 'Lara Croft', 'Pac-man'],
       },
+      series: {
+        title: 'Favorite series',
+        type: 'select',
+        options: [
+          { value: 'strangerThings', label: 'Stranger Things' },
+          { value: 'gameOfThrones', label: 'Game of Thrones' },
+          { value: '13ReasonsWhy', label: '13 Reasons Why' },
+          { value: 'greysAnatomy', label: "Grey's anatomy" },
+          { value: 'moneyHeist', label: 'Money Heist' },
+        ],
+      },
       address: { type: 'stringArray', title: 'Address' },
       multiAddress: {
         type: 'array',
@@ -100,6 +112,7 @@ const Form: FC = () => {
     checkbox: true,
     checkboxes: ['Beer', 'Rum'],
     character: 'Sonic',
+    series: 'strangerThings',
     address: ['ministro calogeras'],
     multiAddress: [
       {
