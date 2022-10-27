@@ -344,7 +344,7 @@ const CustomRowOptions: FC<CustomRowOptionsProps> = ({ row, close }) => {
   )
 }
 
-;<Table
+<Table
   // ...other props
   hasOptions
   customRowOptions={({ row, close }) => (
@@ -420,7 +420,7 @@ const customRows = () => {
   })
 }
 
-;<Table
+<Table
   rows={customRows()}
   // ...
 />
@@ -477,7 +477,7 @@ const toggleMobileDrawer = () => {
   setMobileIsOpen(prv => !prv)
 }
 
-;<Drawer
+<Drawer
   items={drawerItems}
   currentId={currentId}
   toggleMobileDrawer={toggleMobileDrawer}
@@ -495,7 +495,7 @@ const toggleMobileDrawer = () => {
   setMobileIsOpen(prv => !prv)
 }
 
-;<Navbar
+<Navbar
   drawerToggle={toggleMobileDrawer}
   showNotifications={showNotifications}
   notificationsNumber={notificationsNumber}
@@ -607,7 +607,7 @@ const validate = (formData: FormData, errors: FormValidation) => {
   return errors
 }
 
-;<Form
+<Form
   // ...other props
   validate={validate}
 >
@@ -985,6 +985,32 @@ radio: {
 },
 ```
 
+If you need more control over the options you pass to `select` or `radio`, you can create objects with `value` and `label` for each option. The form will return the value of the selected object on submit.
+
+```typescript
+series: {
+  title: 'Favorite series',
+  type: 'select',
+  options: [
+    { value: 'strangerThings', label: 'Stranger Things' },
+    { value: 'gameOfThrones', label: 'Game of Thrones' },
+    { value: '13ReasonsWhy', label: '13 Reasons Why' },
+    { value: 'greysAnatomy', label: "Grey's anatomy" },
+    { value: 'moneyHeist', label: 'Money Heist' },
+  ],
+},
+radio: {
+  type: 'radio',
+  title: 'Which is your favorite for gaming?',
+  options: [
+    { value: 'ps5', label: 'PS5' },
+    { value: 'xbox', label: 'Xbox' },
+    { value: 'pc', label: 'PC' },
+    { value: 'mobile', label: 'Mobile' },
+  ],
+},
+```
+
 `stringArray` will create a "+" button on the right side of the text field which will add more text fields as the user clicks. From the second item on, there will be a delete button for that field. It doesn't require any options and will return an array of the texts that the user filled in each field.
 
 ```typescript
@@ -1040,7 +1066,7 @@ const onError = (error: any) => {
   console.log('error', error)
 }
 
-;<SimpleForm
+<SimpleForm
   form={form}
   onSubmit={onSubmit}
   validate={validate}
