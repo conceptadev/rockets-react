@@ -128,7 +128,7 @@ const SimpleForm: FC<Props> = (props) => {
         fieldProperties['description'] = field.description;
       }
 
-      if (field.options && field.type != 'select') {
+      if (field.options && field.type === 'checkboxes') {
         fieldProperties['items'] = {
           type: 'string',
           enum: field.options,
@@ -137,11 +137,7 @@ const SimpleForm: FC<Props> = (props) => {
         fieldProperties['uniqueItems'] = true;
       }
 
-      if (field.type === 'radio') {
-        fieldProperties['enum'] = field.options;
-      }
-
-      if (field.type === 'select') {
+      if (['select', 'radio'].includes(field.type)) {
         field?.options?.map((opt, i) => {
           if (typeof opt === 'string') {
             if (!fieldProperties.enum) {

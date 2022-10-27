@@ -97,7 +97,12 @@ const Form: FC = () => {
       radio: {
         type: 'radio',
         title: 'Which is your favorite for gaming?',
-        options: ['PS5', 'Xbox', 'PC', 'Mobile'],
+        options: [
+          { value: 'ps5', label: 'PS5' },
+          { value: 'xbox', label: 'Xbox' },
+          { value: 'pc', label: 'PC' },
+          { value: 'mobile', label: 'Mobile' },
+        ],
       },
       switch: {
         type: 'switch',
@@ -122,7 +127,7 @@ const Form: FC = () => {
         name: '12',
       },
     ],
-    radio: 'PS5',
+    radio: 'ps5',
     switch: true,
   }
 
