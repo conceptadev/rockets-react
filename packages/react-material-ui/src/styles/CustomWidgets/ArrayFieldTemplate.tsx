@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { ArrayFieldTemplateProps } from '@rjsf/core';
+import { ArrayFieldTemplateProps } from '@rjsf/utils';
 import Box from '../../components/Box';
 import Typography from '@mui/material/Typography';
 import ArrayFieldActionButton from './ArrayFieldActionButton';
@@ -12,6 +12,9 @@ const ArrayFieldTemplate: FC<ArrayFieldTemplateProps> = (props) => {
       sx={{
         '& .MuiGrid-container': {
           marginTop: '0 !important',
+        },
+        '& .field': {
+          flex: 1,
         },
       }}
     >

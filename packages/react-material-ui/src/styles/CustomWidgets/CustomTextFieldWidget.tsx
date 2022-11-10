@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import TextField from '../../components/TextField';
-import { WidgetProps } from '@rjsf/core';
+import { WidgetProps } from '@rjsf/utils';
 import { filterProps } from './utils';
 
 const CustomTextFieldWidget: FC<WidgetProps> = (props) => (

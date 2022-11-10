@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Switch from '../../components/Switch';
-import { WidgetProps } from '@rjsf/core';
+import { WidgetProps } from '@rjsf/utils';
 
 const CustomSwitchWidget: FC<WidgetProps> = (props) => (
   <Switch

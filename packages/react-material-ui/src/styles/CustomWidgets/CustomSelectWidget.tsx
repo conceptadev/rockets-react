@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import Select from '../../components/Select';
-import { WidgetProps } from '@rjsf/core';
-import { processSelectValue } from '@rjsf/utils';
+import { processSelectValue, WidgetProps } from '@rjsf/utils';
 
 const SelectWidget: FC<WidgetProps> = ({
   schema,

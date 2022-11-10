@@ -1,14 +1,13 @@
 import React, { FC, Fragment } from 'react';
 import { Box, Button, Text } from '../../';
-import { withTheme, UiSchema, FormValidation } from '@rjsf/core';
-import { Theme } from '@rjsf/material-ui/v5';
-import {
-  JSONSchema7,
-  JSONSchema7Definition,
-  JSONSchema7TypeName,
-} from 'json-schema';
+import { RJSFSchema, UiSchema, FormValidation, WidgetProps } from '@rjsf/utils';
+import validator from '@rjsf/validator-ajv8';
+import Form from '@rjsf/mui';
+import { JSONSchema7Definition, JSONSchema7TypeName } from 'json-schema';
 import {
   CustomTextFieldWidget,
+  CustomEmailFieldWidget,
+  CustomPasswordFieldWidget,
   CustomCheckboxesWidget,
   CustomRadioWidget,
   CustomSelectWidget,
@@ -69,18 +68,6 @@ const SimpleForm: FC<Props> = (props) => {
   const { form, initialData, onSubmit, validate, onError } = props;
   const { fields } = form;
 
-  const Form = withTheme(Theme);
-
-  const widgets = () => {
-    return {
-      TextWidget: CustomTextFieldWidget,
-      CheckboxWidget: CustomCheckboxWidget,
-      CheckboxesWidget: CustomCheckboxesWidget,
-      RadioWidget: CustomRadioWidget,
-      SelectWidget: CustomSelectWidget,
-      switchWidget: CustomSwitchWidget,
-    };
-  };
   const generateRequired = (_fields: Fields) => {
     const required: string[] = [];
 
@@ -180,7 +167,7 @@ const SimpleForm: FC<Props> = (props) => {
     return properties;
   };
 
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     required: generateRequired(fields),
     properties: generateProperties(fields),
@@ -189,14 +176,15 @@ const SimpleForm: FC<Props> = (props) => {
   const generateUiSchema: () => Record<string, UiSchema> = () => {
     const uiSchema: Record<string, UiSchema> = {};
 
-    const widgetTypes: Record<string, string> = {
-      email: 'email',
-      password: 'password',
-      select: 'select',
-      radio: 'radio',
-      checkbox: 'checkbox',
-      checkboxes: 'checkboxes',
-      switch: 'switchWidget',
+    const widgetTypes: Record<string, FC<WidgetProps>> = {
+      string: CustomTextFieldWidget,
+      email: CustomEmailFieldWidget,
+      password: CustomPasswordFieldWidget,
+      select: CustomSelectWidget,
+      radio: CustomRadioWidget,
+      checkbox: CustomCheckboxWidget,
+      checkboxes: CustomCheckboxesWidget,
+      switch: CustomSwitchWidget,
     };
 
     Object.keys(fields).map((key) => {
@@ -248,14 +236,14 @@ const SimpleForm: FC<Props> = (props) => {
         <Form
           schema={schema}
           uiSchema={generateUiSchema()}
-          widgets={widgets()}
           formData={generateFormData()}
           noHtml5Validate={true}
           showErrorList={false}
-          onSubmit={onSubmit}
-          ArrayFieldTemplate={ArrayFieldTemplate}
-          validate={validate}
           onError={onError}
+          onSubmit={onSubmit}
+          templates={{ ArrayFieldTemplate }}
+          customValidate={validate}
+          validator={validator}
         >
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
             {form.submitButtonLabel || 'Submit'}
