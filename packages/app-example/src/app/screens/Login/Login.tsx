@@ -10,14 +10,16 @@ import {
   Link,
   Divider,
 } from '@concepta/react-material-ui'
-import { CustomTextFieldWidget } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
+import { RJSFSchema, UiSchema, FormValidation } from '@rjsf/utils'
+import validator from '@rjsf/validator-ajv8'
+import Form from '@rjsf/mui'
+import {
+  CustomEmailFieldWidget,
+  CustomPasswordFieldWidget,
+} from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 import logo from 'app/assets/images/logo.svg'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import { withTheme, FormValidation, UiSchema } from '@rjsf/core'
-import { Theme } from '@rjsf/material-ui/v5'
-import { JSONSchema7 } from 'json-schema'
 import emailValidation from 'app/utils/emailValidation/emailValidation'
-
 import './styles.css'
 
 type Props = {
@@ -27,7 +29,7 @@ type Props = {
 type FormData = {
   email: string
   password: string
-  passwordConfirm: string
+  passwordConfirm?: string
 }
 
 const Login: FC<Props> = ({ type }) => {
@@ -35,24 +37,18 @@ const Login: FC<Props> = ({ type }) => {
 
   const isSingUp = type === 'signUp'
 
-  const Form = withTheme(Theme)
-
-  const widgets = {
-    TextWidget: CustomTextFieldWidget,
-  }
-
   const validate = (formData: FormData, errors: FormValidation) => {
     if (!emailValidation(formData.email)) {
-      errors.email.addError('please enter a valid email')
+      errors?.email?.addError('please enter a valid email')
     }
 
     if (isSingUp && formData.password !== formData.passwordConfirm) {
-      errors.passwordConfirm.addError("passwords don't match")
+      errors?.passwordConfirm?.addError("passwords don't match")
     }
     return errors
   }
 
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     required: isSingUp
       ? ['email', 'password', 'passwordConfirm']
@@ -71,10 +67,13 @@ const Login: FC<Props> = ({ type }) => {
   }
 
   const uiSchema: UiSchema = {
-    email: { classNames: 'custom-class-name', 'ui:widget': 'email' },
-    password: { 'ui:widget': 'password' },
+    email: {
+      classNames: 'custom-class-name',
+      'ui:widget': CustomEmailFieldWidget,
+    },
+    password: { 'ui:widget': CustomPasswordFieldWidget },
     ...(isSingUp && {
-      passwordConfirm: { 'ui:widget': 'password' },
+      passwordConfirm: { 'ui:widget': CustomPasswordFieldWidget },
     }),
   }
 
@@ -102,10 +101,10 @@ const Login: FC<Props> = ({ type }) => {
           <Form
             schema={schema}
             uiSchema={uiSchema}
+            validator={validator}
             onSubmit={() => navigate('/home')}
-            widgets={widgets}
-            validate={validate}
-            noHtml5Validate={true}
+            customValidate={validate}
+            noHtml5Validate
             showErrorList={false}
           >
             {!isSingUp && (

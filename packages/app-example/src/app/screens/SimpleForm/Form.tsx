@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { SimpleForm } from '@concepta/react-material-ui'
 import { FormType } from '@concepta/react-material-ui/dist/components/SimpleForm'
-import { FormValidation } from '@rjsf/core'
+import { FormValidation } from '@rjsf/utils'
 
 type FormData = {
   email: string
@@ -24,7 +24,7 @@ type FormData = {
 const Form: FC = () => {
   const validate = (formData: FormData, errors: FormValidation) => {
     if (!formData.switch) {
-      errors.switch.addError('You must accept to proceed')
+      errors?.switch?.addError('Must accept to proceed')
     }
 
     return errors

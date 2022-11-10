@@ -514,10 +514,10 @@ This combination makes it very clean and fast to create simple forms.
 
 You'll create a schema and an uiSchema object to create your forms. Rockets and json-schema will take care of the rest.
 
-First, you'll need to install v4 of "@rjsf/core" and "@rjsf/material-ui"
+First, you'll need to install rjsf and validator-ajv8
 
 ```typescript
-$ npm install @rjsf/core @rjsf/utils --save
+$ npm install @rjsf/core @rjsf/utils @rjsf/mui @rjsf/validator-ajv8 --save
 ```
 
 To be able to pass Rocket's custom components, you'll have to provide the components overrides for each type through the `widgets` props of the form. But this is not mandatory. If you don't override it, the form will be populated with plain Material UI components.
@@ -548,8 +548,9 @@ const widgets = {
 ### Simplest form
 
 ```typescript
-import { Theme } from '@rjsf/material-ui/v5'
-import { withTheme, UiSchema, ISubmitEvent } from '@rjsf/core'
+import { RJSFSchema, UiSchema, FormValidation } from '@rjsf/utils'
+import { IChangeEvent } from '@rjsf/core'
+import Form from '@rjsf/mui'
 
 type FormData = {
   name: string
@@ -557,13 +558,7 @@ type FormData = {
 }
 
 const SimpleForm: FC = () => {
-  const Form = withTheme(Theme)
-
-  const widgets = {
-    TextWidget: CustomTextFieldWidget,
-  }
-
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     required: ['name', 'email'],
     properties: {
@@ -573,10 +568,11 @@ const SimpleForm: FC = () => {
   }
 
   const uiSchema: UiSchema = {
-    email: { 'ui:widget': 'email' },
+    name: { 'ui:widget': CustomTextFieldWidget },
+    email: { 'ui:widget': CustomEmailFieldWidget },
   }
 
-  const handleSubmit = (form: ISubmitEvent<FormData>) => {
+  const handleSubmit = (form: IChangeEvent<FormData>) => {
     console.log('form values', form.formData)
   }
 
@@ -585,8 +581,7 @@ const SimpleForm: FC = () => {
       schema={schema}
       uiSchema={uiSchema}
       onSubmit={handleSubmit}
-      widgets={widgets}
-      noHtml5Validate={true}
+      noHtml5Validate
       showErrorList={false}
       onError={err => console.log('errors', err)}
     />
@@ -596,9 +591,11 @@ const SimpleForm: FC = () => {
 
 ### Custom Validation
 
-The `validate` prop allows you to add custom validations to the form data. The errors added to the form errors will be shown at the form UI.
+The `customValidate` prop allows you to add custom validations to the form data. The errors added to the form errors will be shown at the form UI.
 
 ```typescript
+import { FormValidation } from '@rjsf/utils'
+
 const validate = (formData: FormData, errors: FormValidation) => {
   if (!emailValidation(formData.email)) {
     errors.email.addError('please enter a valid email')
@@ -609,12 +606,8 @@ const validate = (formData: FormData, errors: FormValidation) => {
 
 <Form
   // ...other props
-  validate={validate}
->
-  <Button type="submit" fullWidth variant="contained">
-    Add contact
-  </Button>
-</Form>
+  customValidate={validate}
+/>
 ```
 
 ### Array Form
@@ -630,13 +623,11 @@ import {
 } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 const ArrayForm: FC = () => {
-  const Form = withTheme(Theme)
-
   const widgets = {
     TextWidget: CustomTextFieldWidget,
   }
 
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     required: ['name'],
     properties: {
@@ -659,12 +650,10 @@ const ArrayForm: FC = () => {
   return (
     <Form
       schema={schema}
-      uiSchema={uiSchema}
       formData={formData}
-      onSubmit={values => console.log('values', values.formData)}
       widgets={widgets}
-      ArrayFieldTemplate={ArrayFieldTemplate}
-      noHtml5Validate={true}
+      templates={{ ArrayFieldTemplate }}
+      noHtml5Validate
       showErrorList={false}
     >
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
@@ -680,14 +669,12 @@ const ArrayForm: FC = () => {
 If you need your array to be a group of items, you can add `type: 'object'` to your array's item object, and add a `properties` object containing the field you want to repeat inside the array.
 
 ```typescript
-const Form = withTheme(Theme)
-
 const widgets = {
   TextWidget: CustomTextFieldWidget,
   SelectWidget: CustomSelectWidget,
 }
 
-const schema: JSONSchema7 = {
+const schema: RJSFSchema = {
   type: 'object',
   required: ['name', 'address'],
   properties: {
@@ -747,7 +734,7 @@ const formData = {
     formData={formData}
     onSubmit={values => console.log('values', values)}
     widgets={widgets}
-    ArrayFieldTemplate={ArrayFieldTemplate}
+    templates={{ ArrayFieldTemplate }}
   >
     <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
       Send
@@ -778,9 +765,7 @@ type FormData = {
 }
 
 const OtherFormElements: FC = () => {
-  const Form = withTheme(Theme)
-
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     properties: {
       checkboxSolo: {
@@ -810,29 +795,22 @@ const OtherFormElements: FC = () => {
     },
   }
 
-  const widgets = {
-    CheckboxWidget: CustomCheckboxWidget,
-    CheckboxesWidget: CustomCheckboxesWidget,
-    RadioWidget: CustomRadioWidget,
-    SelectWidget: CustomSelectWidget,
-  }
-
   const uiSchema: UiSchema = {
     checkboxSolo: {
-      'ui:widget': 'checkbox', // Not really needed. Checkbox is default for boolean types.
+      'ui:widget': CustomCheckboxWidget,
     },
     checkboxGroup: {
-      'ui:widget': 'checkboxes',
+      'ui:widget': CustomCheckboxesWidget,
     },
     radio: {
-      'ui:widget': 'radio',
+      'ui:widget': CustomRadioWidget,
     },
     select: {
-      'ui:widget': 'select',
+      'ui:widget': CustomSelectWidget,
     },
   }
 
-  const handleSubmit = (values: ISubmitEvent<FormData>) => {
+  const handleSubmit = (values: IChangeEvent<FormData>) => {
     console.log('values', values.formData)
   }
 
@@ -841,8 +819,7 @@ const OtherFormElements: FC = () => {
       schema={schema}
       uiSchema={uiSchema}
       onSubmit={handleSubmit}
-      widgets={widgets}
-      noHtml5Validate={true}
+      noHtml5Validate
       showErrorList={false}
       onError={err => console.log('errors', err)}
     >
@@ -859,25 +836,10 @@ const OtherFormElements: FC = () => {
 Switch is just a different checkbox, so the usage is very similar.
 
 ```typescript
-import { FC } from 'react'
-import Box from '@mui/material/Box'
-import Text from 'app/Components/Text'
-import { withTheme, UiSchema, ISubmitEvent } from '@rjsf/core'
-import { Theme } from '@rjsf/material-ui/v5'
-import { JSONSchema7 } from 'json-schema'
-import { CustomSwitchWidget } from 'app/styles/CustomWidgets'
-import Button from 'app/Components/Button'
-
-type FormData = {
-  name: string
-  email: string
-  booleanWithCustomLabels: boolean
-}
+import { CustomSwitchWidget } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 const OtherFormElements: FC = () => {
-  const Form = withTheme(Theme)
-
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     properties: {
       checkboxSolo: {
@@ -888,17 +850,13 @@ const OtherFormElements: FC = () => {
     },
   }
 
-  const widgets = {
-    switchWidget: CustomSwitchWidget,
-  }
-
   const uiSchema: UiSchema = {
     checkboxSolo: {
-      switch: 'switchWidget',
+      switch: CustomSwitchWidget,
     },
   }
 
-  return <Form schema={schema} uiSchema={uiSchema} widgets={widgets} />
+  return <Form schema={schema} uiSchema={uiSchema} />
 }
 ```
 
@@ -1050,7 +1008,7 @@ multiAddress: {
 You'll need to pass a `onSubmit` prop to handle `SimpleForm`'s data. You can pass a validate function to create your custom validations for each field with the `validate` prop. And there is also a `onError` prop that expects a function to handle the errors.
 
 ```typescript
-import { FormValidation } from '@rjsf/core'
+import { FormValidation } from '@rjsf/utils'
 
 const onSubmit = values => console.log('values', values)
 
@@ -1069,7 +1027,7 @@ const onError = (error: any) => {
 <SimpleForm
   form={form}
   onSubmit={onSubmit}
-  validate={validate}
+  customValidate={validate}
   onError={onError}
 />
 ```
@@ -1188,7 +1146,7 @@ const initialData = {
 <SimpleForm
   form={form}
   onSubmit={values => console.log('values', values)}
-  validate={validate}
+  customValidate={validate}
   onError={onError}
   initialData={initialData}
 />

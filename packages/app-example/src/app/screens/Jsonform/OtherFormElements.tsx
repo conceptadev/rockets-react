@@ -1,8 +1,9 @@
 import { FC } from 'react'
 import { Box, Button, Text } from '@concepta/react-material-ui'
-import { withTheme, UiSchema, ISubmitEvent } from '@rjsf/core'
-import { Theme } from '@rjsf/material-ui/v5'
-import { JSONSchema7 } from 'json-schema'
+import { RJSFSchema, UiSchema } from '@rjsf/utils'
+import validator from '@rjsf/validator-ajv8'
+import { IChangeEvent } from '@rjsf/core'
+import Form from '@rjsf/mui'
 import {
   CustomCheckboxWidget,
   CustomCheckboxesWidget,
@@ -18,9 +19,7 @@ type FormData = {
 }
 
 const OtherFormElements: FC = () => {
-  const Form = withTheme(Theme)
-
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     properties: {
       checkboxSolo: {
@@ -50,29 +49,22 @@ const OtherFormElements: FC = () => {
     },
   }
 
-  const widgets = {
-    CheckboxWidget: CustomCheckboxWidget,
-    CheckboxesWidget: CustomCheckboxesWidget,
-    RadioWidget: CustomRadioWidget,
-    SelectWidget: CustomSelectWidget,
-  }
-
   const uiSchema: UiSchema = {
     checkboxSolo: {
-      'ui:widget': 'checkbox', // Not really needed. Checkbox is default for boolean types.
+      'ui:widget': CustomCheckboxWidget,
     },
     checkboxGroup: {
-      'ui:widget': 'checkboxes',
+      'ui:widget': CustomCheckboxesWidget,
     },
     radio: {
-      'ui:widget': 'radio',
+      'ui:widget': CustomRadioWidget,
     },
     select: {
-      'ui:widget': 'select',
+      'ui:widget': CustomSelectWidget,
     },
   }
 
-  const handleSubmit = (values: ISubmitEvent<FormData>) => {
+  const handleSubmit = (values: IChangeEvent<FormData>) => {
     console.log('values', values.formData)
   }
 
@@ -94,7 +86,7 @@ const OtherFormElements: FC = () => {
           schema={schema}
           uiSchema={uiSchema}
           onSubmit={handleSubmit}
-          widgets={widgets}
+          validator={validator}
           noHtml5Validate={true}
           showErrorList={false}
           onError={err => console.log('errors', err)}

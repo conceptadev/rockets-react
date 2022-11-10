@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { SimpleForm } from '@concepta/react-material-ui'
 import { FormType } from '@concepta/react-material-ui/dist/components/SimpleForm'
-import { FormValidation } from '@rjsf/core'
+import { FormValidation } from '@rjsf/utils'
 
 type FormData = {
   oldPassword: string
@@ -41,7 +41,7 @@ const ChangePasswordForm: FC<ChangePasswordFormProps> = ({
 
   const validate = (formData: FormData, errors: FormValidation) => {
     if (formData.newPassword != formData.confirmPassword) {
-      errors.confirmPassword.addError('Password confirmation do not match')
+      errors?.confirmPassword?.addError('Password confirmation do not match')
     }
 
     return errors

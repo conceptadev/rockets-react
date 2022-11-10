@@ -1,21 +1,19 @@
 import { FC } from 'react'
 import { Box, Button, Text } from '@concepta/react-material-ui'
-import { withTheme } from '@rjsf/core'
-import { Theme } from '@rjsf/material-ui/v5'
-import { JSONSchema7 } from 'json-schema'
+import { RJSFSchema } from '@rjsf/utils'
+import validator from '@rjsf/validator-ajv8'
+import Form from '@rjsf/mui'
 import {
   CustomTextFieldWidget,
   ArrayFieldTemplate,
 } from '@concepta/react-material-ui/dist/styles/CustomWidgets'
 
 const ArrayForm: FC = () => {
-  const Form = withTheme(Theme)
-
   const widgets = {
     TextWidget: CustomTextFieldWidget,
   }
 
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     required: ['name'],
     properties: {
@@ -54,11 +52,12 @@ const ArrayForm: FC = () => {
         <Form
           schema={schema}
           formData={formData}
+          validator={validator}
           onChange={log('changed')}
           onSubmit={values => console.log('values', values)}
           onError={log('errors')}
           widgets={widgets}
-          ArrayFieldTemplate={ArrayFieldTemplate}
+          templates={{ ArrayFieldTemplate }}
           noHtml5Validate={true}
           showErrorList={false}
         >

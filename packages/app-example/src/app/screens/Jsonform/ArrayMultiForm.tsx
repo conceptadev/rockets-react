@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import { Box, Button, Text } from '@concepta/react-material-ui'
-import { withTheme, FormValidation, UiSchema } from '@rjsf/core'
-import { Theme } from '@rjsf/material-ui/v5'
-import { JSONSchema7 } from 'json-schema'
+import { RJSFSchema, UiSchema, FormValidation } from '@rjsf/utils'
+import validator from '@rjsf/validator-ajv8'
+import Form from '@rjsf/mui'
 import {
   CustomTextFieldWidget,
   ArrayFieldTemplate,
@@ -20,14 +20,12 @@ type FormData = {
 }
 
 const ArrayForm: FC = () => {
-  const Form = withTheme(Theme)
-
   const widgets = {
     TextWidget: CustomTextFieldWidget,
     SelectWidget: CustomSelectWidget,
   }
 
-  const schema: JSONSchema7 = {
+  const schema: RJSFSchema = {
     type: 'object',
     required: ['name', 'address'],
     properties: {
@@ -84,7 +82,7 @@ const ArrayForm: FC = () => {
 
   const validate = (formData: FormData, errors: FormValidation) => {
     if (!formData?.address?.length) {
-      errors.address.addError('Address is required')
+      errors?.address?.addError('Address is required')
     }
     return errors
   }
@@ -111,10 +109,11 @@ const ArrayForm: FC = () => {
           onSubmit={values => console.log('values', values)}
           onError={log('errors')}
           widgets={widgets}
-          ArrayFieldTemplate={ArrayFieldTemplate}
+          validator={validator}
+          templates={{ ArrayFieldTemplate }}
           noHtml5Validate={true}
           showErrorList={false}
-          validate={validate}
+          customValidate={validate}
         >
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
             Send
