@@ -1,0 +1,1 @@
+{"version":3,"file":"IconButton.js","sourceRoot":"","sources":["../../../src/components/IconButton/IconButton.tsx"],"names":[],"mappings":";;;;;AAAA,kDAAkC;AAClC,0EAA0E;AAE1E,MAAM,UAAU,GAAwB,CAAC,KAAK,EAAE,EAAE;IAChD,MAAM,EAAE,QAAQ,EAAE,GAAG,KAAK,CAAC;IAE3B,OAAO,8BAAC,oBAAa,oBAAK,KAAK,GAAG,QAAQ,CAAiB,CAAC;AAC9D,CAAC,CAAC;AAEF,kBAAe,UAAU,CAAC"}

@@ -1,0 +1,1 @@
+{"version":3,"file":"MenuItem.js","sourceRoot":"","sources":["../../../src/components/MenuItem/MenuItem.tsx"],"names":[],"mappings":";;;;;AAAA,kDAAkC;AAClC,sEAAoE;AAEpE,MAAM,QAAQ,GAAsB,CAAC,KAAK,EAAE,EAAE;IAC5C,MAAM,EAAE,QAAQ,EAAE,GAAG,KAAK,CAAC;IAE3B,OAAO,8BAAC,kBAAW,oBAAK,KAAK,GAAG,QAAQ,CAAe,CAAC;AAC1D,CAAC,CAAC;AAEF,kBAAe,QAAQ,CAAC"}
