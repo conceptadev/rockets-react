@@ -10,7 +10,7 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
+  "peerDependencies": {
     "react": "^18.2.0"
   }
 }
