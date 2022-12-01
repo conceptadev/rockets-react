@@ -41,7 +41,9 @@ export const AuthProvider: React.FC<PropsWithChildren<unknown>> = ({
 
   const doLogin = async (loginData: LoginParams) => {
     setIsFetching(true);
-    execute([loginData]);
+
+    // TODO: Understand why it has to be an array
+    execute(loginData);
 
     // const token = await DataProvider.post({
     //   uri: '/auth/login',
