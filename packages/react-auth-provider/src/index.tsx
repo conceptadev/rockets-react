@@ -6,11 +6,11 @@ import React, {
   useState,
 } from 'react';
 
-import { LoginParams } from './interfaces';
+import { LoginParams, AuthProviderTypes } from './interfaces';
 
-const AuthContext = createContext<unknown>({});
+const AuthContext = createContext<AuthProviderTypes | null>(null);
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => useContext<AuthProviderTypes>(AuthContext);
 
 const authLogin = (loginData: LoginParams) =>
   DataProvider.post({
