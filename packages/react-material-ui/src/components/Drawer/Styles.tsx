@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 export const Drawer = styled(MuiDrawer)(({ theme, open }) => ({
   '& .MuiDrawer-paper': {
-    backgroundColor: theme.system.drawerBg,
+    backgroundColor: theme.palette.grey['800'],
     position: 'relative',
     whiteSpace: 'nowrap',
     width: 256,
@@ -34,16 +34,16 @@ type DrawerButtonProps = {
 
 export const DrawerButton = styled(MuiButton)<DrawerButtonProps>(
   ({ theme, active, collapsed }) => ({
-    color: theme.system.drawerButtonText,
+    color: theme.palette.grey['100'],
     margin: '2px 8px',
     padding: '8px',
     minWidth: 0,
     textTransform: 'none',
     textAlign: 'left',
     justifyContent: 'start',
-    backgroundColor: active ? theme.system.drawerButtonBg : 'transparent',
+    backgroundColor: active ? theme.palette.grey['900'] : 'transparent',
     '&:hover': {
-      backgroundColor: theme.system.drawerButtonBg,
+      backgroundColor: theme.palette.grey['900'],
     },
     '& svg': {
       marginRight: collapsed ? 0 : 12,
