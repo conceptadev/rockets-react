@@ -43,8 +43,6 @@ export enum AsyncStatus {
   idle = 'idle',
 }
 
-export type ArgumentsType<T> = T extends (...args: infer U) => any ? U : never;
-
 export interface AsyncFunction {
   (params?: any): Promise<any>;
 }

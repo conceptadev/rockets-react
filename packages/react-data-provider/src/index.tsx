@@ -1,67 +1,69 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from 'react';
 import DataProvider from './dataProvider';
-import { AsyncFunction, DataProviderRequestProps, ArgumentsType, AsyncReturnType, AsyncStatus } from "./interfaces";
+import {
+  AsyncFunction,
+  DataProviderRequestProps,
+  AsyncReturnType,
+  AsyncStatus,
+} from './interfaces';
 
 export const useDataProvider = <T extends AsyncFunction>(
   asyncFn: T,
   immediate = false,
   callbacks?: DataProviderRequestProps,
-  args?: ArgumentsType<T>
+  arg?: unknown,
 ) => {
   const [status, setStatus] = useState(AsyncStatus.idle);
   const [data, setData] = useState<AsyncReturnType<T>>();
-  const [error, setError] = useState<any>();
+  const [error, setError] = useState<unknown>();
   const [isPending, setIsPending] = useState(false);
 
-  const {onError, onSuccess, onFinish} = callbacks;
+  const { onError, onSuccess, onFinish } = callbacks;
 
   // The execute function wraps asyncFunction and
   // handles setting state for pending, value, and error.
   // useCallback ensures the below useEffect is not called
   // on every render, but only if asyncFunction changes.
   const execute = useCallback(
-    async (args?: ArgumentsType<T>) => {
-      
-      console.log({args});
-
+    async (_arg?: unknown) => {
       setStatus(AsyncStatus.pending);
       setIsPending(true);
 
       setError(undefined);
 
       try {
-        const response = await asyncFn(args);
+        const response = await asyncFn(_arg);
         setData(response);
         setStatus(AsyncStatus.success);
 
-        if(onSuccess) {
-          onSuccess(response)
+        if (onSuccess) {
+          onSuccess(response);
         }
-        if(onFinish) {
-          onFinish(AsyncStatus.success)
+        if (onFinish) {
+          onFinish(AsyncStatus.success);
         }
       } catch (err) {
         setError(err);
         setStatus(AsyncStatus.error);
-        
-        if(onError){
+
+        if (onError) {
           onError(err);
         }
-        if(onFinish) {
-          onFinish(AsyncStatus.error)
+        if (onFinish) {
+          onFinish(AsyncStatus.error);
         }
       } finally {
         setIsPending(false);
       }
     },
-    [asyncFn]
+    [asyncFn],
   );
 
-  const refresh = useCallback(() => execute(args), [execute]);
+  const refresh = useCallback(() => execute(arg), [execute]);
 
   useEffect(() => {
     if (immediate) {
-      execute(args);
+      execute(arg);
     }
   }, [immediate]);
 
@@ -69,5 +71,3 @@ export const useDataProvider = <T extends AsyncFunction>(
 };
 
 export default DataProvider;
-
-

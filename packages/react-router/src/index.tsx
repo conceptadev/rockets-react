@@ -31,13 +31,17 @@ export const Router: React.FC<RouterProps> = ({
   NotFoundComponent,
   UnauthorizedComponent,
 }) => {
-  const enhancedChildren: Array<React.FC> = useMemo(() => {
-    // @ts-ignore
+  const enhancedChildren: Array<React.ReactNode> = useMemo(() => {
     return Children.map(children, (child: JSX.Element) => {
       const { Component, requireAuth, ...restProps } = child?.props;
 
       if (!requireAuth && child.type.name !== 'ProtectedRoute') {
-        return <ReactRouter.Route {...restProps} element={<Component />} />;
+        return (
+          <ReactRouter.Route
+            {...restProps}
+            element={<Component {...restProps} />}
+          />
+        );
       }
 
       if (!isAuth) {
@@ -48,23 +52,33 @@ export const Router: React.FC<RouterProps> = ({
           />
         );
       }
-      return <ReactRouter.Route {...restProps} element={<Component />} />;
+      return (
+        <ReactRouter.Route
+          {...restProps}
+          element={<Component {...restProps} />}
+        />
+      );
     });
   }, [children, isAuth]);
 
   return (
     <ReactRouter.BrowserRouter>
       <ReactRouter.Routes>
-        {...enhancedChildren}
-        <ReactRouter.Route
-          path="/unauthorized"
-          element={<UnauthorizedComponent />}
-        />
-        <ReactRouter.Route path="/not-found" element={<NotFoundComponent />} />
-        <ReactRouter.Route
-          path="*"
-          element={<ReactRouter.Navigate to="/not-found" />}
-        />
+        <>
+          {...enhancedChildren}
+          <ReactRouter.Route
+            path="/unauthorized"
+            element={<UnauthorizedComponent />}
+          />
+          <ReactRouter.Route
+            path="/not-found"
+            element={<NotFoundComponent />}
+          />
+          <ReactRouter.Route
+            path="*"
+            element={<ReactRouter.Navigate to="/not-found" />}
+          />
+        </>
       </ReactRouter.Routes>
     </ReactRouter.BrowserRouter>
   );

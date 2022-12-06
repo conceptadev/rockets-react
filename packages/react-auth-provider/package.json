@@ -10,8 +10,10 @@
   "files": [
     "dist"
   ],
+  "peerDependencies": {
+    "react": "^18.2.0"
+  },
   "dependencies": {
-    "@concepta/react-data-provider": "^1.0.0-alpha.1",
-    "react": "^17.0.2"
+    "@concepta/react-data-provider": "^1.0.0-alpha.1"
   }
 }
