@@ -1,7 +1,11 @@
-import descendingComparator from './descendingComparator'
+import descendingComparator from './descendingComparator';
 
-type Order = 'asc' | 'desc'
+type Order = 'asc' | 'desc';
 
+/**
+ * @param order
+ * @param orderBy
+ */
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
@@ -11,7 +15,7 @@ function getComparator<Key extends keyof any>(
 ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export default getComparator
+export default getComparator;

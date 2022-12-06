@@ -1,8 +1,8 @@
-import { styled } from '@mui/material/styles'
+import { styled } from '@mui/material/styles';
 
 type Props = {
-  size: number
-}
+  size: number;
+};
 
 export const Image = styled('img')<Props>(({ size }) => ({
   width: `${size}px`,
@@ -10,4 +10,4 @@ export const Image = styled('img')<Props>(({ size }) => ({
   borderRadius: '50%',
   margin: '0 12px',
   objectFit: 'cover',
-}))
+}));
