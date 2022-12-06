@@ -1,5 +1,7 @@
 import { FC } from 'react'
-import { Box, Button, Text } from '@concepta/react-material-ui'
+import { Text } from '@concepta/react-material-ui'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import { RJSFSchema } from '@rjsf/utils'
 import validator from '@rjsf/validator-ajv6'
 import Form from '@rjsf/mui'

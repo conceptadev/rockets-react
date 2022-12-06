@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ArrayFieldTemplateProps } from '@rjsf/utils';
-import Box from '../../components/Box';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ArrayFieldActionButton from './ArrayFieldActionButton';
 

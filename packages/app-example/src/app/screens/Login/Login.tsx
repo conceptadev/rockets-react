@@ -1,15 +1,11 @@
 import { FC } from 'react'
 import { useNavigate } from '@concepta/react-router'
-import {
-  Box,
-  Button,
-  Container,
-  Image,
-  Text,
-  Card,
-  Link,
-  Divider,
-} from '@concepta/react-material-ui'
+import { Image, Text, Link } from '@concepta/react-material-ui'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Card from '@mui/material/Card'
+import Divider from '@mui/material/Divider'
 import { RJSFSchema, UiSchema, FormValidation } from '@rjsf/utils'
 import validator from '@rjsf/validator-ajv6'
 import Form from '@rjsf/mui'

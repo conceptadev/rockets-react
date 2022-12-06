@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { Button, SimpleForm } from '@concepta/react-material-ui'
+import { SimpleForm } from '@concepta/react-material-ui'
+import Button from '@mui/material/Button'
 import { FormType } from '@concepta/react-material-ui/dist/components/SimpleForm'
 
 const Footer: FC = () => (

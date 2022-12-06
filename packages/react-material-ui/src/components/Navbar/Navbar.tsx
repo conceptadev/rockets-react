@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Navbar as CustomNavbar, Toolbar } from './Styles';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import Box from '../Box';
+import Box from '@mui/material/Box';
 import Notifications from '../Notifications';
 import HeaderAccount from '../HeaderAccount';
 import Text from '../Text';

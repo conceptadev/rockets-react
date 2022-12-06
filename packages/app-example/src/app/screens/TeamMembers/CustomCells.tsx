@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { Box, Dropdown, Text } from '@concepta/react-material-ui'
+import { Dropdown, Text } from '@concepta/react-material-ui'
+import Box from '@mui/material/Box'
 import { DropdownItem } from '@concepta/react-material-ui/dist/components/Dropdown'
 
 type CustomNameCellProps = {

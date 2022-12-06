@@ -1,12 +1,8 @@
 import React, { FC, useState } from 'react'
-import {
-  Box,
-  Button,
-  Dialog,
-  TextField,
-  Text,
-} from '@concepta/react-material-ui'
-import { useTheme } from '@concepta/react-material-ui/dist/styles'
+import { Dialog, TextField, Text } from '@concepta/react-material-ui'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import useTheme from '@mui/material/styles/useTheme'
 import ScreenWithContainer from 'app/components/ScreenWithContainer'
 import ChangePasswordForm from './ChangePasswordForm'
 import ConfirmationModal from './ConfirmationModal'

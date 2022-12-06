@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import Box from '../../components/Box';
-import IconButton from '../../components/IconButton';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 

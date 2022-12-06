@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import Box from '../Box';
+import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 

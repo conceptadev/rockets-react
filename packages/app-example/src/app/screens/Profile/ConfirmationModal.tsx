@@ -1,5 +1,7 @@
 import { FC } from 'react'
-import { Box, Button, Text } from '@concepta/react-material-ui'
+import { Text } from '@concepta/react-material-ui'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import CheckIcon from '@mui/icons-material/Check'
 
 type Props = {

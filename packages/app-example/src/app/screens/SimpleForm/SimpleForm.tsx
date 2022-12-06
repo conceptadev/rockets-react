@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { Text, Container } from '@concepta/react-material-ui'
+import { Text } from '@concepta/react-material-ui'
+import Container from '@mui/material/Container'
 import ScreenWithContainer from 'app/components/ScreenWithContainer'
 import Form from './Form'
 

@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { MenuItem } from '@concepta/react-material-ui/'
+import MenuItem from '@mui/material/MenuItem'
 import { CustomRowOptionsProps } from '@concepta/react-material-ui/dist/components/Table/Table'
 import Settings from '@mui/icons-material/Settings'
 

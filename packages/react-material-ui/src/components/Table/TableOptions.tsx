@@ -5,7 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Box from '../Box';
+import Box from '@mui/material/Box';
 import {
   RowsProps,
   SimpleOptionButton,

@@ -7,7 +7,7 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 import DrawerItem, { DrawerItemProps } from './DrawerItem';
 import Image from '../Image';
 import Text from '../Text';
-import Box from '../Box';
+import Box from '@mui/material/Box';
 
 type Props = {
   items: DrawerItemProps[];

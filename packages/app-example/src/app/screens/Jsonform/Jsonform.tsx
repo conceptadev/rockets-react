@@ -1,5 +1,7 @@
 import { FC } from 'react'
-import { Text, Container, Divider } from '@concepta/react-material-ui'
+import { Text } from '@concepta/react-material-ui'
+import Container from '@mui/material/Container'
+import Divider from '@mui/material/Divider'
 import ScreenWithContainer from 'app/components/ScreenWithContainer'
 import ArrayForm from './ArrayForm'
 import ArrayMultiForm from './ArrayMultiForm'

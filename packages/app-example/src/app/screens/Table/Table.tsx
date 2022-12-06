@@ -1,5 +1,7 @@
 import { FC, useState } from 'react'
-import { Box, Table, Switch, Text, Divider } from '@concepta/react-material-ui'
+import Box from '@mui/material/Box'
+import Divider from '@mui/material/Divider'
+import { Table, Switch, Text } from '@concepta/react-material-ui'
 import {
   RowsProps,
   SimpleActionButton,

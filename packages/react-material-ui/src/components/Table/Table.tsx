@@ -8,12 +8,12 @@ import Checkbox from '@mui/material/Checkbox';
 import TableRow from '@mui/material/TableRow';
 import { Table, TableProps } from './Styles';
 import Text from '../Text';
-import Box from '../Box';
+import Box from '@mui/material/Box';
 import { sortTable } from '../../utils/table';
 import TableToolbar from './TableToolbar';
 import TableHeaders from './TableHeaders';
 import TableOptions from './TableOptions';
-import { useTheme } from '@mui/material/styles';
+import useTheme from '@mui/material/styles/useTheme';
 
 export type HeadersProps = {
   disablePadding?: boolean;
