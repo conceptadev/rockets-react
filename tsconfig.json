@@ -17,12 +17,6 @@
   "files": [],
   "references": [
     {
-      "path": "packages/react-common"
-    },
-    {
-      "path": "packages/react-samples"
-    },
-    {
       "path": "packages/react-auth-provider"
     },
     {
@@ -36,9 +30,6 @@
     },
     {
       "path": "packages/react-material-ui"
-    },
-    {
-      "path": "packages/app-example"
     }
   ]
 }
