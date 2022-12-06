@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Box, Button, Text } from '@concepta/react-material-ui'
 import { RJSFSchema, UiSchema } from '@rjsf/utils'
-import validator from '@rjsf/validator-ajv8'
+import validator from '@rjsf/validator-ajv6'
 import { IChangeEvent } from '@rjsf/core'
 import Form from '@rjsf/mui'
 import {

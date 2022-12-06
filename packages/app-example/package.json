@@ -22,7 +22,7 @@
     "@rjsf/core": "^5.0.0-beta.13",
     "@rjsf/mui": "^5.0.0-beta.13",
     "@rjsf/utils": "^5.0.0-beta.13",
-    "@rjsf/validator-ajv8": "^5.0.0-beta.13",
+    "@rjsf/validator-ajv6": "^5.0.0-beta.13",
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "babel-loader": "^8.2.5",

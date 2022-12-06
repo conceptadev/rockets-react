@@ -1,7 +1,7 @@
 import React, { FC, Fragment } from 'react';
 import { Box, Button, Text } from '../../';
 import { RJSFSchema, UiSchema, FormValidation, WidgetProps } from '@rjsf/utils';
-import validator from '@rjsf/validator-ajv8';
+import validator from '@rjsf/validator-ajv6';
 import Form from '@rjsf/mui';
 import { JSONSchema7Definition, JSONSchema7TypeName } from 'json-schema';
 import {

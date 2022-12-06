@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Box, Button, Text } from '@concepta/react-material-ui'
 import { RJSFSchema } from '@rjsf/utils'
-import validator from '@rjsf/validator-ajv8'
+import validator from '@rjsf/validator-ajv6'
 import Form from '@rjsf/mui'
 import {
   CustomTextFieldWidget,

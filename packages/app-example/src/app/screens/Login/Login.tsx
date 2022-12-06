@@ -11,7 +11,7 @@ import {
   Divider,
 } from '@concepta/react-material-ui'
 import { RJSFSchema, UiSchema, FormValidation } from '@rjsf/utils'
-import validator from '@rjsf/validator-ajv8'
+import validator from '@rjsf/validator-ajv6'
 import Form from '@rjsf/mui'
 import {
   CustomEmailFieldWidget,
