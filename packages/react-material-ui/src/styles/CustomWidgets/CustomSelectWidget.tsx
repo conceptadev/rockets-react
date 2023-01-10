@@ -35,7 +35,7 @@ const CustomSelectWidget: FC<WidgetProps> = ({
   return (
     <Select
       id={id}
-      label={label || schema.title}
+      label={label}
       value={typeof value === 'undefined' ? emptyValue : value}
       options={selectOptions()}
       onChange={_onChange}

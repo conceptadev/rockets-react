@@ -25,8 +25,12 @@ const Radio: FC<CustomRadioGroupProps & RadioGroupProps & RadioProps> = (
 
   return (
     <>
-      {label}
-      {required && ' *'}
+      {label && (
+        <>
+          {label}
+          {required && ' *'}
+        </>
+      )}
       <RadioGroup id={id} value={`${value}`} row={row} onChange={onChange}>
         {options.map((option: RadioOptions, i: number) => {
           const radio = (
