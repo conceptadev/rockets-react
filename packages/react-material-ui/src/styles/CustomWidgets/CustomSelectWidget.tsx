@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Select from '../../components/Select';
 import { processSelectValue, WidgetProps } from '@rjsf/utils';
 
-const SelectWidget: FC<WidgetProps> = ({
+const CustomSelectWidget: FC<WidgetProps> = ({
   schema,
   id,
   options,
@@ -46,4 +46,4 @@ const SelectWidget: FC<WidgetProps> = ({
   );
 };
 
-export default SelectWidget;
+export default CustomSelectWidget;
