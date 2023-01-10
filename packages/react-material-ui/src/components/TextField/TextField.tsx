@@ -14,7 +14,7 @@ interface TextAreaProps {
 }
 
 const TextField: FC<TextFieldProps & { options?: TextAreaProps }> = (props) => {
-  const { label, required, sx, type, size, options } = props;
+  const { label, required, sx, type, size, hiddenLabel, options } = props;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -30,9 +30,11 @@ const TextField: FC<TextFieldProps & { options?: TextAreaProps }> = (props) => {
 
   const isPassword = type === 'password';
 
+  const ishiddenLabel = hiddenLabel || options?.hiddenLabel;
+
   return (
     <>
-      {!options?.hiddenLabel && label && (
+      {!ishiddenLabel && label && (
         <Text
           fontSize={14}
           fontWeight={500}
@@ -52,8 +54,8 @@ const TextField: FC<TextFieldProps & { options?: TextAreaProps }> = (props) => {
           input: { color: 'text.primary' },
         }}
         size={size || 'small'}
-        hiddenLabel={label ? true : options?.hiddenLabel}
-        label={options?.hiddenLabel ? '' : props.label}
+        hiddenLabel={label ? true : ishiddenLabel}
+        label={ishiddenLabel ? '' : props.label}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
         InputProps={{
           ...(isPassword && {
