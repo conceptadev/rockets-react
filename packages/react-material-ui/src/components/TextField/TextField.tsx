@@ -9,6 +9,9 @@ import { TypographyProps } from '@mui/material/Typography';
 
 interface Props {
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 }
 interface TextAreaProps {
   multiline?: boolean;
@@ -20,8 +23,19 @@ interface TextAreaProps {
 const TextField: FC<TextFieldProps & Props & { options?: TextAreaProps }> = (
   props,
 ) => {
-  const { label, required, sx, type, size, hiddenLabel, options, fontFamily } =
-    props;
+  const {
+    label,
+    required,
+    sx,
+    type,
+    size,
+    hiddenLabel,
+    options,
+    fontFamily,
+    fontSize = 14,
+    fontWeight = 500,
+    color = 'text.primary',
+  } = props;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,11 +57,11 @@ const TextField: FC<TextFieldProps & Props & { options?: TextAreaProps }> = (
     <>
       {!ishiddenLabel && label && (
         <Text
-          fontSize={14}
-          fontWeight={500}
-          color="text.primary"
-          textAlign="left"
           fontFamily={fontFamily}
+          fontSize={fontSize}
+          fontWeight={fontWeight}
+          color={color}
+          textAlign="left"
         >
           {label}
           {required && ' *'}

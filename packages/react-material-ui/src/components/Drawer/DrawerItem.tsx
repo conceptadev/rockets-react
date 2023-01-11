@@ -11,10 +11,23 @@ export type DrawerItemProps = {
   collapsed?: boolean;
   onClick?: () => void;
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const DrawerItem: FC<DrawerItemProps> = (props) => {
-  const { icon, text, active, collapsed, onClick, fontFamily } = props;
+  const {
+    icon,
+    text,
+    active,
+    collapsed,
+    onClick,
+    fontFamily,
+    fontSize = 14,
+    fontWeight = 400,
+    color = 'common.white',
+  } = props;
 
   const handleClick = () => {
     return onClick?.();
@@ -24,10 +37,10 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
     <DrawerButton onClick={handleClick} active={active} collapsed={collapsed}>
       {icon}
       <Text
-        fontSize={14}
-        fontWeight={400}
-        color="common.white"
         fontFamily={fontFamily}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        color={color}
       >
         {text}
       </Text>

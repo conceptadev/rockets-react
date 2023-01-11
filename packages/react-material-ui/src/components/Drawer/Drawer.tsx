@@ -17,6 +17,9 @@ type Props = {
   mobileIsOpen: boolean;
   logo?: string;
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const Drawer: FC<Props> = (props) => {
@@ -27,6 +30,9 @@ const Drawer: FC<Props> = (props) => {
     toggleMobileDrawer,
     mobileIsOpen,
     fontFamily,
+    fontSize = 16,
+    fontWeight = 400,
+    color,
   } = props;
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
@@ -55,6 +61,9 @@ const Drawer: FC<Props> = (props) => {
             collapsed={!mobileIsOpen && collapsed}
             active={currentId && item.id === currentId}
             fontFamily={fontFamily}
+            fontSize={fontSize}
+            fontWeight={fontWeight}
+            color={color}
           />
         ))}
 

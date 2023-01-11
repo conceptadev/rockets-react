@@ -8,10 +8,21 @@ import Text from '../Text';
 type Props = {
   label?: string;
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const Checkbox: FC<CheckboxProps & Props> = (props) => {
-  const { label, checked, fontFamily, required } = props;
+  const {
+    label,
+    checked,
+    required,
+    fontFamily,
+    fontSize = 16,
+    fontWeight = 400,
+    color = 'text.primary',
+  } = props;
 
   return (
     <>
@@ -21,10 +32,10 @@ const Checkbox: FC<CheckboxProps & Props> = (props) => {
             control={<MuiCheckbox onChange={props.onChange} />}
             label={
               <Text
-                fontSize={16}
-                fontWeight={400}
-                color="text.primary"
                 fontFamily={fontFamily}
+                fontSize={fontSize}
+                fontWeight={fontWeight}
+                color={color}
               >
                 {label}
                 {required && ' *'}

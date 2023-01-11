@@ -23,12 +23,18 @@ type Props = {
   options: DropdownItem[];
   toggleDirection?: 'horizontal' | 'vertical';
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const Dropdown: FC<Props> = ({
   options,
   toggleDirection = 'horizontal',
   fontFamily,
+  fontSize = 16,
+  fontWeight = 400,
+  color = 'text.primary',
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -69,10 +75,10 @@ const Dropdown: FC<Props> = ({
                     </IconContainer>
                   )}
                   <Text
-                    fontSize={16}
-                    fontWeight={400}
-                    color="text.primary"
                     fontFamily={fontFamily}
+                    fontSize={fontSize}
+                    fontWeight={fontWeight}
+                    color={color}
                   >
                     {text}
                   </Text>

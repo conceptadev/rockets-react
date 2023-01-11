@@ -14,6 +14,9 @@ export type SelectOptions = {
 type Props = {
   options: SelectOptions[];
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const Select: FC<Props & TextFieldProps> = (props) => {
@@ -27,13 +30,21 @@ const Select: FC<Props & TextFieldProps> = (props) => {
     disabled,
     error,
     fontFamily,
+    fontSize = 16,
+    fontWeight = 400,
+    color = 'text.primary',
   } = props;
 
   return (
     <>
       {label && (
         <Box>
-          <Text fontWeight={400} color="text.primary" fontFamily={fontFamily}>
+          <Text
+            fontFamily={fontFamily}
+            fontSize={fontSize}
+            fontWeight={fontWeight}
+            color={color}
+          >
             {label}
             {required && ' *'}
           </Text>

@@ -8,10 +8,23 @@ import Text from '../Text';
 type Props = {
   label?: string;
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const Switch: FC<Props & SwitchProps> = (props) => {
-  const { label, disabled, checked, onChange, required, fontFamily } = props;
+  const {
+    label,
+    disabled,
+    checked,
+    onChange,
+    required,
+    fontFamily,
+    fontSize = 16,
+    fontWeight = 400,
+    color = 'text.primary',
+  } = props;
 
   return (
     <>
@@ -22,9 +35,10 @@ const Switch: FC<Props & SwitchProps> = (props) => {
             control={<MuiSwitch onChange={onChange} />}
             label={
               <Text
-                fontWeight={400}
-                color="text.primary"
                 fontFamily={fontFamily}
+                fontSize={fontSize}
+                fontWeight={fontWeight}
+                color={color}
               >
                 {label}
                 {required && ' *'}

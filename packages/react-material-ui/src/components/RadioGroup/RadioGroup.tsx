@@ -18,6 +18,9 @@ type CustomRadioGroupProps = {
   row?: boolean;
   disabled?: boolean;
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const Radio: FC<CustomRadioGroupProps & RadioGroupProps & RadioProps> = (
@@ -33,12 +36,20 @@ const Radio: FC<CustomRadioGroupProps & RadioGroupProps & RadioProps> = (
     onChange,
     disabled,
     fontFamily,
+    fontSize = 16,
+    fontWeight = 400,
+    color = 'text.primary',
   } = props;
 
   return (
     <>
       {label && (
-        <Text fontWeight={400} fontFamily={fontFamily}>
+        <Text
+          fontFamily={fontFamily}
+          fontSize={fontSize}
+          fontWeight={fontWeight}
+          color={color}
+        >
           {label}
           {required && ' *'}
         </Text>

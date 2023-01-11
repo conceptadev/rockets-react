@@ -19,6 +19,9 @@ type Props = {
   text?: string;
   subText?: string;
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const ContainerWithDrawer: FC<Props> = ({
@@ -33,6 +36,9 @@ const ContainerWithDrawer: FC<Props> = ({
   text,
   subText,
   fontFamily,
+  fontSize = 16,
+  fontWeight = 400,
+  color,
 }) => {
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
@@ -49,6 +55,9 @@ const ContainerWithDrawer: FC<Props> = ({
         mobileIsOpen={mobileIsOpen}
         logo={logo}
         fontFamily={fontFamily}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        color={color}
       />
 
       <Box

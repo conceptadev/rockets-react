@@ -11,6 +11,9 @@ type Props = {
   subText: string;
   onClick?: () => void;
   fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
 };
 
 const HeaderAccount: FC<Props> = ({
@@ -20,24 +23,27 @@ const HeaderAccount: FC<Props> = ({
   subText,
   onClick,
   fontFamily,
+  fontSize = 14,
+  fontWeight = 500,
+  color = 'text.primary',
 }) => (
   <Box onClick={onClick} display="flex">
     {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
 
     <Box display="flex" flexDirection="column">
       <Text
-        fontSize={14}
-        fontWeight={500}
-        color="text.primary"
         fontFamily={fontFamily}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        color={color}
       >
         {text}
       </Text>
       <Text
-        fontSize={14}
-        fontWeight={500}
-        color="grey.600"
         fontFamily={fontFamily}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        color={color}
       >
         {subText}
       </Text>
