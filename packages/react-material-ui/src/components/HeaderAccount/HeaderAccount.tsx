@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import Text from '../Text';
 import Avatar from '../Avatar';
+import { TypographyProps } from '@mui/material/Typography';
 
 type Props = {
   avatar?: string;
@@ -9,6 +10,7 @@ type Props = {
   text: string;
   subText: string;
   onClick?: () => void;
+  fontFamily?: TypographyProps['fontFamily'];
 };
 
 const HeaderAccount: FC<Props> = ({
@@ -17,15 +19,26 @@ const HeaderAccount: FC<Props> = ({
   text,
   subText,
   onClick,
+  fontFamily,
 }) => (
   <Box onClick={onClick} display="flex">
     {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
 
     <Box display="flex" flexDirection="column">
-      <Text fontSize={14} fontWeight={500} color="text.primary">
+      <Text
+        fontSize={14}
+        fontWeight={500}
+        color="text.primary"
+        fontFamily={fontFamily}
+      >
         {text}
       </Text>
-      <Text fontSize={14} fontWeight={500} color="grey.600">
+      <Text
+        fontSize={14}
+        fontWeight={500}
+        color="grey.600"
+        fontFamily={fontFamily}
+      >
         {subText}
       </Text>
     </Box>

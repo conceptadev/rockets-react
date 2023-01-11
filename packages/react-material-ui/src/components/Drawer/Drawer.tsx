@@ -8,6 +8,7 @@ import DrawerItem, { DrawerItemProps } from './DrawerItem';
 import Image from '../Image';
 import Text from '../Text';
 import Box from '@mui/material/Box';
+import { TypographyProps } from '@mui/material/Typography';
 
 type Props = {
   items: DrawerItemProps[];
@@ -15,10 +16,18 @@ type Props = {
   toggleMobileDrawer: () => void;
   mobileIsOpen: boolean;
   logo?: string;
+  fontFamily?: TypographyProps['fontFamily'];
 };
 
 const Drawer: FC<Props> = (props) => {
-  const { items, currentId, logo, toggleMobileDrawer, mobileIsOpen } = props;
+  const {
+    items,
+    currentId,
+    logo,
+    toggleMobileDrawer,
+    mobileIsOpen,
+    fontFamily,
+  } = props;
 
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
@@ -45,6 +54,7 @@ const Drawer: FC<Props> = (props) => {
             {...item}
             collapsed={!mobileIsOpen && collapsed}
             active={currentId && item.id === currentId}
+            fontFamily={fontFamily}
           />
         ))}
 

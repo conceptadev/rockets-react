@@ -2,27 +2,41 @@ import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { TypographyProps } from '@mui/material/Typography';
+import Text from '../Text';
 
 export type SelectOptions = {
   label: string;
-  value: unknown;
+  value: string | number;
   disabled?: boolean;
 };
 
 type Props = {
   options: SelectOptions[];
+  fontFamily?: TypographyProps['fontFamily'];
 };
 
-const SelectWidget: FC<Props & TextFieldProps> = (props) => {
-  const { id, label, value, options, onChange, required, disabled, error } =
-    props;
+const Select: FC<Props & TextFieldProps> = (props) => {
+  const {
+    id,
+    label,
+    value,
+    options,
+    onChange,
+    required,
+    disabled,
+    error,
+    fontFamily,
+  } = props;
 
   return (
     <>
       {label && (
         <Box>
-          {label}
-          {required && ' *'}
+          <Text fontWeight={400} color="text.primary" fontFamily={fontFamily}>
+            {label}
+            {required && ' *'}
+          </Text>
         </Box>
       )}
 
@@ -35,7 +49,7 @@ const SelectWidget: FC<Props & TextFieldProps> = (props) => {
         onChange={onChange}
         sx={{ width: '100%' }}
       >
-        {options.map(({ value, label }: any, i: number) => {
+        {options.map(({ value, label }: SelectOptions, i: number) => {
           return (
             <MenuItem key={i} value={value} disabled={disabled}>
               {label}
@@ -47,4 +61,4 @@ const SelectWidget: FC<Props & TextFieldProps> = (props) => {
   );
 };
 
-export default SelectWidget;
+export default Select;

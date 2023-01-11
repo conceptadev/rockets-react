@@ -5,7 +5,11 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import Text from '../Text';
+import { TypographyProps } from '@mui/material/Typography';
 
+interface Props {
+  fontFamily?: TypographyProps['fontFamily'];
+}
 interface TextAreaProps {
   multiline?: boolean;
   rows?: number;
@@ -13,8 +17,11 @@ interface TextAreaProps {
   hiddenLabel?: boolean;
 }
 
-const TextField: FC<TextFieldProps & { options?: TextAreaProps }> = (props) => {
-  const { label, required, sx, type, size, hiddenLabel, options } = props;
+const TextField: FC<TextFieldProps & Props & { options?: TextAreaProps }> = (
+  props,
+) => {
+  const { label, required, sx, type, size, hiddenLabel, options, fontFamily } =
+    props;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -40,6 +47,7 @@ const TextField: FC<TextFieldProps & { options?: TextAreaProps }> = (props) => {
           fontWeight={500}
           color="text.primary"
           textAlign="left"
+          fontFamily={fontFamily}
         >
           {label}
           {required && ' *'}
@@ -55,7 +63,7 @@ const TextField: FC<TextFieldProps & { options?: TextAreaProps }> = (props) => {
         }}
         size={size || 'small'}
         hiddenLabel={label ? true : ishiddenLabel}
-        label={ishiddenLabel ? '' : props.label}
+        label={''}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
         InputProps={{
           ...(isPassword && {
