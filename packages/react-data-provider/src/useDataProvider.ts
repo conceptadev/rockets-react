@@ -9,7 +9,7 @@ import { useClient } from './ClientProvider';
 
 const useDataProvider = () => {
   const { baseUrl } = useClient();
-  const envBaseUrl = process.env.REACT_APP_API_BASE_URL;
+  const envBaseUrl = process.env.REACT_APP_API_URL;
 
   const _baseUrl = baseUrl || envBaseUrl;
 

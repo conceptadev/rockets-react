@@ -1,4 +1,5 @@
-import DataProvider, { useDataProvider } from '@concepta/react-data-provider';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+
 import React, {
   PropsWithChildren,
   createContext,
@@ -12,19 +13,21 @@ const AuthContext = createContext<AuthProviderTypes | null>(null);
 
 export const useAuth = () => useContext<AuthProviderTypes>(AuthContext);
 
-const authLogin = (loginData: LoginParams) =>
-  DataProvider.post({
-    uri: '/auth/login',
-    body: loginData,
-  });
-
 export const AuthProvider: React.FC<PropsWithChildren<unknown>> = ({
   children,
 }) => {
+  const { post } = useDataProvider();
+
   const [user, setUser] = useState<string>();
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
-  const { execute } = useDataProvider(authLogin, false, {
+  const authLogin = (loginData: LoginParams) =>
+    post({
+      uri: '/auth/login',
+      body: loginData,
+    });
+
+  const { execute } = useQuery(authLogin, false, {
     onSuccess: (data) => {
       if (data) {
         localStorage.setItem('access_token', data['access_token']);
