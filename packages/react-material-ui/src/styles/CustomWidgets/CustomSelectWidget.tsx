@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Select from '../../components/Select';
 import { processSelectValue, WidgetProps } from '@rjsf/utils';
 
-const SelectWidget: FC<WidgetProps> = ({
+const CustomSelectWidget: FC<WidgetProps> = ({
   schema,
   id,
   options,
@@ -35,7 +35,7 @@ const SelectWidget: FC<WidgetProps> = ({
   return (
     <Select
       id={id}
-      label={label || schema.title}
+      label={label}
       value={typeof value === 'undefined' ? emptyValue : value}
       options={selectOptions()}
       onChange={_onChange}
@@ -46,4 +46,4 @@ const SelectWidget: FC<WidgetProps> = ({
   );
 };
 
-export default SelectWidget;
+export default CustomSelectWidget;

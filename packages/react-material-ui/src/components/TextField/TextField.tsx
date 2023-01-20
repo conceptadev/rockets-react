@@ -5,9 +5,35 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import Text from '../Text';
+import { TextProps } from '../../interfaces';
 
-const TextField: FC<TextFieldProps> = (props) => {
-  const { label, required, sx, type } = props;
+interface TextAreaProps {
+  multiline?: boolean;
+  rows?: number;
+  maxRows?: number;
+  hiddenLabel?: boolean;
+}
+
+interface Props {
+  textProps?: TextProps;
+  options?: TextAreaProps;
+}
+
+const TextField: FC<TextFieldProps & Props> = (props) => {
+  const {
+    label,
+    required,
+    sx,
+    type,
+    size,
+    hiddenLabel,
+    options,
+    textProps = {
+      fontSize: 14,
+      fontWeight: 500,
+      color: 'text.primary',
+    },
+  } = props;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,17 +49,16 @@ const TextField: FC<TextFieldProps> = (props) => {
 
   const isPassword = type === 'password';
 
+  const ishiddenLabel = hiddenLabel || options?.hiddenLabel;
+
   return (
     <>
-      <Text
-        fontSize={14}
-        fontWeight={500}
-        color="text.primary"
-        textAlign="left"
-      >
-        {label}
-        {required && ' *'}
-      </Text>
+      {!ishiddenLabel && label && (
+        <Text {...textProps} textAlign="left">
+          {label}
+          {required && ' *'}
+        </Text>
+      )}
       <MuiTextField
         {...props}
         sx={{
@@ -42,9 +67,9 @@ const TextField: FC<TextFieldProps> = (props) => {
           mb: 3,
           input: { color: 'text.primary' },
         }}
-        size="small"
-        hiddenLabel
-        label=""
+        size={size || 'small'}
+        hiddenLabel={label ? true : ishiddenLabel}
+        label={''}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
         InputProps={{
           ...(isPassword && {

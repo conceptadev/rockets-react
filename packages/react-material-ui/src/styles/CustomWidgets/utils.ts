@@ -10,6 +10,7 @@ export const filterProps = (props: WidgetProps) => ({
   placeholder: props.placeholder,
   onChange: props.onChange,
   label: props.label,
+  hiddenLabel: props.hiddenLabel,
   maxLength: props.maxLength,
   type: props.type,
 });

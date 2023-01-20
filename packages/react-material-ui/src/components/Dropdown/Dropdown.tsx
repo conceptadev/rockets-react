@@ -8,10 +8,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '@mui/material/Box';
 import { IconContainer } from './Styles';
 import MenuItem from '@mui/material/MenuItem';
+import Text from '../Text';
+import { TextProps } from 'interfaces';
 
 export type DropdownItem = {
   key: string;
-  onClick: () => void;
+  onClick?: () => void;
   text?: string;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
@@ -20,9 +22,18 @@ export type DropdownItem = {
 type Props = {
   options: DropdownItem[];
   toggleDirection?: 'horizontal' | 'vertical';
+  textProps?: TextProps;
 };
 
-const Dropdown: FC<Props> = ({ options, toggleDirection = 'horizontal' }) => {
+const Dropdown: FC<Props> = ({
+  options,
+  toggleDirection = 'horizontal',
+  textProps = {
+    fontSize: 16,
+    fontWeight: 400,
+    color: 'text.primary',
+  },
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -35,7 +46,7 @@ const Dropdown: FC<Props> = ({ options, toggleDirection = 'horizontal' }) => {
   };
 
   const handleCustomItemClick = (item: DropdownItem) => () => {
-    item.onClick();
+    item.onClick?.();
     handleClose();
   };
 
@@ -61,7 +72,7 @@ const Dropdown: FC<Props> = ({ options, toggleDirection = 'horizontal' }) => {
                       {icon}
                     </IconContainer>
                   )}
-                  {text}
+                  <Text {...textProps}>{text}</Text>
                 </Box>
               </MenuItem>
             );

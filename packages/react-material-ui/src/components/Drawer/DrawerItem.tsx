@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { DrawerButton } from './Styles';
 import Text from '../Text';
+import { TextProps } from 'interfaces';
 
 export type DrawerItemProps = {
   id: string;
@@ -9,10 +10,22 @@ export type DrawerItemProps = {
   active?: boolean;
   collapsed?: boolean;
   onClick?: () => void;
+  textProps?: TextProps;
 };
 
 const DrawerItem: FC<DrawerItemProps> = (props) => {
-  const { icon, text, active, collapsed, onClick } = props;
+  const {
+    icon,
+    text,
+    active,
+    collapsed,
+    onClick,
+    textProps = {
+      fontSize: 14,
+      fontWeight: 400,
+      color: 'common.white',
+    },
+  } = props;
 
   const handleClick = () => {
     return onClick?.();
@@ -21,9 +34,7 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
   return (
     <DrawerButton onClick={handleClick} active={active} collapsed={collapsed}>
       {icon}
-      <Text fontSize={14} fontWeight={500} color="common.white">
-        {text}
-      </Text>
+      <Text {...textProps}>{text}</Text>
     </DrawerButton>
   );
 };

@@ -5,6 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Drawer from '../Drawer';
 import { DrawerItemProps } from '../Drawer/DrawerItem';
 import Navbar from '../Navbar';
+import { TypographyProps } from '@mui/material/Typography';
+import { TextProps } from 'interfaces';
 
 type Props = {
   drawerItems: DrawerItemProps[];
@@ -17,6 +19,11 @@ type Props = {
   avatar?: string;
   text?: string;
   subText?: string;
+  fontFamily?: TypographyProps['fontFamily'];
+  fontSize?: TypographyProps['fontSize'];
+  fontWeight?: TypographyProps['fontWeight'];
+  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const ContainerWithDrawer: FC<Props> = ({
@@ -30,6 +37,10 @@ const ContainerWithDrawer: FC<Props> = ({
   avatar,
   text,
   subText,
+  textProps = {
+    fontSize: 16,
+    fontWeight: 400,
+  },
 }) => {
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
@@ -45,6 +56,7 @@ const ContainerWithDrawer: FC<Props> = ({
         toggleMobileDrawer={toggleMobileDrawer}
         mobileIsOpen={mobileIsOpen}
         logo={logo}
+        textProps={textProps}
       />
 
       <Box

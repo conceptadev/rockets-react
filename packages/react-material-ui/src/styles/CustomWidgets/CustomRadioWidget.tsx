@@ -16,8 +16,12 @@ const CustomRadioWidget: FC<WidgetProps> = (props) => {
 
   return (
     <>
-      {label || schema.title}
-      {required && ' *'}
+      {label && (
+        <>
+          {label}
+          {required && ' *'}
+        </>
+      )}
 
       <RadioGroup
         id={id}

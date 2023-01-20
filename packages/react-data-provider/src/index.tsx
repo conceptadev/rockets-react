@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import DataProvider from './dataProvider';
+import useDataProvider from './useDataProvider';
+import ClientProvider from './ClientProvider';
+
 import {
   AsyncFunction,
   DataProviderRequestProps,
@@ -7,7 +9,7 @@ import {
   AsyncStatus,
 } from './interfaces';
 
-export const useDataProvider = <T extends AsyncFunction>(
+export const useQuery = <T extends AsyncFunction>(
   asyncFn: T,
   immediate = false,
   callbacks?: DataProviderRequestProps,
@@ -70,4 +72,6 @@ export const useDataProvider = <T extends AsyncFunction>(
   return { execute, status, isPending, data, error, refresh };
 };
 
-export default DataProvider;
+export { ClientProvider };
+
+export default useDataProvider;

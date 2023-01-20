@@ -16,6 +16,10 @@ When building your Auth system, you need to remember these!
 - A provider and a hook to access auth information like user data, tokens
 - Methods to make the Login and Logout funcionalities
 
+### Make sure you configured correctly the DataProvider before using the auth provider
+
+- Add your baseUrl with the \<ClientProvider> or via ENV file with a variable named REACT_APP_API_URL.
+
 ## Examples
 
 These are very rough examples. We intend to improve them ASAP.

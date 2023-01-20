@@ -41,8 +41,12 @@ const CustomCheckboxesWidget: FC<WidgetProps> = (props) => {
 
   return (
     <>
-      {label}
-      {required && ' *'}
+      {label && (
+        <>
+          {label}
+          {required && ' *'}
+        </>
+      )}
 
       {(enumOptions as any).map((option: any, index: number) => {
         const checked = value.indexOf(option.value) !== -1;

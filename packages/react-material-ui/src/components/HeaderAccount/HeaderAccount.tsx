@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import Text from '../Text';
 import Avatar from '../Avatar';
+import { TextProps } from 'interfaces';
 
 type Props = {
   avatar?: string;
@@ -9,6 +10,7 @@ type Props = {
   text: string;
   subText: string;
   onClick?: () => void;
+  textProps?: TextProps;
 };
 
 const HeaderAccount: FC<Props> = ({
@@ -17,17 +19,18 @@ const HeaderAccount: FC<Props> = ({
   text,
   subText,
   onClick,
+  textProps = {
+    fontSize: 14,
+    fontWeight: 500,
+    color: 'text.primary',
+  },
 }) => (
   <Box onClick={onClick} display="flex">
     {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
 
     <Box display="flex" flexDirection="column">
-      <Text fontSize={14} fontWeight={500} color="text.primary">
-        {text}
-      </Text>
-      <Text fontSize={14} fontWeight={500} color="grey.600">
-        {subText}
-      </Text>
+      <Text {...textProps}>{text}</Text>
+      <Text {...textProps}>{subText}</Text>
     </Box>
   </Box>
 );
