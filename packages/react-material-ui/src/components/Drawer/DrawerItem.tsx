@@ -34,7 +34,7 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
   return (
     <DrawerButton onClick={handleClick} active={active} collapsed={collapsed}>
       {icon}
-      <Text textProps={textProps}>{text}</Text>
+      <Text {...textProps}>{text}</Text>
     </DrawerButton>
   );
 };

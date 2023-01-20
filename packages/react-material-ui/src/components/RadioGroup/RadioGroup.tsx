@@ -42,7 +42,7 @@ const Radio: FC<CustomRadioGroupProps & RadioGroupProps & RadioProps> = (
   return (
     <>
       {label && (
-        <Text textProps={textProps}>
+        <Text {...textProps}>
           {label}
           {required && ' *'}
         </Text>

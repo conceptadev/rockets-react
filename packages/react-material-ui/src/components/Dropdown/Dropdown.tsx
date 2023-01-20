@@ -72,7 +72,7 @@ const Dropdown: FC<Props> = ({
                       {icon}
                     </IconContainer>
                   )}
-                  <Text textProps={textProps}>{text}</Text>
+                  <Text {...textProps}>{text}</Text>
                 </Box>
               </MenuItem>
             );

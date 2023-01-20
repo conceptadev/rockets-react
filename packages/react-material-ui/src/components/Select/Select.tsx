@@ -37,7 +37,7 @@ const Select: FC<Props & TextFieldProps> = (props) => {
     <>
       {label && (
         <Box>
-          <Text textProps={textProps}>
+          <Text {...textProps}>
             {label}
             {required && ' *'}
           </Text>

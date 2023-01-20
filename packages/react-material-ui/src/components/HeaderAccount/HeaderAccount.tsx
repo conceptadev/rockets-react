@@ -29,8 +29,8 @@ const HeaderAccount: FC<Props> = ({
     {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
 
     <Box display="flex" flexDirection="column">
-      <Text textProps={textProps}>{text}</Text>
-      <Text textProps={textProps}>{subText}</Text>
+      <Text {...textProps}>{text}</Text>
+      <Text {...textProps}>{subText}</Text>
     </Box>
   </Box>
 );

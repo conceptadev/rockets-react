@@ -32,7 +32,7 @@ const Switch: FC<Props & SwitchProps> = (props) => {
             disabled={disabled}
             control={<MuiSwitch onChange={onChange} />}
             label={
-              <Text textProps={textProps}>
+              <Text {...textProps}>
                 {label}
                 {required && ' *'}
               </Text>

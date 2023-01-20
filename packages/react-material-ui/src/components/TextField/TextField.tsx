@@ -54,7 +54,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
   return (
     <>
       {!ishiddenLabel && label && (
-        <Text textProps={textProps} textAlign="left">
+        <Text {...textProps} textAlign="left">
           {label}
           {required && ' *'}
         </Text>
