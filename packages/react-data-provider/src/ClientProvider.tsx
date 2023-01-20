@@ -20,14 +20,14 @@ type Props = {
   children: ReactNode;
 };
 
-const ClientProvider: FC<Props> = ({ baseUrl: outterBaseUrl, children }) => {
+const ClientProvider: FC<Props> = ({ baseUrl: outerBaseUrl, children }) => {
   const [baseUrl, setBaseUrl] = useState<string>();
 
   useEffect(() => {
-    if (outterBaseUrl) {
-      setBaseUrl(outterBaseUrl);
+    if (outerBaseUrl) {
+      setBaseUrl(outerBaseUrl);
     }
-  }, [outterBaseUrl]);
+  }, [outerBaseUrl]);
 
   return (
     <ClientContext.Provider value={{ baseUrl }}>

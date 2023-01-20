@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { TypographyProps } from '@mui/material/Typography';
 import Text from '../Text';
+import { TextProps } from 'interfaces';
 
 export type SelectOptions = {
   label: string;
@@ -13,10 +13,7 @@ export type SelectOptions = {
 
 type Props = {
   options: SelectOptions[];
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const Select: FC<Props & TextFieldProps> = (props) => {
@@ -29,22 +26,18 @@ const Select: FC<Props & TextFieldProps> = (props) => {
     required,
     disabled,
     error,
-    fontFamily,
-    fontSize = 16,
-    fontWeight = 400,
-    color = 'text.primary',
+    textProps = {
+      fontSize: 16,
+      fontWeight: 400,
+      color: 'text.primary',
+    },
   } = props;
 
   return (
     <>
       {label && (
         <Box>
-          <Text
-            fontFamily={fontFamily}
-            fontSize={fontSize}
-            fontWeight={fontWeight}
-            color={color}
-          >
+          <Text textProps={textProps}>
             {label}
             {required && ' *'}
           </Text>

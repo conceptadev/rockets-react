@@ -2,15 +2,12 @@ import React, { FC } from 'react';
 import MuiCheckbox, { CheckboxProps } from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { TypographyProps } from '@mui/material/Typography';
 import Text from '../Text';
+import { TextProps } from 'interfaces';
 
 type Props = {
   label?: string;
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const Checkbox: FC<CheckboxProps & Props> = (props) => {
@@ -18,10 +15,11 @@ const Checkbox: FC<CheckboxProps & Props> = (props) => {
     label,
     checked,
     required,
-    fontFamily,
-    fontSize = 16,
-    fontWeight = 400,
-    color = 'text.primary',
+    textProps = {
+      fontSize: 16,
+      fontWeight: 400,
+      color: 'text.primary',
+    },
   } = props;
 
   return (
@@ -31,12 +29,7 @@ const Checkbox: FC<CheckboxProps & Props> = (props) => {
           <FormControlLabel
             control={<MuiCheckbox onChange={props.onChange} />}
             label={
-              <Text
-                fontFamily={fontFamily}
-                fontSize={fontSize}
-                fontWeight={fontWeight}
-                color={color}
-              >
+              <Text textProps={textProps}>
                 {label}
                 {required && ' *'}
               </Text>

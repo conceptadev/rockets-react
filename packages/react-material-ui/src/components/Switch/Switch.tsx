@@ -2,15 +2,12 @@ import React, { FC } from 'react';
 import MuiSwitch, { SwitchProps } from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { TypographyProps } from '@mui/material/Typography';
 import Text from '../Text';
+import { TextProps } from 'interfaces';
 
 type Props = {
   label?: string;
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const Switch: FC<Props & SwitchProps> = (props) => {
@@ -20,10 +17,11 @@ const Switch: FC<Props & SwitchProps> = (props) => {
     checked,
     onChange,
     required,
-    fontFamily,
-    fontSize = 16,
-    fontWeight = 400,
-    color = 'text.primary',
+    textProps = {
+      fontSize: 16,
+      fontWeight: 400,
+      color: 'text.primary',
+    },
   } = props;
 
   return (
@@ -34,12 +32,7 @@ const Switch: FC<Props & SwitchProps> = (props) => {
             disabled={disabled}
             control={<MuiSwitch onChange={onChange} />}
             label={
-              <Text
-                fontFamily={fontFamily}
-                fontSize={fontSize}
-                fontWeight={fontWeight}
-                color={color}
-              >
+              <Text textProps={textProps}>
                 {label}
                 {required && ' *'}
               </Text>

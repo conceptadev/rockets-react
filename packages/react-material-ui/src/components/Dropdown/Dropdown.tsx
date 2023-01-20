@@ -8,8 +8,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '@mui/material/Box';
 import { IconContainer } from './Styles';
 import MenuItem from '@mui/material/MenuItem';
-import { TypographyProps } from '@mui/material/Typography';
 import Text from '../Text';
+import { TextProps } from 'interfaces';
 
 export type DropdownItem = {
   key: string;
@@ -22,19 +22,17 @@ export type DropdownItem = {
 type Props = {
   options: DropdownItem[];
   toggleDirection?: 'horizontal' | 'vertical';
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const Dropdown: FC<Props> = ({
   options,
   toggleDirection = 'horizontal',
-  fontFamily,
-  fontSize = 16,
-  fontWeight = 400,
-  color = 'text.primary',
+  textProps = {
+    fontSize: 16,
+    fontWeight: 400,
+    color: 'text.primary',
+  },
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -74,14 +72,7 @@ const Dropdown: FC<Props> = ({
                       {icon}
                     </IconContainer>
                   )}
-                  <Text
-                    fontFamily={fontFamily}
-                    fontSize={fontSize}
-                    fontWeight={fontWeight}
-                    color={color}
-                  >
-                    {text}
-                  </Text>
+                  <Text textProps={textProps}>{text}</Text>
                 </Box>
               </MenuItem>
             );

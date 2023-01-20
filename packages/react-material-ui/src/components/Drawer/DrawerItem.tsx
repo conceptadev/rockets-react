@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { DrawerButton } from './Styles';
 import Text from '../Text';
-import { TypographyProps } from '@mui/material/Typography';
+import { TextProps } from 'interfaces';
 
 export type DrawerItemProps = {
   id: string;
@@ -10,10 +10,7 @@ export type DrawerItemProps = {
   active?: boolean;
   collapsed?: boolean;
   onClick?: () => void;
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const DrawerItem: FC<DrawerItemProps> = (props) => {
@@ -23,10 +20,11 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
     active,
     collapsed,
     onClick,
-    fontFamily,
-    fontSize = 14,
-    fontWeight = 400,
-    color = 'common.white',
+    textProps = {
+      fontSize: 14,
+      fontWeight: 400,
+      color: 'common.white',
+    },
   } = props;
 
   const handleClick = () => {
@@ -36,14 +34,7 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
   return (
     <DrawerButton onClick={handleClick} active={active} collapsed={collapsed}>
       {icon}
-      <Text
-        fontFamily={fontFamily}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        color={color}
-      >
-        {text}
-      </Text>
+      <Text textProps={textProps}>{text}</Text>
     </DrawerButton>
   );
 };

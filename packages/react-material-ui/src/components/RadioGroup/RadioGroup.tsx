@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MuiRadio, { RadioProps } from '@mui/material/Radio';
 import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup';
-import { TypographyProps } from '@mui/material/Typography';
 import Text from '../Text';
+import { TextProps } from 'interfaces';
 
 export type RadioOptions = {
   label: string;
@@ -17,10 +17,7 @@ type CustomRadioGroupProps = {
   required?: boolean;
   row?: boolean;
   disabled?: boolean;
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const Radio: FC<CustomRadioGroupProps & RadioGroupProps & RadioProps> = (
@@ -35,21 +32,17 @@ const Radio: FC<CustomRadioGroupProps & RadioGroupProps & RadioProps> = (
     value,
     onChange,
     disabled,
-    fontFamily,
-    fontSize = 16,
-    fontWeight = 400,
-    color = 'text.primary',
+    textProps = {
+      fontSize: 16,
+      fontWeight: 400,
+      color: 'text.primary',
+    },
   } = props;
 
   return (
     <>
       {label && (
-        <Text
-          fontFamily={fontFamily}
-          fontSize={fontSize}
-          fontWeight={fontWeight}
-          color={color}
-        >
+        <Text textProps={textProps}>
           {label}
           {required && ' *'}
         </Text>

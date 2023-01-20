@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import Box from '@mui/material/Box';
 import Text from '../Text';
 import Avatar from '../Avatar';
-import { TypographyProps } from '@mui/material/Typography';
+import { TextProps } from 'interfaces';
 
 type Props = {
   avatar?: string;
@@ -10,10 +10,7 @@ type Props = {
   text: string;
   subText: string;
   onClick?: () => void;
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
+  textProps?: TextProps;
 };
 
 const HeaderAccount: FC<Props> = ({
@@ -22,31 +19,18 @@ const HeaderAccount: FC<Props> = ({
   text,
   subText,
   onClick,
-  fontFamily,
-  fontSize = 14,
-  fontWeight = 500,
-  color = 'text.primary',
+  textProps = {
+    fontSize: 14,
+    fontWeight: 500,
+    color: 'text.primary',
+  },
 }) => (
   <Box onClick={onClick} display="flex">
     {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
 
     <Box display="flex" flexDirection="column">
-      <Text
-        fontFamily={fontFamily}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        color={color}
-      >
-        {text}
-      </Text>
-      <Text
-        fontFamily={fontFamily}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        color={color}
-      >
-        {subText}
-      </Text>
+      <Text textProps={textProps}>{text}</Text>
+      <Text textProps={textProps}>{subText}</Text>
     </Box>
   </Box>
 );

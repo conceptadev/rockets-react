@@ -5,14 +5,8 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import Text from '../Text';
-import { TypographyProps } from '@mui/material/Typography';
+import { TextProps } from '../../interfaces';
 
-interface Props {
-  fontFamily?: TypographyProps['fontFamily'];
-  fontSize?: TypographyProps['fontSize'];
-  fontWeight?: TypographyProps['fontWeight'];
-  color?: TypographyProps['color'];
-}
 interface TextAreaProps {
   multiline?: boolean;
   rows?: number;
@@ -20,9 +14,12 @@ interface TextAreaProps {
   hiddenLabel?: boolean;
 }
 
-const TextField: FC<TextFieldProps & Props & { options?: TextAreaProps }> = (
-  props,
-) => {
+interface Props {
+  textProps?: TextProps;
+  options?: TextAreaProps;
+}
+
+const TextField: FC<TextFieldProps & Props> = (props) => {
   const {
     label,
     required,
@@ -31,10 +28,11 @@ const TextField: FC<TextFieldProps & Props & { options?: TextAreaProps }> = (
     size,
     hiddenLabel,
     options,
-    fontFamily,
-    fontSize = 14,
-    fontWeight = 500,
-    color = 'text.primary',
+    textProps = {
+      fontSize: 14,
+      fontWeight: 500,
+      color: 'text.primary',
+    },
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -56,13 +54,7 @@ const TextField: FC<TextFieldProps & Props & { options?: TextAreaProps }> = (
   return (
     <>
       {!ishiddenLabel && label && (
-        <Text
-          fontFamily={fontFamily}
-          fontSize={fontSize}
-          fontWeight={fontWeight}
-          color={color}
-          textAlign="left"
-        >
+        <Text textProps={textProps} textAlign="left">
           {label}
           {required && ' *'}
         </Text>
