@@ -1,0 +1,20 @@
+{
+  "name": "@concepta/react-common",
+  "version": "1.0.0-alpha.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "BSD-3-Clause",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "use-local-storage-state": "^18.1.2"
+  }
+}

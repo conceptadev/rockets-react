@@ -30,6 +30,9 @@
     },
     {
       "path": "packages/react-material-ui"
+    },
+    {
+      "path": "packages/react-common"
     }
   ]
 }
