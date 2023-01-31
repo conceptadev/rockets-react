@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-const CustomDialog = styled(Dialog)(({ theme }) => ({
+const CustomDialog = styled(Dialog, {
+  shouldForwardProp: () => true,
+})<DialogProps>(({ theme }) => ({
   '& .MuiDialogContent-root': {
     minWidth: 300,
     padding: theme.spacing(2),
