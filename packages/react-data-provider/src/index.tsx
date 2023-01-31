@@ -20,7 +20,7 @@ export const useQuery = <T extends AsyncFunction>(
   const [error, setError] = useState<unknown>();
   const [isPending, setIsPending] = useState(false);
 
-  const { onError, onSuccess, onFinish } = callbacks;
+  const { onError, onSuccess, onFinish } = callbacks || {};
 
   // The execute function wraps asyncFunction and
   // handles setting state for pending, value, and error.
@@ -38,22 +38,14 @@ export const useQuery = <T extends AsyncFunction>(
         setData(response);
         setStatus(AsyncStatus.success);
 
-        if (onSuccess) {
-          onSuccess(response);
-        }
-        if (onFinish) {
-          onFinish(AsyncStatus.success);
-        }
+        onSuccess?.(response);
+        onFinish?.(AsyncStatus.success);
       } catch (err) {
         setError(err);
         setStatus(AsyncStatus.error);
 
-        if (onError) {
-          onError(err);
-        }
-        if (onFinish) {
-          onFinish(AsyncStatus.error);
-        }
+        onError?.(err);
+        onFinish?.(AsyncStatus.error);
       } finally {
         setIsPending(false);
       }
