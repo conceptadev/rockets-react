@@ -3,9 +3,10 @@ import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import { DialogProps } from '@mui/material/Dialog';
 import { CustomDialog, CustomDialogTitle } from './Styles';
 
-export interface DialogProps {
+export interface CustomDialogProps {
   open: boolean;
   handleClose: () => void;
   title?: string;
@@ -14,7 +15,7 @@ export interface DialogProps {
   dividers?: boolean;
 }
 
-const Dialog: FC<DialogProps> = (props) => {
+const Dialog: FC<CustomDialogProps & DialogProps> = (props) => {
   const {
     open,
     handleClose,
@@ -25,10 +26,16 @@ const Dialog: FC<DialogProps> = (props) => {
   } = props;
 
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const fullScreen =
+    props?.fullScreen || useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <CustomDialog onClose={handleClose} open={open} fullScreen={fullScreen}>
+    <CustomDialog
+      {...props}
+      onClose={handleClose}
+      open={open}
+      fullScreen={fullScreen}
+    >
       {title && (
         <CustomDialogTitle onClose={handleClose}>{title}</CustomDialogTitle>
       )}

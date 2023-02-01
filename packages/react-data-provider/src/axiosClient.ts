@@ -20,6 +20,7 @@ const axiosClient: HttpClient = {
         ...configs,
         url: configs.uri,
         data: configs.body,
+        params: configs.queryParams,
       })
       .then((response) => {
         const { config, data, headers, status } = response;
