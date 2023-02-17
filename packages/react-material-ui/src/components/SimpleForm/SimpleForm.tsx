@@ -1,10 +1,12 @@
 import React, { FC, Fragment } from 'react';
 import { Text } from '../../';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import Button, { ButtonProps } from '@mui/material/Button';
+import TypographyProps from '@mui/material/Typography';
 import { RJSFSchema, UiSchema, FormValidation, WidgetProps } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv6';
 import Form from '@rjsf/mui';
+import { FormProps } from '@rjsf/core';
 import { JSONSchema7Definition, JSONSchema7TypeName } from 'json-schema';
 import {
   CustomTextFieldWidget,
@@ -56,6 +58,9 @@ export type FormType = {
   fields: Fields;
   title?: string;
   submitButtonLabel?: string;
+  titleTextProps?: typeof TypographyProps;
+  formProps?: FormProps;
+  submitButtonProps?: ButtonProps;
 };
 
 type Props = {
@@ -66,9 +71,14 @@ type Props = {
   onError?: (error: any) => any;
 };
 
-const SimpleForm: FC<Props> = (props) => {
-  const { form, initialData, onSubmit, validate, onError } = props;
-  const { fields } = form;
+const SimpleForm: FC<Props> = ({
+  form,
+  initialData,
+  onSubmit,
+  validate,
+  onError,
+}) => {
+  const { fields, titleTextProps, formProps, submitButtonProps } = form;
 
   const generateRequired = (_fields: Fields) => {
     const required: string[] = [];
@@ -229,6 +239,7 @@ const SimpleForm: FC<Props> = (props) => {
           fontWeight={800}
           mt={4}
           gutterBottom
+          {...titleTextProps}
         >
           {form.title}
         </Text>
@@ -246,8 +257,15 @@ const SimpleForm: FC<Props> = (props) => {
           templates={{ ArrayFieldTemplate }}
           customValidate={validate}
           validator={validator}
+          {...formProps}
         >
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3 }}
+            {...submitButtonProps}
+          >
             {form.submitButtonLabel || 'Submit'}
           </Button>
         </Form>
