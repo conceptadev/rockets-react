@@ -4,6 +4,7 @@ export { default as ContainerWithDrawer } from './components/ContainerWithDrawer
 export { default as Dialog } from './components/Dialog';
 export { default as Drawer } from './components/Drawer';
 export { default as Dropdown } from './components/Dropdown';
+export { default as FormTemplate } from './components/FormTemplate';
 export { default as HeaderAccount } from './components/HeaderAccount';
 export { default as Image } from './components/Image';
 export { default as Link } from './components/Link';
