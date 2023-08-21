@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useMemo } from 'react';
+import { TableProps as MuiTableProps } from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
@@ -6,7 +7,7 @@ import TablePagination from '@mui/material/TablePagination';
 import Checkbox from '@mui/material/Checkbox';
 
 import TableRow from '@mui/material/TableRow';
-import { Table, TableProps } from './Styles';
+import { Table, TableProps as TableStylesProps } from './Styles';
 import Text from '../Text';
 import Box from '@mui/material/Box';
 import { sortTable } from '../../utils/table';
@@ -55,7 +56,7 @@ export type SimpleOptionButton = {
   icon?: ReactNode;
 };
 
-type Props = {
+export type TableProps = {
   rows: RowsProps[];
   headers: HeadersProps[];
   hasCheckboxes?: boolean;
@@ -66,13 +67,19 @@ type Props = {
   customRowOptions?:
     | SimpleOptionButton[]
     | (({ row, close }: CustomRowOptionsProps) => ReactNode);
-  variant?: TableProps['variant'];
+  variant?: TableStylesProps['variant'];
   toggleDirection?: 'horizontal' | 'vertical';
+  hover?: boolean;
+  tableStyles?: MuiTableProps['sx'];
+  tableHeaderRowStyles?: MuiTableProps['sx'];
+  tableHeaderCellStyles?: MuiTableProps['sx'];
+  tableRowStyles?: MuiTableProps['sx'];
+  tableCellStyles?: MuiTableProps['sx'];
 };
 
 export type Order = 'asc' | 'desc';
 
-const TableComponent: FC<Props> = ({
+const TableComponent: FC<TableProps> = ({
   rows,
   headers,
   hasCheckboxes,
@@ -81,6 +88,12 @@ const TableComponent: FC<Props> = ({
   customRowOptions,
   variant = 'contained',
   toggleDirection = 'horizontal',
+  hover = true,
+  tableStyles,
+  tableHeaderRowStyles,
+  tableHeaderCellStyles,
+  tableRowStyles,
+  tableCellStyles,
 }) => {
   const theme = useTheme();
 
@@ -207,6 +220,11 @@ const TableComponent: FC<Props> = ({
             aria-labelledby="tableTitle"
             size="medium"
             variant={variant}
+            tableStyles={tableStyles}
+            tableHeaderRowStyles={tableHeaderRowStyles}
+            tableHeaderCellStyles={tableHeaderCellStyles}
+            tableRowStyles={tableRowStyles}
+            tableCellStyles={tableCellStyles}
           >
             <TableHeaders
               numSelected={selected.length}
@@ -229,7 +247,7 @@ const TableComponent: FC<Props> = ({
 
                   return (
                     <TableRow
-                      hover
+                      hover={hover}
                       onClick={(event) => handleClick(event, row)}
                       role={hasCheckboxes ? 'checkbox' : ''}
                       aria-checked={isItemSelected}
