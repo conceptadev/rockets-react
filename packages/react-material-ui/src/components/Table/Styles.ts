@@ -1,5 +1,5 @@
 import MuiTable, { TableProps as MuiTableProps } from '@mui/material/Table';
-import { styled, Theme, Syste } from '@mui/material/styles';
+import { styled, Theme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
 export type TableProps = {
