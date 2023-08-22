@@ -329,9 +329,11 @@ const TableComponent: FC<TableProps> = ({
         {paginationVariant === 'numbers' && (
           <Box display="flex" justifyContent="center">
             <Pagination
-              count={Math.floor(rows.length / 5)}
-              onChange={handleChangePage}
-              page={page}
+              count={Math.floor(rows.length / 5) + 1}
+              onChange={(event: unknown, page: number) =>
+                handleChangePage(event, page - 1)
+              }
+              page={page + 1}
               sx={paginationStyles}
             />
           </Box>
