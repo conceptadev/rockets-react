@@ -3,7 +3,10 @@ import { TableProps as MuiTableProps } from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
+import TablePagination, {
+  TablePaginationProps,
+} from '@mui/material/TablePagination';
+import Pagination, { PaginationProps } from '@mui/material/Pagination';
 import Checkbox from '@mui/material/Checkbox';
 
 import TableRow from '@mui/material/TableRow';
@@ -68,6 +71,7 @@ export type TableProps = {
     | SimpleOptionButton[]
     | (({ row, close }: CustomRowOptionsProps) => ReactNode);
   variant?: TableStylesProps['variant'];
+  paginationVariant?: 'default' | 'numbers';
   toggleDirection?: 'horizontal' | 'vertical';
   hover?: boolean;
   tableStyles?: MuiTableProps['sx'];
@@ -75,6 +79,7 @@ export type TableProps = {
   tableHeaderCellStyles?: MuiTableProps['sx'];
   tableRowStyles?: MuiTableProps['sx'];
   tableCellStyles?: MuiTableProps['sx'];
+  paginationStyles?: TablePaginationProps['sx'] | PaginationProps['sx'];
 };
 
 export type Order = 'asc' | 'desc';
@@ -87,6 +92,7 @@ const TableComponent: FC<TableProps> = ({
   customToolbarActionButtons,
   customRowOptions,
   variant = 'contained',
+  paginationVariant = 'default',
   toggleDirection = 'horizontal',
   hover = true,
   tableStyles,
@@ -94,6 +100,7 @@ const TableComponent: FC<TableProps> = ({
   tableHeaderCellStyles,
   tableRowStyles,
   tableCellStyles,
+  paginationStyles,
 }) => {
   const theme = useTheme();
 
@@ -294,29 +301,41 @@ const TableComponent: FC<TableProps> = ({
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{
-            ...(variant === 'outlined' && {
-              backgroundColor:
-                theme.palette.mode === 'light'
-                  ? theme.palette.grey[100]
-                  : theme.palette.grey[800],
-              border: `solid 1px #e5e7eb`,
-              borderTop: 'none',
-              borderBottomLeftRadius: '10px',
-              borderBottomRightRadius: '10px',
-              borderLeftStyle: 'solid',
-              borderRightStyle: 'solid',
-            }),
-          }}
-        />
+        {paginationVariant === 'default' && (
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            sx={{
+              ...(variant === 'outlined' && {
+                backgroundColor:
+                  theme.palette.mode === 'light'
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[800],
+                border: `solid 1px #e5e7eb`,
+                borderTop: 'none',
+                borderBottomLeftRadius: '10px',
+                borderBottomRightRadius: '10px',
+                borderLeftStyle: 'solid',
+                borderRightStyle: 'solid',
+              }),
+            }}
+          />
+        )}
+        {paginationVariant === 'numbers' && (
+          <Box display="flex" justifyContent="center">
+            <Pagination
+              count={Math.floor(rows.length / 5)}
+              onChange={handleChangePage}
+              page={page}
+              sx={paginationStyles}
+            />
+          </Box>
+        )}
       </>
     </Box>
   );
