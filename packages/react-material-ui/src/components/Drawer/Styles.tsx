@@ -8,16 +8,26 @@ export type StyledDrawerProps = {
   sx?: SxProps<Theme>;
   horizontal?: boolean;
   backgroundColor?: string;
+  collapsedWidth?: string | number;
+  expandedWidth?: string | number;
 };
 
 export const StyledDrawer = styled(MuiDrawer)<StyledDrawerProps>(
-  ({ theme, open, sx, horizontal, backgroundColor }) => [
+  ({
+    theme,
+    open,
+    sx,
+    horizontal,
+    backgroundColor,
+    collapsedWidth,
+    expandedWidth,
+  }) => [
     {
       '& .MuiDrawer-paper': {
         backgroundColor: backgroundColor || theme.palette.primary.dark,
         position: 'relative',
         whiteSpace: 'nowrap',
-        width: horizontal ? 256 : 120,
+        width: expandedWidth || (horizontal ? 256 : 120),
         transition: theme.transitions.create('width', {
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.enteringScreen,
@@ -29,9 +39,9 @@ export const StyledDrawer = styled(MuiDrawer)<StyledDrawerProps>(
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
           }),
-          width: theme.spacing(7),
+          width: collapsedWidth || theme.spacing(7),
           [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9),
+            width: collapsedWidth || theme.spacing(9),
           },
         }),
       },

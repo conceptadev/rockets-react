@@ -5,7 +5,9 @@ import { TextProps } from 'interfaces';
 
 export type DrawerItemProps = {
   id?: string;
-  component?: React.ReactNode;
+  component?:
+    | React.ReactNode
+    | ((active?: boolean, collapsed?: boolean) => React.ReactNode);
   icon?: React.ReactNode | ((active: boolean) => React.ReactNode);
   text?: string;
   onClick?: () => void;

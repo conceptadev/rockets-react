@@ -1,19 +1,43 @@
 export { default as Avatar } from './components/Avatar';
 export { default as Checkbox } from './components/Checkbox';
-export { default as ContainerWithDrawer } from './components/ContainerWithDrawer';
+
+import ContainerWithDrawer, {
+  ContainerWithDrawerProps,
+  MSWContainerWithDrawerProps,
+} from './components/ContainerWithDrawer';
+export {
+  ContainerWithDrawer,
+  ContainerWithDrawerProps,
+  MSWContainerWithDrawerProps,
+};
+
 export { default as Dialog } from './components/Dialog';
-export { default as Drawer } from './components/Drawer';
-export { default as Dropdown } from './components/Dropdown';
+
+import Drawer, { DrawerProps, DrawerItemProps } from './components/Drawer';
+export { Drawer, DrawerProps, DrawerItemProps };
+
+import Dropdown, { DropdownItem } from './components/Dropdown';
+export { Dropdown, DropdownItem };
+
 export { default as FormTemplate } from './components/FormTemplate';
-export { default as HeaderAccount } from './components/HeaderAccount';
+
+import HeaderAccount, { HeaderAccountProps } from './components/HeaderAccount';
+export { HeaderAccount, HeaderAccountProps };
+
 export { default as Image } from './components/Image';
 export { default as Link } from './components/Link';
-export { default as Navbar } from './components/Navbar';
+
+import Navbar, { NavbarProps } from './components/Navbar';
+export { Navbar, NavbarProps };
+
 export { default as Notifications } from './components/Notifications';
 export { default as RadioGroup } from './components/RadioGroup';
 export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
-export { default as Table } from './components/Table';
+
+import Table, { MSWTableStyles } from './components/Table';
+export { Table, MSWTableStyles };
+
 export { default as Text } from './components/Text';
 export { default as TextField } from './components/TextField';
 export { default as SimpleForm } from './components/SimpleForm';

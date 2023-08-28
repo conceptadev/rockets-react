@@ -8,14 +8,17 @@ import Navbar, { NavbarProps } from '../Navbar';
 import { TypographyProps } from '@mui/material/Typography';
 import { TextProps } from 'interfaces';
 
-type Props = {
+export type ContainerWithDrawerProps = {
   children: ReactNode;
   currentId?: string;
-  logo?: string;
+  logo?: DrawerProps['logo'];
   drawerTextProps?: TextProps;
   drawerItems: DrawerItemProps[];
   drawerHorizontal?: boolean;
   drawerBackgroundColor?: DrawerProps['backgroundColor'];
+  drawerCustomToggle?: DrawerProps['customToggle'];
+  drawerCollapsedWidth?: DrawerProps['collapsedWidth'];
+  drawerExpandedWidth?: DrawerProps['expandedWidth'];
   collapsed?: boolean;
   collapsable?: boolean;
   iconColor?: DrawerItemProps['iconColor'];
@@ -36,7 +39,7 @@ type Props = {
   customNavbar?: (toggleMobileDrawer: () => void) => ReactNode;
 };
 
-const ContainerWithDrawer: FC<Props> = ({
+const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
   children,
   currentId,
   logo,
@@ -44,6 +47,7 @@ const ContainerWithDrawer: FC<Props> = ({
   drawerItems,
   drawerHorizontal,
   drawerBackgroundColor,
+  drawerCustomToggle,
   collapsed,
   collapsable,
   iconColor,
@@ -58,6 +62,8 @@ const ContainerWithDrawer: FC<Props> = ({
   headerSx,
   backgroundColor,
   customNavbar,
+  drawerCollapsedWidth,
+  drawerExpandedWidth,
 }) => {
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
@@ -70,7 +76,6 @@ const ContainerWithDrawer: FC<Props> = ({
       <Drawer
         items={drawerItems}
         currentId={currentId}
-        toggleMobileDrawer={toggleMobileDrawer}
         mobileIsOpen={mobileIsOpen}
         logo={logo}
         textProps={drawerTextProps}
@@ -80,6 +85,9 @@ const ContainerWithDrawer: FC<Props> = ({
         backgroundColor={drawerBackgroundColor}
         iconColor={iconColor}
         activeIconColor={activeIconColor}
+        customToggle={drawerCustomToggle}
+        collapsedWidth={drawerCollapsedWidth}
+        expandedWidth={drawerExpandedWidth}
       />
 
       <Box

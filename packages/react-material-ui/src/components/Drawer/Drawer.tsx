@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect } from 'react';
+import React, { FC, useState, useCallback, useEffect, ReactNode } from 'react';
 import { StyledDrawer, StyledDrawerProps } from './Styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -14,9 +14,9 @@ import { SxProps, Theme } from '@mui/material/styles';
 export type DrawerProps = {
   items: DrawerItemProps[];
   currentId?: string;
-  toggleMobileDrawer: () => void;
+  customToggle?: (toggleDrawer: () => void, collapsed?: boolean) => ReactNode;
   mobileIsOpen: boolean;
-  logo?: string;
+  logo?: string | ReactNode | ((collapsed?: boolean) => ReactNode);
   textProps?: TextProps;
   sx?: StyledDrawerProps['sx'];
   buttonSx?: SxProps<Theme>;
@@ -26,6 +26,8 @@ export type DrawerProps = {
   backgroundColor?: StyledDrawerProps['backgroundColor'];
   iconColor?: DrawerItemProps['iconColor'];
   activeIconColor?: DrawerItemProps['activeIconColor'];
+  collapsedWidth?: StyledDrawerProps['collapsedWidth'];
+  expandedWidth?: StyledDrawerProps['expandedWidth'];
 };
 
 const Drawer: FC<DrawerProps> = (props) => {
@@ -33,7 +35,7 @@ const Drawer: FC<DrawerProps> = (props) => {
     items,
     currentId,
     logo,
-    toggleMobileDrawer,
+    customToggle,
     mobileIsOpen,
     textProps,
     sx,
@@ -44,8 +46,9 @@ const Drawer: FC<DrawerProps> = (props) => {
     backgroundColor,
     iconColor,
     activeIconColor,
+    collapsedWidth,
+    expandedWidth,
   } = props;
-
   const [_collapsed, _setCollapsed] = useState<boolean>(collapsed);
 
   useEffect(() => {
@@ -56,9 +59,16 @@ const Drawer: FC<DrawerProps> = (props) => {
     _setCollapsed((prev) => !prev);
   };
 
+  const renderLogo = useCallback(() => {
+    if (typeof logo === 'string') return <Image src={logo} alt="Logo" />;
+    if (typeof logo === 'function') return logo(_collapsed);
+
+    return logo;
+  }, [logo, _collapsed]);
+
   const drawerContent = useCallback(
     (hideToggle?: boolean) => (
-      <Box display="flex" flexDirection="column" sx={sx}>
+      <Box display="flex" flexDirection="column" sx={sx} flex={1}>
         <Toolbar
           sx={{
             display: 'flex',
@@ -67,11 +77,21 @@ const Drawer: FC<DrawerProps> = (props) => {
             p: '20px 16px 17px !important',
           }}
         >
-          {logo && <Image src={logo} alt="Logo" />}
+          {renderLogo()}
         </Toolbar>
 
         {items.map((item, i) => {
-          if (item.component) return item.component;
+          if (item.component)
+            return (
+              <Box onClick={item.onClick}>
+                {typeof item.component === 'function'
+                  ? item.component(
+                      !!currentId && item.id === currentId,
+                      _collapsed,
+                    )
+                  : item.component}
+              </Box>
+            );
 
           return (
             <DrawerItem
@@ -88,9 +108,15 @@ const Drawer: FC<DrawerProps> = (props) => {
           );
         })}
 
-        {!hideToggle && collapsable && (
+        {!hideToggle &&
+          collapsable &&
+          !!customToggle &&
+          customToggle(toggleDrawer, _collapsed)}
+
+        {!hideToggle && collapsable && !customToggle && (
           <Toolbar
             sx={{
+              marginTop: 'auto',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
@@ -108,13 +134,11 @@ const Drawer: FC<DrawerProps> = (props) => {
     ),
     [_collapsed, mobileIsOpen],
   );
-
   return (
     <>
       <StyledDrawer
         variant="temporary"
         open={mobileIsOpen}
-        onClose={toggleMobileDrawer}
         ModalProps={{
           keepMounted: true,
         }}
@@ -126,6 +150,8 @@ const Drawer: FC<DrawerProps> = (props) => {
         }}
         horizontal={horizontal}
         backgroundColor={backgroundColor}
+        collapsedWidth={collapsedWidth}
+        expandedWidth={expandedWidth}
       >
         {drawerContent(true)}
       </StyledDrawer>
@@ -140,6 +166,8 @@ const Drawer: FC<DrawerProps> = (props) => {
         open={!_collapsed}
         horizontal={horizontal}
         backgroundColor={backgroundColor}
+        collapsedWidth={collapsedWidth}
+        expandedWidth={expandedWidth}
       >
         {drawerContent()}
       </StyledDrawer>
