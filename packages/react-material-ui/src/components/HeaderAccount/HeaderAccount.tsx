@@ -1,19 +1,25 @@
-import React, { FC } from 'react';
+import React, { FC, useState, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Text from '../Text';
 import Avatar from '../Avatar';
 import { TextProps } from 'interfaces';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
 
-type Props = {
+export type HeaderAccountProps = {
   avatar?: string;
   avatarSize?: number;
-  text: string;
-  subText: string;
+  text?: string;
+  subText?: string;
   onClick?: () => void;
   textProps?: TextProps;
+  subTextProps?: TextProps;
+  iconColor?: string;
+  menuOptions?: (handleClose: () => void) => ReactNode;
 };
 
-const HeaderAccount: FC<Props> = ({
+const HeaderAccount: FC<HeaderAccountProps> = ({
   avatar,
   avatarSize = 36,
   text,
@@ -24,15 +30,59 @@ const HeaderAccount: FC<Props> = ({
     fontWeight: 500,
     color: 'text.primary',
   },
-}) => (
-  <Box onClick={onClick} display="flex">
-    {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
+  subTextProps = {
+    fontSize: 12,
+    lineHeight: '10px',
+    fontWeight: 500,
+    color: 'text.secondary',
+  },
+  iconColor = 'text.primary',
+  menuOptions,
+}) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleOpenMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    <Box display="flex" flexDirection="column">
-      <Text {...textProps}>{text}</Text>
-      <Text {...textProps}>{subText}</Text>
+  return (
+    <Box display="flex">
+      <Button
+        variant="text"
+        aria-controls={open ? 'basic-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+        onClick={onClick || handleOpenMenuClick}
+        sx={{ textTransform: 'none', textAlign: 'left' }}
+      >
+        {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
+
+        <Box display="flex" flexDirection="column">
+          <Box display="flex">
+            <Text {...textProps}>{text}</Text>{' '}
+            <ExpandMore sx={{ display: 'inline', color: iconColor }} />
+          </Box>
+          <Text {...subTextProps}>{subText}</Text>
+        </Box>
+      </Button>
+      {menuOptions && (
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          {menuOptions(handleClose)}
+        </Menu>
+      )}
     </Box>
-  </Box>
-);
+  );
+};
 
 export default HeaderAccount;

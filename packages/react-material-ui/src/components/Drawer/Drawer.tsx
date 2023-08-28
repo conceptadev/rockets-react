@@ -1,5 +1,5 @@
-import React, { FC, useState, useCallback } from 'react';
-import { Drawer as CustomDrawer } from './Styles';
+import React, { FC, useState, useCallback, useEffect } from 'react';
+import { StyledDrawer, StyledDrawerProps } from './Styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
@@ -9,59 +9,86 @@ import Image from '../Image';
 import Text from '../Text';
 import Box from '@mui/material/Box';
 import { TextProps } from 'interfaces';
+import { SxProps, Theme } from '@mui/material/styles';
 
-type Props = {
+export type DrawerProps = {
   items: DrawerItemProps[];
   currentId?: string;
   toggleMobileDrawer: () => void;
   mobileIsOpen: boolean;
   logo?: string;
   textProps?: TextProps;
+  sx?: StyledDrawerProps['sx'];
+  buttonSx?: SxProps<Theme>;
+  horizontal?: boolean;
+  collapsable?: boolean;
+  collapsed?: boolean;
+  backgroundColor?: StyledDrawerProps['backgroundColor'];
+  iconColor?: DrawerItemProps['iconColor'];
+  activeIconColor?: DrawerItemProps['activeIconColor'];
 };
 
-const Drawer: FC<Props> = (props) => {
+const Drawer: FC<DrawerProps> = (props) => {
   const {
     items,
     currentId,
     logo,
     toggleMobileDrawer,
     mobileIsOpen,
-    textProps = {
-      fontSize: 16,
-      fontWeight: 400,
-    },
+    textProps,
+    sx,
+    buttonSx,
+    horizontal,
+    collapsable = true,
+    collapsed = false,
+    backgroundColor,
+    iconColor,
+    activeIconColor,
   } = props;
 
-  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [_collapsed, _setCollapsed] = useState<boolean>(collapsed);
+
+  useEffect(() => {
+    _setCollapsed(collapsed);
+  }, [collapsed]);
 
   const toggleDrawer = () => {
-    setCollapsed((prev) => !prev);
+    _setCollapsed((prev) => !prev);
   };
 
-  const drawer = useCallback(
+  const drawerContent = useCallback(
     (hideToggle?: boolean) => (
-      <Box display="flex" flexDirection="column">
+      <Box display="flex" flexDirection="column" sx={sx}>
         <Toolbar
           sx={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: horizontal ? 'start' : 'center',
             p: '20px 16px 17px !important',
           }}
         >
           {logo && <Image src={logo} alt="Logo" />}
         </Toolbar>
 
-        {items.map((item) => (
-          <DrawerItem
-            key={item.id}
-            {...item}
-            collapsed={!mobileIsOpen && collapsed}
-            active={currentId && item.id === currentId}
-            textProps={textProps}
-          />
-        ))}
+        {items.map((item, i) => {
+          if (item.component) return item.component;
 
-        {!hideToggle && (
+          return (
+            <DrawerItem
+              key={item.id || i}
+              {...item}
+              collapsed={!mobileIsOpen && _collapsed}
+              active={!!currentId && item.id === currentId}
+              textProps={textProps}
+              sx={buttonSx}
+              horizontal={horizontal}
+              iconColor={iconColor}
+              activeIconColor={activeIconColor}
+            />
+          );
+        })}
+
+        {!hideToggle && collapsable && (
           <Toolbar
             sx={{
               display: 'flex',
@@ -72,19 +99,19 @@ const Drawer: FC<Props> = (props) => {
           >
             <IconButton onClick={toggleDrawer}>
               <Text color="primary.contrastText">
-                {collapsed ? <ChevronRight /> : <ChevronLeft />}
+                {_collapsed ? <ChevronRight /> : <ChevronLeft />}
               </Text>
             </IconButton>
           </Toolbar>
         )}
       </Box>
     ),
-    [collapsed, mobileIsOpen],
+    [_collapsed, mobileIsOpen],
   );
 
   return (
     <>
-      <CustomDrawer
+      <StyledDrawer
         variant="temporary"
         open={mobileIsOpen}
         onClose={toggleMobileDrawer}
@@ -97,10 +124,12 @@ const Drawer: FC<Props> = (props) => {
             boxSizing: 'border-box',
           },
         }}
+        horizontal={horizontal}
+        backgroundColor={backgroundColor}
       >
-        {drawer(true)}
-      </CustomDrawer>
-      <CustomDrawer
+        {drawerContent(true)}
+      </StyledDrawer>
+      <StyledDrawer
         variant="permanent"
         sx={{
           display: { xs: 'none', sm: 'block' },
@@ -108,10 +137,12 @@ const Drawer: FC<Props> = (props) => {
             boxSizing: 'border-box',
           },
         }}
-        open={!collapsed}
+        open={!_collapsed}
+        horizontal={horizontal}
+        backgroundColor={backgroundColor}
       >
-        {drawer()}
-      </CustomDrawer>
+        {drawerContent()}
+      </StyledDrawer>
     </>
   );
 };
