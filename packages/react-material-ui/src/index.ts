@@ -11,6 +11,7 @@ export { default as Link } from './components/Link';
 export { default as Navbar } from './components/Navbar';
 export { default as Notifications } from './components/Notifications';
 export { default as RadioGroup } from './components/RadioGroup';
+export { default as SideModal } from './components/SideModal';
 export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
 export { default as Table } from './components/Table';
