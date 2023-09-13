@@ -4,6 +4,7 @@ export interface RequestParams {
   body?: any;
   headers?: any;
   queryParams?: any;
+  signal?: AbortSignal;
 }
 
 export interface HttpBaseConfigs {

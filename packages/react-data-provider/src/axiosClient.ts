@@ -21,6 +21,7 @@ const axiosClient: HttpClient = {
         url: configs.uri,
         data: configs.body,
         params: configs.queryParams,
+        signal: configs.signal,
       })
       .then((response) => {
         const { config, data, headers, status } = response;
