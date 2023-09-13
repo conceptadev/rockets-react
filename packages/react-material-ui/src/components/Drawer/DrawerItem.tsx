@@ -1,17 +1,18 @@
 import React, { FC } from 'react';
-import { DrawerButton } from './Styles';
+import { DrawerButton, DrawerButtonProps } from './Styles';
 import Text from '../Text';
 import { TextProps } from 'interfaces';
 
 export type DrawerItemProps = {
-  id: string;
-  icon?: React.ReactNode;
-  text: string;
-  active?: boolean;
-  collapsed?: boolean;
+  id?: string;
+  component?:
+    | React.ReactNode
+    | ((active?: boolean, collapsed?: boolean) => React.ReactNode);
+  icon?: React.ReactNode | ((active: boolean) => React.ReactNode);
+  text?: string;
   onClick?: () => void;
   textProps?: TextProps;
-};
+} & DrawerButtonProps;
 
 const DrawerItem: FC<DrawerItemProps> = (props) => {
   const {
@@ -21,10 +22,14 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
     collapsed,
     onClick,
     textProps = {
-      fontSize: 14,
+      fontSize: 12,
       fontWeight: 400,
       color: 'common.white',
     },
+    sx,
+    horizontal,
+    iconColor,
+    activeIconColor,
   } = props;
 
   const handleClick = () => {
@@ -32,9 +37,17 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
   };
 
   return (
-    <DrawerButton onClick={handleClick} active={active} collapsed={collapsed}>
-      {icon}
-      <Text {...textProps}>{text}</Text>
+    <DrawerButton
+      active={active}
+      collapsed={collapsed}
+      onClick={handleClick}
+      sx={sx}
+      horizontal={horizontal}
+      iconColor={iconColor}
+      activeIconColor={activeIconColor}
+    >
+      {typeof icon === 'function' ? icon(!!active) : icon}
+      {text && <Text {...textProps}>{text}</Text>}
     </DrawerButton>
   );
 };
