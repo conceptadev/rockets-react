@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useMemo } from 'react';
+import React, { FC, ReactNode, useEffect, useMemo } from 'react';
 import { TableProps as MuiTableProps } from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +8,6 @@ import TablePagination, {
 } from '@mui/material/TablePagination';
 import Pagination, { PaginationProps } from '@mui/material/Pagination';
 import Checkbox from '@mui/material/Checkbox';
-
 import TableRow from '@mui/material/TableRow';
 import { Table, TableProps as TableStylesProps } from './Styles';
 import Text from '../Text';
@@ -18,6 +17,7 @@ import TableToolbar from './TableToolbar';
 import TableHeaders from './TableHeaders';
 import TableOptions from './TableOptions';
 import useTheme from '@mui/material/styles/useTheme';
+import { TableProps as TableInputProps } from './useTable';
 
 export type HeadersProps = {
   disablePadding?: boolean;
@@ -59,8 +59,21 @@ export type SimpleOptionButton = {
   icon?: ReactNode;
 };
 
+export type Order = 'asc' | 'desc';
+
 export type TableProps = {
   rows: RowsProps[];
+  count?: TableInputProps['count'];
+  total?: TableInputProps['total'];
+  page?: TableInputProps['page'];
+  pageCount?: TableInputProps['pageCount'];
+  rowsPerPage?: TableInputProps['rowsPerPage'];
+  order?: Order;
+  orderBy?: TableInputProps['orderBy'];
+  setPage?: TableInputProps['setPage'];
+  setRowsPerPage?: TableInputProps['setRowsPerPage'];
+  setOrder?: TableInputProps['setOrder'];
+  setOrderBy?: TableInputProps['setOrderBy'];
   headers: HeadersProps[];
   hasCheckboxes?: boolean;
   hasOptions?: boolean;
@@ -82,10 +95,19 @@ export type TableProps = {
   paginationStyles?: TablePaginationProps['sx'] | PaginationProps['sx'];
 };
 
-export type Order = 'asc' | 'desc';
-
 const TableComponent: FC<TableProps> = ({
   rows,
+  count,
+  total,
+  page,
+  pageCount,
+  rowsPerPage,
+  order,
+  orderBy,
+  setPage,
+  setRowsPerPage,
+  setOrder,
+  setOrderBy,
   headers,
   hasCheckboxes,
   hasOptions,
@@ -104,19 +126,24 @@ const TableComponent: FC<TableProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<string>('id');
+  const [_order, _setOrder] = React.useState<TableInputProps['order']>(
+    order || 'asc',
+  );
+  const [_orderBy, _setOrderBy] = React.useState<string>(orderBy || 'id');
+  const [_page, _setPage] = React.useState(page || 1);
+  const [_rowsPerPage, _setRowsPerPage] = React.useState(rowsPerPage || 5);
   const [selected, setSelected] = React.useState<RowsProps[]>([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
     property: string,
   ) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+    const isAsc = _orderBy === property && _order === 'asc';
+    _setOrder(isAsc ? 'desc' : 'asc');
+    setOrder?.(isAsc ? 'desc' : 'asc');
+    _setOrderBy(property);
+    setOrderBy?.(property);
+    handleChangePage('', 1);
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,15 +176,34 @@ const TableComponent: FC<TableProps> = ({
     setSelected(newSelected);
   };
 
+  useEffect(() => {
+    if (page) _setPage(page + 1);
+  }, [page]);
+
+  useEffect(() => {
+    if (rowsPerPage) _setRowsPerPage(rowsPerPage);
+  }, [rowsPerPage]);
+
+  useEffect(() => {
+    if (order) _setOrder(order);
+  }, [order]);
+
+  useEffect(() => {
+    if (orderBy) _setOrderBy(orderBy);
+  }, [orderBy]);
+
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+    _setPage(newPage);
+    setPage?.(newPage);
   };
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    _setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage?.(parseInt(event.target.value, 10));
+    _setPage(1);
+    setPage?.(1);
   };
 
   const isSelected = (id: string) =>
@@ -165,7 +211,7 @@ const TableComponent: FC<TableProps> = ({
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    _page - 1 > 0 ? Math.max(0, _page * _rowsPerPage - rows?.length) : 0;
 
   const getCellData = (cell: CustomTableCell | string | number) => {
     if (typeof cell === 'number' || typeof cell === 'string') {
@@ -181,12 +227,10 @@ const TableComponent: FC<TableProps> = ({
     }
   };
 
-  const renderRowCells = (row: RowsProps) => {
-    return Object.keys(row).map((key) => {
-      if (key === 'id') return;
-      return <TableCell key={key}>{getCellData(row[key])}</TableCell>;
+  const renderRowCells = (row: RowsProps) =>
+    headers.map((hd) => {
+      return <TableCell key={hd.id}>{getCellData(row[hd.id])}</TableCell>;
     });
-  };
 
   const renderToolbar = useMemo(() => {
     if (typeof customToolbarActionButtons === 'function') {
@@ -235,20 +279,18 @@ const TableComponent: FC<TableProps> = ({
           >
             <TableHeaders
               numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
+              order={_order}
+              orderBy={_orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={count || rows?.length}
               headers={headers}
               hasCheckboxes={hasCheckboxes}
               hasOptions={hasOptions}
             />
             <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .sort((a, b) => sortTable(a, b, order, orderBy))
-                .map((row, index) => {
+              {typeof page === 'number' &&
+                rows?.map((row, index) => {
                   const isItemSelected = isSelected(row.id);
                   const labelId = `table-checkbox-${index}`;
 
@@ -289,7 +331,55 @@ const TableComponent: FC<TableProps> = ({
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
+              {typeof page === 'undefined' &&
+                rows
+                  .slice(
+                    (_page - 1) * _rowsPerPage,
+                    (_page - 1) * _rowsPerPage + _rowsPerPage,
+                  )
+                  .sort((a, b) => sortTable(a, b, _order, _orderBy))
+                  .map((row, index) => {
+                    const isItemSelected = isSelected(row.id);
+                    const labelId = `table-checkbox-${index}`;
+
+                    return (
+                      <TableRow
+                        hover={hover}
+                        onClick={(event) => handleClick(event, row)}
+                        role={hasCheckboxes ? 'checkbox' : ''}
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.id}
+                        selected={isItemSelected}
+                      >
+                        {hasCheckboxes && (
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              color="primary"
+                              checked={isItemSelected}
+                              inputProps={{
+                                'aria-labelledby': labelId,
+                              }}
+                              onClick={(event) => handleClick(event, row)}
+                            />
+                          </TableCell>
+                        )}
+
+                        {renderRowCells(row)}
+
+                        {hasOptions && (
+                          <TableCell>
+                            <TableOptions
+                              row={row}
+                              customRowOptions={customRowOptions}
+                              toggleDirection={toggleDirection}
+                            />
+                          </TableCell>
+                        )}
+                      </TableRow>
+                    );
+                  })}
+              {typeof page === 'undefined' && emptyRows > 0 && (
                 <TableRow
                   style={{
                     height: 53 * emptyRows,
@@ -305,10 +395,12 @@ const TableComponent: FC<TableProps> = ({
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
+            count={total || rows?.length || 0}
+            rowsPerPage={rowsPerPage || _rowsPerPage}
+            page={_page ? _page - 1 : 0}
+            onPageChange={(event: unknown, page: number) =>
+              handleChangePage(event, page + 1)
+            }
             onRowsPerPageChange={handleChangeRowsPerPage}
             sx={{
               ...(variant === 'outlined' && {
@@ -329,11 +421,13 @@ const TableComponent: FC<TableProps> = ({
         {paginationVariant === 'numbers' && (
           <Box display="flex" justifyContent="center">
             <Pagination
-              count={Math.floor(rows.length / 5) + 1}
-              onChange={(event: unknown, page: number) =>
-                handleChangePage(event, page - 1)
+              count={
+                pageCount ||
+                (rows?.length && Math.floor(rows?.length / 5) + 1) ||
+                0
               }
-              page={page + 1}
+              onChange={handleChangePage}
+              page={_page}
               sx={paginationStyles}
             />
           </Box>
