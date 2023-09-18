@@ -18,20 +18,23 @@ export const AuthProvider: React.FC<PropsWithChildren<unknown>> = ({
 }) => {
   const { post } = useDataProvider();
 
-  const [user, setUser] = useState<string>();
+  const [user, setUser] = useState<unknown>();
+  const [accessToken, setAccessToken] = useState<string>();
+  const [refreshToken, setRefreshToken] = useState<string>();
   const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const authLogin = (loginData: LoginParams) =>
     post({
-      uri: '/auth/login',
+      uri: '/auth/signin',
       body: loginData,
     });
 
   const { execute } = useQuery(authLogin, false, {
     onSuccess: (data) => {
       if (data) {
-        localStorage.setItem('access_token', data['access_token']);
-        setUser('USER');
+        setAccessToken(data.accessToken);
+        setRefreshToken(data.refreshToken);
+        localStorage.setItem('accessToken', data.accessToken);
       }
     },
     onError: (error: Error) => {
@@ -61,11 +64,21 @@ export const AuthProvider: React.FC<PropsWithChildren<unknown>> = ({
   };
 
   const doLogout = async () => {
-    localStorage.removeItem('access_token');
+    localStorage.removeItem('accessToken');
   };
 
   return (
-    <AuthContext.Provider value={{ user, doLogin, doLogout, isFetching }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        doLogin,
+        doLogout,
+        isFetching,
+        accessToken,
+        refreshToken,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
