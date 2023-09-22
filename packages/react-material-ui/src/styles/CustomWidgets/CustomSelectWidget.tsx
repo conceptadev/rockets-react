@@ -1,7 +1,5 @@
 import React, { FC, ChangeEvent } from 'react';
 import Select from '../../components/Select';
-// import { processSelectValue, WidgetProps } from '@rjsf/utils';
-// import { WidgetProps } from '@rjsf/utils';
 import {
   ariaDescribedByIds,
   enumOptionsIndexForValue,
