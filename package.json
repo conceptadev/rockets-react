@@ -57,5 +57,9 @@
     "changelog:minor": "standard-version --release-as minor",
     "changelog:patch": "standard-version --release-as patch",
     "changelog:major": "standard-version --release-as major"
+  },
+  "resolutions": {
+    "@types/react": "18.2.0",
+    "@types/react-dom": "18.2.0"
   }
 }
