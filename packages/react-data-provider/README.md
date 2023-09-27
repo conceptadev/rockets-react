@@ -41,10 +41,10 @@ root.render(
 );
 ```
 
-- Or add the variable `REACT_APP_API_URL` to your .env file
+- Or add the variable `NEXT_PUBLIC_API_URL` to your .env file
 
 ```typescript
-REACT_APP_API_URL="[YOUR API BASE URL]
+NEXT_PUBLIC_API_URL="[YOUR API BASE URL]
 ```
 
 If you apply both methods, Data Provider will use the url provider to `<ClientProvider>`

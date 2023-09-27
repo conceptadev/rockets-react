@@ -18,7 +18,7 @@ When building your Auth system, you need to remember these!
 
 ### Make sure you configured correctly the DataProvider before using the auth provider
 
-- Add your baseUrl with the \<ClientProvider> or via ENV file with a variable named REACT_APP_API_URL.
+- Add your baseUrl with the \<ClientProvider> or via ENV file with a variable named NEXT_PUBLIC_API_URL.
 
 ## Examples
 
