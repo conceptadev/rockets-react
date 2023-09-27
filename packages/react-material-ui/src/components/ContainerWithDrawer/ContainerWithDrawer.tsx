@@ -77,6 +77,7 @@ const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
         items={drawerItems}
         currentId={currentId}
         mobileIsOpen={mobileIsOpen}
+        onMobileClose={toggleMobileDrawer}
         logo={logo}
         textProps={drawerTextProps}
         horizontal={drawerHorizontal}
