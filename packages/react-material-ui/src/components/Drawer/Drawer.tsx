@@ -15,7 +15,8 @@ export type DrawerProps = {
   items: DrawerItemProps[];
   currentId?: string;
   customToggle?: (toggleDrawer: () => void, collapsed?: boolean) => ReactNode;
-  mobileIsOpen: boolean;
+  mobileIsOpen?: boolean;
+  onMobileClose?: () => void;
   logo?: string | ReactNode | ((collapsed?: boolean) => ReactNode);
   textProps?: TextProps;
   sx?: StyledDrawerProps['sx'];
@@ -37,6 +38,7 @@ const Drawer: FC<DrawerProps> = (props) => {
     logo,
     customToggle,
     mobileIsOpen,
+    onMobileClose,
     textProps,
     sx,
     buttonSx,
@@ -152,6 +154,7 @@ const Drawer: FC<DrawerProps> = (props) => {
         backgroundColor={backgroundColor}
         collapsedWidth={collapsedWidth}
         expandedWidth={expandedWidth}
+        onClose={onMobileClose}
       >
         {drawerContent(true)}
       </StyledDrawer>
