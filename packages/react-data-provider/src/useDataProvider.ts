@@ -27,7 +27,7 @@ const useDataProvider = () => {
 
   client.applyMiddleware({
     getAccessToken: () => {
-      const accessToken = localStorage.getItem('access_token');
+      const accessToken = localStorage.getItem('accessToken');
       if (accessToken) {
         return accessToken;
       } else {
