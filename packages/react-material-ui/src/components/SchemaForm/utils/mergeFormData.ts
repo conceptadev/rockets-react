@@ -1,9 +1,9 @@
 import { JSONSchema7 } from 'json-schema';
-import { RocketsFormProps } from '../RocketsForm';
+import { SchemaFormProps } from '../SchemaForm';
 
 export function mergeFormData(
   schema: JSONSchema7,
-  formData: RocketsFormProps['formData'],
+  formData: SchemaFormProps['formData'],
 ) {
   if (schema?.properties && typeof schema.properties === 'object') {
     const mergedFormData = {

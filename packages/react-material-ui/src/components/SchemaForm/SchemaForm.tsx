@@ -15,7 +15,7 @@ import { ArrayFieldTemplate } from 'styles/CustomWidgets';
 import Button from './Button';
 import Title from './Title';
 
-export type RocketsFormProps = Omit<FormProps, 'schema' | 'validator'> & {
+export type SchemaFormProps = Omit<FormProps, 'schema' | 'validator'> & {
   schema: RJSFSchema;
   validator?: FormProps['validator'];
   advancedProperties?: Record<string, AdvancedProperty>;
@@ -25,7 +25,7 @@ export type RocketsFormProps = Omit<FormProps, 'schema' | 'validator'> & {
   advancedPropertiesMapper?: AdvancedPropertiesMapper;
 };
 
-const Form: FC<RocketsFormProps> = ({
+const Form: FC<SchemaFormProps> = ({
   uiSchema,
   schema,
   formData,
@@ -63,5 +63,5 @@ const Form: FC<RocketsFormProps> = ({
   );
 };
 
-const RocketsForm = { Form, Title, Button };
-export default RocketsForm;
+const SchemaForm = { Form, Title, Button };
+export default SchemaForm;
