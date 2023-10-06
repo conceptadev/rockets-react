@@ -1,11 +1,11 @@
 import { JSONSchema7 } from 'json-schema';
 import { UiSchema } from '@rjsf/utils';
-import { Props } from '..';
+import { SchemaFormProps } from '../SchemaForm';
 import { mapWidgetType } from './mapWidgetType';
 
 export function uiSchemaGenerator(
   schema: JSONSchema7,
-  advancedProperties: Props['advancedProperties'],
+  advancedProperties: SchemaFormProps['advancedProperties'],
 ): Record<string, UiSchema> {
   let uiSchema: Record<string, UiSchema> = {};
 
