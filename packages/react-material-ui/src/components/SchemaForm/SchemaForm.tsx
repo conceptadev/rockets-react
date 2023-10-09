@@ -11,7 +11,7 @@ import { mapAdvancedProperties } from './utils/mapAdvancedProperties';
 import { mergeFormData } from './utils/mergeFormData';
 import { uiSchemaGenerator } from './utils/uiSchemaGenerator';
 import { AdvancedPropertiesMapper, AdvancedProperty } from './types';
-import { ArrayFieldTemplate } from 'styles/CustomWidgets';
+import { ArrayFieldTemplate } from '../../styles/CustomWidgets';
 import Button from './Button';
 import Title from './Title';
 
