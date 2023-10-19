@@ -12,7 +12,7 @@ import {
   CustomSelectWidget,
   CustomSwitchWidget,
   CustomTextFieldWidget,
-} from 'styles/CustomWidgets';
+} from '../../../styles/CustomWidgets';
 
 export function mapWidgetType(
   propertyKey: string,

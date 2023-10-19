@@ -1,7 +1,6 @@
 import React, { FC, ReactNode, useState } from 'react';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Toolbar from '@mui/material/Toolbar';
+import Container, { ContainerProps } from '@mui/material/Container';
 import Drawer, { DrawerProps } from '../Drawer';
 import { DrawerItemProps } from '../Drawer/DrawerItem';
 import Navbar, { NavbarProps } from '../Navbar';
@@ -12,6 +11,7 @@ export type ContainerWithDrawerProps = {
   children: ReactNode;
   currentId?: string;
   logo?: DrawerProps['logo'];
+  containerProps?: ContainerProps;
   drawerTextProps?: TextProps;
   drawerItems: DrawerItemProps[];
   drawerHorizontal?: boolean;
@@ -43,6 +43,7 @@ const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
   children,
   currentId,
   logo,
+  containerProps,
   drawerTextProps,
   drawerItems,
   drawerHorizontal,
@@ -123,10 +124,10 @@ const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
             mt: 4,
             mb: 4,
           }}
+          {...containerProps}
         >
           {children}
         </Container>
-        <Toolbar />
       </Box>
     </Box>
   );

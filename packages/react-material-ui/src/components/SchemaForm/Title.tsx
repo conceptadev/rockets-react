@@ -1,4 +1,4 @@
-import Text from 'components/Text';
+import Text from '../Text';
 import React, { PropsWithChildren } from 'react';
 
 const Title = ({ children }: PropsWithChildren) => (
