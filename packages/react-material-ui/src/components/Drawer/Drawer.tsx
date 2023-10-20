@@ -88,7 +88,7 @@ const Drawer: FC<DrawerProps> = (props) => {
               <Box onClick={item.onClick}>
                 {typeof item.component === 'function'
                   ? item.component(
-                      !!currentId && item.id === currentId,
+                      !!currentId && currentId.startsWith(item.id),
                       _collapsed,
                     )
                   : item.component}
@@ -100,7 +100,7 @@ const Drawer: FC<DrawerProps> = (props) => {
               key={item.id || i}
               {...item}
               collapsed={!mobileIsOpen && _collapsed}
-              active={!!currentId && item.id === currentId}
+              active={!!currentId && currentId.startsWith(item.id)}
               textProps={textProps}
               sx={buttonSx}
               horizontal={horizontal}

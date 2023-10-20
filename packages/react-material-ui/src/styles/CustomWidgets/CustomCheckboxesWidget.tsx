@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
-import Checkbox from '../../components/Checkbox';
 import { WidgetProps } from '@rjsf/utils';
+import Checkbox from '../../components/Checkbox';
+import { Grid, Typography } from '@mui/material';
 
 const CustomCheckboxesWidget: FC<WidgetProps> = (props) => {
   const {
     label,
+    uiSchema,
     id,
     disabled,
     options,
@@ -20,7 +22,9 @@ const CustomCheckboxesWidget: FC<WidgetProps> = (props) => {
     const at = all.indexOf(value);
     const updated = selected.slice(0, at).concat(value, selected.slice(at));
 
-    return updated.sort((a: any, b: any) => all.indexOf(a) > all.indexOf(b));
+    return updated
+      .sort((a: any, b: any) => all.indexOf(a) > all.indexOf(b))
+      .filter((item) => item !== '');
   };
 
   const deselectValue = (value: any, selected: any) => {
@@ -42,31 +46,37 @@ const CustomCheckboxesWidget: FC<WidgetProps> = (props) => {
   return (
     <>
       {label && (
-        <>
+        <Typography>
           {label}
           {required && ' *'}
-        </>
+        </Typography>
       )}
 
-      {(enumOptions as any).map((option: any, index: number) => {
-        const checked = value.indexOf(option.value) !== -1;
+      <Grid
+        display="flex"
+        flexDirection={uiSchema?.['ui:inline'] ? 'row' : 'column'}
+        flexWrap="wrap"
+      >
+        {(enumOptions as any).map((option: any, index: number) => {
+          const checked = value.indexOf(option.value) !== -1;
 
-        const itemDisabled =
-          enumDisabled && (enumDisabled as any).indexOf(option.value) != -1;
+          const itemDisabled =
+            enumDisabled && (enumDisabled as any).indexOf(option.value) != -1;
 
-        return (
-          <Checkbox
-            id={`${id}_${index}`}
-            checked={checked}
-            disabled={disabled || itemDisabled || readonly}
-            autoFocus={autofocus && index === 0}
-            onChange={_onChange(option)}
-            key={index}
-            label={option.label}
-            required={required}
-          />
-        );
-      })}
+          return (
+            <Checkbox
+              id={`${id}_${index}`}
+              checked={checked}
+              disabled={disabled || itemDisabled || readonly}
+              autoFocus={autofocus && index === 0}
+              onChange={_onChange(option)}
+              key={index}
+              label={option.label}
+              required={required}
+            />
+          );
+        })}
+      </Grid>
     </>
   );
 };

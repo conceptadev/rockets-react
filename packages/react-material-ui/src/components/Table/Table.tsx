@@ -2,7 +2,9 @@ import React, { FC, ReactNode, useEffect, useMemo } from 'react';
 import { TableProps as MuiTableProps } from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
+import TableContainer, {
+  TableContainerProps,
+} from '@mui/material/TableContainer';
 import TablePagination, {
   TablePaginationProps,
 } from '@mui/material/TablePagination';
@@ -11,7 +13,7 @@ import Checkbox from '@mui/material/Checkbox';
 import TableRow from '@mui/material/TableRow';
 import { Table, TableProps as TableStylesProps } from './Styles';
 import Text from '../Text';
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import { sortTable } from '../../utils/table';
 import TableToolbar from './TableToolbar';
 import TableHeaders from './TableHeaders';
@@ -63,6 +65,8 @@ export type Order = 'asc' | 'desc';
 
 export type TableProps = {
   rows: RowsProps[];
+  containerProps?: BoxProps;
+  tableContainerProps?: TableContainerProps;
   count?: TableInputProps['count'];
   total?: TableInputProps['total'];
   page?: TableInputProps['page'];
@@ -97,6 +101,8 @@ export type TableProps = {
 
 const TableComponent: FC<TableProps> = ({
   rows,
+  containerProps,
+  tableContainerProps,
   count,
   total,
   page,
@@ -261,12 +267,13 @@ const TableComponent: FC<TableProps> = ({
   }, [customToolbarActionButtons, selected]);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box width="100%" {...containerProps}>
       <>
         {renderToolbar}
 
-        <TableContainer>
+        <TableContainer {...tableContainerProps}>
           <Table
+            stickyHeader
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size="medium"
