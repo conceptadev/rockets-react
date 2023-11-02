@@ -46,9 +46,10 @@ const Form: FC<SchemaFormProps> = ({
         <Box>
           <RJSFForm
             schema={finalSchema}
-            uiSchema={
-              uiSchema ?? uiSchemaGenerator(finalSchema, advancedProperties)
-            }
+            uiSchema={{
+              ...uiSchemaGenerator(finalSchema, advancedProperties),
+              ...uiSchema,
+            }}
             formData={mergeFormData(finalSchema, formData)}
             noHtml5Validate
             showErrorList={false}

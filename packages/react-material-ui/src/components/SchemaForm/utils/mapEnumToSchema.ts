@@ -24,6 +24,8 @@ export function mapEnumToSchema(
         ? enumListItem
         : 'Invalid title';
 
-    return { type, title, enum: [enumListItem] };
+    const value = typeof option === 'object' ? option.value : enumListItem;
+
+    return { type, title, const: value };
   });
 }

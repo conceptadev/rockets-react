@@ -26,6 +26,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
     sx,
     type,
     size,
+    value,
     hiddenLabel,
     options,
     textProps = {
@@ -59,15 +60,19 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
           {required && ' *'}
         </Text>
       )}
+
       <MuiTextField
         {...props}
-        sx={{
-          ...sx,
-          marginTop: '4px',
-          mb: 3,
-          input: { color: 'text.primary' },
-        }}
+        sx={[
+          {
+            marginTop: 0.5,
+            mb: 0,
+            input: { color: 'text.primary' },
+          },
+          ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
         size={size || 'small'}
+        value={value || value === 0 ? value : ''}
         hiddenLabel={label ? true : ishiddenLabel}
         label={''}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
