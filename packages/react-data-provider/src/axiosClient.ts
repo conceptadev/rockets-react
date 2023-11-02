@@ -3,14 +3,25 @@ import {
   HttpBaseConfigs,
   HttpClient,
   HttpMidlewares,
-  RequestParams,
+  PostRequestOptions,
+  GetRequestOptions,
+  PutRequestOptions,
+  PatchRequestOptions,
+  DeleteRequestOptions,
 } from './interfaces';
 
 let axiosInstance: AxiosInstance;
 let defaultConfigs: HttpBaseConfigs;
 
 const axiosClient: HttpClient = {
-  executeRequest: (configs: RequestParams) => {
+  executeRequest: (
+    configs:
+      | PostRequestOptions
+      | GetRequestOptions
+      | PutRequestOptions
+      | PatchRequestOptions
+      | DeleteRequestOptions,
+  ) => {
     if (!axiosInstance) {
       throw 'You need to create a http client instance with default config';
     }
@@ -19,9 +30,9 @@ const axiosClient: HttpClient = {
       .request({
         ...configs,
         url: configs.uri,
-        data: configs.body,
         params: configs.queryParams,
         signal: configs.signal,
+        ...('body' in configs && { data: configs.body }),
       })
       .then((response) => {
         const { config, data, headers, status } = response;
