@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import isEqual from 'lodash/isEqual';
 import { Order } from './Table';
+import { DataProviderRequestProps } from '@concepta/react-data-provider/dist/interfaces';
 
 type BasicType = string | number | boolean;
 
@@ -13,6 +14,8 @@ interface Options {
   order?: Order;
   simpleFilter?: Record<string, BasicType | BasicType[]>;
   search?: string;
+  callbacks?: DataProviderRequestProps;
+  noPagination?: boolean;
 }
 
 export interface TableProps {
@@ -66,7 +69,7 @@ const useTable: UseTableProps = (resource, options) => {
       order: _order,
       orderBy: _orderBy,
     };
-  }, [searchParams]);
+  }, [searchParams, JSON.stringify(options)]);
 
   const createQueryString = (
     name: string,
@@ -154,7 +157,9 @@ const useTable: UseTableProps = (resource, options) => {
     return get({
       uri: resource,
       queryParams: {
-        limit: Number(params.rowsPerPage),
+        ...(!options.noPagination && {
+          limit: Number(params.rowsPerPage),
+        }),
         page: Number(params.page) || 1,
         ...(params?.orderBy && {
           sort: `${params?.orderBy},${params?.order.toUpperCase()}`,
@@ -165,13 +170,18 @@ const useTable: UseTableProps = (resource, options) => {
     });
   };
 
-  const { data, execute, isPending, error } = useQuery(getResource, false);
+  const { data, execute, isPending, error } = useQuery(
+    getResource,
+    false,
+    options?.callbacks,
+  );
 
   return {
     data: data?.data,
     isPending,
     error,
-
+    simpleFilter: params.simpleFilter,
+    search: params.search,
     tableProps: {
       count: data?.data?.length,
       total: data?.total,
