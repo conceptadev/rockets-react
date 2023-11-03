@@ -34,14 +34,14 @@ export type HeadersProps = {
 
 export type CustomTableCell = {
   component?: ReactNode;
-  value?: string;
+  value?: string | undefined;
   title?: string;
   sortableValue?: string | number;
 };
 
 export type RowsProps = {
   id: string;
-  [key: string]: string | number | CustomTableCell;
+  [key: string]: string | number | CustomTableCell | undefined;
 };
 
 export type SelectedRows = {
@@ -232,28 +232,32 @@ const TableComponent: FC<TableProps> = ({
   const emptyRows =
     _page - 1 > 0 ? Math.max(0, _page * _rowsPerPage - rows?.length) : 0;
 
-  const getCellData = (cell: CustomTableCell | string | number) => {
-    if (typeof cell === 'number' || typeof cell === 'string') {
+  const getCellData = (cell: CustomTableCell | string | number | undefined) => {
+    if (
+      typeof cell === 'number' ||
+      typeof cell === 'string' ||
+      typeof cell === 'undefined'
+    ) {
       return (
         <Text fontSize={14} fontWeight={400} color="text.primary">
-          {cell}
+          {cell ?? ''}
         </Text>
       );
     }
 
-    if ('value' in cell) {
-      if ('title' in cell) {
-        return (
-          <Tooltip title={cell.title}>
-            <span>{cell.value}</span>
-          </Tooltip>
-        );
-      }
-
+    if (!('title' in cell)) {
       return (
         <Text fontSize={14} fontWeight={400} color="text.primary">
-          {cell.value}
+          {cell.value ?? ''}
         </Text>
+      );
+    }
+
+    if ('title' in cell) {
+      return (
+        <Tooltip title={cell.title}>
+          <span>{cell.value ?? ''}</span>
+        </Tooltip>
       );
     }
 
