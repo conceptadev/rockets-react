@@ -7,6 +7,12 @@ import IconButton from '@mui/material/IconButton';
 import Text from '../Text';
 import { Box, BoxProps, TypographyProps } from '@mui/material';
 
+const TEXT_INITIAL_PROPS = {
+  fontSize: 14,
+  fontWeight: 500,
+  color: 'text.primary',
+};
+
 interface TextAreaProps {
   multiline?: boolean;
   rows?: number;
@@ -36,8 +42,6 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const { sx: labelSx, ...restLabelProps } = labelProps;
-
   const togglePassword = () => {
     setShowPassword((prv) => !prv);
   };
@@ -55,24 +59,14 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
   return (
     <Box {...containerProps}>
       {!ishiddenLabel && label && (
-        <Text
-          sx={[
-            {
-              fontSize: 14,
-              fontWeight: 500,
-              color: 'text.primary',
-            },
-            ...(Array.isArray(labelSx) ? labelSx : [labelSx]),
-          ]}
-          textAlign="left"
-          {...restLabelProps}
-        >
+        <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
           {label}
           {required && ' *'}
         </Text>
       )}
 
       <MuiTextField
+        {...props}
         sx={[
           {
             marginTop: 0.5,
@@ -101,7 +95,6 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
             ),
           }),
         }}
-        {...props}
       />
     </Box>
   );
