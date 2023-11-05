@@ -58,8 +58,9 @@ export interface AsyncFunction {
 export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
   T extends (...args: any) => Promise<infer R> ? R : any;
 
-export interface DataProviderRequestProps {
-  onError?(error: Error): void;
-  onSuccess?(success: AsyncReturnType<any>): void;
-  onFinish?(status: AsyncStatus): void;
+export interface DataProviderRequestOptions {
+  onError?: (error: unknown) => void;
+  onSuccess?: (data: AsyncReturnType<any>) => void;
+  onFinish?: (status: AsyncStatus) => void;
+  formatData?: (data: AsyncReturnType<any>) => any;
 }
