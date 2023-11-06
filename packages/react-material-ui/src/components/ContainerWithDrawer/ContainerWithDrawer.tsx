@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useState } from 'react';
-import Box from '@mui/material/Box';
+import Box, { BoxProps } from '@mui/material/Box';
 import Container, { ContainerProps } from '@mui/material/Container';
 import Drawer, { DrawerProps } from '../Drawer';
 import { DrawerItemProps } from '../Drawer/DrawerItem';
@@ -9,6 +9,7 @@ import { TextProps } from 'interfaces';
 
 export type ContainerWithDrawerProps = {
   children: ReactNode;
+  sx?: BoxProps['sx'];
   currentId?: string;
   logo?: DrawerProps['logo'];
   containerProps?: ContainerProps;
@@ -41,6 +42,7 @@ export type ContainerWithDrawerProps = {
 
 const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
   children,
+  sx,
   currentId,
   logo,
   containerProps,
@@ -94,13 +96,16 @@ const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
 
       <Box
         component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            backgroundColor || theme.palette.background.default,
-          flexGrow: 1,
-          height: '100vh',
-          overflow: 'auto',
-        }}
+        sx={[
+          {
+            backgroundColor: (theme) =>
+              backgroundColor || theme.palette.background.default,
+            flexGrow: 1,
+            height: '100vh',
+            overflow: 'auto',
+          },
+          ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
       >
         {customNavbar ? (
           customNavbar(toggleMobileDrawer)
