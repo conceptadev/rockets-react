@@ -20,23 +20,28 @@ import TableHeaders from './TableHeaders';
 import TableOptions from './TableOptions';
 import useTheme from '@mui/material/styles/useTheme';
 import { TableProps as TableInputProps } from './useTable';
+import { Tooltip } from '@mui/material';
 
 export type HeadersProps = {
   disablePadding?: boolean;
   id: string;
   label: string;
+  width?: number;
   numeric?: boolean;
   textAlign?: 'left' | 'center' | 'right';
+  sortable?: boolean;
 };
 
 export type CustomTableCell = {
+  component?: ReactNode;
+  value?: string | undefined;
+  title?: string;
   sortableValue?: string | number;
-  component: ReactNode;
 };
 
 export type RowsProps = {
   id: string;
-  [key: string]: string | number | CustomTableCell;
+  [key: string]: string | number | CustomTableCell | undefined;
 };
 
 export type SelectedRows = {
@@ -71,6 +76,7 @@ export type TableProps = {
   total?: TableInputProps['total'];
   page?: TableInputProps['page'];
   pageCount?: TableInputProps['pageCount'];
+  rowsPerPageOptions?: TablePaginationProps['rowsPerPageOptions'];
   rowsPerPage?: TableInputProps['rowsPerPage'];
   order?: Order;
   orderBy?: TableInputProps['orderBy'];
@@ -87,16 +93,19 @@ export type TableProps = {
   customRowOptions?:
     | SimpleOptionButton[]
     | (({ row, close }: CustomRowOptionsProps) => ReactNode);
+  noPagination?: boolean;
   variant?: TableStylesProps['variant'];
   paginationVariant?: 'default' | 'numbers';
   toggleDirection?: 'horizontal' | 'vertical';
   hover?: boolean;
+  tableProps?: MuiTableProps;
   tableStyles?: MuiTableProps['sx'];
   tableHeaderRowStyles?: MuiTableProps['sx'];
   tableHeaderCellStyles?: MuiTableProps['sx'];
   tableRowStyles?: MuiTableProps['sx'];
   tableCellStyles?: MuiTableProps['sx'];
   paginationStyles?: TablePaginationProps['sx'] | PaginationProps['sx'];
+  emptyMessage?: string | ReactNode;
 };
 
 const TableComponent: FC<TableProps> = ({
@@ -107,6 +116,7 @@ const TableComponent: FC<TableProps> = ({
   total,
   page,
   pageCount,
+  rowsPerPageOptions = [5, 10, 25],
   rowsPerPage,
   order,
   orderBy,
@@ -120,15 +130,18 @@ const TableComponent: FC<TableProps> = ({
   customToolbarActionButtons,
   customRowOptions,
   variant = 'contained',
+  noPagination = false,
   paginationVariant = 'default',
   toggleDirection = 'horizontal',
   hover = true,
+  tableProps,
   tableStyles,
   tableHeaderRowStyles,
   tableHeaderCellStyles,
   tableRowStyles,
   tableCellStyles,
   paginationStyles,
+  emptyMessage = 'No records found',
 }) => {
   const theme = useTheme();
 
@@ -219,16 +232,36 @@ const TableComponent: FC<TableProps> = ({
   const emptyRows =
     _page - 1 > 0 ? Math.max(0, _page * _rowsPerPage - rows?.length) : 0;
 
-  const getCellData = (cell: CustomTableCell | string | number) => {
-    if (typeof cell === 'number' || typeof cell === 'string') {
+  const getCellData = (cell: CustomTableCell | string | number | undefined) => {
+    if (
+      typeof cell === 'number' ||
+      typeof cell === 'string' ||
+      typeof cell === 'undefined'
+    ) {
       return (
         <Text fontSize={14} fontWeight={400} color="text.primary">
-          {cell}
+          {cell ?? ''}
         </Text>
       );
     }
 
-    if ('component' in cell && typeof cell.sortableValue !== 'undefined') {
+    if (!('title' in cell)) {
+      return (
+        <Text fontSize={14} fontWeight={400} color="text.primary">
+          {cell.value ?? ''}
+        </Text>
+      );
+    }
+
+    if ('title' in cell) {
+      return (
+        <Tooltip title={cell.title}>
+          <span>{cell.value ?? ''}</span>
+        </Tooltip>
+      );
+    }
+
+    if ('component' in cell) {
       return cell.component;
     }
   };
@@ -274,7 +307,14 @@ const TableComponent: FC<TableProps> = ({
         <TableContainer {...tableContainerProps}>
           <Table
             stickyHeader
-            sx={{ minWidth: 750 }}
+            sx={[
+              {
+                minWidth: 750,
+              },
+              ...(Array.isArray(tableProps.sx)
+                ? tableProps.sx
+                : [tableProps.sx]),
+            ]}
             aria-labelledby="tableTitle"
             size="medium"
             variant={variant}
@@ -283,6 +323,7 @@ const TableComponent: FC<TableProps> = ({
             tableHeaderCellStyles={tableHeaderCellStyles}
             tableRowStyles={tableRowStyles}
             tableCellStyles={tableCellStyles}
+            {...tableProps}
           >
             <TableHeaders
               numSelected={selected.length}
@@ -296,6 +337,24 @@ const TableComponent: FC<TableProps> = ({
               hasOptions={hasOptions}
             />
             <TableBody>
+              {!total && !rows?.length && (
+                <>
+                  {typeof emptyMessage === 'string' ? (
+                    <TableRow>
+                      <TableCell
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                        colSpan={headers.length}
+                      >
+                        {emptyMessage}
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    emptyMessage
+                  )}
+                </>
+              )}
               {typeof page === 'number' &&
                 rows?.map((row, index) => {
                   const isItemSelected = isSelected(row.id);
@@ -339,6 +398,7 @@ const TableComponent: FC<TableProps> = ({
                   );
                 })}
               {typeof page === 'undefined' &&
+                !noPagination &&
                 rows
                   .slice(
                     (_page - 1) * _rowsPerPage,
@@ -398,46 +458,50 @@ const TableComponent: FC<TableProps> = ({
             </TableBody>
           </Table>
         </TableContainer>
-        {paginationVariant === 'default' && (
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={total || rows?.length || 0}
-            rowsPerPage={rowsPerPage || _rowsPerPage}
-            page={_page ? _page - 1 : 0}
-            onPageChange={(event: unknown, page: number) =>
-              handleChangePage(event, page + 1)
-            }
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{
-              ...(variant === 'outlined' && {
-                backgroundColor:
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[100]
-                    : theme.palette.grey[800],
-                border: `solid 1px #e5e7eb`,
-                borderTop: 'none',
-                borderBottomLeftRadius: '10px',
-                borderBottomRightRadius: '10px',
-                borderLeftStyle: 'solid',
-                borderRightStyle: 'solid',
-              }),
-            }}
-          />
-        )}
-        {paginationVariant === 'numbers' && (
-          <Box display="flex" justifyContent="center">
-            <Pagination
-              count={
-                pageCount ||
-                (rows?.length && Math.floor(rows?.length / 5) + 1) ||
-                0
-              }
-              onChange={handleChangePage}
-              page={_page}
-              sx={paginationStyles}
-            />
-          </Box>
+        {!noPagination && (
+          <>
+            {paginationVariant === 'default' && (
+              <TablePagination
+                rowsPerPageOptions={rowsPerPageOptions}
+                component="div"
+                count={total || rows?.length || 0}
+                rowsPerPage={rowsPerPage || _rowsPerPage}
+                page={_page ? _page - 1 : 0}
+                onPageChange={(event: unknown, page: number) =>
+                  handleChangePage(event, page + 1)
+                }
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                sx={{
+                  ...(variant === 'outlined' && {
+                    backgroundColor:
+                      theme.palette.mode === 'light'
+                        ? theme.palette.grey[100]
+                        : theme.palette.grey[800],
+                    border: `solid 1px #e5e7eb`,
+                    borderTop: 'none',
+                    borderBottomLeftRadius: '10px',
+                    borderBottomRightRadius: '10px',
+                    borderLeftStyle: 'solid',
+                    borderRightStyle: 'solid',
+                  }),
+                }}
+              />
+            )}
+            {paginationVariant === 'numbers' && (
+              <Box display="flex" justifyContent="center">
+                <Pagination
+                  count={
+                    pageCount ||
+                    (rows?.length && Math.floor(rows?.length / 5) + 1) ||
+                    0
+                  }
+                  onChange={handleChangePage}
+                  page={_page}
+                  sx={paginationStyles}
+                />
+              </Box>
+            )}
+          </>
         )}
       </>
     </Box>
