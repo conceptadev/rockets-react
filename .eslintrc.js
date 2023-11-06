@@ -5,11 +5,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./packages/*/tsconfig.json'],
   },
-  plugins: [
-    'import',
-    'jsdoc',
-    '@typescript-eslint/eslint-plugin'
-  ],
+  plugins: ['import', 'jsdoc', '@typescript-eslint/eslint-plugin'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -32,6 +28,8 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-empty-interface': 'off',
     'no-console': ['error', { allow: ['warn', 'error'] }],
+    'jsdoc/require-param-type': 0,
+    'jsdoc/require-returns-type': 0,
   },
   settings: {
     jsdoc: {

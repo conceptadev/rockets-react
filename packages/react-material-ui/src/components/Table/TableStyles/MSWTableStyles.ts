@@ -4,18 +4,18 @@ import { TableProps } from '../Table';
 
 const MSWTableStyles: Partial<TableProps> = {
   variant: 'clean',
-  hover: false,
-  paginationVariant: 'numbers',
-  tableStyles: {
+  // hover: false,
+  // paginationVariant: 'numbers',
+  /* tableStyles: {
     borderCollapse: 'separate',
     borderSpacing: '0 12px',
-  },
-  tableHeaderCellStyles: {
+  }, */
+  /*  tableHeaderCellStyles: {
     color: '#85a0ad',
     borderBottom: 'none',
     padding: '12px 12px 0 18px',
-  },
-  tableCellStyles: {
+  }, */
+  /* tableCellStyles: {
     backgroundColor: '#fff',
     borderBottom: 'none',
     position: 'relative',
@@ -40,12 +40,12 @@ const MSWTableStyles: Partial<TableProps> = {
       borderTopRightRadius: '10px',
       borderBottomRightRadius: '10px',
     },
-  },
-  tableRowStyles: {
+  }, */
+  /* tableRowStyles: {
     boxShadow: '0px 2px 0px rgba(0, 0, 0, 0.03)',
     borderRadius: '10px',
-  },
-  paginationStyles: {
+  }, */
+  /* paginationStyles: {
     button: {
       color: '#85a0ad',
       '&.Mui-selected': {
@@ -57,7 +57,7 @@ const MSWTableStyles: Partial<TableProps> = {
         },
       },
     },
-  },
+  }, */
 };
 
 export default MSWTableStyles;

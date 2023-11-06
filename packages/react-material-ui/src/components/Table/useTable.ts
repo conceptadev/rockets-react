@@ -2,11 +2,13 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import isEqual from 'lodash/isEqual';
-import { Order } from './Table';
+import { Order, TableQueryStateProps } from './types';
+import { useTableQueryState } from './hooks/useTableQueryState';
+import { getSearchParams } from '../../utils/http';
 
 type BasicType = string | number | boolean;
 
-interface Options {
+interface UseTableOptions {
   rowsPerPage?: number;
   page?: number;
   orderBy?: string;
@@ -15,126 +17,69 @@ interface Options {
   search?: string;
 }
 
-export interface TableProps {
-  count: number;
-  total: number;
-  page: number;
-  pageCount: number;
-  rowsPerPage: number;
-  orderBy: string;
-  order: Order;
-  setPage: (page: TableProps['page']) => void;
-  setRowsPerPage: (rowsPerPage: TableProps['rowsPerPage']) => void;
-  setOrder: (order: TableProps['order']) => void;
-  setOrderBy: (orderBy: TableProps['orderBy']) => void;
-}
-
 export type UseTableProps = (
   resource: string,
-  options?: Options,
+  options?: UseTableOptions,
 ) => {
   data: unknown[];
   isPending: boolean;
   error: unknown;
-  tableProps: TableProps;
+  total: number;
+  pageCount: number;
+  tableQuery: TableQueryStateProps;
+  setTableState: React.Dispatch<React.SetStateAction<TableQueryStateProps>>;
 };
 
+/**
+ * A custom hook for managing table data and state, including pagination, sorting, and filtering.
+ *
+ * @param resource - The resource URI for the table data.
+ * @param {TableOptions} options - Optional configuration options for the table.
+ * @returns {TableHookResult} - An object containing data, state, and functions related to the table.
+ */
 const useTable: UseTableProps = (resource, options) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
   const { get } = useDataProvider();
 
-  const params = useMemo(() => {
-    const params = new URLSearchParams(searchParams); //ts known error fixed here: https://github.com/vercel/next.js/issues/49245
+  const { tableState, setTableState } = useTableQueryState();
 
-    const _rowsPerPage = params.get('rowsPerPage') || options?.rowsPerPage || 5;
-    const _page = params.get('page') || options?.page || 1;
+  const params = useMemo(() => {
     const _simpleFilter =
-      params.get('simpleFilter') ||
-      (options?.simpleFilter && JSON.stringify(options.simpleFilter));
-    const _search = params.get('search') || options?.search;
-    const _order =
-      (params.get('order') as TableProps['order']) || options?.order || 'asc';
-    const _orderBy = params.get('orderBy') || options?.orderBy || '';
+      options?.simpleFilter && JSON.stringify(options.simpleFilter);
+    const _search = options?.search;
 
     return {
-      page: Number(_page),
-      rowsPerPage: Number(_rowsPerPage),
       simpleFilter: _simpleFilter ? JSON.parse(_simpleFilter) : undefined,
       search: _search,
-      order: _order,
-      orderBy: _orderBy,
     };
   }, [searchParams]);
-
-  const createQueryString = (
-    name: string,
-    value: string | undefined | null,
-  ) => {
-    const params = new URLSearchParams(searchParams); // ts known error fixed here: https://github.com/vercel/next.js/issues/49245
-    if (!value) {
-      params.delete(name);
-    } else {
-      params.set(name, value);
-    }
-
-    return params.toString();
-  };
 
   useEffect(() => {
     if (
       options?.simpleFilter &&
       !isEqual(options.simpleFilter, params.simpleFilter)
     ) {
-      router.replace(
-        pathname +
-          '?' +
-          createQueryString(
-            'simpleFilter',
-            JSON.stringify(options.simpleFilter),
-          ),
-      );
+      const newSearchParam = getSearchParams(searchParams, {
+        simpleFilter: JSON.stringify(options.simpleFilter),
+      });
+
+      if (newSearchParam) {
+        router.replace(`${pathname}?${newSearchParam}`);
+      }
     }
   }, [options?.simpleFilter]);
 
   useEffect(() => {
-    if (options?.search && options.search !== params.search) {
-      router.replace(
-        pathname + '?' + createQueryString('search', options.search),
-      );
+    const newSearchParam = getSearchParams(searchParams, {
+      search: options.search,
+    });
+
+    if (newSearchParam) {
+      router.replace(`${pathname}?${newSearchParam}`);
     }
   }, [options?.search]);
-
-  const setRowsPerPage = (rowsPerPage: TableProps['rowsPerPage']) => {
-    if (rowsPerPage != Number(params.rowsPerPage)) {
-      router.replace(
-        pathname + '?' + createQueryString('rowsPerPage', String(rowsPerPage)),
-      );
-    }
-  };
-
-  const setPage = (page: TableProps['page']) => {
-    if (page != Number(params.page)) {
-      router.replace(pathname + '?' + createQueryString('page', String(page)));
-    }
-  };
-
-  const setOrder = (order: TableProps['order']) => {
-    if (order != params.order) {
-      router.replace(
-        pathname + '?' + createQueryString('order', String(order)),
-      );
-    }
-  };
-
-  const setOrderBy = (orderBy: TableProps['orderBy']) => {
-    if (orderBy != params.orderBy) {
-      router.replace(
-        pathname + '?' + createQueryString('orderBy', String(orderBy)),
-      );
-    }
-  };
 
   const simpleFilterQuery = () => {
     if (!params.simpleFilter) return;
@@ -148,16 +93,22 @@ const useTable: UseTableProps = (resource, options) => {
 
   useEffect(() => {
     execute();
-  }, [params]);
+  }, [
+    JSON.stringify(params),
+    JSON.stringify(options),
+    JSON.stringify(tableState),
+  ]);
 
   const getResource = () => {
     return get({
       uri: resource,
       queryParams: {
-        limit: Number(params.rowsPerPage),
-        page: Number(params.page) || 1,
-        ...(params?.orderBy && {
-          sort: `${params?.orderBy},${params?.order.toUpperCase()}`,
+        ...(tableState?.rowsPerPage && {
+          limit: Number(tableState.rowsPerPage),
+        }),
+        page: Number(tableState.page) || 1,
+        ...(tableState?.orderBy && {
+          sort: `${tableState?.orderBy},${tableState?.order.toUpperCase()}`,
         }),
         ...(params?.simpleFilter && { filter: simpleFilterQuery() }),
         ...(params?.search && { s: params?.search }),
@@ -171,20 +122,10 @@ const useTable: UseTableProps = (resource, options) => {
     data: data?.data,
     isPending,
     error,
-
-    tableProps: {
-      count: data?.data?.length,
-      total: data?.total,
-      page: (params.page || 1) - 1,
-      pageCount: data?.pageCount,
-      rowsPerPage: params.rowsPerPage,
-      order: params.order,
-      orderBy: params.orderBy,
-      setPage,
-      setRowsPerPage,
-      setOrder,
-      setOrderBy,
-    },
+    total: data?.total,
+    pageCount: data?.pageCount,
+    tableQuery: tableState,
+    setTableState,
   };
 };
 
