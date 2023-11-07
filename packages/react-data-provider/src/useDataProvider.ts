@@ -4,6 +4,11 @@ import {
   HttpError,
   HttpResponse,
   RequestParams,
+  PostRequestOptions,
+  GetRequestOptions,
+  PutRequestOptions,
+  PatchRequestOptions,
+  DeleteRequestOptions,
 } from './interfaces';
 import { useClient } from './ClientProvider';
 
@@ -71,21 +76,39 @@ const useDataProvider = () => {
     throw err;
   };
 
-  const post = async (requestParams: Omit<RequestParams, 'method'>) => {
+  const post = async (requestParams: PostRequestOptions) => {
     return makeRequest({
       ...requestParams,
       method: 'POST',
     });
   };
 
-  const get = async (requestParams: Omit<RequestParams, 'method'>) => {
+  const get = async (requestParams: GetRequestOptions) => {
     return makeRequest({
       ...requestParams,
       method: 'GET',
     });
   };
+  const put = async (requestParams: PutRequestOptions) => {
+    return makeRequest({
+      ...requestParams,
+      method: 'PUT',
+    });
+  };
+  const patch = async (requestParams: PatchRequestOptions) => {
+    return makeRequest({
+      ...requestParams,
+      method: 'PATCH',
+    });
+  };
+  const del = async (requestParams: DeleteRequestOptions) => {
+    return makeRequest({
+      ...requestParams,
+      method: 'DELETE',
+    });
+  };
 
-  return { post, get };
+  return { post, get, put, patch, del };
 };
 
 export default useDataProvider;

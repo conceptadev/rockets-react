@@ -20,6 +20,7 @@ const Select: FC<Props & TextFieldProps> = (props) => {
   const {
     id,
     label,
+    size,
     value,
     options,
     onChange,
@@ -27,8 +28,8 @@ const Select: FC<Props & TextFieldProps> = (props) => {
     disabled,
     error,
     textProps = {
-      fontSize: 16,
-      fontWeight: 400,
+      fontSize: 14,
+      fontWeight: 500,
       color: 'text.primary',
     },
   } = props;
@@ -49,9 +50,13 @@ const Select: FC<Props & TextFieldProps> = (props) => {
         select
         value={value}
         disabled={disabled}
+        size={size || 'small'}
         error={error}
         onChange={onChange}
-        sx={{ width: '100%' }}
+        sx={{
+          marginTop: 0.5,
+          width: '100%',
+        }}
       >
         {options.map(({ value, label }: SelectOptions, i: number) => {
           return (

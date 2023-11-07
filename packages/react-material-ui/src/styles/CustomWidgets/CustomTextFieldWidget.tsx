@@ -10,7 +10,8 @@ const CustomTextFieldWidget: FC<WidgetProps> = (props) => (
     margin="normal"
     fullWidth
     color="info"
-    sx={{ ...props.sx, marginTop: '4px', mb: 0 }}
+    error={props?.rawErrors?.length > 0}
+    sx={props.sx}
     value={props.value}
     onChange={(event) => props.onChange(event.target.value)}
   />

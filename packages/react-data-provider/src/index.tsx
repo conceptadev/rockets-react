@@ -4,15 +4,15 @@ import ClientProvider from './ClientProvider';
 
 import {
   AsyncFunction,
-  DataProviderRequestProps,
+  DataProviderRequestOptions,
   AsyncReturnType,
   AsyncStatus,
 } from './interfaces';
 
-export const useQuery = <T extends AsyncFunction>(
+const useQuery = <T extends AsyncFunction>(
   asyncFn: T,
   immediate = false,
-  callbacks?: DataProviderRequestProps,
+  options?: DataProviderRequestOptions,
   arg?: unknown,
 ) => {
   const [status, setStatus] = useState(AsyncStatus.idle);
@@ -20,7 +20,7 @@ export const useQuery = <T extends AsyncFunction>(
   const [error, setError] = useState<unknown>();
   const [isPending, setIsPending] = useState(false);
 
-  const { onError, onSuccess, onFinish } = callbacks || {};
+  const { onError, onSuccess, onFinish, formatData } = options || {};
 
   // The execute function wraps asyncFunction and
   // handles setting state for pending, value, and error.
@@ -30,20 +30,18 @@ export const useQuery = <T extends AsyncFunction>(
     async (_arg?: unknown) => {
       setStatus(AsyncStatus.pending);
       setIsPending(true);
-
       setError(undefined);
 
       try {
         const response = await asyncFn(_arg);
-        setData(response);
+        const formattedData = formatData ? formatData(response) : response;
+        setData(formattedData);
         setStatus(AsyncStatus.success);
-
-        onSuccess?.(response);
+        onSuccess?.(formattedData);
         onFinish?.(AsyncStatus.success);
       } catch (err) {
         setError(err);
         setStatus(AsyncStatus.error);
-
         onError?.(err);
         onFinish?.(AsyncStatus.error);
       } finally {
@@ -64,6 +62,6 @@ export const useQuery = <T extends AsyncFunction>(
   return { execute, status, isPending, data, error, refresh };
 };
 
-export { ClientProvider };
+export { ClientProvider, useQuery };
 
 export default useDataProvider;

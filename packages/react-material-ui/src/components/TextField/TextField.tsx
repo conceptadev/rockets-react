@@ -5,7 +5,13 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import Text from '../Text';
-import { TextProps } from '../../interfaces';
+import { Box, BoxProps, TypographyProps } from '@mui/material';
+
+const TEXT_INITIAL_PROPS = {
+  fontSize: 14,
+  fontWeight: 500,
+  color: 'text.primary',
+};
 
 interface TextAreaProps {
   multiline?: boolean;
@@ -15,7 +21,8 @@ interface TextAreaProps {
 }
 
 interface Props {
-  textProps?: TextProps;
+  containerProps?: BoxProps;
+  labelProps?: TypographyProps;
   options?: TextAreaProps;
 }
 
@@ -26,13 +33,11 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
     sx,
     type,
     size,
+    value,
     hiddenLabel,
     options,
-    textProps = {
-      fontSize: 14,
-      fontWeight: 500,
-      color: 'text.primary',
-    },
+    containerProps,
+    labelProps,
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -52,22 +57,26 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
   const ishiddenLabel = hiddenLabel || options?.hiddenLabel;
 
   return (
-    <>
+    <Box {...containerProps}>
       {!ishiddenLabel && label && (
-        <Text {...textProps} textAlign="left">
+        <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
           {label}
           {required && ' *'}
         </Text>
       )}
+
       <MuiTextField
         {...props}
-        sx={{
-          ...sx,
-          marginTop: '4px',
-          mb: 3,
-          input: { color: 'text.primary' },
-        }}
+        sx={[
+          {
+            marginTop: 0.5,
+            mb: 0,
+            input: { color: 'text.primary' },
+          },
+          ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
         size={size || 'small'}
+        value={value || value === 0 ? value : ''}
         hiddenLabel={label ? true : ishiddenLabel}
         label={''}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
@@ -87,7 +96,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
           }),
         }}
       />
-    </>
+    </Box>
   );
 };
 

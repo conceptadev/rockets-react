@@ -1,11 +1,18 @@
 export interface RequestParams {
   uri: string;
-  method: 'POST' | 'GET';
-  body?: any;
+  method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: any;
   queryParams?: any;
   signal?: AbortSignal;
 }
+
+export type PostRequestOptions = Omit<RequestParams, 'method'> & { body?: any };
+export type GetRequestOptions = Omit<RequestParams, 'method'>;
+export type PutRequestOptions = Omit<RequestParams, 'method'> & { body?: any };
+export type PatchRequestOptions = Omit<RequestParams, 'method'> & {
+  body?: any;
+};
+export type DeleteRequestOptions = Omit<RequestParams, 'method'>;
 
 export interface HttpBaseConfigs {
   skipAuthUris: string[];
@@ -51,8 +58,9 @@ export interface AsyncFunction {
 export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
   T extends (...args: any) => Promise<infer R> ? R : any;
 
-export interface DataProviderRequestProps {
-  onError?(error: Error): void;
-  onSuccess?(success: AsyncReturnType<any>): void;
-  onFinish?(status: AsyncStatus): void;
+export interface DataProviderRequestOptions {
+  onError?: (error: unknown) => void;
+  onSuccess?: (data: AsyncReturnType<any>) => void;
+  onFinish?: (status: AsyncStatus) => void;
+  formatData?: (data: AsyncReturnType<any>) => any;
 }

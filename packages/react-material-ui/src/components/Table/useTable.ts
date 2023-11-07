@@ -15,6 +15,8 @@ interface UseTableOptions {
   order?: Order;
   simpleFilter?: Record<string, BasicType | BasicType[]>;
   search?: string;
+  callbacks?: DataProviderRequestProps;
+  noPagination?: boolean;
 }
 
 export type UseTableProps = (
@@ -54,7 +56,7 @@ const useTable: UseTableProps = (resource, options) => {
       simpleFilter: _simpleFilter ? JSON.parse(_simpleFilter) : undefined,
       search: _search,
     };
-  }, [searchParams]);
+  }, [searchParams, JSON.stringify(options)]);
 
   useEffect(() => {
     if (
@@ -116,7 +118,11 @@ const useTable: UseTableProps = (resource, options) => {
     });
   };
 
-  const { data, execute, isPending, error } = useQuery(getResource, false);
+  const { data, execute, isPending, error } = useQuery(
+    getResource,
+    false,
+    options?.callbacks,
+  );
 
   return {
     data: data?.data,

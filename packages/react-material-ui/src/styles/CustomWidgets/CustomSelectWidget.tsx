@@ -1,18 +1,8 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC } from 'react';
 import Select from '../../components/Select';
-import {
-  ariaDescribedByIds,
-  enumOptionsIndexForValue,
-  enumOptionsValueForIndex,
-  labelValue,
-  FormContextType,
-  RJSFSchema,
-  StrictRJSFSchema,
-  WidgetProps,
-} from '@rjsf/utils';
+import { WidgetProps } from '@rjsf/utils';
 
 const CustomSelectWidget: FC<WidgetProps> = ({
-  schema,
   id,
   options,
   label,
@@ -24,7 +14,7 @@ const CustomSelectWidget: FC<WidgetProps> = ({
   onChange,
   rawErrors = [],
 }) => {
-  const { enumOptions, enumDisabled, emptyValue: optEmptyVal } = options;
+  const { enumOptions, enumDisabled } = options;
 
   const emptyValue = multiple ? [] : '';
 
@@ -33,9 +23,8 @@ const CustomSelectWidget: FC<WidgetProps> = ({
   }: React.ChangeEvent<{ name?: string; value: unknown }>) => onChange(value);
 
   const selectOptions = () =>
-    (enumOptions as any)?.map(({ value, label }: any) => {
-      const disabled: any =
-        enumDisabled && (enumDisabled as any).indexOf(value) != -1;
+    enumOptions?.map(({ value, label }) => {
+      const disabled = enumDisabled && enumDisabled.indexOf(value) != -1;
 
       return { value, label, disabled };
     });
