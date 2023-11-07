@@ -6,10 +6,11 @@ import React, {
   useState,
   useContext,
 } from 'react';
+import { HttpError } from './interfaces';
 
 export type ClientContextType = {
   baseUrl: string;
-  onRefreshTokenError: () => void;
+  onRefreshTokenError: (error?: HttpError) => void;
 };
 
 export const ClientContext = createContext<ClientContextType>({
@@ -21,7 +22,7 @@ export const useClient = () => useContext<ClientContextType>(ClientContext);
 
 type Props = {
   baseUrl?: string;
-  onRefreshTokenError: () => void;
+  onRefreshTokenError: (error?: HttpError) => void;
   children: ReactNode;
 };
 

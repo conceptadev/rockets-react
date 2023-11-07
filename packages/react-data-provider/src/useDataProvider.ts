@@ -47,17 +47,17 @@ const useDataProvider = () => {
               localStorage.setItem('refreshToken', res.refreshToken);
             }
 
-            resolve(res);
+            return resolve(res);
           })
           .catch(async (error) => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            onRefreshTokenError();
-            reject(error);
+            onRefreshTokenError(error);
+            return reject(error);
           });
-      } catch (err) {
-        onRefreshTokenError();
-        return reject(err);
+      } catch (error) {
+        onRefreshTokenError(error);
+        return reject(error);
       }
     });
   };
@@ -81,14 +81,7 @@ const useDataProvider = () => {
       }
     },
     getNewToken: async () => {
-      const refreshToken = localStorage.getItem('refreshToken');
-
-      if (refreshToken) {
-        return await refreshAccessToken();
-      } else {
-        onRefreshTokenError();
-        return null;
-      }
+      return await refreshAccessToken();
     },
   });
 
