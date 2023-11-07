@@ -11,10 +11,10 @@ import Box from '@mui/material/Box';
 
 import { IconContainer } from './styles';
 import MenuItem from '@mui/material/MenuItem';
-import { CustomRowOptionsProps, RowsProps, SimpleOptionButton } from './types';
+import { CustomRowOptionsProps, RowProps, SimpleOptionButton } from './types';
 
 type TableOptionsProps = {
-  row: RowsProps;
+  row: RowProps;
   customRowOptions?:
     | SimpleOptionButton[]
     | (({ row, close }: CustomRowOptionsProps) => ReactNode);

@@ -1,12 +1,12 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { CustomRowOptionsProps, RowsProps, SimpleOptionButton } from '../types';
+import { CustomRowOptionsProps, RowProps, SimpleOptionButton } from '../types';
 import { TableCell } from '@mui/material';
 import TableOptions from '../TableOptions';
 
 type TableBodyOptionProps = {
-  row: RowsProps;
+  row: RowProps;
   customRowOptions:
     | SimpleOptionButton[]
     | (({ row, close }: CustomRowOptionsProps) => ReactNode);

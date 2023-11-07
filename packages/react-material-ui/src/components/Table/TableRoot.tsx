@@ -3,23 +3,23 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { HeadersProps, RowsProps, TableQueryStateProps } from './types';
+import { HeaderProps, RowProps, TableQueryStateProps } from './types';
 import { useTableQueryState } from './hooks/useTableQueryState';
 import { TableContext } from './hooks/useTableRoot';
 import { getSearchParams } from '../../utils/http';
 
 type TableRootProps =
   | {
-      rows: RowsProps[];
-      headers: HeadersProps[];
+      rows: RowProps[];
+      headers: HeaderProps[];
       total?: number;
       pageCount?: never;
       tableQueryState?: never;
       updateTableQueryState?: never;
     }
   | {
-      rows: RowsProps[];
-      headers: HeadersProps[];
+      rows: RowProps[];
+      headers: HeaderProps[];
       total: number;
       pageCount: number;
       tableQueryState: TableQueryStateProps;
@@ -47,18 +47,18 @@ export const TableRoot = ({
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const { tableState, setTableState } = useTableQueryState();
+  const { tableQueryState, setTableQueryState } = useTableQueryState();
 
-  const [selected, setSelected] = useState<RowsProps[]>([]);
+  const [selected, setSelected] = useState<RowProps[]>([]);
 
   const isControlled = !!controlledTableQueryState;
   const handleUpdateTableQuery = isControlled
     ? controlledUpdateTableQueryState
-    : setTableState;
+    : setTableQueryState;
 
   const { order, orderBy } = isControlled
     ? controlledTableQueryState
-    : tableState;
+    : tableQueryState;
 
   /**
    * Handles the change of the number of rows displayed per page in the table.
@@ -120,10 +120,10 @@ export const TableRoot = ({
    */
   const handleSelectCheckboxItem = (
     event: React.MouseEvent<unknown>,
-    row: RowsProps,
+    row: RowProps,
   ) => {
     const selectedIndex = selected.findIndex((_row) => _row.id === row.id);
-    let newSelected: RowsProps[] = [];
+    let newSelected: RowProps[] = [];
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, row);
@@ -202,7 +202,7 @@ export const TableRoot = ({
         total,
         pageCount,
         isControlled,
-        tableQuery: isControlled ? controlledTableQueryState : tableState,
+        tableQuery: isControlled ? controlledTableQueryState : tableQueryState,
         selected,
         isSelected,
         handleChangePage,

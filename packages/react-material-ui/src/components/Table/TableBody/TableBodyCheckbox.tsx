@@ -2,11 +2,11 @@
 
 import React from 'react';
 import { Checkbox, TableCell } from '@mui/material';
-import { RowsProps } from '../types';
+import { RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 
 type TableBodyCheckboxProps = {
-  row: RowsProps;
+  row: RowProps;
   labelId: string;
 };
 

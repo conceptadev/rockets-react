@@ -5,6 +5,7 @@ import isEqual from 'lodash/isEqual';
 import { Order, TableQueryStateProps } from './types';
 import { useTableQueryState } from './hooks/useTableQueryState';
 import { getSearchParams } from '../../utils/http';
+import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/interfaces';
 
 type BasicType = string | number | boolean;
 
@@ -15,7 +16,7 @@ interface UseTableOptions {
   order?: Order;
   simpleFilter?: Record<string, BasicType | BasicType[]>;
   search?: string;
-  callbacks?: DataProviderRequestProps;
+  callbacks?: DataProviderRequestOptions;
   noPagination?: boolean;
 }
 
@@ -28,8 +29,10 @@ export type UseTableProps = (
   error: unknown;
   total: number;
   pageCount: number;
-  tableQuery: TableQueryStateProps;
-  setTableState: React.Dispatch<React.SetStateAction<TableQueryStateProps>>;
+  tableQueryState: TableQueryStateProps;
+  setTableQueryState: React.Dispatch<
+    React.SetStateAction<TableQueryStateProps>
+  >;
 };
 
 /**
@@ -45,7 +48,7 @@ const useTable: UseTableProps = (resource, options) => {
   const router = useRouter();
   const { get } = useDataProvider();
 
-  const { tableState, setTableState } = useTableQueryState();
+  const { tableQueryState, setTableQueryState } = useTableQueryState();
 
   const params = useMemo(() => {
     const _simpleFilter =
@@ -98,19 +101,22 @@ const useTable: UseTableProps = (resource, options) => {
   }, [
     JSON.stringify(params),
     JSON.stringify(options),
-    JSON.stringify(tableState),
+    JSON.stringify(tableQueryState),
   ]);
 
   const getResource = () => {
     return get({
       uri: resource,
       queryParams: {
-        ...(tableState?.rowsPerPage && {
-          limit: Number(tableState.rowsPerPage),
-        }),
-        page: Number(tableState.page) || 1,
-        ...(tableState?.orderBy && {
-          sort: `${tableState?.orderBy},${tableState?.order.toUpperCase()}`,
+        ...(tableQueryState?.rowsPerPage &&
+          !options?.noPagination && {
+            limit: tableQueryState.rowsPerPage,
+          }),
+        page: tableQueryState.page,
+        ...(tableQueryState?.orderBy && {
+          sort: `${
+            tableQueryState?.orderBy
+          },${tableQueryState?.order.toUpperCase()}`,
         }),
         ...(params?.simpleFilter && { filter: simpleFilterQuery() }),
         ...(params?.search && { s: params?.search }),
@@ -128,10 +134,12 @@ const useTable: UseTableProps = (resource, options) => {
     data: data?.data,
     isPending,
     error,
+    simpleFilter: params.simpleFilter,
+    search: params.search,
     total: data?.total,
     pageCount: data?.pageCount,
-    tableQuery: tableState,
-    setTableState,
+    tableQueryState,
+    setTableQueryState,
   };
 };
 

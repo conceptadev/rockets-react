@@ -1,29 +1,33 @@
 import { ReactNode } from 'react';
 
-export type HeadersProps = {
+export type HeaderProps = {
   disablePadding?: boolean;
   id: string;
   label: string;
+  width?: number;
   numeric?: boolean;
   textAlign?: 'left' | 'center' | 'right';
+  sortable?: boolean;
 };
 
 export type CustomTableCell = {
+  component?: ReactNode;
+  value?: string | undefined;
+  title?: string;
   sortableValue?: string | number;
-  component: ReactNode;
 };
 
-export type RowsProps = {
+export type RowProps = {
   id: string;
-  [key: string]: string | number | CustomTableCell;
+  [key: string]: string | number | CustomTableCell | undefined;
 };
 
 export type SelectedRows = {
-  selectedRows: RowsProps[];
+  selectedRows: RowProps[];
 };
 
 export type CustomRowOptionsProps = {
-  row: RowsProps;
+  row: RowProps;
   close: () => void;
 };
 
@@ -35,7 +39,7 @@ export type SimpleActionButton = {
 
 export type SimpleOptionButton = {
   key: string;
-  onClick: (row: RowsProps) => void;
+  onClick: (row: RowProps) => void;
   text?: string;
   icon?: ReactNode;
 };

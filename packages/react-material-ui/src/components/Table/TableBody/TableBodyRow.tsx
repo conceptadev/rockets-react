@@ -2,11 +2,11 @@
 
 import React, { PropsWithChildren } from 'react';
 import { TableRow, TableRowProps } from '@mui/material';
-import { RowsProps } from '../types';
+import { RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 
 type TableBodyRowProps = {
-  row: RowsProps;
+  row: RowProps;
   hasCheckboxes?: boolean;
 } & TableRowProps;
 

@@ -2,26 +2,46 @@
 
 import React from 'react';
 import Text from '../../Text';
-import { TableCell, TableCellProps } from '@mui/material';
-import { CustomTableCell, RowsProps } from '../types';
+import { TableCell, TableCellProps, Tooltip } from '@mui/material';
+import { CustomTableCell, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 
 const getCellData = (cell: CustomTableCell | string | number) => {
-  if (typeof cell === 'number' || typeof cell === 'string') {
+  if (
+    typeof cell === 'number' ||
+    typeof cell === 'string' ||
+    typeof cell === 'undefined'
+  ) {
     return (
       <Text fontSize={14} fontWeight={400} color="text.primary">
-        {cell}
+        {cell ?? ''}
       </Text>
     );
   }
 
-  if ('component' in cell && typeof cell.sortableValue !== 'undefined') {
+  if (!('title' in cell)) {
+    return (
+      <Text fontSize={14} fontWeight={400} color="text.primary">
+        {cell.value ?? ''}
+      </Text>
+    );
+  }
+
+  if ('title' in cell) {
+    return (
+      <Tooltip title={cell.title}>
+        <span>{cell.value ?? ''}</span>
+      </Tooltip>
+    );
+  }
+
+  if ('component' in cell) {
     return cell.component;
   }
 };
 
 type TableBodyCellsProps = {
-  row: RowsProps;
+  row: RowProps;
 } & TableCellProps;
 
 /**

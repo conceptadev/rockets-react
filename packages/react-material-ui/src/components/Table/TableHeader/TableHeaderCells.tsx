@@ -3,10 +3,10 @@
 import React, { ReactNode } from 'react';
 import { useTableRoot } from '../hooks/useTableRoot';
 import { TableHeaderCell } from './TableHeaderCell';
-import { HeadersProps } from '../types';
+import { HeaderProps } from '../types';
 
 type TableHeaderCellsProps = {
-  renderCell?: (cell: HeadersProps) => ReactNode;
+  renderCell?: (cell: HeaderProps) => ReactNode;
 };
 
 /**

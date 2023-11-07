@@ -1,16 +1,16 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import { HeadersProps, RowsProps, TableQueryStateProps } from '../types';
+import { HeaderProps, RowProps, TableQueryStateProps } from '../types';
 
 type TableContextProps = {
-  rows: RowsProps[];
-  headers: HeadersProps[];
+  rows: RowProps[];
+  headers: HeaderProps[];
   total: number;
   isControlled: boolean;
   pageCount: number;
   tableQuery: TableQueryStateProps;
-  selected: RowsProps[];
+  selected: RowProps[];
   isSelected: (id: string) => boolean;
   handleChangePage: (event: unknown, newPage: number) => void;
   handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,7 +23,7 @@ type TableContextProps = {
   ) => void;
   handleSelectCheckboxItem: (
     event: React.MouseEvent<unknown>,
-    row: RowsProps,
+    row: RowProps,
   ) => void;
 };
 

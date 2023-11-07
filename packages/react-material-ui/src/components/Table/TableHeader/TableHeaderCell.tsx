@@ -6,10 +6,10 @@ import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { visuallyHidden } from '@mui/utils';
 import { useTableRoot } from '../hooks/useTableRoot';
-import { HeadersProps } from '../types';
+import { HeaderProps } from '../types';
 
 type TableHeaderCellProps = {
-  cell: HeadersProps;
+  cell: HeaderProps;
 } & TableCellProps;
 
 /**
@@ -36,6 +36,8 @@ export const TableHeaderCell = ({ cell, ...rest }: TableHeaderCellProps) => {
       handleRequestSort(event, property);
     };
 
+  const isHeaderSortable = cell.sortable ?? true;
+
   return (
     <TableCell
       key={cell.id}
@@ -44,18 +46,22 @@ export const TableHeaderCell = ({ cell, ...rest }: TableHeaderCellProps) => {
       sortDirection={orderBy === cell.id ? order : false}
       {...rest}
     >
-      <TableSortLabel
-        active={orderBy === cell.id}
-        direction={orderBy === cell.id ? order : 'asc'}
-        onClick={createSortHandler(cell.id)}
-      >
-        {cell.label}
-        {orderBy === cell.id ? (
-          <Box component="span" sx={visuallyHidden}>
-            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-          </Box>
-        ) : null}
-      </TableSortLabel>
+      {isHeaderSortable ? (
+        <TableSortLabel
+          active={orderBy === cell.id}
+          direction={orderBy === cell.id ? order : 'asc'}
+          onClick={createSortHandler(cell.id)}
+        >
+          {cell.label}
+          {orderBy === cell.id ? (
+            <Box component="span" sx={visuallyHidden}>
+              {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+            </Box>
+          ) : null}
+        </TableSortLabel>
+      ) : (
+        <>{cell.label}</>
+      )}
     </TableCell>
   );
 };

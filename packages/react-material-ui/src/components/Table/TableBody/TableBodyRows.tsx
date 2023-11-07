@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from 'react';
 import { sortTable } from '../../../utils/table';
-import { Order, RowsProps } from '../types';
+import { Order, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 import { TableBodyRow } from './TableBodyRow';
 import { TableBodyCells } from './TableBodyCells';
@@ -18,7 +18,7 @@ import { TableBodyCells } from './TableBodyCells';
  * @returns A paginated and sorted array of rows.
  */
 export const getPaginatedRows = (
-  rows: RowsProps[],
+  rows: RowProps[],
   page: number,
   rowsPerPage: number,
   order: Order,
@@ -34,23 +34,23 @@ export const getPaginatedRows = (
  * @param row - The data for the row.
  * @returns A React JSX element representing the default row.
  */
-const renderDefaultRow = (row: RowsProps) => (
+const renderDefaultRow = (row: RowProps) => (
   <TableBodyRow row={row}>
     <TableBodyCells row={row} />
   </TableBodyRow>
 );
 
-type TableBodyRowsProps = {
-  renderRow?: (row: RowsProps, labelId: string) => ReactNode;
+type TableBodyRowProps = {
+  renderRow?: (row: RowProps, labelId: string) => ReactNode;
 };
 
 /**
  * Represents a component for rendering a table's body rows based on the provided renderRow function.
  *
- * @param {TableBodyRowsProps} props - The props for the TableBodyRows component.
+ * @param {TableBodyRowProps} props - The props for the TableBodyRows component.
  * @returns An array of React elements representing the table body rows.
  */
-export const TableBodyRows = ({ renderRow }: TableBodyRowsProps) => {
+export const TableBodyRows = ({ renderRow }: TableBodyRowProps) => {
   const { rows, tableQuery, isControlled } = useTableRoot();
   const { page, rowsPerPage, order, orderBy } = tableQuery;
 
