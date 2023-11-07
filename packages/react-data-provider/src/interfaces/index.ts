@@ -33,13 +33,18 @@ export interface HttpError {
   message: string;
 }
 
-export interface HttpMidlewares {
+export interface Token {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface HttpMiddlewares {
   getAccessToken?(): void;
-  getNewToken?(): void;
+  getNewToken?(): Promise<Token | HttpError | null>;
 }
 
 export interface HttpClient {
-  applyMiddleware({ getAccessToken, getNewToken }: HttpMidlewares): void;
+  applyMiddleware({ getAccessToken, getNewToken }: HttpMiddlewares): void;
   defaultConfig(config: HttpBaseConfigs): void;
   executeRequest(params: RequestParams): Promise<HttpResponse>;
 }

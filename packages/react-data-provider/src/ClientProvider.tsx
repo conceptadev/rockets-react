@@ -9,18 +9,27 @@ import React, {
 
 export type ClientContextType = {
   baseUrl: string;
+  onRefreshTokenError: () => void;
 };
 
-export const ClientContext = createContext<ClientContextType>({ baseUrl: '' });
+export const ClientContext = createContext<ClientContextType>({
+  baseUrl: '',
+  onRefreshTokenError: () => ({}),
+});
 
 export const useClient = () => useContext<ClientContextType>(ClientContext);
 
 type Props = {
   baseUrl?: string;
+  onRefreshTokenError: () => void;
   children: ReactNode;
 };
 
-const ClientProvider: FC<Props> = ({ baseUrl: outerBaseUrl, children }) => {
+const ClientProvider: FC<Props> = ({
+  baseUrl: outerBaseUrl,
+  onRefreshTokenError,
+  children,
+}) => {
   const [baseUrl, setBaseUrl] = useState<string>();
 
   useEffect(() => {
@@ -30,7 +39,7 @@ const ClientProvider: FC<Props> = ({ baseUrl: outerBaseUrl, children }) => {
   }, [outerBaseUrl]);
 
   return (
-    <ClientContext.Provider value={{ baseUrl }}>
+    <ClientContext.Provider value={{ baseUrl, onRefreshTokenError }}>
       {children}
     </ClientContext.Provider>
   );

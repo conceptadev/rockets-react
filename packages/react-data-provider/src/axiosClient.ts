@@ -2,12 +2,12 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import {
   HttpBaseConfigs,
   HttpClient,
-  HttpMidlewares,
   PostRequestOptions,
   GetRequestOptions,
   PutRequestOptions,
   PatchRequestOptions,
   DeleteRequestOptions,
+  HttpMiddlewares,
 } from './interfaces';
 
 let axiosInstance: AxiosInstance;
@@ -51,7 +51,7 @@ const axiosClient: HttpClient = {
         };
       });
   },
-  applyMiddleware: (midlewares: HttpMidlewares) => {
+  applyMiddleware: (middlewares: HttpMiddlewares) => {
     if (!axiosInstance) {
       throw 'You need to create a http client instance with default config';
     }
@@ -64,25 +64,33 @@ const axiosClient: HttpClient = {
             config?.url?.includes(uri),
           ) == -1
         ) {
-          const accessToken = midlewares?.getAccessToken?.();
+          const accessToken = middlewares?.getAccessToken?.();
           if (config.headers) {
             config.headers.Authorization = `Bearer ${accessToken}`;
           }
         }
         return config;
       },
-      async (error): Promise<AxiosRequestConfig> => {
-        if (error.status !== 401) {
-          return Promise.reject(error);
+      async (error): Promise<AxiosRequestConfig> => Promise.reject(error),
+    );
+
+    axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const config = error?.config;
+
+        if (error?.response?.status === 401) {
+          const response = await middlewares.getNewToken();
+
+          if ('accessToken' in response && 'refreshToken' in response) {
+            if (config.headers) {
+              config.headers.Authorization = `Bearer ${response.accessToken}`;
+            }
+            return axiosInstance(config);
+          }
         }
 
-        //skip refresh
-
-        const accessToken = await midlewares?.getNewToken?.();
-
-        error.response.config.headers.Authorization = `Bearer ${accessToken}`;
-
-        return axios(error.response.config);
+        return Promise.reject(error);
       },
     );
   },

@@ -47,6 +47,7 @@ const AuthProvider: React.FC<
         setAccessToken(data.accessToken);
         setRefreshToken(data.refreshToken);
         localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('refreshToken', data.refreshToken);
         onSuccess?.(data.accessToken);
       }
     },
