@@ -3,7 +3,7 @@ import { useEffect, useMemo } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import isEqual from 'lodash/isEqual';
 import { Order } from './Table';
-import { DataProviderRequestProps } from '@concepta/react-data-provider/dist/interfaces';
+import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/interfaces';
 
 type BasicType = string | number | boolean;
 
@@ -14,7 +14,7 @@ interface Options {
   order?: Order;
   simpleFilter?: Record<string, BasicType | BasicType[]>;
   search?: string;
-  callbacks?: DataProviderRequestProps;
+  callbacks?: DataProviderRequestOptions;
   noPagination?: boolean;
 }
 
