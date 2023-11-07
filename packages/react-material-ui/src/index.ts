@@ -36,8 +36,8 @@ export { default as SideModal } from './components/SideModal';
 export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
 
-import Table, { MSWTableStyles } from './components/Table';
-export { Table, MSWTableStyles };
+import Table from './components/Table';
+export { Table };
 
 export { default as Text } from './components/Text';
 export { default as TextField } from './components/TextField';

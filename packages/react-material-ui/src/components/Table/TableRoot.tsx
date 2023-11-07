@@ -1,3 +1,5 @@
+'use client';
+
 import React, { PropsWithChildren, useState } from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -199,6 +201,7 @@ export const TableRoot = ({
         headers,
         total,
         pageCount,
+        isControlled,
         tableQuery: isControlled ? controlledTableQueryState : tableState,
         selected,
         isSelected,

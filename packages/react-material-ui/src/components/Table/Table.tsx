@@ -1,12 +1,12 @@
 'use client';
 
 import React, { PropsWithChildren } from 'react';
-import { TableProps as MUITableProps } from '@mui/material';
-import { Table as MUITable, TableProps as TableStylesProps } from './styles';
+import { TableProps as MuiTableProps } from '@mui/material';
+import { Table as MuiTable, TableProps as TableStylesProps } from './styles';
 
 export type TableProps = {
   variant?: TableStylesProps['variant'];
-} & Omit<MUITableProps, 'variant'>;
+} & Omit<MuiTableProps, 'variant'>;
 
 /**
  * Represents a table component that provides a common layout for displaying tabular data.
@@ -19,7 +19,7 @@ export const Table = ({
   variant = 'contained',
   ...rest
 }: PropsWithChildren<TableProps>) => (
-  <MUITable sx={{ minWidth: 750 }} size="medium" variant={variant} {...rest}>
+  <MuiTable sx={{ minWidth: 750 }} variant={variant} {...rest}>
     {children}
-  </MUITable>
+  </MuiTable>
 );

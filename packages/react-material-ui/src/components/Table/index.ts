@@ -1,22 +1,22 @@
+'use client';
+
 import { Table } from './Table';
 import { TablePagination } from './TablePagination';
 import { TablePaginationNumbers } from './TablePaginationNumbers';
-import { TableHeaderCell } from './TableHeader/TableHeaderCell';
+import { TableHeaderCells } from './TableHeader/TableHeaderCells';
 import { TableHeaderCheckbox } from './TableHeader/TableHeaderCheckbox';
 import { TableHeaderOption } from './TableHeader/TableHeaderOption';
-import { TableBodyCell } from './TableBody/TableBodyCell';
+import { TableBodyCells } from './TableBody/TableBodyCells';
 import { TableBodyCheckbox } from './TableBody/TableBodyCheckbox';
 import { TableBodyOption } from './TableBody/TableBodyOption';
 import { TableBodyRow } from './TableBody/TableBodyRow';
 import { TableBodyRows } from './TableBody/TableBodyRows';
 import { TableRoot } from './TableRoot';
-import MSWTableStyles from './TableStyles/MSWTableStyles';
-
-export { MSWTableStyles };
+import { TableHeaderCell } from './TableHeader/TableHeaderCell';
 
 const TableComponent = {
   Table,
-  BodyCell: TableBodyCell,
+  BodyCell: TableBodyCells,
   BodyCheckboxes: TableBodyCheckbox,
   BodyOption: TableBodyOption,
   BodyRow: TableBodyRow,
@@ -24,6 +24,7 @@ const TableComponent = {
   Pagination: TablePagination,
   PaginationNumbers: TablePaginationNumbers,
   HeaderCell: TableHeaderCell,
+  HeaderCells: TableHeaderCells,
   HeaderCheckbox: TableHeaderCheckbox,
   HeaderOption: TableHeaderOption,
   Root: TableRoot,

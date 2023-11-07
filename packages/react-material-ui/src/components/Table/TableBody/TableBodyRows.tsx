@@ -1,7 +1,11 @@
+'use client';
+
+import React, { ReactNode } from 'react';
 import { sortTable } from '../../../utils/table';
-import { ReactNode } from 'react';
 import { Order, RowsProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
+import { TableBodyRow } from './TableBodyRow';
+import { TableBodyCells } from './TableBodyCells';
 
 /**
  * Returns a paginated and sorted subset of rows based on the current page, rowsPerPage, order, and orderBy.
@@ -24,8 +28,20 @@ export const getPaginatedRows = (
     .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage)
     .sort((a, b) => sortTable(a, b, order, orderBy));
 
+/**
+ * Render a default row for a table body with provided row data.
+ *
+ * @param row - The data for the row.
+ * @returns A React JSX element representing the default row.
+ */
+const renderDefaultRow = (row: RowsProps) => (
+  <TableBodyRow row={row}>
+    <TableBodyCells row={row} />
+  </TableBodyRow>
+);
+
 type TableBodyRowsProps = {
-  renderRow: (row: RowsProps, labelId: string) => ReactNode;
+  renderRow?: (row: RowsProps, labelId: string) => ReactNode;
 };
 
 /**
@@ -35,12 +51,28 @@ type TableBodyRowsProps = {
  * @returns An array of React elements representing the table body rows.
  */
 export const TableBodyRows = ({ renderRow }: TableBodyRowsProps) => {
-  const { rows, tableQuery } = useTableRoot();
+  const { rows, tableQuery, isControlled } = useTableRoot();
   const { page, rowsPerPage, order, orderBy } = tableQuery;
+
+  if (isControlled) {
+    rows.map((row, index) => {
+      const labelId = `table-checkbox-${index}`;
+
+      if (!renderRow) {
+        return renderDefaultRow(row);
+      }
+
+      return renderRow(row, labelId);
+    });
+  }
 
   return getPaginatedRows(rows, page, rowsPerPage, order, orderBy).map(
     (row, index) => {
       const labelId = `table-checkbox-${index}`;
+
+      if (!renderRow) {
+        return renderDefaultRow(row);
+      }
 
       return renderRow(row, labelId);
     },

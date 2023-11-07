@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Text from '../../Text';
 import { TableCell, TableCellProps } from '@mui/material';
@@ -18,24 +20,28 @@ const getCellData = (cell: CustomTableCell | string | number) => {
   }
 };
 
-type TableBodyCellProps = {
+type TableBodyCellsProps = {
   row: RowsProps;
 } & TableCellProps;
 
 /**
  * Represents a table cell within the body of a table component.
  *
- * @param {TableBodyCellProps} props - The props for the TableBodyCell component.
+ * @param {TableBodyCellsProps} props - The props for the TableBodyCells component.
  * @returns A React element representing the table body cell.
  */
-export const TableBodyCell = ({ row, ...rest }: TableBodyCellProps) => {
+export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
   const { headers } = useTableRoot();
 
-  return headers.map((hd) => {
-    return (
-      <TableCell key={hd.id} {...rest}>
-        {getCellData(row[hd.id])}
-      </TableCell>
-    );
-  });
+  return (
+    <>
+      {headers.map((hd) => {
+        return (
+          <TableCell key={hd.id} {...rest}>
+            {getCellData(row[hd.id])}
+          </TableCell>
+        );
+      })}
+    </>
+  );
 };

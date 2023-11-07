@@ -1,7 +1,9 @@
+'use client';
+
 import React from 'react';
 import {
-  TablePagination as MUITablePagination,
-  TablePaginationProps as MUITablePaginationProps,
+  TablePagination as MuiTablePagination,
+  TablePaginationProps as MuiTablePaginationProps,
   useTheme,
 } from '@mui/material';
 import { useTableRoot } from './hooks/useTableRoot';
@@ -9,7 +11,7 @@ import { useTableRoot } from './hooks/useTableRoot';
 type TablePaginationProps = {
   variant: 'clean' | 'contained' | 'outlined';
 } & Omit<
-  MUITablePaginationProps,
+  MuiTablePaginationProps,
   'variant' | 'page' | 'rowsPerPage' | 'count' | 'onPageChange'
 >;
 
@@ -31,7 +33,7 @@ export const TablePagination = ({
   const { rowsPerPage, page } = tableQuery;
 
   return (
-    <MUITablePagination
+    <MuiTablePagination
       rowsPerPageOptions={rowsPerPageOptions}
       component="div"
       count={total || rows?.length || 0}

@@ -1,18 +1,27 @@
+'use client';
+
 import React from 'react';
 import Box from '@mui/material/Box';
 import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { visuallyHidden } from '@mui/utils';
 import { useTableRoot } from '../hooks/useTableRoot';
+import { HeadersProps } from '../types';
+
+type TableHeaderCellProps = {
+  cell: HeadersProps;
+} & TableCellProps;
 
 /**
- * Represents a table header cell component for rendering sortable table headers.
+ * A component representing a header cell in a table.
  *
- * @param {TableCellProps} props - The props for the TableHeaderCell component.
- * @returns An array of React elements representing the table header cells.
+ * @param props - The component's properties.
+ * @param props.cell - The table header cell configuration.
+ * @param props.rest - Additional props to be spread to the TableCell component.
+ * @returns A React JSX element representing the header cell.
  */
-export const TableHeaderCell = (props: TableCellProps) => {
-  const { headers, tableQuery, handleRequestSort } = useTableRoot();
+export const TableHeaderCell = ({ cell, ...rest }: TableHeaderCellProps) => {
+  const { tableQuery, handleRequestSort } = useTableRoot();
   const { order, orderBy } = tableQuery;
 
   /**
@@ -27,26 +36,26 @@ export const TableHeaderCell = (props: TableCellProps) => {
       handleRequestSort(event, property);
     };
 
-  return headers.map((headCell) => (
+  return (
     <TableCell
-      key={headCell.id}
-      align={headCell?.textAlign || headCell.numeric ? 'right' : 'left'}
-      padding={headCell.disablePadding ? 'none' : 'normal'}
-      sortDirection={orderBy === headCell.id ? order : false}
-      {...props}
+      key={cell.id}
+      align={cell?.textAlign || cell.numeric ? 'right' : 'left'}
+      padding={cell.disablePadding ? 'none' : 'normal'}
+      sortDirection={orderBy === cell.id ? order : false}
+      {...rest}
     >
       <TableSortLabel
-        active={orderBy === headCell.id}
-        direction={orderBy === headCell.id ? order : 'asc'}
-        onClick={createSortHandler(headCell.id)}
+        active={orderBy === cell.id}
+        direction={orderBy === cell.id ? order : 'asc'}
+        onClick={createSortHandler(cell.id)}
       >
-        {headCell.label}
-        {orderBy === headCell.id ? (
+        {cell.label}
+        {orderBy === cell.id ? (
           <Box component="span" sx={visuallyHidden}>
             {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
           </Box>
         ) : null}
       </TableSortLabel>
     </TableCell>
-  ));
+  );
 };

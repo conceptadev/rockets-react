@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { Checkbox, TableCell } from '@mui/material';
 import { RowsProps } from '../types';

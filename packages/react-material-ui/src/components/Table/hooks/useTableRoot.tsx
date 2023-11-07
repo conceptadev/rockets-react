@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext } from 'react';
 import { HeadersProps, RowsProps, TableQueryStateProps } from '../types';
 
@@ -5,6 +7,7 @@ type TableContextProps = {
   rows: RowsProps[];
   headers: HeadersProps[];
   total: number;
+  isControlled: boolean;
   pageCount: number;
   tableQuery: TableQueryStateProps;
   selected: RowsProps[];
