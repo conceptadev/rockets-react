@@ -6,7 +6,7 @@ import { TableCell, TableCellProps, Tooltip } from '@mui/material';
 import { CustomTableCell, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 
-const getCellData = (cell: CustomTableCell | string | number) => {
+const getCellData = (cell: CustomTableCell | string | number | undefined) => {
   if (
     typeof cell === 'number' ||
     typeof cell === 'string' ||
@@ -19,24 +19,22 @@ const getCellData = (cell: CustomTableCell | string | number) => {
     );
   }
 
+  if ('component' in cell) {
+    return cell.component;
+  }
+
   if (!('title' in cell)) {
     return (
       <Text fontSize={14} fontWeight={400} color="text.primary">
         {cell.value ?? ''}
       </Text>
     );
-  }
-
-  if ('title' in cell) {
+  } else {
     return (
       <Tooltip title={cell.title}>
         <span>{cell.value ?? ''}</span>
       </Tooltip>
     );
-  }
-
-  if ('component' in cell) {
-    return cell.component;
   }
 };
 
