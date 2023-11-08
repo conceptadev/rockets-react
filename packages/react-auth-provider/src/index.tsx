@@ -63,6 +63,7 @@ const AuthProvider: React.FC<
 
   const doLogout = async () => {
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
   };
 
   return (
