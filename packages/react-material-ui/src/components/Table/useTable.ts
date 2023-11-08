@@ -124,7 +124,7 @@ const useTable: UseTableProps = (resource, options) => {
     });
   };
 
-  const { data, execute, isPending, error } = useQuery(
+  const { data, execute, refresh, isPending, error } = useQuery(
     getResource,
     false,
     options?.callbacks,
@@ -134,6 +134,8 @@ const useTable: UseTableProps = (resource, options) => {
     data: data?.data,
     isPending,
     error,
+    execute,
+    refresh,
     simpleFilter: params.simpleFilter,
     search: params.search,
     total: data?.total,
