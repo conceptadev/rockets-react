@@ -75,7 +75,7 @@ export const TableBodyRows = ({ renderRow }: TableBodyRowProps) => {
   const { page, rowsPerPage, order, orderBy } = tableQuery;
 
   if (isControlled) {
-    rows.map((row, index) => {
+    return rows.map((row, index) => {
       const labelId = `table-checkbox-${index}`;
 
       return renderTableRows(row, renderRow, labelId);
