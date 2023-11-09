@@ -3,7 +3,7 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { HeaderProps, RowProps, TableQueryStateProps } from './types';
+import { HeaderProps, Order, RowProps, TableQueryStateProps } from './types';
 import { useTableQueryState } from './hooks/useTableQueryState';
 import { TableContext } from './hooks/useTableRoot';
 import { getSearchParams } from '../../utils/http';
@@ -36,8 +36,8 @@ type TableRootProps =
  */
 export const TableRoot = ({
   children,
-  rows,
-  headers,
+  rows = [],
+  headers = [],
   total,
   pageCount,
   tableQueryState: controlledTableQueryState,
@@ -174,10 +174,10 @@ export const TableRoot = ({
     event: React.MouseEvent<unknown>,
     property: string,
   ) => {
-    const isAsc = orderBy === property && order === 'asc';
+    const isAsc = orderBy === property && order === Order.Asc;
 
     const newOrderProperties = {
-      order: isAsc ? ('desc' as const) : ('asc' as const),
+      order: isAsc ? Order.Desc : Order.Asc,
       orderBy: property,
     };
 

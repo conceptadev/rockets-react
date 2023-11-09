@@ -1,6 +1,5 @@
+import { Order } from '../../components/Table/types';
 import descendingComparator from './descendingComparator';
-
-type Order = 'asc' | 'desc';
 
 /**
  * @param order
@@ -13,7 +12,7 @@ function getComparator<Key extends keyof any>(
   a: { [key in Key]: number | string },
   b: { [key in Key]: number | string },
 ) => number {
-  return order === 'desc'
+  return order === Order.Desc
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }

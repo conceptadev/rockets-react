@@ -1,5 +1,9 @@
 import { ReactNode } from 'react';
 
+export type BasicType = string | number | boolean;
+
+export type SimpleFilter = Record<string, BasicType | BasicType[]>;
+
 export type HeaderProps = {
   disablePadding?: boolean;
   id: string;
@@ -44,13 +48,17 @@ export type SimpleOptionButton = {
   icon?: ReactNode;
 };
 
-export type Order = 'asc' | 'desc';
+export enum Order {
+  Asc = 'asc',
+  Desc = 'desc',
+}
 
 export type TableQueryStateProps = {
-  order: Order;
-  orderBy: string;
-  rowsPerPage: number;
-  page: number;
+  order?: Order;
+  orderBy?: string;
+  rowsPerPage?: number;
+  page?: number;
+  simpleFilter?: SimpleFilter;
 };
 
 export type RenderRowFunction = (row: RowProps, labelId: string) => ReactNode;

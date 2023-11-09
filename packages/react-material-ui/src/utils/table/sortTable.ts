@@ -1,4 +1,4 @@
-import { CustomTableCell, Order, RowProps } from 'components/Table/types';
+import { CustomTableCell, Order, RowProps } from '../../components/Table/types';
 
 const descendingComparator = (a: string | number, b: string | number) => {
   if (b < a) {
@@ -31,7 +31,7 @@ const getComparator = (
   const aVal = getSortableValue(a[orderBy]);
   const bVal = getSortableValue(b[orderBy]);
 
-  return order === 'desc'
+  return order === Order.Desc
     ? descendingComparator(aVal, bVal)
     : -descendingComparator(aVal, bVal);
 };

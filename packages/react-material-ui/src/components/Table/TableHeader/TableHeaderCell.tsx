@@ -6,7 +6,7 @@ import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import { visuallyHidden } from '@mui/utils';
 import { useTableRoot } from '../hooks/useTableRoot';
-import { HeaderProps } from '../types';
+import { HeaderProps, Order } from '../types';
 
 type TableHeaderCellProps = {
   cell: HeaderProps;
@@ -49,13 +49,13 @@ export const TableHeaderCell = ({ cell, ...rest }: TableHeaderCellProps) => {
       {isHeaderSortable ? (
         <TableSortLabel
           active={orderBy === cell.id}
-          direction={orderBy === cell.id ? order : 'asc'}
+          direction={orderBy === cell.id ? order : Order.Asc}
           onClick={createSortHandler(cell.id)}
         >
           {cell.label}
           {orderBy === cell.id ? (
             <Box component="span" sx={visuallyHidden}>
-              {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+              {order === Order.Desc ? 'sorted descending' : 'sorted ascending'}
             </Box>
           ) : null}
         </TableSortLabel>
