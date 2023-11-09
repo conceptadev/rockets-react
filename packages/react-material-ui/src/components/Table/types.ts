@@ -52,3 +52,5 @@ export type TableQueryStateProps = {
   rowsPerPage: number;
   page: number;
 };
+
+export type RenderRowFunction = (row: RowProps, labelId: string) => ReactNode;

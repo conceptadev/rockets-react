@@ -1,8 +1,8 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { sortTable } from '../../../utils/table';
-import { Order, RowProps } from '../types';
+import { Order, RenderRowFunction, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 import { TableBodyRow } from './TableBodyRow';
 import { TableBodyCells } from './TableBodyCells';
@@ -40,8 +40,28 @@ const renderDefaultRow = (row: RowProps) => (
   </TableBodyRow>
 );
 
+/**
+ * Renders a table row based on the provided data and rendering function.
+ *
+ * @param row - The data for the row.
+ * @param renderRow - The function used to render the row.
+ * @param [labelId] - The optional label ID for the row.
+ * @returns The rendered table row.
+ */
+const renderTableRows = (
+  row: RowProps,
+  renderRow: RenderRowFunction,
+  labelId?: string,
+) => {
+  if (!renderRow) {
+    return renderDefaultRow(row);
+  }
+
+  return renderRow(row, labelId);
+};
+
 type TableBodyRowProps = {
-  renderRow?: (row: RowProps, labelId: string) => ReactNode;
+  renderRow?: RenderRowFunction;
 };
 
 /**
@@ -58,11 +78,7 @@ export const TableBodyRows = ({ renderRow }: TableBodyRowProps) => {
     rows.map((row, index) => {
       const labelId = `table-checkbox-${index}`;
 
-      if (!renderRow) {
-        return renderDefaultRow(row);
-      }
-
-      return renderRow(row, labelId);
+      return renderTableRows(row, renderRow, labelId);
     });
   }
 
@@ -70,11 +86,7 @@ export const TableBodyRows = ({ renderRow }: TableBodyRowProps) => {
     (row, index) => {
       const labelId = `table-checkbox-${index}`;
 
-      if (!renderRow) {
-        return renderDefaultRow(row);
-      }
-
-      return renderRow(row, labelId);
+      return renderTableRows(row, renderRow, labelId);
     },
   );
 };

@@ -53,10 +53,10 @@ export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
 
   return (
     <>
-      {headers.map((hd) => {
+      {headers.map((header) => {
         return (
-          <TableCell key={hd.id} {...rest}>
-            {getCellData(row[hd.id])}
+          <TableCell key={header.id} {...rest}>
+            {getCellData(row[header.id])}
           </TableCell>
         );
       })}
