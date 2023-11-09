@@ -41,6 +41,7 @@ export const TableHeaderCell = ({ cell, ...rest }: TableHeaderCellProps) => {
   return (
     <TableCell
       key={cell.id}
+      width={cell.width}
       align={cell?.textAlign || cell.numeric ? 'right' : 'left'}
       padding={cell.disablePadding ? 'none' : 'normal'}
       sortDirection={orderBy === cell.id ? order : false}
