@@ -31,6 +31,12 @@ export type UseTableProps = (
   error: unknown;
   total: number;
   pageCount: number;
+  execute: () => void;
+  refresh: () => void;
+  updateSimpleFilter: (
+    simpleFilter: SimpleFilter | null,
+    resetTableQueryState?: boolean,
+  ) => void;
   tableQueryState: TableQueryStateProps;
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
