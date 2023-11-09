@@ -2,7 +2,7 @@ import { useSearchParams } from 'next/navigation';
 import { Order, TableQueryStateProps } from '../types';
 import { useState } from 'react';
 
-const TABLE_QUERY_STATE_DEFAULT_VALUE: TableQueryStateProps = {
+export const TABLE_QUERY_STATE_DEFAULT_VALUE: TableQueryStateProps = {
   order: Order.Asc,
   orderBy: 'id',
   rowsPerPage: 5,

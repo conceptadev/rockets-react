@@ -1,10 +1,13 @@
 'use client';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { Order, SimpleFilter, TableQueryStateProps } from './types';
-import { useTableQueryState } from './hooks/useTableQueryState';
+import {
+  TABLE_QUERY_STATE_DEFAULT_VALUE,
+  useTableQueryState,
+} from './hooks/useTableQueryState';
 import { getSearchParams } from '../../utils/http';
 import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/interfaces';
 
@@ -54,6 +57,17 @@ const useTable: UseTableProps = (resource, options) => {
   const params = {
     search: _search,
   };
+
+  const TABLE_QUERY_DEFAULT_VALUE_FROM_OPTIONS = useMemo(
+    () => ({
+      order: options?.order ?? TABLE_QUERY_STATE_DEFAULT_VALUE.order,
+      orderBy: options?.order ?? TABLE_QUERY_STATE_DEFAULT_VALUE.orderBy,
+      rowsPerPage:
+        options?.rowsPerPage ?? TABLE_QUERY_STATE_DEFAULT_VALUE.rowsPerPage,
+      page: options?.page ?? TABLE_QUERY_STATE_DEFAULT_VALUE.page,
+    }),
+    [],
+  );
 
   useEffect(() => {
     const newSearchParam = getSearchParams(searchParams, {
@@ -129,15 +143,8 @@ const useTable: UseTableProps = (resource, options) => {
         };
       }
 
-      const defaults = {
-        order: Order.Asc,
-        orderBy: 'id',
-        rowsPerPage: 5,
-        page: 1,
-      };
-
       return {
-        ...defaults,
+        ...TABLE_QUERY_DEFAULT_VALUE_FROM_OPTIONS,
         ...(simpleFilter && { simpleFilter }),
       };
     });
