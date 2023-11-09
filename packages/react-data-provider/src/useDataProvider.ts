@@ -9,11 +9,12 @@ import {
   PutRequestOptions,
   PatchRequestOptions,
   DeleteRequestOptions,
+  Token,
 } from './interfaces';
 import { useClient } from './ClientProvider';
 
 const useDataProvider = () => {
-  const { baseUrl } = useClient();
+  const { baseUrl, onRefreshTokenError } = useClient();
   const envBaseUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const _baseUrl = baseUrl || envBaseUrl;
@@ -21,6 +22,45 @@ const useDataProvider = () => {
   //TODO
   //let user inject any http instance that match the HttpClient interface requirements
   const client: HttpClient = axiosClient;
+
+  /**
+   * Asynchronously refreshes an access token using a stored refresh token.
+   * @returns A promise that resolves with the response from the token refresh request or rejects with an error.
+   * @throws If an exception occurs while refreshing the token.
+   */
+  const refreshAccessToken = async (): Promise<Token | HttpError> => {
+    return new Promise((resolve, reject) => {
+      try {
+        const refreshToken = localStorage.getItem('refreshToken');
+
+        const body = {
+          refreshToken,
+        };
+
+        return post({
+          uri: '/token/refresh',
+          body,
+        })
+          .then(async (res) => {
+            if (res?.accessToken && res?.refreshToken) {
+              localStorage.setItem('accessToken', res.accessToken);
+              localStorage.setItem('refreshToken', res.refreshToken);
+            }
+
+            return resolve(res);
+          })
+          .catch(async (error) => {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
+            onRefreshTokenError(error);
+            return reject(error);
+          });
+      } catch (error) {
+        onRefreshTokenError(error);
+        return reject(error);
+      }
+    });
+  };
 
   client.defaultConfig({
     baseURL: _baseUrl,
@@ -40,14 +80,8 @@ const useDataProvider = () => {
         //redirect to login
       }
     },
-    getNewToken: () => {
-      //TODO
-      // const makeRequest = localStorage.getItem("refresh_token");
-      // if(refreshToken){
-      //   return refreshToken;
-      // }else{
-      //   //redirect to login
-      // }
+    getNewToken: async () => {
+      return await refreshAccessToken();
     },
   });
 
