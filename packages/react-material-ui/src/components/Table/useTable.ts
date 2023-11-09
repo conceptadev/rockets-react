@@ -37,6 +37,8 @@ export type UseTableProps = (
     simpleFilter: SimpleFilter | null,
     resetTableQueryState?: boolean,
   ) => void;
+  simpleFilter: SimpleFilter;
+  search: string;
   tableQueryState: TableQueryStateProps;
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
