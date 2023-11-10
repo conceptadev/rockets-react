@@ -9,12 +9,14 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.1.0",
+    "@commitlint/config-conventional": "^16.0.0",
+    "@testing-library/jest-dom": "^6.1.4",
+    "@testing-library/react": "^14.1.0",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.0",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
     "@typescript-eslint/parser": "^5.33.1",
-    "@commitlint/cli": "^16.1.0",
-    "@commitlint/config-conventional": "^16.0.0",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.24.2",
