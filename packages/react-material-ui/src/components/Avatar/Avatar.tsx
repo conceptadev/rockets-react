@@ -40,3 +40,5 @@ export const Avatar: FC<Props> = (props) => {
     />
   );
 };
+
+export default Avatar;
