@@ -1,14 +1,24 @@
-import React, { FC, ReactNode } from 'react';
+'use client';
+
+import React, { PropsWithChildren } from 'react';
 import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-interface Props {
+interface TableToolbarProps {
   numSelected: number;
-  children?: void | ReactNode;
 }
 
-const TableToolbar: FC<Props> = ({ numSelected, children }) => {
+/**
+ * Represents a toolbar component for managing table actions and displaying the selected item count.
+ *
+ * @param {TableToolbarProps} props - The props for the TableToolbar component.
+ * @returns A React element representing the table toolbar.
+ */
+const TableToolbar = ({
+  numSelected,
+  children,
+}: PropsWithChildren<TableToolbarProps>) => {
   return (
     <Toolbar
       sx={{

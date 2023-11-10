@@ -1,14 +1,9 @@
-import MuiTable, { TableProps as MuiTableProps } from '@mui/material/Table';
+import MuiTable from '@mui/material/Table';
 import { styled, Theme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 
 export type TableProps = {
   variant?: 'clean' | 'contained' | 'outlined';
-  tableStyles?: MuiTableProps['sx'];
-  tableHeaderRowStyles?: MuiTableProps['sx'];
-  tableHeaderCellStyles?: MuiTableProps['sx'];
-  tableRowStyles?: MuiTableProps['sx'];
-  tableCellStyles?: MuiTableProps['sx'];
 };
 
 const contained = (theme: Theme) => ({
@@ -76,49 +71,12 @@ const variantSettings = (variant: TableProps['variant'], theme: Theme) => {
   }
 };
 
-const returnStyledObject = (styles: MuiTableProps['sx'], theme: Theme) => {
-  if (!styles) return {};
-
-  if (typeof styles === 'function') {
-    return styles(theme);
-  }
-
-  if (Array.isArray(styles)) {
-    return styles.map((style) => returnStyledObject(style, theme));
-  }
-
-  return styles;
-};
-
-export const Table = styled(MuiTable)<TableProps>(
-  ({
-    theme,
-    variant,
-    tableStyles,
-    tableHeaderRowStyles,
-    tableHeaderCellStyles,
-    tableRowStyles,
-    tableCellStyles,
-  }) => {
-    return {
-      borderCollapse: 'separate',
-      ...variantSettings(variant, theme),
-      ...returnStyledObject(tableStyles, theme),
-      thead: {
-        tr: {
-          ...returnStyledObject(tableHeaderRowStyles, theme),
-          th: returnStyledObject(tableHeaderCellStyles, theme),
-        },
-      },
-      tbody: {
-        tr: {
-          ...returnStyledObject(tableRowStyles, theme),
-          td: returnStyledObject(tableCellStyles, theme),
-        },
-      },
-    };
-  },
-);
+export const Table = styled(MuiTable)<TableProps>(({ theme, variant }) => {
+  return {
+    borderCollapse: 'separate',
+    ...variantSettings(variant, theme),
+  };
+});
 
 export const IconContainer = styled(Box)(() => ({
   display: 'flex',
