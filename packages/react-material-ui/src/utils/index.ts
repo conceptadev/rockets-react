@@ -1,3 +1,3 @@
-import createTableTheme from './table/createTableTheme';
+import createTableStyles from './table/createTableStyles';
 
-export { createTableTheme };
+export { createTableStyles };

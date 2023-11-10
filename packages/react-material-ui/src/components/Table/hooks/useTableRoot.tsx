@@ -14,10 +14,7 @@ type TableContextProps = {
   isSelected: (id: string) => boolean;
   handleChangePage: (event: unknown, newPage: number) => void;
   handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: string,
-  ) => void;
+  handleSort: (event: React.MouseEvent<unknown>, property: string) => void;
   handleSelectAllCheckboxes: (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => void;

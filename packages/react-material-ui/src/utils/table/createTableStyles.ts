@@ -10,14 +10,8 @@ type StyleDefinition = {
  * @param {StyleDefinition} styles - An object containing style definitions.
  * @returns The generated style object with keys and corresponding style definitions.
  */
-const createTableStyles = (
-  styles: StyleDefinition,
-): Record<string, SxProps<Theme> | undefined> => {
-  const generatedStyles: Record<string, SxProps<Theme> | undefined> = {};
-
-  for (const key in styles) {
-    generatedStyles[key] = styles[key];
-  }
+const createTableStyles = <T extends StyleDefinition>(styles: T): T => {
+  const generatedStyles: T = styles;
 
   return generatedStyles;
 };

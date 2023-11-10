@@ -170,10 +170,7 @@ export const TableRoot = ({
    * @param event - The mouse event triggering the sorting request.
    * @param property - The property by which to sort the table.
    */
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: string,
-  ) => {
+  const handleSort = (event: React.MouseEvent<unknown>, property: string) => {
     const isAsc = orderBy === property && order === Order.Asc;
 
     const newOrderProperties = {
@@ -207,7 +204,7 @@ export const TableRoot = ({
         isSelected,
         handleChangePage,
         handleChangeRowsPerPage,
-        handleRequestSort,
+        handleSort,
         handleSelectAllCheckboxes,
         handleSelectCheckboxItem,
       }}
