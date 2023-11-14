@@ -79,6 +79,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
         value={value || value === 0 ? value : ''}
         hiddenLabel={label ? true : ishiddenLabel}
         label={''}
+        fullWidth
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
         InputProps={{
           ...(isPassword && {

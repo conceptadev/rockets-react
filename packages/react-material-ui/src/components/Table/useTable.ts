@@ -1,11 +1,11 @@
 'use client';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { Order, SimpleFilter, TableQueryStateProps } from './types';
 import {
-  TABLE_QUERY_STATE_DEFAULT_VALUE,
+  getTableQueryState,
   useTableQueryState,
 } from './hooks/useTableQueryState';
 import { getSearchParams } from '../../utils/http';
@@ -65,17 +65,6 @@ const useTable: UseTableProps = (resource, options) => {
   const params = {
     search: _search,
   };
-
-  const TABLE_QUERY_DEFAULT_VALUE_FROM_OPTIONS = useMemo(
-    () => ({
-      order: options?.order ?? TABLE_QUERY_STATE_DEFAULT_VALUE.order,
-      orderBy: options?.order ?? TABLE_QUERY_STATE_DEFAULT_VALUE.orderBy,
-      rowsPerPage:
-        options?.rowsPerPage ?? TABLE_QUERY_STATE_DEFAULT_VALUE.rowsPerPage,
-      page: options?.page ?? TABLE_QUERY_STATE_DEFAULT_VALUE.page,
-    }),
-    [],
-  );
 
   useEffect(() => {
     const newSearchParam = getSearchParams(searchParams, {
@@ -142,19 +131,37 @@ const useTable: UseTableProps = (resource, options) => {
     setTableQueryState((prevState) => {
       // Removed current simpleFilter from state
       const updatedState = { ...prevState };
-      delete updatedState.simpleFilter;
 
-      if (!resetTableQueryState) {
-        return {
-          ...updatedState,
-          ...(simpleFilter && { simpleFilter }),
-        };
+      for (const entries of Object.entries(simpleFilter)) {
+        const [key, value] = entries;
+
+        if (!value) {
+          delete updatedState.simpleFilter[key];
+        } else {
+          if (typeof updatedState.simpleFilter === 'undefined') {
+            updatedState.simpleFilter = {
+              [key]: value,
+            };
+          } else {
+            updatedState.simpleFilter[key] = value;
+          }
+        }
       }
 
-      return {
-        ...TABLE_QUERY_DEFAULT_VALUE_FROM_OPTIONS,
-        ...(simpleFilter && { simpleFilter }),
+      if (!resetTableQueryState) {
+        return updatedState;
+      }
+
+      // Don't pass search params to force table query state reset
+      const tableQueryDefaultValueFromOptions = getTableQueryState(options);
+      delete tableQueryDefaultValueFromOptions.simpleFilter;
+
+      const res = {
+        ...(updatedState && { ...updatedState }),
+        ...tableQueryDefaultValueFromOptions,
       };
+
+      return res;
     });
   };
 
