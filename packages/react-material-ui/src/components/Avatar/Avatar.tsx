@@ -4,40 +4,54 @@ import { Image } from './Styles';
 import Text from '../Text';
 
 type Props = {
-  src: string;
-  alt: string;
-  size: number;
+  src?: string;
+  alt?: string;
+  size?: number;
   initials?: string;
   onClick?: () => void;
+  backgroundColor?: string;
 };
 
 export const Avatar: FC<Props> = (props) => {
-  const { src, alt, size, initials, onClick } = props;
-  const [failed, setFailed] = useState(false);
+  const { src, alt, size = 30, initials, backgroundColor, onClick } = props;
+  const [failed, setFailed] = useState(!src);
 
   const handleImageError = () => {
     setFailed(true);
   };
 
-  if (failed && initials) {
-    return (
-      <Box sx={{ backgroundColor: 'grey.500' }}>
-        <Text fontSize={30} fontWeight={800} mt={1} gutterBottom>
-          {initials}
-        </Text>
-      </Box>
-    );
-  }
+  const showInitials = failed && initials;
 
   return (
-    <Image
-      src={src}
-      alt={alt}
-      size={size}
-      onClick={onClick}
-      onError={handleImageError}
-      style={{ display: failed ? 'none' : 'block' }}
-    />
+    <Box
+      sx={
+        showInitials
+          ? {}
+          : {
+              backgroundColor: backgroundColor || '#eee',
+              width: `${size}px`,
+              height: `${size}px`,
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }
+      }
+    >
+      <Image
+        src={src}
+        alt={alt}
+        size={size}
+        onClick={onClick}
+        onError={handleImageError}
+        style={{ display: showInitials ? 'none' : 'block' }}
+      />
+      {showInitials && (
+        <Text fontSize={size * 0.44} fontWeight={600}>
+          {initials.substring(0, 2)}
+        </Text>
+      )}
+    </Box>
   );
 };
 
