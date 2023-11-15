@@ -19,8 +19,9 @@ export type ContainerWithDrawerProps = {
   drawerCustomToggle?: DrawerProps['customToggle'];
   drawerCollapsedWidth?: DrawerProps['collapsedWidth'];
   drawerExpandedWidth?: DrawerProps['expandedWidth'];
-  collapsed?: boolean;
   collapsable?: boolean;
+  collapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
   iconColor?: DrawerItemProps['iconColor'];
   activeIconColor?: DrawerItemProps['activeIconColor'];
   showNotifications?: NavbarProps['showNotifications'];
@@ -49,8 +50,9 @@ const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
   drawerHorizontal,
   drawerBackgroundColor,
   drawerCustomToggle,
-  collapsed,
   collapsable,
+  collapsed,
+  onCollapsedChange,
   iconColor,
   activeIconColor,
   showNotifications,
@@ -84,6 +86,7 @@ const ContainerWithDrawer: FC<ContainerWithDrawerProps> = ({
         horizontal={drawerHorizontal}
         collapsable={collapsable}
         collapsed={collapsed}
+        onCollapsedChange={onCollapsedChange}
         backgroundColor={drawerBackgroundColor}
         iconColor={iconColor}
         activeIconColor={activeIconColor}
