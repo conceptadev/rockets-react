@@ -1,15 +1,8 @@
 export { default as Avatar } from './components/Avatar';
 export { default as Checkbox } from './components/Checkbox';
 
-import ContainerWithDrawer, {
-  ContainerWithDrawerProps,
-  MSWContainerWithDrawerProps,
-} from './components/ContainerWithDrawer';
-export {
-  ContainerWithDrawer,
-  ContainerWithDrawerProps,
-  MSWContainerWithDrawerProps,
-};
+import AppBar from './components/AppBar';
+export { AppBar };
 
 export { default as Dialog } from './components/Dialog';
 
