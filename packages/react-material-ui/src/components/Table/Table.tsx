@@ -183,7 +183,7 @@ const TableComponent: FC<TableProps> = ({
   };
 
   useEffect(() => {
-    if (page) _setPage(page + 1);
+    if (typeof page === 'number') _setPage(page + 1);
   }, [page]);
 
   useEffect(() => {
@@ -214,10 +214,6 @@ const TableComponent: FC<TableProps> = ({
 
   const isSelected = (id: string) =>
     selected.findIndex((_row) => _row.id === id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    _page - 1 > 0 ? Math.max(0, _page * _rowsPerPage - rows?.length) : 0;
 
   const getCellData = (cell: CustomTableCell | string | number) => {
     if (typeof cell === 'number' || typeof cell === 'string') {
@@ -266,6 +262,19 @@ const TableComponent: FC<TableProps> = ({
     return;
   }, [customToolbarActionButtons, selected]);
 
+  const rowsToRender = () => {
+    if (rows.length <= rowsPerPage) {
+      return rows.sort((a, b) => sortTable(a, b, _order, _orderBy));
+    }
+
+    return rows
+      .sort((a, b) => sortTable(a, b, _order, _orderBy))
+      .slice(
+        (_page - 1) * _rowsPerPage,
+        (_page - 1) * _rowsPerPage + _rowsPerPage,
+      );
+  };
+
   return (
     <Box width="100%" {...containerProps}>
       <>
@@ -296,105 +305,47 @@ const TableComponent: FC<TableProps> = ({
               hasOptions={hasOptions}
             />
             <TableBody>
-              {typeof page === 'number' &&
-                rows?.map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
-                  const labelId = `table-checkbox-${index}`;
+              {rowsToRender()?.map((row, index) => {
+                const isItemSelected = isSelected(row.id);
+                const labelId = `table-checkbox-${index}`;
 
-                  return (
-                    <TableRow
-                      hover={hover}
-                      onClick={(event) => handleClick(event, row)}
-                      role={hasCheckboxes ? 'checkbox' : ''}
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.id}
-                      selected={isItemSelected}
-                    >
-                      {hasCheckboxes && (
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              'aria-labelledby': labelId,
-                            }}
-                            onClick={(event) => handleClick(event, row)}
-                          />
-                        </TableCell>
-                      )}
+                return (
+                  <TableRow
+                    hover={hover}
+                    onClick={(event) => handleClick(event, row)}
+                    role={hasCheckboxes ? 'checkbox' : ''}
+                    aria-checked={isItemSelected}
+                    tabIndex={-1}
+                    key={row.id}
+                    selected={isItemSelected}
+                  >
+                    {hasCheckboxes && (
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{
+                            'aria-labelledby': labelId,
+                          }}
+                          onClick={(event) => handleClick(event, row)}
+                        />
+                      </TableCell>
+                    )}
 
-                      {renderRowCells(row)}
+                    {renderRowCells(row)}
 
-                      {hasOptions && (
-                        <TableCell>
-                          <TableOptions
-                            row={row}
-                            customRowOptions={customRowOptions}
-                            toggleDirection={toggleDirection}
-                          />
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  );
-                })}
-              {typeof page === 'undefined' &&
-                rows
-                  .slice(
-                    (_page - 1) * _rowsPerPage,
-                    (_page - 1) * _rowsPerPage + _rowsPerPage,
-                  )
-                  .sort((a, b) => sortTable(a, b, _order, _orderBy))
-                  .map((row, index) => {
-                    const isItemSelected = isSelected(row.id);
-                    const labelId = `table-checkbox-${index}`;
-
-                    return (
-                      <TableRow
-                        hover={hover}
-                        onClick={(event) => handleClick(event, row)}
-                        role={hasCheckboxes ? 'checkbox' : ''}
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        key={row.id}
-                        selected={isItemSelected}
-                      >
-                        {hasCheckboxes && (
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              color="primary"
-                              checked={isItemSelected}
-                              inputProps={{
-                                'aria-labelledby': labelId,
-                              }}
-                              onClick={(event) => handleClick(event, row)}
-                            />
-                          </TableCell>
-                        )}
-
-                        {renderRowCells(row)}
-
-                        {hasOptions && (
-                          <TableCell>
-                            <TableOptions
-                              row={row}
-                              customRowOptions={customRowOptions}
-                              toggleDirection={toggleDirection}
-                            />
-                          </TableCell>
-                        )}
-                      </TableRow>
-                    );
-                  })}
-              {typeof page === 'undefined' && emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 53 * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
+                    {hasOptions && (
+                      <TableCell>
+                        <TableOptions
+                          row={row}
+                          customRowOptions={customRowOptions}
+                          toggleDirection={toggleDirection}
+                        />
+                      </TableCell>
+                    )}
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -429,9 +380,7 @@ const TableComponent: FC<TableProps> = ({
           <Box display="flex" justifyContent="center">
             <Pagination
               count={
-                pageCount ||
-                (rows?.length && Math.floor(rows?.length / 5) + 1) ||
-                0
+                pageCount || (rows?.length && Math.ceil(rows?.length / 5)) || 0
               }
               onChange={handleChangePage}
               page={_page}
