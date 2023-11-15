@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 export type BasicType = string | number | boolean;
 
-export type SimpleFilter = Record<string, BasicType | BasicType[]>;
+export type SimpleFilter = Record<string, BasicType | BasicType[] | null>;
 
 export type HeaderProps = {
   disablePadding?: boolean;
