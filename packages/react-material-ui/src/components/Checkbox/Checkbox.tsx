@@ -29,7 +29,7 @@ const Checkbox: FC<CheckboxProps & Props> = (props) => {
           <FormControlLabel
             control={<MuiCheckbox onChange={props.onChange} />}
             label={
-              <Text {...textProps}>
+              <Text role="label" {...textProps}>
                 {label}
                 {required && ' *'}
               </Text>
