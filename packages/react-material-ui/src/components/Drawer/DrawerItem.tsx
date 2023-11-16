@@ -45,6 +45,7 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
       horizontal={horizontal}
       iconColor={iconColor}
       activeIconColor={activeIconColor}
+      data-testid="drawer-item"
     >
       {typeof icon === 'function' ? icon(!!active) : icon}
       {text && <Text {...textProps}>{text}</Text>}
