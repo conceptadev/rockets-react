@@ -13,6 +13,8 @@ import { TableBodyRow } from './TableBody/TableBodyRow';
 import { TableBodyRows } from './TableBody/TableBodyRows';
 import { TableRoot } from './TableRoot';
 import { TableHeaderCell } from './TableHeader/TableHeaderCell';
+import { TableRowSkeleton } from './TableRowSkeleton';
+import { TableCellSkeleton } from './TableCellSkeleton';
 
 const TableComponent = {
   Table,
@@ -28,6 +30,8 @@ const TableComponent = {
   HeaderCheckbox: TableHeaderCheckbox,
   HeaderOption: TableHeaderOption,
   Root: TableRoot,
+  CellSkeleton: TableCellSkeleton,
+  RowSkeleton: TableRowSkeleton,
 };
 
 export default TableComponent;
