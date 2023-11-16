@@ -54,10 +54,10 @@ describe('Dialog Component', () => {
     expect(props.handleClose).toHaveBeenCalledTimes(1);
   });
 
-  test('does not render when open prop is false', () => {
-    const { getByText } = render(
+  test('check if it is not rendered if open is set to false', () => {
+    const { queryByText } = render(
       <Dialog open={false} {...props} title="Test Title" />,
     );
-    expect(getByText('Test Title')).not.toBeInTheDocument();
+    expect(queryByText('Test Title')).not.toBeInTheDocument();
   });
 });
