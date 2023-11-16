@@ -8,7 +8,7 @@ import { render, fireEvent } from '@testing-library/react';
 import Checkbox from '../src/components/Checkbox/Checkbox';
 
 describe('Checkbox Component', () => {
-  test('should render correctly', () => {
+  test('renders correctly', () => {
     const { getByLabelText, getByText } = render(
       <Checkbox label="Test Label" checked={false} onChange={() => {}} />,
     );
@@ -20,7 +20,7 @@ describe('Checkbox Component', () => {
     expect(label).toBeInTheDocument();
   });
 
-  test('should render without label', () => {
+  test('renders without label', () => {
     const { getByRole } = render(
       <Checkbox checked={false} onChange={() => {}} />,
     );
@@ -30,7 +30,7 @@ describe('Checkbox Component', () => {
     expect(checkbox).toBeInTheDocument();
   });
 
-  test('should render as checked', () => {
+  test('renders as checked', () => {
     const { getByLabelText } = render(
       <Checkbox label="Test Label" checked={true} onChange={() => {}} />,
     );
@@ -40,7 +40,7 @@ describe('Checkbox Component', () => {
     expect(checkbox).toBeChecked();
   });
 
-  test('should render as unchecked', () => {
+  test('renders as unchecked', () => {
     const { getByLabelText } = render(
       <Checkbox label="Test Label" checked={false} onChange={() => {}} />,
     );

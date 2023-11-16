@@ -4,15 +4,15 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import FormTemplate from '../src/components/FormTemplate/FormTemplate';
 
 describe('FormTemplate Component', () => {
-  it('renders without crashing', () => {
+  it('should render correctly', () => {
     render(<FormTemplate />);
   });
 
-  it('should render with children correctly', () => {
+  it('renders with children correctly', () => {
     const { getByText } = render(
       <FormTemplate>
         <div>Test Children</div>
@@ -23,7 +23,7 @@ describe('FormTemplate Component', () => {
     expect(formTemplate).toBeInTheDocument();
   });
 
-  it('should render icon correctly', () => {
+  it('renders icon correctly', () => {
     const { getByTestId } = render(
       <FormTemplate icon={<div data-testid="icon" />} />,
     );
@@ -32,7 +32,7 @@ describe('FormTemplate Component', () => {
     expect(formTemplateIcon).toBeInTheDocument();
   });
 
-  it('should render title correctly', () => {
+  it('renders title correctly', () => {
     const { queryByText } = render(<FormTemplate title="Test Title" />);
 
     const formTemplateTitle = queryByText('Test Title');

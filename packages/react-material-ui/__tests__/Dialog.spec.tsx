@@ -12,7 +12,7 @@ describe('Dialog Component', () => {
     handleClose: jest.fn(),
   };
 
-  it('renders without crashing', () => {
+  it('should render correctly', () => {
     render(<Dialog open={true} {...props} />);
   });
 
@@ -54,7 +54,7 @@ describe('Dialog Component', () => {
     expect(props.handleClose).toHaveBeenCalledTimes(1);
   });
 
-  test('check if it is not rendered if open is set to false', () => {
+  test('checks if it is not rendered if "open" is set to false', () => {
     const { queryByText } = render(
       <Dialog open={false} {...props} title="Test Title" />,
     );
