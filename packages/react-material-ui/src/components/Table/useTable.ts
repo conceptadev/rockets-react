@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { Order, SimpleFilter, TableQueryStateProps } from './types';
 import {
-  getTableQueryState,
+  TABLE_QUERY_STATE_DEFAULT_VALUE,
   useTableQueryState,
 } from './hooks/useTableQueryState';
 import { getSearchParams } from '../../utils/http';
@@ -35,7 +35,7 @@ export type UseTableProps = (
   refresh: () => void;
   updateSimpleFilter: (
     simpleFilter: SimpleFilter | null,
-    resetTableQueryState?: boolean,
+    resetPage?: boolean,
   ) => void;
   simpleFilter: SimpleFilter;
   search: string;
@@ -126,7 +126,7 @@ const useTable: UseTableProps = (resource, options) => {
 
   const updateSimpleFilter = (
     simpleFilter: SimpleFilter | null,
-    resetTableQueryState = true,
+    resetPage = true,
   ) => {
     setTableQueryState((prevState) => {
       // Removed current simpleFilter from state
@@ -134,6 +134,8 @@ const useTable: UseTableProps = (resource, options) => {
 
       for (const entries of Object.entries(simpleFilter)) {
         const [key, value] = entries;
+
+        if (!value && !updatedState?.simpleFilter?.[key]) continue;
 
         if (!value) {
           delete updatedState.simpleFilter[key];
@@ -148,17 +150,21 @@ const useTable: UseTableProps = (resource, options) => {
         }
       }
 
-      if (!resetTableQueryState) {
+      if (!resetPage) {
         return updatedState;
       }
 
-      // Don't pass search params to force table query state reset
-      const tableQueryDefaultValueFromOptions = getTableQueryState(options);
-      delete tableQueryDefaultValueFromOptions.simpleFilter;
+      const updatedSimpleFilter =
+        Object.keys(updatedState?.simpleFilter).length > 0
+          ? updatedState.simpleFilter
+          : undefined;
 
       const res = {
-        ...(updatedState && { ...updatedState }),
-        ...tableQueryDefaultValueFromOptions,
+        ...(updatedState && {
+          ...updatedState,
+          simpleFilter: updatedSimpleFilter,
+          page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
+        }),
       };
 
       return res;
@@ -172,7 +178,7 @@ const useTable: UseTableProps = (resource, options) => {
     execute,
     refresh,
     updateSimpleFilter,
-    simpleFilter: tableQueryState.simpleFilter,
+    simpleFilter: tableQueryState?.simpleFilter,
     search: params.search,
     total: data?.total,
     pageCount: data?.pageCount,

@@ -6,6 +6,7 @@ import { Order, RenderRowFunction, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 import { TableBodyRow } from './TableBodyRow';
 import { TableBodyCells } from './TableBodyCells';
+import { TableRowSkeleton } from '../TableRowSkeleton';
 
 /**
  * Returns a paginated and sorted subset of rows based on the current page, rowsPerPage, order, and orderBy.
@@ -62,6 +63,7 @@ const renderTableRows = (
 
 type TableBodyRowProps = {
   renderRow?: RenderRowFunction;
+  isLoading?: boolean;
 };
 
 /**
@@ -70,9 +72,16 @@ type TableBodyRowProps = {
  * @param {TableBodyRowProps} props - The props for the TableBodyRows component.
  * @returns An array of React elements representing the table body rows.
  */
-export const TableBodyRows = ({ renderRow }: TableBodyRowProps) => {
+export const TableBodyRows = ({
+  renderRow,
+  isLoading = false,
+}: TableBodyRowProps) => {
   const { rows, tableQuery, isControlled } = useTableRoot();
   const { page, rowsPerPage, order, orderBy } = tableQuery;
+
+  if (isLoading) {
+    return <TableRowSkeleton />;
+  }
 
   if (isControlled) {
     return rows.map((row, index) => {
