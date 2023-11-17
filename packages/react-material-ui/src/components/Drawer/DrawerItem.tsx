@@ -17,6 +17,7 @@ export type DrawerItemProps = {
 
 const DrawerItem: FC<DrawerItemProps> = (props) => {
   const {
+    id,
     icon,
     text,
     active,
@@ -40,9 +41,7 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
 
   return (
     <DrawerButton
-      data-testid={`drawer-item-${props.id}-${
-        temporary ? 'temporary' : 'permanent'
-      }`}
+      data-testid={`drawer-item-${id}-${temporary ? 'temporary' : 'permanent'}`}
       active={active}
       collapsed={collapsed}
       onClick={handleClick}

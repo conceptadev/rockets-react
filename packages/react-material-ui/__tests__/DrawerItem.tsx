@@ -31,9 +31,10 @@ describe('DrawerItem Component', () => {
   it('calls onClick when clicked', () => {
     const onClickMock = jest.fn();
     const { getByTestId } = render(
-      <DrawerItem icon={<div />} onClick={onClickMock} />,
+      <DrawerItem id="item0" icon={<div />} onClick={onClickMock} />,
     );
-    fireEvent.click(getByTestId('drawer-item'));
+    const drawerItem = getByTestId('drawer-item-item0-permanent');
+    fireEvent.click(drawerItem);
     expect(onClickMock).toHaveBeenCalled();
   });
 
@@ -47,6 +48,7 @@ describe('DrawerItem Component', () => {
     const { getByText } = render(
       <DrawerItem text="Test Text" textProps={{ fontSize: 16 }} />,
     );
-    expect(getByText('Test Text')).toHaveStyle('font-size: 16px');
+    const drawerItemText = getByText('Test Text');
+    expect(drawerItemText).toHaveStyle('font-size: 16px');
   });
 });
