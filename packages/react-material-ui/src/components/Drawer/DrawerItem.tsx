@@ -12,6 +12,7 @@ export type DrawerItemProps = {
   text?: string;
   onClick?: () => void;
   textProps?: TextProps;
+  temporary?: boolean;
 } & DrawerButtonProps;
 
 const DrawerItem: FC<DrawerItemProps> = (props) => {
@@ -30,6 +31,7 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
     horizontal,
     iconColor,
     activeIconColor,
+    temporary,
   } = props;
 
   const handleClick = () => {
@@ -38,6 +40,9 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
 
   return (
     <DrawerButton
+      data-testid={`drawer-item-${props.id}-${
+        temporary ? 'temporary' : 'permanent'
+      }`}
       active={active}
       collapsed={collapsed}
       onClick={handleClick}
@@ -45,7 +50,6 @@ const DrawerItem: FC<DrawerItemProps> = (props) => {
       horizontal={horizontal}
       iconColor={iconColor}
       activeIconColor={activeIconColor}
-      data-testid="drawer-item"
     >
       {typeof icon === 'function' ? icon(!!active) : icon}
       {text && <Text {...textProps}>{text}</Text>}
