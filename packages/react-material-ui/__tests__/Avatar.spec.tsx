@@ -26,7 +26,8 @@ describe('Avatar Component', () => {
 
   it('renders initials when no image is provided', () => {
     const { getByText } = render(<Avatar initials="AB" />);
-    expect(getByText('AB')).toBeInTheDocument();
+    const avatarInitials = getByText('AB');
+    expect(avatarInitials).toBeInTheDocument();
   });
 
   it('handles image loading error', () => {

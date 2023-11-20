@@ -20,7 +20,8 @@ describe('Dialog Component', () => {
     const { getByText } = render(
       <Dialog open={true} {...props} title="Test Title" />,
     );
-    expect(getByText('Test Title')).toBeInTheDocument();
+    const title = getByText('Test Title');
+    expect(title).toBeInTheDocument();
   });
 
   it('renders children correctly', () => {
@@ -29,7 +30,8 @@ describe('Dialog Component', () => {
         <div>Test Children</div>
       </Dialog>,
     );
-    expect(getByText('Test Children')).toBeInTheDocument();
+    const children = getByText('Test Children');
+    expect(children).toBeInTheDocument();
   });
 
   it('renders footer correctly', () => {
@@ -43,7 +45,8 @@ describe('Dialog Component', () => {
         <div>Test Children</div>
       </Dialog>,
     );
-    expect(getByText('Test Footer')).toBeInTheDocument();
+    const footer = getByText('Test Footer');
+    expect(footer).toBeInTheDocument();
   });
 
   it('calls handleClose when close button is clicked', () => {
@@ -58,6 +61,7 @@ describe('Dialog Component', () => {
     const { queryByText } = render(
       <Dialog open={false} {...props} title="Test Title" />,
     );
-    expect(queryByText('Test Title')).not.toBeInTheDocument();
+    const title = queryByText('Test Title');
+    expect(title).not.toBeInTheDocument();
   });
 });

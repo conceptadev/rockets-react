@@ -14,9 +14,9 @@ describe('Checkbox Component', () => {
     );
 
     const checkbox = getByLabelText('Test Label');
-    const label = getByText('Test Label');
-
     expect(checkbox).toBeInTheDocument();
+
+    const label = getByText('Test Label');
     expect(label).toBeInTheDocument();
   });
 
@@ -26,7 +26,6 @@ describe('Checkbox Component', () => {
     );
 
     const checkbox = getByRole('checkbox');
-
     expect(checkbox).toBeInTheDocument();
   });
 
@@ -36,7 +35,6 @@ describe('Checkbox Component', () => {
     );
 
     const checkbox = getByLabelText('Test Label');
-
     expect(checkbox).toBeChecked();
   });
 
@@ -46,7 +44,6 @@ describe('Checkbox Component', () => {
     );
 
     const checkbox = getByLabelText('Test Label');
-
     expect(checkbox).not.toBeChecked();
   });
 
@@ -61,7 +58,6 @@ describe('Checkbox Component', () => {
     );
 
     const label = getByText('Test Label *');
-
     expect(label).toBeInTheDocument();
   });
 
@@ -72,11 +68,11 @@ describe('Checkbox Component', () => {
     );
 
     const checkbox = getByLabelText('Test Label');
-
     expect(checkbox).not.toBeChecked();
+
     fireEvent.click(checkbox);
-    expect(checkbox).not.toBeChecked();
 
+    expect(checkbox).not.toBeChecked();
     expect(handleChange).toHaveBeenCalled();
   });
 });
