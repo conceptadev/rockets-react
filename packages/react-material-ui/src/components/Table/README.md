@@ -1,5 +1,56 @@
 # Table
 
+Full example
+
+```js
+const tableTheme = createTableStyles({
+  table: {
+    height: '100%',
+  },
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: 1,
+    overflow: 'auto',
+  },
+  tableHeader: {
+    ...theme.typography.caption,
+    lineHeight: 1,
+    fontWeight: 500,
+    color: theme.palette.grey[500],
+  },
+  tableRow: {
+    backgroundColor: '#F9FAFB',
+    textTransform: 'uppercase',
+  },
+  tableContainer: {
+    flex: 1,
+  },
+});
+
+<Table.Root rows={customRows()} headers={headers} sx={tableTheme.root} >
+   <TableContainer sx={tableTheme.tableContainer}>
+      <Table.Table stickyHeader variant="outlined" sx={tableTheme.table}>
+         <TableHead>
+            <TableRow sx={tableTheme.tableRow}>
+               <Table.HeaderCells sx={tableTheme.tableHeader} />
+            </TableRow>
+         </TableHead>
+         <TableBody>
+            <Table.BodyRows
+               renderRow={row => (
+                  <Table.BodyRow row={row} hasCheckboxes={false} hover={false}>
+                     <Table.BodyCell row={row} />
+                  </Table.BodyRow>
+               )}
+             />
+         </TableBody>
+      </Table.Table>
+   </TableContainer>
+   <Table.Pagination variant="outlined" />
+</Table.Root>
+```
+
 ## Structure
 
 `Table.Root` is the highest components of the tree and holds the context to share state. It can function as either a controlled or uncontrolled component. When passing a `tableQueryState` to `Table.Root`, it indicates the intention to control the table's state. This is particularly helpful when managing data externally and requiring full control. `Table.Root` intelligently enforces the requirement of total, pageCount, and `updateTableQueryState` if any of these props are provided. In the absence of these props, the component remains uncontrolled, and the state is managed by the Table component.
@@ -14,7 +65,7 @@
 <Table.Root 
   rows={customRows()} 
   headers={headers} 
-  tableQueryState={...} // I'm passing this, so every prop below are required
+  tableQueryState={...} // Passing this so every prop below is required
   updateTableQueryState={...}
   total={...}
   pageCount={...}
@@ -66,60 +117,9 @@ const tableTheme = createTableStyles({
 
 ## Hooks
 
-`useTable` now uses the `useTableQueryState` hook, creating a state object to manage pagination, filtering, and sorting. Importantly, `useTable` is now decoupled from the Table component and can function independently. It implements the same interface for the query state. based on the It can receive an initial state, or if one is not provided, it will utilize the default `useTableQueryState` settings. It exposes the fetched data, the current state, and provides methods for updating the state.
+`useTable` now uses the `useTableQueryState` hook, creating a state object to manage pagination, filtering, and sorting. Importantly, `useTable` is now decoupled from the Table component and can function independently. It implements the same interface for the query state and can receive an initial state, or if one is not provided, it will utilize the default `useTableQueryState` settings. It exposes the fetched data, the current state, and provides methods for updating the state.
 
 Every component now includes JSDocs, and even some inner functions have JSDocs as well.
-
-Full example
-
-```js
-const tableTheme = createTableStyles({
-  table: {
-    height: '100%',
-  },
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    overflow: 'auto',
-  },
-  tableHeader: {
-    ...theme.typography.caption,
-    lineHeight: 1,
-    fontWeight: 500,
-    color: theme.palette.grey[500],
-  },
-  tableRow: {
-    backgroundColor: '#F9FAFB',
-    textTransform: 'uppercase',
-  },
-  tableContainer: {
-    flex: 1,
-  },
-});
-
-<Table.Root rows={customRows()} headers={headers} sx={tableTheme.root} >
-   <TableContainer sx={tableTheme.tableContainer}>
-      <Table.Table stickyHeader variant="outlined" sx={tableTheme.table}>
-         <TableHead>
-            <TableRow sx={tableTheme.tableRow}>
-               <Table.HeaderCells sx={tableTheme.tableHeader} />
-            </TableRow>
-         </TableHead>
-         <TableBody>
-            <Table.BodyRows
-               renderRow={row => (
-                  <Table.BodyRow row={row} hasCheckboxes={false} hover={false}>
-                     <Table.BodyCell row={row} />
-                  </Table.BodyRow>
-               )}
-             />
-         </TableBody>
-      </Table.Table>
-   </TableContainer>
-   <Table.Pagination variant="outlined" />
-</Table.Root>
-```
 
 ## Loading
 
