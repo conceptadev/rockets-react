@@ -7,3 +7,4 @@ export { default as CustomTextFieldWidget } from './CustomTextFieldWidget';
 export { default as CustomEmailFieldWidget } from './CustomEmailFieldWidget';
 export { default as CustomPasswordFieldWidget } from './CustomPasswordFieldWidget';
 export { default as CustomRadioWidget } from './CustomRadioWidget';
+export { default as CustomAutocompleteWidget } from './CustomAutocompleteWidget';
