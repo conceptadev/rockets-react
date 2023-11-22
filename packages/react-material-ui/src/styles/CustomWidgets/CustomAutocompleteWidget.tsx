@@ -1,8 +1,7 @@
-import React, { FocusEvent, SyntheticEvent, useEffect } from 'react';
+import React, { SyntheticEvent, useEffect, useMemo } from 'react';
 import { TextFieldProps } from '@mui/material/TextField';
 import {
   ariaDescribedByIds,
-  enumOptionsValueForIndex,
   labelValue,
   FormContextType,
   RJSFSchema,
@@ -10,9 +9,31 @@ import {
   WidgetProps,
 } from '@rjsf/utils';
 import { Autocomplete } from '@mui/material';
-import TextField from '../../components/TextField';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import FormFieldSkeleton from '../../components/FormFieldSkeleton';
+import TextField from '../../components/TextField';
+
+type Option = {
+  value: string;
+  label: string;
+};
+
+/**
+ * Maps the provided option(s) to their corresponding value(s) based on the specified criteria.
+ *
+ * @param value - The option(s) to be mapped. Can be a single Option or an array of Options.
+ * @param optEmptyVal - The value to return if the provided 'value' is falsy (undefined, null, etc.).
+ * @returns The mapped value(s) based on the provided 'value' and the specified criteria.
+ */
+const availableOptionsValueMap = (value: Option | Option[], optEmptyVal) => {
+  if (!value) return optEmptyVal;
+
+  if (Array.isArray(value)) {
+    return value?.length < 1 ? [] : value.map((item) => item.value);
+  }
+
+  return value?.value;
+};
 
 /** The `SelectWidget` is a widget for rendering dropdowns.
  *  It is typically used with string properties constrained with enum options.
@@ -51,64 +72,47 @@ export default function CustomAutocompleteWidget<
 }: WidgetProps<T, S, F>) {
   const { get } = useDataProvider();
 
-  const { enumOptions, enumDisabled, emptyValue: optEmptyVal } = options;
+  const { enumOptions } = options;
 
   const resource = uiSchema?.['ui:resource'];
   const resourceLabel = uiSchema?.['ui:resourceLabel'];
   const resourceValue = uiSchema?.['ui:resourceValue'];
-
-  multiple = typeof multiple === 'undefined' ? false : !!multiple;
 
   const getResource = () => {
     return get({
       uri: `/${resource}`,
     });
   };
-
   const { execute, data, isPending } = useQuery(getResource, false);
 
-  const resourceOptions = data?.map((resource) => ({
+  const resourceOptions: Option[] = data?.map((resource) => ({
     value: resource[resourceValue ?? 'id'],
     label: resource[resourceLabel ?? 'name'],
   }));
 
-  const availableOptions = resource ? resourceOptions : enumOptions;
+  const availableOptions: Option[] = resource ? resourceOptions : enumOptions;
 
-  const controlledValue = availableOptions?.find(
-    (option) => option.value === value,
-  );
+  multiple = typeof multiple === 'undefined' ? false : !!multiple;
 
-  const emptyValue = multiple ? [] : '';
+  const emptyValue = multiple ? [] : undefined;
+
   const isEmpty =
     typeof value === 'undefined' ||
     (multiple && value.length < 1) ||
     (!multiple && value === emptyValue);
 
-  const _onChange = (
-    _: SyntheticEvent<Element, Event>,
-    newValue: { value: string; label: string },
-  ) => {
-    if (!newValue) return onChange(optEmptyVal);
+  const controlledValue = useMemo(() => {
+    if (multiple) {
+      return value.map((optionValue) =>
+        availableOptions?.find((option) => option.value === optionValue),
+      );
+    }
 
-    onChange(newValue?.value);
-  };
-  const _onBlur = ({ target: { value } }: FocusEvent<HTMLInputElement>) =>
-    onBlur(
-      id,
-      enumOptionsValueForIndex<S>(value, availableOptions, optEmptyVal),
-    );
-  const _onFocus = ({ target: { value } }: FocusEvent<HTMLInputElement>) =>
-    onFocus(
-      id,
-      enumOptionsValueForIndex<S>(value, availableOptions, optEmptyVal),
-    );
+    return availableOptions?.find((option) => option.value === value);
+  }, [availableOptions, value, multiple]);
 
-  // TODO: Implement multiple select
-  /* const selectedIndexes = enumOptionsIndexForValue<S>(
-    value,
-    availableOptions,
-    multiple,
-  ); */
+  const _onChange = (_: SyntheticEvent<Element, Event>, newValue: Option) =>
+    onChange(availableOptionsValueMap(newValue, emptyValue));
 
   useEffect(() => {
     if (resource) {
@@ -124,6 +128,7 @@ export default function CustomAutocompleteWidget<
 
   return (
     <Autocomplete
+      multiple={multiple}
       key={controlledValue}
       options={availableOptions ?? []}
       isOptionEqualToValue={(option) => option.value === controlledValue}
@@ -131,8 +136,6 @@ export default function CustomAutocompleteWidget<
       size={size ?? 'small'}
       value={controlledValue}
       onChange={_onChange}
-      onBlur={_onBlur}
-      onFocus={_onFocus}
       renderInput={(params) => (
         <TextField
           {...params}

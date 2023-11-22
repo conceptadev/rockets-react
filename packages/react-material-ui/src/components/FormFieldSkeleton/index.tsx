@@ -1,4 +1,5 @@
-import React, { Box, Skeleton, useTheme } from '@mui/material';
+import React from 'react';
+import { Box, Skeleton, useTheme } from '@mui/material';
 
 type FormFieldSkeletonProps = {
   hideLabel?: boolean;
