@@ -155,7 +155,8 @@ const useTable: UseTableProps = (resource, options) => {
       }
 
       const updatedSimpleFilter =
-        Object.keys(updatedState?.simpleFilter).length > 0
+        updatedState?.simpleFilter &&
+        Object.keys(updatedState.simpleFilter).length > 0
           ? updatedState.simpleFilter
           : undefined;
 
