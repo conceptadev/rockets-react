@@ -77,10 +77,12 @@ export default function CustomAutocompleteWidget<
   const resource = uiSchema?.['ui:resource'];
   const resourceLabel = uiSchema?.['ui:resourceLabel'];
   const resourceValue = uiSchema?.['ui:resourceValue'];
+  const queryParams = uiSchema?.['ui:queryParams'];
 
   const getResource = () => {
     return get({
       uri: `/${resource}`,
+      queryParams,
     });
   };
   const { execute, data, isPending } = useQuery(getResource, false);
