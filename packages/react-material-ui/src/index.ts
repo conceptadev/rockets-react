@@ -34,6 +34,7 @@ export { Table };
 
 export { default as Text } from './components/Text';
 export { default as TextField } from './components/TextField';
+export { default as SearchField } from './components/SearchField';
 export { default as SimpleForm } from './components/SimpleForm';
 export { default as SchemaForm } from './components/SchemaForm';
 
