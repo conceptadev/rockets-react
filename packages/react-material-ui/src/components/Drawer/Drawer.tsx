@@ -24,6 +24,7 @@ export type DrawerProps = {
   horizontal?: boolean;
   collapsable?: boolean;
   collapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
   backgroundColor?: StyledDrawerProps['backgroundColor'];
   iconColor?: DrawerItemProps['iconColor'];
   activeIconColor?: DrawerItemProps['activeIconColor'];
@@ -45,6 +46,7 @@ const Drawer: FC<DrawerProps> = (props) => {
     horizontal,
     collapsable = true,
     collapsed = false,
+    onCollapsedChange,
     backgroundColor,
     iconColor,
     activeIconColor,
@@ -58,7 +60,9 @@ const Drawer: FC<DrawerProps> = (props) => {
   }, [collapsed]);
 
   const toggleDrawer = () => {
-    _setCollapsed((prev) => !prev);
+    const newCollapsedValue = !_collapsed;
+    _setCollapsed(newCollapsedValue);
+    onCollapsedChange?.(newCollapsedValue);
   };
 
   const renderLogo = useCallback(() => {

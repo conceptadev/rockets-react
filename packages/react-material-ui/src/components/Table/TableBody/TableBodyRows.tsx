@@ -26,8 +26,8 @@ export const getPaginatedRows = (
   orderBy: string,
 ) =>
   rows
-    .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage)
-    .sort((a, b) => sortTable(a, b, order, orderBy));
+    .sort((a, b) => sortTable(a, b, order, orderBy))
+    .slice((page - 1) * rowsPerPage, (page - 1) * rowsPerPage + rowsPerPage);
 
 /**
  * Render a default row for a table body with provided row data.
