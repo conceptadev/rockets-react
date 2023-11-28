@@ -31,8 +31,11 @@ describe('Navbar', () => {
   it('renders text and subText correctly', () => {
     const { getByText } = render(<Navbar {...defaultProps} />);
 
-    expect(getByText('John Doe')).toBeInTheDocument();
-    expect(getByText('Admin')).toBeInTheDocument();
+    const text = getByText('John Doe');
+    const subText = getByText('Admin');
+
+    expect(text).toBeInTheDocument();
+    expect(subText).toBeInTheDocument();
   });
 
   it('calls the drawerToggle function when the drawer toggle button is clicked', () => {
