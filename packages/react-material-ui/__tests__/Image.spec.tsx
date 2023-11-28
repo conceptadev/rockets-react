@@ -4,13 +4,13 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Image from '../src/components/Image/Image';
 
 describe('Image component', () => {
   const defaultSrc = 'fakeImage.jpg';
   const defaultAlt = 'Image alt text';
-  const defaultDefaultImage = 'path/to/default-image.jpg';
+  const defaultDefaultImage = 'fakeDefaultImage.jpg';
 
   it('renders without crashing', () => {
     render(<Image src={defaultSrc} />);
@@ -42,7 +42,7 @@ describe('Image component', () => {
     expect(onLoadMock).toHaveBeenCalledTimes(1);
   });
 
-  it('calls the onError handler and displays the default image when the image fails to load', () => {
+  it('calls onError handler and displays default image if image fails to load', () => {
     const onErrorMock = jest.fn();
     const { getByAltText } = render(
       <Image
