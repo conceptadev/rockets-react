@@ -4,7 +4,7 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import Link from '../src/components/Link/Link';
 
 describe('Link component', () => {

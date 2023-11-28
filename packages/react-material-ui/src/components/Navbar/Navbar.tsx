@@ -32,6 +32,7 @@ const Navbar: FC<NavbarProps> = ({
 }) => {
   return (
     <Box
+      data-testid="navbarContainer"
       sx={[
         (theme) => ({
           position: 'relative',

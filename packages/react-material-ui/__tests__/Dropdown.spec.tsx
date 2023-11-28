@@ -30,7 +30,7 @@ describe('Dropdown component', () => {
   });
 
   it('has "Options" tooltip and icon', () => {
-    const { getByLabelText, getByTestId, debug } = render(
+    const { getByLabelText, getByTestId } = render(
       <Dropdown options={options} />,
     );
 
