@@ -19,7 +19,7 @@ const SearchIcon = () => (
   />
 );
 
-type SearchFieldProps = {
+export type SearchFieldProps = {
   searchIconPlacement?: 'start' | 'end';
   defaultValue?: string;
   wait?: number;
