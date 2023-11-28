@@ -8,7 +8,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import Link from '../src/components/Link/Link';
 
 describe('Link component', () => {
-  it('renders without crashing', () => {
+  it('should render correctly', () => {
     render(<Link />);
   });
 

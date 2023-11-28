@@ -12,7 +12,7 @@ describe('HeaderAccount component', () => {
   const defaultSubText = 'johndoe@example.com';
   const defaultAvatar = 'path/to/avatar.jpg';
 
-  it('renders without crashing', () => {
+  it('should render correctly', () => {
     render(<HeaderAccount />);
   });
 

@@ -12,7 +12,7 @@ describe('Image component', () => {
   const defaultAlt = 'Image alt text';
   const defaultDefaultImage = 'fakeDefaultImage.jpg';
 
-  it('renders without crashing', () => {
+  it('should render correctly', () => {
     render(<Image src={defaultSrc} />);
   });
 

@@ -8,7 +8,7 @@ import { render, fireEvent } from '@testing-library/react';
 import Checkbox from '../src/components/Checkbox/Checkbox';
 
 describe('Checkbox Component', () => {
-  test('renders correctly', () => {
+  test('should render correctly', () => {
     const { getByLabelText, getByText } = render(
       <Checkbox label="Test Label" checked={false} onChange={() => {}} />,
     );

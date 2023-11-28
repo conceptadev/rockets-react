@@ -23,7 +23,7 @@ describe('Dropdown component', () => {
     },
   ];
 
-  it('renders correctly', () => {
+  it('should render correctly', () => {
     const { getByTestId } = render(<Dropdown options={options} />);
     const toggleButton = getByTestId('toggle-button');
     expect(toggleButton).toBeInTheDocument();

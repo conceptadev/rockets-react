@@ -13,7 +13,7 @@ describe('Drawer Component', () => {
     { id: 'item2', text: 'Item 2', onClick: jest.fn() },
   ];
 
-  it('renders with required props', () => {
+  it('should render correctly', () => {
     const { getByTestId } = render(<Drawer items={mockItems} />);
     const drawer = getByTestId('drawer');
     expect(drawer).toBeInTheDocument();
