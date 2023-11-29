@@ -18,9 +18,7 @@ export const TablePaginationNumbers = (props: PaginationProps) => {
   return (
     <Box display="flex" justifyContent="center">
       <Pagination
-        count={
-          pageCount || (rows?.length && Math.floor(rows?.length / 5) + 1) || 0
-        }
+        count={pageCount || (rows?.length && Math.ceil(rows?.length / 5)) || 0}
         onChange={handleChangePage}
         page={page}
         {...props}

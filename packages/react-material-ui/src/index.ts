@@ -41,4 +41,7 @@ export { default as SimpleForm } from './components/SimpleForm';
 export { default as Filter } from './components/Filter';
 export { default as SchemaForm } from './components/SchemaForm';
 
+import FormFieldSkeleton from './components/FormFieldSkeleton';
+export { FormFieldSkeleton };
+
 export * from './utils';
