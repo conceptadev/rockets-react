@@ -38,6 +38,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
     options,
     containerProps,
     labelProps,
+    ...rest
   } = props;
 
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +67,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
       )}
 
       <MuiTextField
-        {...props}
+        {...rest}
         sx={[
           {
             marginTop: 0.5,
@@ -95,6 +96,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
               </InputAdornment>
             ),
           }),
+          ...props.InputProps,
         }}
       />
     </Box>
