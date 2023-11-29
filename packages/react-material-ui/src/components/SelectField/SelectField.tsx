@@ -9,6 +9,8 @@ import {
   SelectProps,
 } from '@mui/material';
 
+import FormFieldSkeleton from '../../components/FormFieldSkeleton';
+
 export const allOption: SelectOption = {
   value: 'all',
   label: 'All',
@@ -54,7 +56,11 @@ const SelectField = ({
   };
 
   if (isLoading) {
-    return <Box width={190}>{/* <FormFieldSkeleton hideLabel /> */}</Box>;
+    return (
+      <Box width={190}>
+        <FormFieldSkeleton hideLabel />
+      </Box>
+    );
   }
 
   const optionsWithAll = [allOption, ...options];

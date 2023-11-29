@@ -2,7 +2,11 @@
 
 import React, { SyntheticEvent } from 'react';
 import { Autocomplete, AutocompleteProps, Box, TextField } from '@mui/material';
-import { SelectOption, allOption } from 'components/SelectField/SelectField';
+import {
+  SelectOption,
+  allOption,
+} from '../../components/SelectField/SelectField';
+import FormFieldSkeleton from '../../components/FormFieldSkeleton';
 
 export type AutocompleteFieldProps = {
   options: SelectOption[];
@@ -31,7 +35,12 @@ const AutocompleteField = ({
   };
 
   if (isLoading) {
-    return <Box width={300}>{/*  <FormFieldSkeleton hideLabel /> */}</Box>;
+    return (
+      <Box width={300}>
+        {' '}
+        <FormFieldSkeleton hideLabel />
+      </Box>
+    );
   }
 
   const optionsWithAll = [allOption, ...options];
