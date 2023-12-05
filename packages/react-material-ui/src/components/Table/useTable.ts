@@ -37,6 +37,7 @@ export type UseTableProps = (
     simpleFilter: SimpleFilter | null,
     resetPage?: boolean,
   ) => void;
+  updateSearch: (search: string | null, resetPage?: boolean) => void;
   simpleFilter: SimpleFilter;
   search: string;
   tableQueryState: TableQueryStateProps;
@@ -60,12 +61,6 @@ const useTable: UseTableProps = (resource, options) => {
 
   const { tableQueryState, setTableQueryState } = useTableQueryState(options);
 
-  const _search = searchParams.get('search') || options?.search;
-
-  const params = {
-    search: _search,
-  };
-
   useEffect(() => {
     const newSearchParam = getSearchParams(searchParams, {
       simpleFilter: JSON.stringify(tableQueryState?.simpleFilter),
@@ -76,13 +71,11 @@ const useTable: UseTableProps = (resource, options) => {
 
   useEffect(() => {
     const newSearchParam = getSearchParams(searchParams, {
-      search: options?.search,
+      search: tableQueryState?.search,
     });
 
-    if (newSearchParam) {
-      router.replace(`${pathname}?${newSearchParam}`);
-    }
-  }, [options?.search]);
+    router.replace(`${pathname}?${newSearchParam ?? ''}`);
+  }, [tableQueryState.search]);
 
   const simpleFilterQuery = () => {
     if (!tableQueryState.simpleFilter) return;
@@ -113,7 +106,7 @@ const useTable: UseTableProps = (resource, options) => {
           },${tableQueryState?.order.toUpperCase()}`,
         }),
         ...(tableQueryState?.simpleFilter && { filter: simpleFilterQuery() }),
-        ...(params?.search && { s: params?.search }),
+        ...(tableQueryState?.search && { s: tableQueryState?.search }),
       },
     });
   };
@@ -172,6 +165,31 @@ const useTable: UseTableProps = (resource, options) => {
     });
   };
 
+  const updateSearch = (search: string | null, resetPage = true) => {
+    setTableQueryState((prevState) => {
+      // Removed current search from state
+      const updatedState = { ...prevState };
+
+      updatedState.search = search;
+
+      if (!resetPage) {
+        return updatedState;
+      }
+
+      const updatedSearch = updatedState?.search ?? undefined;
+
+      const res = {
+        ...(updatedState && {
+          ...updatedState,
+          search: updatedSearch,
+          page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
+        }),
+      };
+
+      return res;
+    });
+  };
+
   return {
     data: data?.data,
     isPending,
@@ -180,7 +198,8 @@ const useTable: UseTableProps = (resource, options) => {
     refresh,
     updateSimpleFilter,
     simpleFilter: tableQueryState?.simpleFilter,
-    search: params.search,
+    updateSearch,
+    search: tableQueryState?.search,
     total: data?.total,
     pageCount: data?.pageCount,
     tableQueryState,
