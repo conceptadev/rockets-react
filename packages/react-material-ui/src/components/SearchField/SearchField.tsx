@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useState, ChangeEvent, useEffect, useMemo } from 'react';
+import React, {
+  useState,
+  ChangeEvent,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import MuiSearchIcon from '@mui/icons-material/Search';
 import debounce from 'lodash/debounce';
 import {
@@ -33,6 +39,7 @@ const SearchField = ({
   onDebouncedSearchChange,
   ...props
 }: SearchFieldProps) => {
+  const firstRender = useRef(true);
   const [search, setSearch] = useState<string>(defaultValue);
 
   const handleDebouncedSearch = useMemo(
@@ -44,8 +51,16 @@ const SearchField = ({
     setSearch(event.target.value);
 
   useEffect(() => {
-    handleDebouncedSearch(search);
-  }, [search]);
+    // Keep track of the first render to avoid triggering onDebouncedSearchChange
+    // on the initial render. Only trigger when the 'value' changes.
+    if (!firstRender.current) {
+      handleDebouncedSearch((props?.value as string) ?? search);
+    } else {
+      firstRender.current = false;
+    }
+    // Avoid adding handleDebouncedSearch to the dependency array
+    // to prevent an infinite loop.
+  }, [search, props.value]);
 
   return (
     <TextField

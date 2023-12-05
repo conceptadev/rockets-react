@@ -34,6 +34,7 @@ export const getTableQueryState = (
       JSON.parse(searchParams.get('simpleFilter'))) ||
     tableQuery?.simpleFilter ||
     undefined,
+  search: searchParams?.get('search') || tableQuery?.search || undefined,
 });
 
 export const useTableQueryState = (tableQuery?: TableQueryStateProps) => {

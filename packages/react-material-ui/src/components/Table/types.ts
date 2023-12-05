@@ -59,6 +59,7 @@ export type TableQueryStateProps = {
   rowsPerPage?: number;
   page?: number;
   simpleFilter?: SimpleFilter;
+  search?: string;
 };
 
 export type RenderRowFunction = (row: RowProps, labelId: string) => ReactNode;
