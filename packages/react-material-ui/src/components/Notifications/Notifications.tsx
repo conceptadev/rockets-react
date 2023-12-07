@@ -10,7 +10,7 @@ type Props = {
 
 const Notifications: FC<Props> = ({ amount, onClick }) => (
   <IconButton sx={{ color: 'text.secondary' }} onClick={onClick}>
-    <Badge badgeContent={amount} color="error">
+    <Badge badgeContent={amount} color="error" data-testid="badge">
       <NotificationsOutlined />
     </Badge>
   </IconButton>

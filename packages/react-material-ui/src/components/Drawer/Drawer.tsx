@@ -110,6 +110,7 @@ const Drawer: FC<DrawerProps> = (props) => {
               horizontal={horizontal}
               iconColor={iconColor}
               activeIconColor={activeIconColor}
+              temporary={hideToggle}
             />
           );
         })}
@@ -175,6 +176,7 @@ const Drawer: FC<DrawerProps> = (props) => {
         backgroundColor={backgroundColor}
         collapsedWidth={collapsedWidth}
         expandedWidth={expandedWidth}
+        data-testid="drawer"
       >
         {drawerContent()}
       </StyledDrawer>

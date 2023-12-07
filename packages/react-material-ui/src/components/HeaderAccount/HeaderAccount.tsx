@@ -52,6 +52,7 @@ const HeaderAccount: FC<HeaderAccountProps> = ({
     <Box display="flex">
       <Button
         variant="text"
+        aria-label="open navbar menu"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}

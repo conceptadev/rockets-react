@@ -1,21 +1,16 @@
 {
-  "moduleFileExtensions": [
-    "js",
-    "json",
-    "ts"
-  ],
+  "moduleFileExtensions": ["js", "json", "ts", "tsx"],
   "globals": {
     "ts-jest": {
       "tsconfig": "tsconfig.jest.json"
     }
   },
-  "testRegex": ".*\\.spec\\.ts$",
-  "testPathIgnorePatterns": [
-    "/node_modules/",
-    "/dist/"
-  ],
+  "testRegex": [".*\\.spec\\.ts$", ".*\\.spec\\.tsx$"],
+  "testPathIgnorePatterns": ["/node_modules/", "/dist/"],
   "transform": {
-    "^.+\\.ts$": "ts-jest"
+    "^.+\\.ts$": "ts-jest",
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest"
   },
   "collectCoverageFrom": [
     "packages/**/*.ts",
@@ -28,11 +23,7 @@
     "!**/__fixture__/**"
   ],
   "coverageDirectory": "coverage",
-  "coverageReporters": [
-    "html",
-    "text",
-    "text-summary",
-    "cobertura"
-  ],
-  "testEnvironment": "node"
+  "coverageReporters": ["html", "text", "text-summary", "cobertura"],
+  "testEnvironment": "node",
+  "preset": "ts-jest"
 }

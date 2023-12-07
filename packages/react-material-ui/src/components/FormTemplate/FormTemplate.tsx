@@ -11,7 +11,7 @@ import {
 interface FormTemplateProps {
   title?: string;
   subtitle?: string;
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   children?: React.ReactNode;
   titleTextProps?: TypographyProps;
   containerProps?: ContainerProps;

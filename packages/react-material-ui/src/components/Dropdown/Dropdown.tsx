@@ -88,16 +88,16 @@ const Dropdown: FC<Props> = ({
     <>
       <Tooltip title="Options">
         <IconButton
-          id="fade-button"
           aria-controls={open ? 'fade-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
           onClick={handleToggleClick}
+          data-testid="toggle-button"
         >
           {toggleDirection === 'horizontal' ? (
-            <MoreHorizIcon />
+            <MoreHorizIcon data-testid="toggle-icon" />
           ) : (
-            <MoreVertIcon />
+            <MoreVertIcon data-testid="toggle-icon" />
           )}
         </IconButton>
       </Tooltip>

@@ -11,7 +11,7 @@ type Props = {
 };
 
 const Image: FC<BoxProps & Props> = (props) => {
-  const { imgFluid, defaultImage, onLoad, onError, sx } = props;
+  const { imgFluid, defaultImage, onLoad, onError, sx, ...otherProps } = props;
 
   const imageOnLoadHandler = (
     event: React.SyntheticEvent<HTMLImageElement, Event>,
@@ -31,8 +31,11 @@ const Image: FC<BoxProps & Props> = (props) => {
   return (
     <Box
       component="img"
-      {...props}
-      sx={{ ...(imgFluid && { width: '100%', height: 'auto' }), ...sx }}
+      {...otherProps}
+      sx={[
+        ...(imgFluid ? [{ width: '100%', height: 'auto' }] : []),
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
       onLoad={imageOnLoadHandler}
       onError={imageOnErrorHandler}
     />
