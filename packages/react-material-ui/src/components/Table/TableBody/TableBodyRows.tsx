@@ -76,8 +76,8 @@ export const TableBodyRows = ({
   renderRow,
   isLoading = false,
 }: TableBodyRowProps) => {
-  const { rows, tableQuery, isControlled } = useTableRoot();
-  const { page, rowsPerPage, order, orderBy } = tableQuery;
+  const { rows, tableState, isControlled } = useTableRoot();
+  const { page, rowsPerPage, order, orderBy } = tableState;
 
   if (isLoading) {
     return <TableRowSkeleton />;

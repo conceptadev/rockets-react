@@ -27,10 +27,10 @@ export const TablePagination = ({
   ...rest
 }: TablePaginationProps) => {
   const theme = useTheme();
-  const { rows, tableQuery, total, handleChangePage, handleChangeRowsPerPage } =
+  const { rows, tableState, total, handleChangePage, handleChangeRowsPerPage } =
     useTableRoot();
 
-  const { rowsPerPage, page } = tableQuery;
+  const { rowsPerPage, page } = tableState;
 
   return (
     <MuiTablePagination

@@ -21,8 +21,8 @@ type TableHeaderCellProps = {
  * @returns A React JSX element representing the header cell.
  */
 export const TableHeaderCell = ({ cell, ...rest }: TableHeaderCellProps) => {
-  const { tableQuery, handleSort } = useTableRoot();
-  const { order, orderBy } = tableQuery;
+  const { tableState, handleSort } = useTableRoot();
+  const { order, orderBy } = tableState;
 
   /**
    * Creates a sort handler function for a specific table column.

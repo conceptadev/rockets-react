@@ -12,10 +12,10 @@ import { useTableRoot } from './hooks/useTableRoot';
  * @returns A React element representing the table row skeleton.
  */
 export const TableRowSkeleton = () => {
-  const { tableQuery } = useTableRoot();
+  const { tableState } = useTableRoot();
 
   const rowsToRender = Array.from(
-    { length: tableQuery.rowsPerPage },
+    { length: tableState.rowsPerPage },
     (_, index) => index + 1,
   );
 

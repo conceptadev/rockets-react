@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext } from 'react';
-import { HeaderProps, RowProps, TableQueryStateProps } from '../types';
+import { HeaderProps, RowProps, TableStateProps } from '../types';
 
 type TableContextProps = {
   rows: RowProps[];
@@ -9,7 +9,7 @@ type TableContextProps = {
   total: number;
   isControlled: boolean;
   pageCount: number;
-  tableQuery: TableQueryStateProps;
+  tableState: TableStateProps;
   selected: RowProps[];
   isSelected: (id: string) => boolean;
   handleChangePage: (event: unknown, newPage: number) => void;

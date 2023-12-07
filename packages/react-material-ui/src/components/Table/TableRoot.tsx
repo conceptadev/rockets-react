@@ -3,8 +3,8 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { HeaderProps, Order, RowProps, TableQueryStateProps } from './types';
-import { useTableQueryState } from './hooks/useTableQueryState';
+import { HeaderProps, Order, RowProps, TableStateProps } from './types';
+import { useTableState } from './hooks/useTableState';
 import { TableContext } from './hooks/useTableRoot';
 import { getSearchParams } from '../../utils/http';
 
@@ -14,18 +14,16 @@ type TableRootProps =
       headers: HeaderProps[];
       total?: number;
       pageCount?: never;
-      tableQueryState?: never;
-      updateTableQueryState?: never;
+      tableState?: never;
+      updateTableState?: never;
     }
   | {
       rows: RowProps[];
       headers: HeaderProps[];
       total: number;
       pageCount: number;
-      tableQueryState: TableQueryStateProps;
-      updateTableQueryState: React.Dispatch<
-        React.SetStateAction<TableQueryStateProps>
-      >;
+      tableState: TableStateProps;
+      updateTableState: React.Dispatch<React.SetStateAction<TableStateProps>>;
     };
 
 /**
@@ -40,25 +38,23 @@ export const TableRoot = ({
   headers = [],
   total,
   pageCount,
-  tableQueryState: controlledTableQueryState,
-  updateTableQueryState: controlledUpdateTableQueryState,
+  tableState: controlledTableState,
+  updateTableState: controlledUpdateTableState,
   ...rest
 }: PropsWithChildren<TableRootProps & BoxProps>) => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
-  const { tableQueryState, setTableQueryState } = useTableQueryState();
+  const { tableState, setTableState } = useTableState();
 
   const [selected, setSelected] = useState<RowProps[]>([]);
 
-  const isControlled = !!controlledTableQueryState;
-  const handleUpdateTableQuery = isControlled
-    ? controlledUpdateTableQueryState
-    : setTableQueryState;
+  const isControlled = !!controlledTableState;
+  const handleUpdateTableState = isControlled
+    ? controlledUpdateTableState
+    : setTableState;
 
-  const { order, orderBy } = isControlled
-    ? controlledTableQueryState
-    : tableQueryState;
+  const { order, orderBy } = isControlled ? controlledTableState : tableState;
 
   /**
    * Handles the change of the number of rows displayed per page in the table.
@@ -73,7 +69,7 @@ export const TableRoot = ({
       page: 1,
     };
 
-    handleUpdateTableQuery((prevState) => ({
+    handleUpdateTableState((prevState) => ({
       ...prevState,
       ...newRowsPerPageProperties,
     }));
@@ -152,7 +148,7 @@ export const TableRoot = ({
       page: newPage,
     };
 
-    handleUpdateTableQuery((prevState) => ({
+    handleUpdateTableState((prevState) => ({
       ...prevState,
       ...newPageProperty,
     }));
@@ -178,7 +174,7 @@ export const TableRoot = ({
       orderBy: property,
     };
 
-    handleUpdateTableQuery((prevState) => ({
+    handleUpdateTableState((prevState) => ({
       ...prevState,
       ...newOrderProperties,
     }));
@@ -199,7 +195,7 @@ export const TableRoot = ({
         total,
         pageCount,
         isControlled,
-        tableQuery: isControlled ? controlledTableQueryState : tableQueryState,
+        tableState: isControlled ? controlledTableState : tableState,
         selected,
         isSelected,
         handleChangePage,

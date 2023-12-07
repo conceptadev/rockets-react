@@ -1,26 +1,81 @@
 'use client';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import { Order, SimpleFilter, TableQueryStateProps } from './types';
+import { Order, TableStateProps } from './types';
 import {
-  TABLE_QUERY_STATE_DEFAULT_VALUE,
-  useTableQueryState,
-} from './hooks/useTableQueryState';
-import { getSearchParams } from '../../utils/http';
+  TABLE_STATE_DEFAULT_VALUE,
+  useTableState,
+} from './hooks/useTableState';
 import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/interfaces';
+import { CreateQueryParams, RequestQueryBuilder } from '@nestjsx/crud-request';
+import { keyBy } from 'lodash';
 
-interface UseTableOptions {
+const setFilters = (
+  filters: CreateQueryParams['filter'][] | undefined,
+  query: RequestQueryBuilder,
+) => {
+  if (!filters) return;
+
+  filters.forEach((filter) => query.setFilter(filter));
+};
+
+const getQueryParams = (
+  searchParams: URLSearchParams,
+  initialState: QueryParams,
+) => {
+  const params = new URLSearchParams(searchParams);
+  const filters = [];
+
+  params.forEach((value, key) => {
+    if (key.startsWith('filter')) {
+      filters.push(value);
+    }
+  });
+
+  const formattedFilter = filters.map((filter) => {
+    const [field, operator, value] = filter.split('||');
+
+    return {
+      field,
+      operator,
+      value,
+    };
+  });
+
+  const filtersByKey = keyBy(formattedFilter, 'field');
+
+  const searchInitialState = (
+    searchParams?.get('search') &&
+    RequestQueryBuilder.create().search(JSON.parse(searchParams?.get('search')))
+  )?.queryObject.search;
+
+  return {
+    filter: (filters && filtersByKey) || initialState?.filter || undefined,
+    search: searchInitialState || initialState?.search || undefined,
+  };
+};
+
+type QueryParams = {
+  filter: {
+    [key: string]: CreateQueryParams['filter'];
+  };
+  search: CreateQueryParams['search'];
+};
+
+type UseTableOptions = {
   rowsPerPage?: number;
   page?: number;
   orderBy?: string;
   order?: Order;
-  simpleFilter?: SimpleFilter;
-  search?: string;
+  filter: {
+    [key: string]: CreateQueryParams['filter'];
+  };
+  search?: CreateQueryParams['search'];
   callbacks?: DataProviderRequestOptions;
   noPagination?: boolean;
-}
+};
 
 export type UseTableProps = (
   resource: string,
@@ -31,19 +86,17 @@ export type UseTableProps = (
   error: unknown;
   total: number;
   pageCount: number;
+  filter: {
+    [key: string]: CreateQueryParams['filter'];
+  };
+  search: CreateQueryParams['search'];
+  tableState: TableStateProps;
   execute: () => void;
   refresh: () => void;
-  updateSimpleFilter: (
-    simpleFilter: SimpleFilter | null,
-    resetPage?: boolean,
-  ) => void;
-  updateSearch: (search: string | null, resetPage?: boolean) => void;
-  simpleFilter: SimpleFilter;
-  search: string;
-  tableQueryState: TableQueryStateProps;
-  setTableQueryState: React.Dispatch<
-    React.SetStateAction<TableQueryStateProps>
-  >;
+  setSearch: (search: CreateQueryParams['search'], resetPage?: boolean) => void;
+  setTableState: React.Dispatch<React.SetStateAction<TableStateProps>>;
+  setFilter: (filter: CreateQueryParams['filter'], resetPage?: boolean) => void;
+  removeFilter: (filterName: string) => void;
 };
 
 /**
@@ -59,54 +112,35 @@ const useTable: UseTableProps = (resource, options) => {
   const router = useRouter();
   const { get } = useDataProvider();
 
-  const { tableQueryState, setTableQueryState } = useTableQueryState(options);
-
-  useEffect(() => {
-    const newSearchParam = getSearchParams(searchParams, {
-      simpleFilter: JSON.stringify(tableQueryState?.simpleFilter),
-    });
-
-    router.replace(`${pathname}?${newSearchParam ?? ''}`);
-  }, [JSON.stringify(tableQueryState.simpleFilter)]);
-
-  useEffect(() => {
-    const newSearchParam = getSearchParams(searchParams, {
-      search: tableQueryState?.search,
-    });
-
-    router.replace(`${pathname}?${newSearchParam ?? ''}`);
-  }, [tableQueryState.search]);
-
-  const simpleFilterQuery = () => {
-    if (!tableQueryState.simpleFilter) return;
-
-    const queryArr = [];
-    for (const [key, value] of Object.entries(tableQueryState.simpleFilter)) {
-      queryArr.push(`${key}${value}`);
-    }
-    return queryArr;
-  };
-
-  useEffect(() => {
-    execute();
-  }, [JSON.stringify(tableQueryState)]);
+  const { tableState, setTableState } = useTableState(options);
+  const [queryParams, setQueryParams] = useState<QueryParams>(
+    getQueryParams(searchParams, {
+      filter: options.filter,
+      search: options.search,
+    }),
+  );
 
   const getResource = () => {
+    let uri = resource;
+
+    if (queryParams?.filter) {
+      const query = RequestQueryBuilder.create();
+      setFilters(Object.values(queryParams?.filter), query);
+
+      uri = `${uri}?${query.query()}`;
+    }
+
     return get({
-      uri: resource,
+      uri,
       queryParams: {
-        ...(tableQueryState?.rowsPerPage &&
+        ...(tableState?.rowsPerPage &&
           !options?.noPagination && {
-            limit: tableQueryState.rowsPerPage,
+            limit: tableState.rowsPerPage,
           }),
-        page: tableQueryState.page,
-        ...(tableQueryState?.orderBy && {
-          sort: `${
-            tableQueryState?.orderBy
-          },${tableQueryState?.order.toUpperCase()}`,
+        page: tableState.page,
+        ...(tableState?.orderBy && {
+          sort: `${tableState?.orderBy},${tableState?.order.toUpperCase()}`,
         }),
-        ...(tableQueryState?.simpleFilter && { filter: simpleFilterQuery() }),
-        ...(tableQueryState?.search && { s: tableQueryState?.search }),
       },
     });
   };
@@ -117,57 +151,50 @@ const useTable: UseTableProps = (resource, options) => {
     options?.callbacks,
   );
 
-  const updateSimpleFilter = (
-    simpleFilter: SimpleFilter | null,
-    resetPage = true,
-  ) => {
-    setTableQueryState((prevState) => {
-      // Removed current simpleFilter from state
+  const setFilter = (filter: CreateQueryParams['filter'], resetPage = true) => {
+    setQueryParams((prevState) => {
       const updatedState = { ...prevState };
 
-      for (const entries of Object.entries(simpleFilter)) {
-        const [key, value] = entries;
-
-        if (!value && !updatedState?.simpleFilter?.[key]) continue;
-
-        if (!value) {
-          delete updatedState.simpleFilter[key];
-        } else {
-          if (typeof updatedState.simpleFilter === 'undefined') {
-            updatedState.simpleFilter = {
-              [key]: value,
-            };
-          } else {
-            updatedState.simpleFilter[key] = value;
-          }
-        }
+      if (Array.isArray(filter)) {
+        filter.forEach((filterItem) => {
+          updatedState.filter = {
+            ...(updatedState.filter || {}),
+            [filterItem.field]: filterItem,
+          };
+        });
+      } else {
+        updatedState.filter = {
+          ...(updatedState.filter || {}),
+          [filter.field]: filter,
+        };
       }
 
       if (!resetPage) {
         return updatedState;
       }
 
-      const updatedSimpleFilter =
-        updatedState?.simpleFilter &&
-        Object.keys(updatedState.simpleFilter).length > 0
-          ? updatedState.simpleFilter
-          : undefined;
+      setTableState((prevState) => ({
+        ...prevState,
+        page: TABLE_STATE_DEFAULT_VALUE.page,
+      }));
 
-      const res = {
-        ...(updatedState && {
-          ...updatedState,
-          simpleFilter: updatedSimpleFilter,
-          page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
-        }),
-      };
-
-      return res;
+      return updatedState;
     });
   };
 
-  const updateSearch = (search: string | null, resetPage = true) => {
-    setTableQueryState((prevState) => {
-      // Removed current search from state
+  const removeFilter = (filterName: string) => {
+    setQueryParams((prevState) => {
+      // Removed current filter from state
+      const updatedState = { ...prevState };
+
+      delete updatedState.filter[filterName];
+
+      return updatedState;
+    });
+  };
+
+  const setSearch = (search: CreateQueryParams['search'], resetPage = true) => {
+    setQueryParams((prevState) => {
       const updatedState = { ...prevState };
 
       updatedState.search = search;
@@ -176,19 +203,51 @@ const useTable: UseTableProps = (resource, options) => {
         return updatedState;
       }
 
-      const updatedSearch = updatedState?.search ?? undefined;
-
-      const res = {
-        ...(updatedState && {
-          ...updatedState,
-          search: updatedSearch,
-          page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
-        }),
-      };
-
-      return res;
+      setTableState((prevState) => ({
+        ...prevState,
+        page: TABLE_STATE_DEFAULT_VALUE.page,
+      }));
+      return updatedState;
     });
   };
+
+  const removeSearch = () => {
+    setQueryParams((prevState) => {
+      const updatedState = { ...prevState };
+
+      delete updatedState.search;
+      return updatedState;
+    });
+  };
+
+  useEffect(() => {
+    const page = searchParams.get('page');
+    const rowsPerPage = searchParams.get('rowsPerPage');
+    const order = searchParams.get('order');
+    const orderBy = searchParams.get('orderBy');
+
+    const tableStateSearchParams = [
+      page && `page=${page}`,
+      rowsPerPage && `rowsPerPage=${rowsPerPage}`,
+      order && `order=${order}`,
+      orderBy && `orderBy=${orderBy}`,
+    ]
+      .filter(Boolean)
+      .join('&');
+
+    const query = RequestQueryBuilder.create();
+    setFilters(
+      queryParams?.filter ? Object.values(queryParams.filter) : undefined,
+      query,
+    );
+    query.search(queryParams.search);
+
+    router.replace(`${pathname}?${query.query()}&${tableStateSearchParams}`);
+  }, [JSON.stringify(queryParams.filter)]);
+
+  useEffect(() => {
+    execute();
+  }, [JSON.stringify(queryParams), JSON.stringify(tableState)]);
 
   return {
     data: data?.data,
@@ -196,14 +255,16 @@ const useTable: UseTableProps = (resource, options) => {
     error,
     execute,
     refresh,
-    updateSimpleFilter,
-    simpleFilter: tableQueryState?.simpleFilter,
-    updateSearch,
-    search: tableQueryState?.search,
+    filter: queryParams?.filter,
+    search: queryParams?.search,
     total: data?.total,
     pageCount: data?.pageCount,
-    tableQueryState,
-    setTableQueryState,
+    tableState,
+    setSearch,
+    removeSearch,
+    setTableState,
+    setFilter,
+    removeFilter,
   };
 };
 
