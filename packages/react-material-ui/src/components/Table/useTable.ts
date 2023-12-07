@@ -3,7 +3,7 @@
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import { Order, SimpleFilter, TableQueryStateProps } from './types';
+import { Order, Search, SimpleFilter, TableQueryStateProps } from './types';
 import {
   TABLE_QUERY_STATE_DEFAULT_VALUE,
   useTableQueryState,
@@ -17,7 +17,7 @@ interface UseTableOptions {
   orderBy?: string;
   order?: Order;
   simpleFilter?: SimpleFilter;
-  search?: string;
+  search?: Search;
   callbacks?: DataProviderRequestOptions;
   noPagination?: boolean;
 }
@@ -37,9 +37,9 @@ export type UseTableProps = (
     simpleFilter: SimpleFilter | null,
     resetPage?: boolean,
   ) => void;
-  updateSearch: (search: string | null, resetPage?: boolean) => void;
+  updateSearch: (search: Search | null, resetPage?: boolean) => void;
   simpleFilter: SimpleFilter;
-  search: string;
+  search: Search;
   tableQueryState: TableQueryStateProps;
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
@@ -71,11 +71,11 @@ const useTable: UseTableProps = (resource, options) => {
 
   useEffect(() => {
     const newSearchParam = getSearchParams(searchParams, {
-      search: tableQueryState?.search,
+      search: JSON.stringify(tableQueryState?.search),
     });
 
     router.replace(`${pathname}?${newSearchParam ?? ''}`);
-  }, [tableQueryState.search]);
+  }, [JSON.stringify(tableQueryState.search)]);
 
   const simpleFilterQuery = () => {
     if (!tableQueryState.simpleFilter) return;
@@ -106,7 +106,9 @@ const useTable: UseTableProps = (resource, options) => {
           },${tableQueryState?.order.toUpperCase()}`,
         }),
         ...(tableQueryState?.simpleFilter && { filter: simpleFilterQuery() }),
-        ...(tableQueryState?.search && { s: tableQueryState?.search }),
+        ...(tableQueryState?.search && {
+          s: JSON.stringify(tableQueryState?.search),
+        }),
       },
     });
   };
@@ -117,6 +119,8 @@ const useTable: UseTableProps = (resource, options) => {
     options?.callbacks,
   );
 
+  // TODO: This will be refactored with Query Builder
+  // For now it works even though not optmized
   const updateSimpleFilter = (
     simpleFilter: SimpleFilter | null,
     resetPage = true,
@@ -165,18 +169,39 @@ const useTable: UseTableProps = (resource, options) => {
     });
   };
 
-  const updateSearch = (search: string | null, resetPage = true) => {
+  // TODO: This will be refactored with Query Builder
+  // For now it works even though not optmized
+  const updateSearch = (search: Search | null, resetPage = true) => {
     setTableQueryState((prevState) => {
       // Removed current search from state
       const updatedState = { ...prevState };
 
-      updatedState.search = search;
+      for (const entries of Object.entries(search)) {
+        const [key, value] = entries;
+
+        if (!value && !updatedState?.search?.[key]) continue;
+
+        if (!value) {
+          delete updatedState.search[key];
+        } else {
+          if (typeof updatedState.search === 'undefined') {
+            updatedState.search = {
+              [key]: value,
+            };
+          } else {
+            updatedState.search[key] = value;
+          }
+        }
+      }
 
       if (!resetPage) {
         return updatedState;
       }
 
-      const updatedSearch = updatedState?.search ?? undefined;
+      const updatedSearch =
+        updatedState?.search && Object.keys(updatedState.search).length > 0
+          ? updatedState.search
+          : undefined;
 
       const res = {
         ...(updatedState && {

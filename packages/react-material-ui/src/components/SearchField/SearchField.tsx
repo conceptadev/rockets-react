@@ -30,6 +30,7 @@ export type SearchFieldProps = {
   defaultValue?: string;
   wait?: number;
   onDebouncedSearchChange: (searchTerm: string) => void;
+  onClear?: () => void;
 } & TextFieldProps;
 
 const SearchField = ({
@@ -37,10 +38,13 @@ const SearchField = ({
   defaultValue = '',
   wait = 500,
   onDebouncedSearchChange,
+  onClear,
   ...props
 }: SearchFieldProps) => {
   const firstRender = useRef(true);
   const [search, setSearch] = useState<string>(defaultValue);
+
+  const value = props.value ?? search;
 
   const handleDebouncedSearch = useMemo(
     () => debounce(onDebouncedSearchChange, wait),
@@ -54,13 +58,13 @@ const SearchField = ({
     // Keep track of the first render to avoid triggering onDebouncedSearchChange
     // on the initial render. Only trigger when the 'value' changes.
     if (!firstRender.current) {
-      handleDebouncedSearch((props?.value as string) ?? search);
+      handleDebouncedSearch(value as string);
     } else {
       firstRender.current = false;
     }
     // Avoid adding handleDebouncedSearch to the dependency array
     // to prevent an infinite loop.
-  }, [search, props.value]);
+  }, [value]);
 
   return (
     <TextField
@@ -82,10 +86,10 @@ const SearchField = ({
               size="small"
               sx={{
                 mr: 0.5,
-                visibility: search ? 'visible' : 'hidden',
+                visibility: value ? 'visible' : 'hidden',
               }}
               aria-label="clear search"
-              onClick={() => setSearch('')}
+              onClick={() => (onClear ? onClear() : setSearch(''))}
             >
               <Clear fontSize="small" />
             </IconButton>
