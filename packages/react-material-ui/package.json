@@ -27,6 +27,7 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.6",
     "@mui/utils": "5.9.3",
+    "@nestjsx/crud-request": "^5.0.0-alpha.3",
     "@rjsf/core": "^5.0.0-beta.13",
     "@rjsf/mui": "^5.0.0-beta.13",
     "@rjsf/utils": "^5.0.0-beta.13",

@@ -11,9 +11,9 @@ import { useTableRoot } from './hooks/useTableRoot';
  * @returns A React element representing the table pagination numbers.
  */
 export const TablePaginationNumbers = (props: PaginationProps) => {
-  const { rows, pageCount, handleChangePage, tableQuery } = useTableRoot();
+  const { rows, pageCount, handleChangePage, tableState } = useTableRoot();
 
-  const { page } = tableQuery;
+  const { page } = tableState;
 
   return (
     <Box display="flex" justifyContent="center">

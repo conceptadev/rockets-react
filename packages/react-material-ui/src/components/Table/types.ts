@@ -2,8 +2,6 @@ import { ReactNode } from 'react';
 
 export type BasicType = string | number | boolean;
 
-export type SimpleFilter = Record<string, BasicType | BasicType[] | null>;
-
 export type HeaderProps = {
   disablePadding?: boolean;
   id: string;
@@ -53,13 +51,11 @@ export enum Order {
   Desc = 'desc',
 }
 
-export type TableQueryStateProps = {
+export type TableStateProps = {
   order?: Order;
   orderBy?: string;
   rowsPerPage?: number;
   page?: number;
-  simpleFilter?: SimpleFilter;
-  search?: string;
 };
 
 export type RenderRowFunction = (row: RowProps, labelId: string) => ReactNode;
