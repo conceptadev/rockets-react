@@ -37,7 +37,6 @@ const AutocompleteField = ({
   if (isLoading) {
     return (
       <Box width={300}>
-        {' '}
         <FormFieldSkeleton hideLabel />
       </Box>
     );

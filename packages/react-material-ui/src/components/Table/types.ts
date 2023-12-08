@@ -4,6 +4,8 @@ export type BasicType = string | number | boolean;
 
 export type SimpleFilter = Record<string, BasicType | BasicType[] | null>;
 
+export type Search = Record<string, any>;
+
 export type HeaderProps = {
   disablePadding?: boolean;
   id: string;
@@ -59,7 +61,7 @@ export type TableQueryStateProps = {
   rowsPerPage?: number;
   page?: number;
   simpleFilter?: SimpleFilter;
-  search?: string;
+  search?: Search;
 };
 
 export type RenderRowFunction = (row: RowProps, labelId: string) => ReactNode;
