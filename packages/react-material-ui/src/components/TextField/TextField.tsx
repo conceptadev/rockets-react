@@ -61,8 +61,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
     <Box {...containerProps}>
       {!ishiddenLabel && label && (
         <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-          {label}
-          {required && ' *'}
+          {`${label}${required ? ' *' : ''}`}
         </Text>
       )}
 
@@ -90,6 +89,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
                   aria-label="toggle password visibility"
                   onClick={togglePassword}
                   onMouseDown={handleMouseDownPassword}
+                  data-testid="toggle-password-button"
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
@@ -98,6 +98,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
           }),
           ...props.InputProps,
         }}
+        data-testid="text-field"
       />
     </Box>
   );
