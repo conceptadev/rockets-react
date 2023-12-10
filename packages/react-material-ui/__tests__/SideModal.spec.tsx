@@ -4,7 +4,7 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import SideModal, {
   SideModalProps,
 } from '../src/components/SideModal/SideModal';
@@ -84,7 +84,6 @@ describe('SideModal', () => {
     const { getByText } = render(<SideModal {...defaultProps} />);
     const title = getByText('Test Title');
     const styles = getComputedStyle(title);
-    console.log('styles', styles);
 
     expect(styles.fontSize).toBe('18px');
     expect(styles.fontWeight).toBe('500');

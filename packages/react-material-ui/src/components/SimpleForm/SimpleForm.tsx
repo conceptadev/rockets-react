@@ -2,12 +2,16 @@ import React, { FC, Fragment } from 'react';
 import { Text } from '../../';
 import Box from '@mui/material/Box';
 import Button, { ButtonProps } from '@mui/material/Button';
-import TypographyProps from '@mui/material/Typography';
+import { TypographyProps } from '@mui/material/Typography';
 import { RJSFSchema, UiSchema, FormValidation, WidgetProps } from '@rjsf/utils';
 import validator from '@rjsf/validator-ajv6';
 import Form from '@rjsf/mui';
 import { FormProps } from '@rjsf/core';
-import { JSONSchema7Definition, JSONSchema7TypeName } from 'json-schema';
+import {
+  JSONSchema7Definition,
+  JSONSchema7TypeName,
+  JSONSchema7,
+} from 'json-schema';
 import {
   CustomTextFieldWidget,
   CustomEmailFieldWidget,
@@ -43,6 +47,7 @@ type FieldType = {
   description?: string;
   required?: boolean;
   options?: (SelectOption | string)[];
+  default?: JSONSchema7['default'];
   fields?: Fields;
 };
 
@@ -58,7 +63,7 @@ export type FormType = {
   fields: Fields;
   title?: string;
   submitButtonLabel?: string;
-  titleTextProps?: typeof TypographyProps;
+  titleTextProps?: TypographyProps;
   formProps?: FormProps;
   submitButtonProps?: ButtonProps;
 };
@@ -127,35 +132,48 @@ const SimpleForm: FC<Props> = ({
         fieldProperties['description'] = field.description;
       }
 
+      if (field.default) {
+        fieldProperties['default'] = field.default;
+      }
+
       if (field.options && field.type === 'checkboxes') {
         fieldProperties['items'] = {
           type: 'string',
-          enum: field.options,
+          anyOf: field.options?.map((opt) => {
+            if (typeof opt === 'string') {
+              return {
+                const: opt,
+                title: opt,
+              };
+            }
+
+            return {
+              const: opt.value,
+              title: opt.label,
+            };
+          }),
         };
 
         fieldProperties['uniqueItems'] = true;
       }
 
       if (['select', 'radio'].includes(field.type)) {
-        field?.options?.map((opt, i) => {
-          if (typeof opt === 'string') {
-            if (!fieldProperties.enum) {
-              fieldProperties.enum = [];
+        fieldProperties['oneOf'] =
+          field?.options?.map((opt) => {
+            if (typeof opt === 'string') {
+              return {
+                const: opt,
+                title: opt,
+              };
             }
-            fieldProperties.enum[i] = opt;
-          }
 
-          if (typeof opt === 'object' && opt.value) {
-            if (!fieldProperties.enum) {
-              fieldProperties.enum = [];
-            }
-            if (!fieldProperties.enumNames) {
-              fieldProperties.enumNames = [];
-            }
-            fieldProperties['enum'][i] = opt.value;
-            fieldProperties['enumNames'][i] = opt.label;
-          }
-        });
+            return {
+              const: opt.value,
+              title: opt.label,
+            };
+          }) || [];
+
+        fieldProperties['uniqueItems'] = true;
       }
 
       if (field.type === 'stringArray') {

@@ -27,21 +27,30 @@ const Select: FC<Props & TextFieldProps> = (props) => {
     required,
     disabled,
     error,
+    helperText,
+    name,
     textProps = {
       fontSize: 14,
       fontWeight: 500,
       color: 'text.primary',
     },
+    // ...otherProps
   } = props;
 
+  // eslint-disable-next-line no-console
+  console.log('props', props);
+
+  const labelId = `label-${name}`;
   return (
     <>
       {label && (
         <Box>
-          <Text {...textProps}>
-            {label}
-            {required && ' *'}
-          </Text>
+          <label htmlFor={name} id={labelId}>
+            <Text {...textProps}>
+              {label}
+              {required && ' *'}
+            </Text>
+          </label>
         </Box>
       )}
 
@@ -52,11 +61,16 @@ const Select: FC<Props & TextFieldProps> = (props) => {
         disabled={disabled}
         size={size || 'small'}
         error={error}
+        helperText={helperText}
         onChange={onChange}
         sx={{
           marginTop: 0.5,
           width: '100%',
         }}
+        hiddenLabel={true}
+        label={''}
+        aria-labelledby={labelId}
+        data-testid="select"
       >
         {options.map(({ value, label }: SelectOptions, i: number) => {
           return (
