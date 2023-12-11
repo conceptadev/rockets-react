@@ -37,9 +37,6 @@ const Select: FC<Props & TextFieldProps> = (props) => {
     // ...otherProps
   } = props;
 
-  // eslint-disable-next-line no-console
-  console.log('props', props);
-
   const labelId = `label-${name}`;
   return (
     <>
