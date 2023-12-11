@@ -103,19 +103,6 @@ describe('SideModal', () => {
     expect(closeButton).toHaveStyle('color: green');
   });
 
-  // Not working. Always receives rgb(255, 255, 255), not sure why
-  // it('applies backgroundColor correctly', () => {
-  //   const { getByTestId, debug } = render(<SideModal {...defaultProps} />);
-  //   const modal = getByTestId('side-modal');
-
-  //   const modalPaper = modal.getElementsByClassName('MuiDrawer-paper')[0];
-  //   debug(modalPaper);
-
-  //   const styles = getComputedStyle(modalPaper);
-  //   console.log('styles', styles);
-  //   expect(styles.backgroundColor).toBe('yellow');
-  // });
-
   it('applies width prop correctly', () => {
     const { getByTestId } = render(<SideModal {...defaultProps} />);
     const modal = getByTestId('side-modal');
