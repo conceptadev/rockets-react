@@ -63,6 +63,7 @@ const SideModal: FC<SideModalProps> = (props) => {
         },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
+      data-testid="side-modal"
     >
       <Box
         display="flex"
@@ -72,6 +73,7 @@ const SideModal: FC<SideModalProps> = (props) => {
           backgroundColor: headerBackgroundColor || theme.palette.primary.main,
           padding: '16px 16px 16px 24px',
         })}
+        data-testid="side-modal-header"
       >
         {title && <Text {...textProps}>{title}</Text>}
         <IconButton
@@ -80,6 +82,7 @@ const SideModal: FC<SideModalProps> = (props) => {
             marginLeft: 'auto',
             color: closeIconColor || theme.palette.common.white,
           }}
+          data-testid="side-modal-close-button"
         >
           <Close />
         </IconButton>

@@ -38,6 +38,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
     options,
     containerProps,
     labelProps,
+    name,
     ...rest
   } = props;
 
@@ -60,10 +61,11 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
   return (
     <Box {...containerProps}>
       {!ishiddenLabel && label && (
-        <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-          {label}
-          {required && ' *'}
-        </Text>
+        <label htmlFor={name}>
+          <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
+            {`${label}${required ? ' *' : ''}`}
+          </Text>
+        </label>
       )}
 
       <MuiTextField
@@ -90,6 +92,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
                   aria-label="toggle password visibility"
                   onClick={togglePassword}
                   onMouseDown={handleMouseDownPassword}
+                  data-testid="toggle-password-button"
                 >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
@@ -98,6 +101,7 @@ const TextField: FC<TextFieldProps & Props> = (props) => {
           }),
           ...props.InputProps,
         }}
+        data-testid="text-field"
       />
     </Box>
   );
