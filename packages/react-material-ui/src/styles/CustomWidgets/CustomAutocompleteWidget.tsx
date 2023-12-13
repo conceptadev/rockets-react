@@ -107,9 +107,7 @@ export default function CustomAutocompleteWidget<
   const availableOptions: Option[] = resource ? resourceOptions : enumOptions;
 
   multiple = typeof multiple === 'undefined' ? false : !!multiple;
-
   const emptyValue = multiple ? [] : undefined;
-
   const isEmpty =
     typeof value === 'undefined' ||
     (multiple && value.length < 1) ||
@@ -143,20 +141,27 @@ export default function CustomAutocompleteWidget<
   return (
     <Autocomplete
       multiple={multiple}
-      key={controlledValue}
       filterOptions={(options, params) => {
         const filter = createFilterOptions();
         const filtered = filter(options, params);
-        return [
-          ...(selectAll && [{ label: selectAll, value: allOption.value }]),
-          ...filtered,
-        ];
+
+        if (selectAll) {
+          filtered.push({ label: selectAll, value: allOption.value });
+        }
+
+        return filtered;
       }}
-      {...(renderOption && {
-        renderOption: (props, option, state, ownerState) => (
-          <li {...props}>{renderOption(props, option, state, ownerState)}</li>
-        ),
-      })}
+      renderOption={(props, option, state, ownerState) => {
+        if (!renderOption) {
+          return (
+            <li {...props} key={option.key}>
+              {option.label}
+            </li>
+          );
+        }
+
+        return renderOption(props, option, state, ownerState);
+      }}
       options={availableOptions ?? []}
       isOptionEqualToValue={(option) => option.value === controlledValue}
       getOptionLabel={(option) => option.label}
