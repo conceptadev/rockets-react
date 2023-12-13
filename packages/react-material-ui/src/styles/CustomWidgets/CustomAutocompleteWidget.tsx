@@ -8,9 +8,10 @@ import {
   StrictRJSFSchema,
   WidgetProps,
 } from '@rjsf/utils';
-import { Autocomplete } from '@mui/material';
+import { Autocomplete, createFilterOptions } from '@mui/material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import FormFieldSkeleton from '../../components/FormFieldSkeleton';
+import { allOption } from '../../components/SelectField/SelectField';
 import TextField from '../../components/TextField';
 
 type Option = {
@@ -23,12 +24,21 @@ type Option = {
  *
  * @param value - The option(s) to be mapped. Can be a single Option or an array of Options.
  * @param optEmptyVal - The value to return if the provided 'value' is falsy (undefined, null, etc.).
+ * @param options - The available options of the Autocomplete.
  * @returns The mapped value(s) based on the provided 'value' and the specified criteria.
  */
-const availableOptionsValueMap = (value: Option | Option[], optEmptyVal) => {
+const availableOptionsValueMap = (
+  value: Option | Option[],
+  optEmptyVal,
+  options: Option[],
+) => {
   if (!value) return optEmptyVal;
 
   if (Array.isArray(value)) {
+    if (value.find((option) => option.value === allOption.value)) {
+      return options.map((option) => option.value);
+    }
+
     return value?.length < 1 ? [] : value.map((item) => item.value);
   }
 
@@ -78,6 +88,8 @@ export default function CustomAutocompleteWidget<
   const resourceLabel = uiSchema?.['ui:resourceLabel'];
   const resourceValue = uiSchema?.['ui:resourceValue'];
   const queryParams = uiSchema?.['ui:queryParams'];
+  const renderOption = uiSchema?.['ui:renderOption'];
+  const selectAll = uiSchema?.['ui:selectAll'];
 
   const getResource = () => {
     return get({
@@ -105,7 +117,7 @@ export default function CustomAutocompleteWidget<
 
   const controlledValue = useMemo(() => {
     if (multiple) {
-      return value.map((optionValue) =>
+      return value?.map((optionValue) =>
         availableOptions?.find((option) => option.value === optionValue),
       );
     }
@@ -114,7 +126,7 @@ export default function CustomAutocompleteWidget<
   }, [availableOptions, value, multiple]);
 
   const _onChange = (_: SyntheticEvent<Element, Event>, newValue: Option) =>
-    onChange(availableOptionsValueMap(newValue, emptyValue));
+    onChange(availableOptionsValueMap(newValue, emptyValue, availableOptions));
 
   useEffect(() => {
     if (resource) {
@@ -132,6 +144,19 @@ export default function CustomAutocompleteWidget<
     <Autocomplete
       multiple={multiple}
       key={controlledValue}
+      filterOptions={(options, params) => {
+        const filter = createFilterOptions();
+        const filtered = filter(options, params);
+        return [
+          ...(selectAll && [{ label: selectAll, value: allOption.value }]),
+          ...filtered,
+        ];
+      }}
+      {...(renderOption && {
+        renderOption: (props, option, state, ownerState) => (
+          <li {...props}>{renderOption(props, option, state, ownerState)}</li>
+        ),
+      })}
       options={availableOptions ?? []}
       isOptionEqualToValue={(option) => option.value === controlledValue}
       getOptionLabel={(option) => option.label}
