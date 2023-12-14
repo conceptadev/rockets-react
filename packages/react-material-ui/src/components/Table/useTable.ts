@@ -9,7 +9,11 @@ import {
   useTableState,
 } from './hooks/useTableState';
 import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/interfaces';
-import { CreateQueryParams, RequestQueryBuilder } from '@nestjsx/crud-request';
+import {
+  CreateQueryParams,
+  RequestQueryBuilder,
+  RequestQueryParser,
+} from '@nestjsx/crud-request';
 import { keyBy } from 'lodash';
 
 const setFilters = (
@@ -25,34 +29,28 @@ const getQueryParams = (
   searchParams: URLSearchParams,
   initialState: QueryParams,
 ) => {
+  // Get the searchParams
   const params = new URLSearchParams(searchParams);
-  const filters = [];
 
-  params.forEach((value, key) => {
-    if (key.startsWith('filter')) {
-      filters.push(value);
-    }
-  });
+  // Create an object
+  const searchParamsObject = Object.fromEntries(params);
 
-  const formattedFilter = filters.map((filter) => {
-    const [field, operator, value] = filter.split('||');
+  // Value parsed from query params to query builder
+  const queryBuilder =
+    RequestQueryParser.create().parseQuery(searchParamsObject);
 
-    return {
-      field,
-      operator,
-      value,
-    };
-  });
+  // Get by key so we can remove if needed
+  const filtersByKey = keyBy(queryBuilder.filter, 'field');
 
-  const filtersByKey = keyBy(formattedFilter, 'field');
-
-  const searchInitialState = (
-    searchParams?.get('search') &&
-    RequestQueryBuilder.create().search(JSON.parse(searchParams?.get('search')))
-  )?.queryObject.search;
+  // Get the search param from the URL
+  // And parse it to create a QueryBuilder
+  const searchInitialState = queryBuilder.search;
 
   return {
-    filter: (filters && filtersByKey) || initialState?.filter || undefined,
+    filter:
+      (Object.keys(filtersByKey)?.length && filtersByKey) ||
+      initialState?.filter ||
+      undefined,
     search: searchInitialState || initialState?.search || undefined,
   };
 };
@@ -121,14 +119,7 @@ const useTable: UseTableProps = (resource, options) => {
   );
 
   const getResource = () => {
-    let uri = resource;
-
-    if (queryParams?.filter) {
-      const query = RequestQueryBuilder.create();
-      setFilters(Object.values(queryParams?.filter), query);
-
-      uri = `${uri}?${query.query()}`;
-    }
+    const uri = resource;
 
     return get({
       uri,
@@ -141,6 +132,8 @@ const useTable: UseTableProps = (resource, options) => {
         ...(tableState?.orderBy && {
           sort: `${tableState?.orderBy},${tableState?.order.toUpperCase()}`,
         }),
+        s: queryParams?.search,
+        filter: queryParams?.filter,
       },
     });
   };
@@ -188,7 +181,6 @@ const useTable: UseTableProps = (resource, options) => {
       const updatedState = { ...prevState };
 
       delete updatedState.filter[filterName];
-
       return updatedState;
     });
   };
@@ -243,7 +235,7 @@ const useTable: UseTableProps = (resource, options) => {
     query.search(queryParams.search);
 
     router.replace(`${pathname}?${query.query()}&${tableStateSearchParams}`);
-  }, [JSON.stringify(queryParams.filter)]);
+  }, [JSON.stringify(queryParams)]);
 
   useEffect(() => {
     execute();
