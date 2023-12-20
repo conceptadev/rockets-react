@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import MuiLink, { LinkProps } from '@mui/material/Link';
 
-const Link: FC<LinkProps> = (props) => {
+const Link = (props: LinkProps) => {
   const { children, color = 'primary.dark' } = props;
 
   return (

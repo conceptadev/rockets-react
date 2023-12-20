@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { WidgetProps } from '@rjsf/utils';
 import Checkbox from '../../components/Checkbox';
 import { Grid, Typography } from '@mui/material';
 
-const CustomCheckboxesWidget: FC<WidgetProps> = (props) => {
+const CustomCheckboxesWidget = (props: WidgetProps) => {
   const {
     label,
     uiSchema,

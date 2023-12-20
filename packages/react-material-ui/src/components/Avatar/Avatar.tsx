@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import { Image } from './Styles';
 import Text from '../Text';
@@ -12,7 +12,7 @@ type Props = {
   backgroundColor?: string;
 };
 
-export const Avatar: FC<Props> = (props) => {
+export const Avatar = (props: Props) => {
   const { src, alt, size = 30, initials, backgroundColor, onClick } = props;
   const [failed, setFailed] = useState(!src);
 

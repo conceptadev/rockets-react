@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import MuiCheckbox, { CheckboxProps } from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,7 +10,7 @@ type Props = {
   textProps?: TextProps;
 };
 
-const Checkbox: FC<CheckboxProps & Props> = (props) => {
+const Checkbox = (props: CheckboxProps & Props) => {
   const {
     label,
     checked,

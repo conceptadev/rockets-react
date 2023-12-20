@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Box, BoxProps } from '@mui/material';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
   onError?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
 };
 
-const Image: FC<BoxProps & Props> = (props) => {
+const Image = (props: BoxProps & Props) => {
   const { imgFluid, defaultImage, onLoad, onError, sx, ...otherProps } = props;
 
   const imageOnLoadHandler = (
