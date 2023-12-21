@@ -39,7 +39,9 @@ const availableOptionsValueMap = (
       return options.map((option) => option.value);
     }
 
-    return value?.length < 1 ? [] : value.map((item) => item.value);
+    return value?.length < 1
+      ? []
+      : [...new Set(value.map((item) => item.value))];
   }
 
   return value?.value;
@@ -90,6 +92,9 @@ export default function CustomAutocompleteWidget<
   const queryParams = uiSchema?.['ui:queryParams'];
   const renderOption = uiSchema?.['ui:renderOption'];
   const selectAll = uiSchema?.['ui:selectAll'];
+  const additionalOptions = uiSchema?.['ui:additionalOptions'];
+  const uiMultiple = uiSchema?.['ui:multiple'];
+  const limitTags = uiSchema?.['ui:limitTags'];
 
   const getResource = () => {
     return get({
@@ -99,14 +104,17 @@ export default function CustomAutocompleteWidget<
   };
   const { execute, data, isPending } = useQuery(getResource, false);
 
-  const resourceOptions: Option[] = data?.map((resource) => ({
-    value: resource[resourceValue ?? 'id'],
-    label: resource[resourceLabel ?? 'name'],
-  }));
+  const resourceOptions = [
+    ...(Array.isArray(additionalOptions) ? additionalOptions : []),
+    ...(data?.map((resource) => ({
+      value: resource[resourceValue ?? 'id'],
+      label: resource[resourceLabel ?? 'name'],
+    })) ?? []),
+  ];
 
   const availableOptions: Option[] = resource ? resourceOptions : enumOptions;
 
-  multiple = typeof multiple === 'undefined' ? false : !!multiple;
+  multiple = uiMultiple || (!!multiple && typeof multiple !== 'undefined');
   const emptyValue = multiple ? [] : undefined;
   const isEmpty =
     typeof value === 'undefined' ||
@@ -130,7 +138,7 @@ export default function CustomAutocompleteWidget<
     if (resource) {
       execute();
     }
-  }, []);
+  }, [JSON.stringify(queryParams)]);
 
   // TODO: This has to be done in a more generic way
   // e.g. BaseInputTemplate
@@ -141,12 +149,13 @@ export default function CustomAutocompleteWidget<
   return (
     <Autocomplete
       multiple={multiple}
+      limitTags={limitTags}
       filterOptions={(options, params) => {
         const filter = createFilterOptions();
         const filtered = filter(options, params);
 
         if (selectAll) {
-          filtered.push({ label: selectAll, value: allOption.value });
+          filtered.unshift({ label: selectAll, value: allOption.value });
         }
 
         return filtered;
@@ -164,7 +173,7 @@ export default function CustomAutocompleteWidget<
       }}
       options={availableOptions ?? []}
       isOptionEqualToValue={(option) => option.value === controlledValue}
-      getOptionLabel={(option) => option.label}
+      getOptionLabel={(option) => option?.label}
       size={size ?? 'small'}
       value={controlledValue}
       onChange={_onChange}
