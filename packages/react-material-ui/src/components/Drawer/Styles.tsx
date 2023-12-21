@@ -12,7 +12,12 @@ export type StyledDrawerProps = {
   expandedWidth?: string | number;
 };
 
-export const StyledDrawer = styled(MuiDrawer)<StyledDrawerProps>(
+export const StyledDrawer = styled(MuiDrawer, {
+  shouldForwardProp: (prop) =>
+    !['backgroundColor', 'collapsedWidth', 'expandedWidth'].some(
+      (propName) => propName === prop,
+    ),
+})<StyledDrawerProps>(
   ({
     theme,
     open,
@@ -59,7 +64,12 @@ export type DrawerButtonProps = {
   activeIconColor?: string;
 };
 
-export const DrawerButton = styled(MuiButton)<DrawerButtonProps>(
+export const DrawerButton = styled(MuiButton, {
+  shouldForwardProp: (prop) =>
+    !['active', 'collapsed', 'iconColor', 'activeIconColor'].some(
+      (propName) => propName === prop,
+    ),
+})<DrawerButtonProps>(
   ({
     theme,
     active,
