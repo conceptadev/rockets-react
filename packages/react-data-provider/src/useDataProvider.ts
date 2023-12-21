@@ -1,3 +1,5 @@
+import mem from 'mem';
+
 import axiosClient from './axiosClient';
 import {
   HttpClient,
@@ -12,6 +14,8 @@ import {
   Token,
 } from './interfaces';
 import { useClient } from './ClientProvider';
+
+const maxAge = 10000;
 
 const useDataProvider = () => {
   const { baseUrl, onRefreshTokenError } = useClient();
@@ -28,39 +32,42 @@ const useDataProvider = () => {
    * @returns A promise that resolves with the response from the token refresh request or rejects with an error.
    * @throws If an exception occurs while refreshing the token.
    */
-  const refreshAccessToken = async (): Promise<Token | HttpError> => {
-    return new Promise((resolve, reject) => {
-      try {
-        const refreshToken = localStorage.getItem('refreshToken');
+  const refreshAccessToken = mem(
+    async (): Promise<Token | HttpError> => {
+      return new Promise((resolve, reject) => {
+        try {
+          const refreshToken = localStorage.getItem('refreshToken');
 
-        const body = {
-          refreshToken,
-        };
+          const body = {
+            refreshToken,
+          };
 
-        return post({
-          uri: '/token/refresh',
-          body,
-        })
-          .then(async (res) => {
-            if (res?.accessToken && res?.refreshToken) {
-              localStorage.setItem('accessToken', res.accessToken);
-              localStorage.setItem('refreshToken', res.refreshToken);
-            }
-
-            return resolve(res);
+          return post({
+            uri: '/token/refresh',
+            body,
           })
-          .catch(async (error) => {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            onRefreshTokenError(error);
-            return reject(error);
-          });
-      } catch (error) {
-        onRefreshTokenError(error);
-        return reject(error);
-      }
-    });
-  };
+            .then(async (res) => {
+              if (res?.accessToken && res?.refreshToken) {
+                localStorage.setItem('accessToken', res.accessToken);
+                localStorage.setItem('refreshToken', res.refreshToken);
+              }
+
+              return resolve(res);
+            })
+            .catch(async (error) => {
+              localStorage.removeItem('accessToken');
+              localStorage.removeItem('refreshToken');
+              onRefreshTokenError(error);
+              return reject(error);
+            });
+        } catch (error) {
+          onRefreshTokenError(error);
+          return reject(error);
+        }
+      });
+    },
+    { maxAge },
+  );
 
   client.defaultConfig({
     baseURL: _baseUrl,
