@@ -1,4 +1,4 @@
-import mem from 'mem';
+import memoizee from 'memoizee';
 
 import axiosClient from './axiosClient';
 import {
@@ -32,39 +32,25 @@ const useDataProvider = () => {
    * @returns A promise that resolves with the response from the token refresh request or rejects with an error.
    * @throws If an exception occurs while refreshing the token.
    */
-  const refreshAccessToken = mem(
+  const refreshAccessToken = memoizee(
     async (): Promise<Token | HttpError> => {
-      return new Promise((resolve, reject) => {
-        try {
-          const refreshToken = localStorage.getItem('refreshToken');
+      try {
+        const refreshToken = localStorage.getItem('refreshToken');
 
-          const body = {
+        const response = await post({
+          uri: '/token/refresh',
+          body: {
             refreshToken,
-          };
+          },
+        });
 
-          return post({
-            uri: '/token/refresh',
-            body,
-          })
-            .then(async (res) => {
-              if (res?.accessToken && res?.refreshToken) {
-                localStorage.setItem('accessToken', res.accessToken);
-                localStorage.setItem('refreshToken', res.refreshToken);
-              }
-
-              return resolve(res);
-            })
-            .catch(async (error) => {
-              localStorage.removeItem('accessToken');
-              localStorage.removeItem('refreshToken');
-              onRefreshTokenError(error);
-              return reject(error);
-            });
-        } catch (error) {
-          onRefreshTokenError(error);
-          return reject(error);
-        }
-      });
+        return Promise.resolve(response);
+      } catch (error) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        onRefreshTokenError(error);
+        return Promise.reject(error);
+      }
     },
     { maxAge },
   );
