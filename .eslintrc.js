@@ -3,7 +3,7 @@ module.exports = {
   parserOptions: {
     sourceType: 'module',
     tsconfigRootDir: __dirname,
-    project: ['./packages/*/tsconfig.json'],
+    project: ['./packages/*/tsconfig.json', './examples/tsconfig.json'],
   },
   plugins: ['import', 'jsdoc', '@typescript-eslint/eslint-plugin'],
   extends: [
@@ -17,7 +17,7 @@ module.exports = {
     node: true,
     jest: true,
   },
-  ignorePatterns: ['.eslintrc.js', 'packages/*/dist'],
+  ignorePatterns: ['.eslintrc.js', 'packages/*/dist', 'examples/dist'],
   rules: {
     'no-unused-vars': 'off',
     'import/no-extraneous-dependencies': 'error',
