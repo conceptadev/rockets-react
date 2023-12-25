@@ -1,5 +1,7 @@
 'use client';
 
+import type { RJSFSchema } from '@rjsf/utils';
+
 import { useState } from 'react';
 import { SchemaForm } from '@concepta/react-material-ui/dist';
 import { Text } from '@concepta/react-material-ui';
@@ -8,7 +10,6 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 
-import type { RJSFSchema } from '@rjsf/utils';
 import {
   CustomTextFieldWidget,
   CustomEmailFieldWidget,

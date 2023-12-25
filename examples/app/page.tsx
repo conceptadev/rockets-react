@@ -1,29 +1,59 @@
 'use client';
 
-import { Box } from '@mui/material';
-import { Link } from '@concepta/react-material-ui';
+import { Container, Box, Grid, Paper, Link } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  height: '200px',
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  padding: theme.spacing(2),
+  color: theme.palette.text.secondary,
+  display: 'flex',
+}));
+
+const ItemContent = styled(Link)(({ theme }) => ({
+  marginTop: 'auto',
+  textDecoration: 'none',
+  color: theme.palette.text.secondary,
+  fontWeight: theme.typography.fontWeightBold,
+  height: '100%',
+  width: '100%',
+  display: 'flex',
+  alignItems: 'flex-end',
+}));
 
 const Home = () => {
   return (
-    <Box>
+    <Container maxWidth="md" sx={{ padding: '48px 0' }}>
       <h2>Examples</h2>
-      <ul>
-        <li>
-          <Link href="/login">Login</Link>
-        </li>
-        <li>
-          <Link href="/sign-up">Sign up</Link>
-        </li>
-        <li>
-          <Link href="/feedback">Feedback</Link>
-        </li>
-        <li>
-          <Link href="/payment-method-registration">
-            Payment method registration
-          </Link>
-        </li>
-      </ul>
-    </Box>
+      <Box sx={{ padding: '32px 0' }}>
+        <Grid container spacing={2}>
+          <Grid item xs={3}>
+            <Item>
+              <ItemContent href="/login">Login</ItemContent>
+            </Item>
+          </Grid>
+          <Grid item xs={3}>
+            <Item>
+              <ItemContent href="/sign-up">Sign up</ItemContent>
+            </Item>
+          </Grid>
+          <Grid item xs={3}>
+            <Item>
+              <ItemContent href="/feedback">Feedback</ItemContent>
+            </Item>
+          </Grid>
+          <Grid item xs={3}>
+            <Item>
+              <ItemContent href="/payment-method-registration">
+                Payment method registration
+              </ItemContent>
+            </Item>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
