@@ -1,7 +1,13 @@
 'use client';
 
-import React, { ReactNode, SyntheticEvent } from 'react';
-import { Autocomplete, AutocompleteProps, Box, TextField } from '@mui/material';
+import React, { SyntheticEvent } from 'react';
+import {
+  Autocomplete,
+  AutocompleteProps,
+  AutocompleteRenderInputParams,
+  Box,
+  TextField,
+} from '@mui/material';
 import {
   SelectOption,
   allOption,
@@ -13,7 +19,8 @@ export type AutocompleteFieldProps = {
   isLoading: boolean;
   currentValue: string;
   defaultValue: SelectOption | undefined;
-  labelComponent?: ReactNode;
+  label?: string;
+  renderInput?: (params: AutocompleteRenderInputParams) => React.ReactNode;
   onChange: (value: string | null) => void;
 } & Omit<
   AutocompleteProps<SelectOption, false, false, false>,
@@ -25,14 +32,27 @@ const AutocompleteField = ({
   isLoading,
   currentValue,
   defaultValue,
-  labelComponent,
+  label,
+  renderInput,
   onChange,
   ...rest
 }: AutocompleteFieldProps) => {
+  const handleRenderInput = (params: AutocompleteRenderInputParams) => (
+    <TextField {...params} label={label} />
+  );
+
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
     newValue: SelectOption | null,
-  ) => onChange(newValue?.value ?? null);
+    reason?: string,
+  ) => {
+    if (reason === 'clear') {
+      onChange(allOption.value);
+      return;
+    }
+
+    onChange(newValue?.value ?? null);
+  };
 
   if (isLoading) {
     return (
@@ -51,17 +71,7 @@ const AutocompleteField = ({
       getOptionLabel={(option) => option.label}
       onChange={handleChange}
       options={optionsWithAll}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          InputProps={{
-            ...params.InputProps,
-            ...(labelComponent && {
-              startAdornment: labelComponent,
-            }),
-          }}
-        />
-      )}
+      renderInput={renderInput ?? handleRenderInput}
       {...rest}
     />
   );
