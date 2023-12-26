@@ -3,6 +3,8 @@
 import React from 'react';
 import {
   Box,
+  FormControl,
+  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -28,7 +30,6 @@ const getStatusValue = (value: string) => {
 export type SelectFieldProps = {
   options: SelectOption[];
   defaultValue: string;
-  label: string;
   isLoading?: boolean;
   onChange: (value: string | null) => void;
 } & Omit<SelectProps, 'onChange'>;
@@ -36,20 +37,11 @@ export type SelectFieldProps = {
 const SelectField = ({
   options = [],
   defaultValue,
-  label,
   isLoading = false,
+  label,
   onChange,
   ...rest
 }: SelectFieldProps) => {
-  const handleRenderValue = (value: string) => {
-    if (value === allOption.value) return `${label}: ${allOption.label}`;
-    const optionLabel = optionsWithAll?.find(
-      (label) => label.value === value,
-    )?.label;
-
-    return `${label}: ${optionLabel}`;
-  };
-
   const handleChange = (event: SelectChangeEvent<string>) => {
     const value = event.target.value as string;
     onChange(getStatusValue(value));
@@ -66,18 +58,22 @@ const SelectField = ({
   const optionsWithAll = [allOption, ...options];
 
   return (
-    <Select
-      defaultValue={defaultValue ?? 'all'}
-      renderValue={handleRenderValue}
-      onChange={handleChange}
-      {...rest}
-    >
-      {optionsWithAll?.map((role) => (
-        <MenuItem key={role.value} value={role.value}>
-          {role.label}
-        </MenuItem>
-      ))}
-    </Select>
+    <FormControl>
+      <InputLabel id="select-label">{label}</InputLabel>
+      <Select
+        labelId="select-label"
+        defaultValue={defaultValue ?? allOption.value}
+        onChange={handleChange}
+        label={label}
+        {...rest}
+      >
+        {optionsWithAll?.map((role) => (
+          <MenuItem key={role.value} value={role.value}>
+            {role.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };
 
