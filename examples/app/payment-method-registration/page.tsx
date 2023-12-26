@@ -1,8 +1,11 @@
 'use client';
 
+import type { IChangeEvent } from '@rjsf/core';
+
 import { useState } from 'react';
 import { SchemaForm } from '@concepta/react-material-ui/dist';
-import { Box, Container, Card, Button } from '@mui/material';
+import { Box, Container, Card, Button, CircularProgress } from '@mui/material';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
 import {
   type PaymentMethodRegistrationFormData,
@@ -11,6 +14,8 @@ import {
   widgets,
   uiSchema,
 } from './constants';
+
+const uri = '/api/payment-method-registration';
 
 const PaymentMethodRegistration = () => {
   const [formData, setFormData] = useState<PaymentMethodRegistrationFormData>({
@@ -27,9 +32,17 @@ const PaymentMethodRegistration = () => {
     saveAsDefault: true,
   });
 
-  const handleSubmit = async (values: PaymentMethodRegistrationFormData) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
+  const { post } = useDataProvider();
+
+  const { execute: submitPaymentMethod, isPending: isLoadingSubmit } = useQuery(
+    (body) => post({ uri, body }),
+    false,
+  );
+
+  const handleSubmit = async (
+    values: IChangeEvent<PaymentMethodRegistrationFormData>,
+  ) => {
+    await submitPaymentMethod(values.formData);
   };
 
   return (
@@ -44,9 +57,7 @@ const PaymentMethodRegistration = () => {
           onChange={({ formData }) => {
             setFormData(formData);
           }}
-          onSubmit={({ formData }) =>
-            handleSubmit(formData as PaymentMethodRegistrationFormData)
-          }
+          onSubmit={handleSubmit}
           widgets={widgets}
           noHtml5Validate={true}
           showErrorList={false}
@@ -65,7 +76,11 @@ const PaymentMethodRegistration = () => {
               disabled={false}
               sx={{ flex: 1 }}
             >
-              Submit
+              {isLoadingSubmit ? (
+                <CircularProgress sx={{ color: 'white' }} size={24} />
+              ) : (
+                'Submit'
+              )}
             </Button>
           </Box>
         </SchemaForm.Form>

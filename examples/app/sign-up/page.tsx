@@ -1,8 +1,11 @@
 'use client';
 
+import type { IChangeEvent } from '@rjsf/core';
+
 import { useState } from 'react';
 import { SchemaForm } from '@concepta/react-material-ui/dist';
-import { Box, Container, Card, Button } from '@mui/material';
+import { Box, Container, Card, Button, CircularProgress } from '@mui/material';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
 import {
   type SignUpFormData,
@@ -10,6 +13,8 @@ import {
   advancedProperties,
   widgets,
 } from './constants';
+
+const uri = '/api/sign-up';
 
 const SignUp = () => {
   const [formData, setFormData] = useState<SignUpFormData>({
@@ -22,9 +27,15 @@ const SignUp = () => {
     acceptEmailNewsletter: true,
   });
 
-  const handleSignUp = async (values: SignUpFormData) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
+  const { post } = useDataProvider();
+
+  const { execute: signUp, isPending: isLoadingSignUp } = useQuery(
+    (body) => post({ uri, body }),
+    false,
+  );
+
+  const handleSubmit = async (values: IChangeEvent<SignUpFormData>) => {
+    await signUp(values.formData);
   };
 
   return (
@@ -38,7 +49,7 @@ const SignUp = () => {
           onChange={({ formData }) => {
             setFormData(formData);
           }}
-          onSubmit={({ formData }) => handleSignUp(formData as SignUpFormData)}
+          onSubmit={handleSubmit}
           widgets={widgets}
           noHtml5Validate={true}
           showErrorList={false}
@@ -57,7 +68,11 @@ const SignUp = () => {
               disabled={false}
               sx={{ flex: 1 }}
             >
-              Send
+              {isLoadingSignUp ? (
+                <CircularProgress sx={{ color: 'white' }} size={24} />
+              ) : (
+                'Send'
+              )}
             </Button>
           </Box>
         </SchemaForm.Form>
