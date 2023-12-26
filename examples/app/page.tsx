@@ -52,6 +52,11 @@ const Home = () => {
               </ItemContent>
             </Item>
           </Grid>
+          <Grid item xs={3}>
+            <Item>
+              <ItemContent href="/autocomplete">Autocomplete</ItemContent>
+            </Item>
+          </Grid>
         </Grid>
       </Box>
     </Container>
