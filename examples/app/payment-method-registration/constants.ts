@@ -5,6 +5,7 @@ import type { RJSFSchema } from '@rjsf/utils';
 import {
   CustomTextFieldWidget,
   CustomEmailFieldWidget,
+  CustomSelectWidget,
 } from '@concepta/react-material-ui/dist/styles/CustomWidgets';
 import { AdvancedProperty } from '@concepta/react-material-ui/dist/components/SchemaForm/types';
 
@@ -40,8 +41,42 @@ export const schema: RJSFSchema = {
     email: { type: 'string', title: 'Email', format: 'email' },
     phone: { type: 'string', title: 'Phone', minLength: 3 },
     address: { type: 'string', title: 'Address', minLength: 3 },
-    city: { type: 'string', title: 'City' },
-    state: { type: 'string', title: 'State' },
+    city: {
+      title: 'City',
+      type: 'number',
+      oneOf: [
+        {
+          const: 1,
+          title: 'Orlando',
+        },
+        {
+          const: 2,
+          title: 'New York',
+        },
+        {
+          const: 3,
+          title: 'Los Angeles',
+        },
+      ],
+    },
+    state: {
+      title: 'State',
+      type: 'number',
+      oneOf: [
+        {
+          const: 1,
+          title: 'Florida',
+        },
+        {
+          const: 2,
+          title: 'New York',
+        },
+        {
+          const: 3,
+          title: 'California',
+        },
+      ],
+    },
     zipCode: { type: 'string', title: 'Zip code', minLength: 5 },
     cardNumber: { type: 'string', title: 'Card number', minLength: 3 },
     expirationDate: { type: 'string', title: 'Expiration date', minLength: 4 },
@@ -62,4 +97,5 @@ export const advancedProperties: Record<string, AdvancedProperty> = {
 export const widgets = {
   TextWidget: CustomTextFieldWidget,
   EmailWidget: CustomEmailFieldWidget,
+  SelectWidget: CustomSelectWidget,
 };
