@@ -6,10 +6,9 @@ import { styled } from '@mui/material/styles';
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   height: '200px',
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  width: '200px',
   padding: theme.spacing(2),
   color: theme.palette.text.secondary,
-  display: 'flex',
 }));
 
 const ItemContent = styled(Link)(({ theme }) => ({

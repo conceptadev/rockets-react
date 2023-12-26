@@ -1,14 +1,30 @@
 'use client';
 
+import type { IChangeEvent } from '@rjsf/core';
+
+import { useState } from 'react';
 import { Container, Card } from '@mui/material';
 import { SimpleForm } from '@concepta/react-material-ui';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
 import { type FormData, schema } from './constants';
 
+const uri = '/api/login';
+
 const Login = () => {
-  const handleSubmit = (values: FormData) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
+  const [formData, setFormData] = useState<FormData>({
+    email: '',
+    password: '',
+  });
+
+  const { post } = useDataProvider();
+
+  const { execute: login } = useQuery((body) => post({ uri, body }), false);
+
+  const handleSubmit = async (values: IChangeEvent<FormData>) => {
+    setFormData(values.formData as FormData);
+
+    await login(values.formData);
   };
 
   return (
@@ -17,6 +33,7 @@ const Login = () => {
       <Card sx={{ marginTop: '48px', padding: '24px' }}>
         <SimpleForm
           form={schema}
+          initialData={formData}
           onSubmit={handleSubmit}
           onError={(err) =>
             // eslint-disable-next-line no-console

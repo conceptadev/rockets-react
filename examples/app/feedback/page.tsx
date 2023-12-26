@@ -1,10 +1,12 @@
 'use client';
 
 import type { UiSchema, WidgetProps } from '@rjsf/utils';
+import type { IChangeEvent } from '@rjsf/core';
 
 import { useState } from 'react';
 import { SchemaForm } from '@concepta/react-material-ui/dist';
-import { Box, Container, Card, Button } from '@mui/material';
+import { Box, Container, Card, Button, CircularProgress } from '@mui/material';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
 import {
   type FeedbackFormData,
@@ -13,6 +15,8 @@ import {
   widgets,
   processFile,
 } from './constants';
+
+const uri = '/api/feedback';
 
 const FileWidget = (props: WidgetProps) => {
   return (
@@ -46,9 +50,15 @@ const Feedback = () => {
     file: '',
   });
 
-  const handleSubmit = async (values: FeedbackFormData) => {
-    // eslint-disable-next-line no-console
-    console.log('values', values);
+  const { post } = useDataProvider();
+
+  const { execute: sendFeedback, isPending: isLoadingFeedback } = useQuery(
+    (body) => post({ uri, body }),
+    false,
+  );
+
+  const handleSubmit = async (values: IChangeEvent<FeedbackFormData>) => {
+    await sendFeedback(values.formData);
   };
 
   return (
@@ -62,9 +72,7 @@ const Feedback = () => {
           onChange={({ formData }) => {
             setFormData(formData);
           }}
-          onSubmit={({ formData }) =>
-            handleSubmit(formData as FeedbackFormData)
-          }
+          onSubmit={handleSubmit}
           widgets={widgets}
           noHtml5Validate={true}
           showErrorList={false}
@@ -83,7 +91,11 @@ const Feedback = () => {
               disabled={false}
               sx={{ flex: 1 }}
             >
-              Submit
+              {isLoadingFeedback ? (
+                <CircularProgress sx={{ color: 'white' }} size={24} />
+              ) : (
+                'Submit'
+              )}
             </Button>
           </Box>
         </SchemaForm.Form>

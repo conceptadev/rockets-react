@@ -91,7 +91,7 @@ export const advancedProperties: Record<string, AdvancedProperty> = {
     type: 'string',
   },
   saveAsDefault: {
-    type: 'switch;',
+    type: 'switch',
   },
 };
 

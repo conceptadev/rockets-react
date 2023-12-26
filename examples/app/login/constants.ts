@@ -3,8 +3,8 @@
 import type { FormType } from '@concepta/react-material-ui/dist/components/SimpleForm';
 
 export type FormData = {
-  name: string;
   email: string;
+  password: string;
 };
 
 export const schema: FormType = {
