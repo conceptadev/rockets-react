@@ -1,57 +1,41 @@
 'use client';
 
-import type { RJSFSchema } from '@rjsf/utils';
+import type { UiSchema, WidgetProps } from '@rjsf/utils';
 
 import { useState } from 'react';
 import { SchemaForm } from '@concepta/react-material-ui/dist';
-import { Text } from '@concepta/react-material-ui';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Card from '@mui/material/Card';
-import Button from '@mui/material/Button';
+import { Box, Container, Card, Button } from '@mui/material';
 
 import {
-  CustomTextFieldWidget,
-  CustomEmailFieldWidget,
-} from '@concepta/react-material-ui/dist/styles/CustomWidgets';
-import { AdvancedProperty } from '@concepta/react-material-ui/dist/components/SchemaForm/types';
+  type FeedbackFormData,
+  schema,
+  advancedProperties,
+  widgets,
+  processFile,
+} from './constants';
 
-export interface FeedbackFormData {
-  topic: number | null;
-  customTopic: string;
-  description: string;
-  file: string | null;
-}
+const FileWidget = (props: WidgetProps) => {
+  return (
+    <input
+      type="file"
+      required={props.required}
+      onChange={async (event) => {
+        if (!event?.target?.files) {
+          return;
+        }
 
-export const schema: RJSFSchema = {
-  type: 'object',
-  required: ['topic', 'description'],
-  properties: {
-    topic: {
-      type: 'number',
-      title: 'Topic',
-      description: 'Choose a topic related to your feedback',
-      oneOf: [
-        { const: 1, title: 'One' },
-        { const: 2, title: '2' },
-        { const: 3, title: 'Three' },
-      ],
-    },
-    customTopic: { type: 'string', title: 'Custom topic', minLength: 3 },
-    description: { type: 'string', title: 'Description', minLength: 3 },
-    file: { type: 'string', title: 'File' },
-  },
+        const base64 = await processFile(event.target.files);
+
+        props.onChange(base64);
+      }}
+    />
+  );
 };
 
-export const advancedProperties: Record<string, AdvancedProperty> = {
-  topic: {
-    type: 'radio',
+const uiSchema: UiSchema = {
+  file: {
+    'ui:widget': FileWidget,
   },
-};
-
-export const widgets = {
-  TextWidget: CustomTextFieldWidget,
-  EmailWidget: CustomEmailFieldWidget,
 };
 
 const Feedback = () => {
@@ -59,7 +43,7 @@ const Feedback = () => {
     topic: null,
     customTopic: '',
     description: '',
-    file: null,
+    file: '',
   });
 
   const handleSubmit = async (values: FeedbackFormData) => {
@@ -69,20 +53,11 @@ const Feedback = () => {
 
   return (
     <Container maxWidth="xs" sx={{ textAlign: 'center', padding: '48px 0' }}>
-      <Text
-        variant="h4"
-        fontFamily="Inter"
-        fontSize={30}
-        fontWeight={800}
-        mt={1}
-        gutterBottom
-      >
-        Feedback
-      </Text>
-
-      <Card sx={{ marginTop: '26px', padding: '24px' }}>
+      <h1>Feedback</h1>
+      <Card sx={{ marginTop: '48px', padding: '24px' }}>
         <SchemaForm.Form
           schema={schema}
+          uiSchema={uiSchema}
           formData={formData}
           onChange={({ formData }) => {
             setFormData(formData);

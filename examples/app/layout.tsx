@@ -12,10 +12,12 @@ export const metadata: Metadata = {
   description: 'Rockets form examples',
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
     </html>
   );
-}
+};
+
+export default RootLayout;

@@ -15,12 +15,13 @@ const Item = styled(Paper)(({ theme }) => ({
 const ItemContent = styled(Link)(({ theme }) => ({
   marginTop: 'auto',
   textDecoration: 'none',
-  color: theme.palette.text.secondary,
+  color: 'black',
   fontWeight: theme.typography.fontWeightBold,
   height: '100%',
   width: '100%',
   display: 'flex',
   alignItems: 'flex-end',
+  fontSize: 18,
 }));
 
 const Home = () => {
