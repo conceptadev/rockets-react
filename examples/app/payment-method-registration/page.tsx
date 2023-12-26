@@ -9,6 +9,7 @@ import {
   schema,
   advancedProperties,
   widgets,
+  uiSchema,
 } from './constants';
 
 const PaymentMethodRegistration = () => {
@@ -38,6 +39,7 @@ const PaymentMethodRegistration = () => {
       <Card sx={{ marginTop: '48px', padding: '24px' }}>
         <SchemaForm.Form
           schema={schema}
+          uiSchema={uiSchema}
           formData={formData}
           onChange={({ formData }) => {
             setFormData(formData);
