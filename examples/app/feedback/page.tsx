@@ -5,7 +5,14 @@ import type { IChangeEvent } from '@rjsf/core';
 
 import { useState } from 'react';
 import { SchemaForm } from '@concepta/react-material-ui/dist';
-import { Box, Container, Card, Button, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Container,
+  Card,
+  Button,
+  CircularProgress,
+  Typography,
+} from '@mui/material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
 import {
@@ -20,19 +27,36 @@ const uri = '/api/feedback';
 
 const FileWidget = (props: WidgetProps) => {
   return (
-    <input
-      type="file"
-      required={props.required}
-      onChange={async (event) => {
-        if (!event?.target?.files) {
-          return;
-        }
-
-        const base64 = await processFile(event.target.files);
-
-        props.onChange(base64);
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
       }}
-    />
+    >
+      <label htmlFor="file-input">
+        <Typography sx={{ fontSize: '14px' }}>{`${props.label} ${
+          props.required ? '*' : ''
+        }`}</Typography>
+      </label>
+      <Box sx={{ padding: '4px 0' }}>
+        <input
+          id="file-input"
+          name="file-input"
+          type="file"
+          required={props.required}
+          onChange={async (event) => {
+            if (!event?.target?.files) {
+              return;
+            }
+
+            const base64 = await processFile(event.target.files);
+
+            props.onChange(base64);
+          }}
+        />
+      </Box>
+    </Box>
   );
 };
 

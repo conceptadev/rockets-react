@@ -30,7 +30,7 @@ export const schema: RJSFSchema = {
     },
     customTopic: { type: 'string', title: 'Custom topic' },
     description: { type: 'string', title: 'Description', minLength: 3 },
-    file: { type: 'string', title: 'File' },
+    file: { type: 'string', title: 'Attach file' },
   },
 };
 
