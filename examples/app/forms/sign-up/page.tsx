@@ -8,51 +8,43 @@ import { Box, Container, Card, Button, CircularProgress } from '@mui/material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
 import {
-  type PaymentMethodRegistrationFormData,
+  type SignUpFormData,
   schema,
   advancedProperties,
   widgets,
-  uiSchema,
 } from './constants';
 
-const uri = '/api/payment-method-registration';
+const uri = '/forms/api/sign-up';
 
-const PaymentMethodRegistration = () => {
-  const [formData, setFormData] = useState<PaymentMethodRegistrationFormData>({
-    fullName: '',
+const SignUp = () => {
+  const [formData, setFormData] = useState<SignUpFormData>({
+    firstName: '',
+    lastName: '',
     email: '',
-    phone: '',
-    address: '',
-    city: null,
-    state: null,
-    zipCode: '',
-    cardNumber: '',
-    expirationDate: '',
-    cvc: '',
-    saveAsDefault: true,
+    username: '',
+    password: '',
+    passwordConfirmation: '',
+    acceptEmailNewsletter: true,
   });
 
   const { post } = useDataProvider();
 
-  const { execute: submitPaymentMethod, isPending: isLoadingSubmit } = useQuery(
+  const { execute: signUp, isPending: isLoadingSignUp } = useQuery(
     (body) => post({ uri, body }),
     false,
   );
 
-  const handleSubmit = async (
-    values: IChangeEvent<PaymentMethodRegistrationFormData>,
-  ) => {
-    await submitPaymentMethod(values.formData);
+  const handleSubmit = async (values: IChangeEvent<SignUpFormData>) => {
+    await signUp(values.formData);
   };
 
   return (
     <Container maxWidth="xs" sx={{ textAlign: 'center', padding: '48px 0' }}>
-      <h1>Payment method registration</h1>
+      <h1>Sign up</h1>
 
       <Card sx={{ marginTop: '48px', padding: '24px' }}>
         <SchemaForm.Form
           schema={schema}
-          uiSchema={uiSchema}
           formData={formData}
           onChange={({ formData }) => {
             setFormData(formData);
@@ -76,10 +68,10 @@ const PaymentMethodRegistration = () => {
               disabled={false}
               sx={{ flex: 1 }}
             >
-              {isLoadingSubmit ? (
+              {isLoadingSignUp ? (
                 <CircularProgress sx={{ color: 'white' }} size={24} />
               ) : (
-                'Submit'
+                'Send'
               )}
             </Button>
           </Box>
@@ -89,4 +81,4 @@ const PaymentMethodRegistration = () => {
   );
 };
 
-export default PaymentMethodRegistration;
+export default SignUp;
