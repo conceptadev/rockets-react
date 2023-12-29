@@ -29,7 +29,7 @@ const SignUp = () => {
 
   const { post } = useDataProvider();
 
-  const { execute: signUp, isPending: isLoadingSignUp } = useQuery(
+  const { execute: signUp, isPending } = useQuery(
     (body) => post({ uri, body }),
     false,
   );
@@ -41,7 +41,6 @@ const SignUp = () => {
   return (
     <Container maxWidth="xs" sx={{ textAlign: 'center', padding: '48px 0' }}>
       <h1>Sign up</h1>
-
       <Card sx={{ marginTop: '48px', padding: '24px' }}>
         <SchemaForm.Form
           schema={schema}
@@ -68,7 +67,7 @@ const SignUp = () => {
               disabled={false}
               sx={{ flex: 1 }}
             >
-              {isLoadingSignUp ? (
+              {isPending ? (
                 <CircularProgress sx={{ color: 'white' }} size={24} />
               ) : (
                 'Send'

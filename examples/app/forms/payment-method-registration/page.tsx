@@ -34,7 +34,7 @@ const PaymentMethodRegistration = () => {
 
   const { post } = useDataProvider();
 
-  const { execute: submitPaymentMethod, isPending: isLoadingSubmit } = useQuery(
+  const { execute: submitPaymentMethod, isPending } = useQuery(
     (body) => post({ uri, body }),
     false,
   );
@@ -48,7 +48,6 @@ const PaymentMethodRegistration = () => {
   return (
     <Container maxWidth="xs" sx={{ textAlign: 'center', padding: '48px 0' }}>
       <h1>Payment method registration</h1>
-
       <Card sx={{ marginTop: '48px', padding: '24px' }}>
         <SchemaForm.Form
           schema={schema}
@@ -76,7 +75,7 @@ const PaymentMethodRegistration = () => {
               disabled={false}
               sx={{ flex: 1 }}
             >
-              {isLoadingSubmit ? (
+              {isPending ? (
                 <CircularProgress sx={{ color: 'white' }} size={24} />
               ) : (
                 'Submit'
