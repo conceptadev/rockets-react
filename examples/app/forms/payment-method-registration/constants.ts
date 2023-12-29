@@ -119,8 +119,8 @@ const getMaskedPhone = (text: string) => {
 const getMaskedZipCode = (value: string) => {
   const numericInput = value.replace(/\D/g, '');
   const truncatedInput = numericInput.slice(0, 5);
-  const phoneNumberFormat = /^(\d{5})?$/;
-  const formattedNumber = truncatedInput.replace(phoneNumberFormat, (_, p1) => {
+  const zipCodeFormat = /^(\d{5})?$/;
+  const formattedNumber = truncatedInput.replace(zipCodeFormat, (_, p1) => {
     const formattedGroups = [p1 && `${p1}`];
     return formattedGroups.filter(Boolean).join('');
   });
@@ -131,9 +131,9 @@ const getMaskedZipCode = (value: string) => {
 const getMaskedCardNumber = (value: string) => {
   const numericInput = value.replace(/\D/g, '');
   const truncatedInput = numericInput.slice(0, 16);
-  const phoneNumberFormat = /^(\d{4})?(\d{4})?(\d{4})?(\d{4})$/;
+  const cardNumberFormat = /^(\d{4})?(\d{4})?(\d{4})?(\d{4})$/;
   const formattedNumber = truncatedInput.replace(
-    phoneNumberFormat,
+    cardNumberFormat,
     (_, p1, p2, p3, p4) => {
       const formattedGroups = [
         p1 && `${p1}`,
@@ -151,9 +151,9 @@ const getMaskedCardNumber = (value: string) => {
 const getMaskedExpirationDate = (value: string) => {
   const numericInput = value.replace(/\D/g, '');
   const truncatedInput = numericInput.slice(0, 4);
-  const phoneNumberFormat = /^(\d{2})?(\d{2})?$/;
+  const expirationDateFormat = /^(\d{2})?(\d{2})?$/;
   const formattedNumber = truncatedInput.replace(
-    phoneNumberFormat,
+    expirationDateFormat,
     (_, p1, p2) => {
       const formattedGroups = [p1 && `${p1}`, p2 && `${p2}`];
       return formattedGroups.filter(Boolean).join('/');
@@ -166,8 +166,8 @@ const getMaskedExpirationDate = (value: string) => {
 const getMaskedCVC = (value: string) => {
   const numericInput = value.replace(/\D/g, '');
   const truncatedInput = numericInput.slice(0, 3);
-  const phoneNumberFormat = /^(\d{3})?$/;
-  const formattedNumber = truncatedInput.replace(phoneNumberFormat, (_, p1) => {
+  const cvcFormat = /^(\d{3})?$/;
+  const formattedNumber = truncatedInput.replace(cvcFormat, (_, p1) => {
     const formattedGroups = [p1 && `${p1}`];
     return formattedGroups.filter(Boolean).join('');
   });

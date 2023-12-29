@@ -10,8 +10,8 @@ export interface Category {
 export interface BookFormData {
   title: string;
   categoryId: number | null;
-  pages: number;
-  price: number;
+  pages: string;
+  price: string;
 }
 
 export const schema: RJSFSchema = {
@@ -20,11 +20,43 @@ export const schema: RJSFSchema = {
   properties: {
     title: { type: 'string', title: 'Title', minLength: 3 },
     categoryId: { type: 'number', title: 'Category' },
-    pages: { type: 'number', title: 'Pages', minimum: 1 },
-    price: { type: 'number', title: 'Price', minimum: 1 },
+    pages: { type: 'string', title: 'Pages' },
+    price: { type: 'string', title: 'Price' },
   },
 };
 
 export const widgets = {
   TextWidget: CustomTextFieldWidget,
 };
+
+export const getMaskedPageNumber = (value: string) => {
+  const numericInput = value.replace(/\D/g, '');
+  const truncatedInput = numericInput.slice(0, 10);
+  const pageNumberFormat = /^(\d{5})?$/;
+  const formattedNumber = truncatedInput.replace(pageNumberFormat, (_, p1) => {
+    const formattedGroups = [p1 && `${p1}`];
+    return formattedGroups.filter(Boolean).join('');
+  });
+
+  return formattedNumber;
+};
+
+export const getMaskedCurrency = (text: string, decimalPlaces = 2) => {
+  let input = text.replace(/^0+|[^0-9]/g, '');
+
+  if (!input) {
+    input = '0';
+  }
+
+  const numberValue = Number(input) / Math.pow(10, decimalPlaces);
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: decimalPlaces,
+    maximumFractionDigits: decimalPlaces,
+  });
+
+  return formatter.format(numberValue);
+};
+
+export default getMaskedCurrency;
