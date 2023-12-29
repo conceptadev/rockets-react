@@ -76,7 +76,7 @@ const Feedback = () => {
 
   const { post } = useDataProvider();
 
-  const { execute: sendFeedback, isPending: isLoadingFeedback } = useQuery(
+  const { execute: sendFeedback, isPending } = useQuery(
     (body) => post({ uri, body }),
     false,
   );
@@ -115,7 +115,7 @@ const Feedback = () => {
               disabled={false}
               sx={{ flex: 1 }}
             >
-              {isLoadingFeedback ? (
+              {isPending ? (
                 <CircularProgress sx={{ color: 'white' }} size={24} />
               ) : (
                 'Submit'
