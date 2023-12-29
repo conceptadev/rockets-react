@@ -89,6 +89,7 @@ const TableOptions = ({
       <Tooltip title="Options">
         <IconButton
           id="fade-button"
+          data-testid="fade-button"
           aria-controls={open ? 'fade-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
@@ -103,6 +104,7 @@ const TableOptions = ({
       </Tooltip>
       <Menu
         id="fade-menu"
+        data-testid="fade-menu"
         MenuListProps={{
           'aria-labelledby': 'fade-button',
         }}
