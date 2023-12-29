@@ -18,7 +18,14 @@ import {
 } from '@concepta/react-material-ui/dist';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
-import { type Category, type BookFormData, schema, widgets } from './constants';
+import {
+  type Category,
+  type BookFormData,
+  schema,
+  widgets,
+  getMaskedPageNumber,
+  getMaskedCurrency,
+} from './constants';
 
 const uri = '/forms/api/autocomplete';
 
@@ -81,14 +88,20 @@ const uiSchema: UiSchema = {
   categoryId: {
     'ui:widget': AutocompleteWidget,
   },
+  pages: {
+    'ui:formatter': (value: string) => getMaskedPageNumber(value),
+  },
+  price: {
+    'ui:formatter': (value: string) => getMaskedCurrency(value),
+  },
 };
 
 const Autocomplete = () => {
   const [formData, setFormData] = useState<BookFormData>({
     title: '',
     categoryId: null,
-    pages: 0,
-    price: 0,
+    pages: '',
+    price: '',
   });
 
   const { post } = useDataProvider();
