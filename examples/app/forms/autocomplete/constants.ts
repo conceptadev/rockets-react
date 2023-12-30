@@ -20,8 +20,8 @@ export const schema: RJSFSchema = {
   properties: {
     title: { type: 'string', title: 'Title', minLength: 3 },
     categoryId: { type: 'number', title: 'Category' },
-    pages: { type: 'string', title: 'Pages' },
-    price: { type: 'string', title: 'Price' },
+    pages: { type: 'string', title: 'Pages', minLength: 1 },
+    price: { type: 'string', title: 'Price', minLength: 1 },
   },
 };
 
