@@ -64,7 +64,7 @@ const AutocompleteWidget = (props: WidgetProps) => {
         width: '100%',
       }}
     >
-      <label htmlFor="file-input">
+      <label htmlFor="category-input">
         <Typography sx={{ fontSize: '14px' }}>{`${props.label} ${
           props.required ? '*' : ''
         }`}</Typography>
@@ -72,6 +72,7 @@ const AutocompleteWidget = (props: WidgetProps) => {
       <Box sx={{ padding: '4px 0', width: '100%' }}>
         <AutocompleteField
           fullWidth
+          id="category-input"
           size="small"
           options={options}
           isLoading={isPending}
@@ -106,13 +107,13 @@ const Autocomplete = () => {
 
   const { post } = useDataProvider();
 
-  const { execute: submitBook, isPending } = useQuery(
+  const { execute: submitBookData, isPending } = useQuery(
     (body) => post({ uri, body }),
     false,
   );
 
   const handleSubmit = async (values: IChangeEvent<BookFormData>) => {
-    await submitBook(values.formData);
+    await submitBookData(values.formData);
   };
 
   return (
