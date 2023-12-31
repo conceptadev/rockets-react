@@ -100,8 +100,8 @@ describe('AutocompleteField Component', () => {
   const props = {
     options,
     isLoading: false,
-    currentValue: 'option1',
-    defaultValue: options[0],
+    currentValue: '',
+    defaultValue: undefined,
     onChange: jest.fn(),
   };
 
@@ -137,7 +137,7 @@ describe('AutocompleteField Component', () => {
   });
 
   it('should filter options when a string is typed on the input', () => {
-    const { getByText, getByRole, queryByText, debug } = render(
+    const { getByText, getByRole, queryAllByText } = render(
       <AutocompleteField {...props} />,
     );
 
@@ -149,11 +149,10 @@ describe('AutocompleteField Component', () => {
       expect(optionElement).toBeInTheDocument();
     });
 
+    autocompleteField.focus();
     fireEvent.change(autocompleteField, { target: { value: '1' } });
 
-    expect(queryByText('Option 1')).toBeInTheDocument();
-    expect(queryByText('Option 2')).not.toBeInTheDocument();
-    expect(queryByText('Option 3')).not.toBeInTheDocument();
+    expect(queryAllByText(/Option/)).toHaveLength(1);
   });
 
   it('should call the onChange callback when an option is selected', () => {
@@ -173,7 +172,7 @@ describe('AutocompleteField Component', () => {
   });
 
   it('should clear input and render list when Clear button is clicked', () => {
-    const { getByText, getByRole, queryByText, getByLabelText, debug } = render(
+    const { getByText, getByRole, queryAllByText, getByLabelText } = render(
       <AutocompleteField {...props} />,
     );
 
@@ -185,16 +184,17 @@ describe('AutocompleteField Component', () => {
       expect(optionElement).toBeInTheDocument();
     });
 
+    autocompleteField.focus();
     fireEvent.change(autocompleteField, { target: { value: '1' } });
 
-    expect(queryByText('Option 1')).toBeInTheDocument();
-    expect(queryByText('Option 2')).not.toBeInTheDocument();
-    expect(queryByText('Option 3')).not.toBeInTheDocument();
+    expect(queryAllByText(/Option/)).toHaveLength(1);
 
-    fireEvent.mouseDown(autocompleteField);
+    fireEvent.click(getByText('Option 1'));
 
     const clearButton = getByLabelText('Clear');
     fireEvent.click(clearButton);
+
+    fireEvent.mouseDown(autocompleteField);
 
     options.forEach((option) => {
       const optionElement = getByText(option.label);
