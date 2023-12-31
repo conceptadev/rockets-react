@@ -4,7 +4,7 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { TablePagination } from '../src/components/Table/TablePagination';
 import { Table as RocketsTable } from '../src/';
 
@@ -38,12 +38,11 @@ describe('Table component', () => {
   };
 
   it('should render correctly', () => {
-    const { debug, getByTestId } = render(
+    const { getByTestId } = render(
       <RocketsTable.Root {...props}>
         <TablePagination variant="outlined" />
       </RocketsTable.Root>,
     );
-    debug();
     const tablePagination = getByTestId('table-pagination');
     expect(tablePagination).toBeInTheDocument();
   });
@@ -71,7 +70,6 @@ describe('Table component', () => {
     );
     const tablePagination = getByTestId('table-pagination');
     const paginationText = tablePagination.textContent;
-    console.log('paginationText', paginationText);
 
     expect(paginationText).toContain('1–5');
   });
