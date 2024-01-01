@@ -47,33 +47,29 @@ const SelectField = ({
     onChange(getStatusValue(value));
   };
 
-  if (isLoading) {
-    return (
-      <Box width={190}>
-        <FormFieldSkeleton hideLabel />
-      </Box>
-    );
-  }
-
   const optionsWithAll = [allOption, ...options];
 
   return (
-    <FormControl>
-      <InputLabel id="select-label">{label}</InputLabel>
-      <Select
-        labelId="select-label"
-        defaultValue={defaultValue ?? allOption.value}
-        onChange={handleChange}
-        label={label}
-        {...rest}
-      >
-        {optionsWithAll?.map((role) => (
-          <MenuItem key={role.value} value={role.value}>
-            {role.label}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <Box>
+      <FormFieldSkeleton isLoading={isLoading} hideLabel>
+        <FormControl>
+          <InputLabel id="select-label">{label}</InputLabel>
+          <Select
+            labelId="select-label"
+            defaultValue={defaultValue ?? allOption.value}
+            onChange={handleChange}
+            label={label}
+            {...rest}
+          >
+            {optionsWithAll?.map((role) => (
+              <MenuItem key={role.value} value={role.value}>
+                {role.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </FormFieldSkeleton>
+    </Box>
   );
 };
 

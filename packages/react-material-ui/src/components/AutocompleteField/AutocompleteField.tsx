@@ -5,7 +5,6 @@ import {
   Autocomplete,
   AutocompleteProps,
   AutocompleteRenderInputParams,
-  Box,
   TextField,
 } from '@mui/material';
 import {
@@ -20,7 +19,6 @@ export type AutocompleteFieldProps = {
   currentValue: string;
   defaultValue: SelectOption | undefined;
   label?: string;
-  renderInput?: (params: AutocompleteRenderInputParams) => React.ReactNode;
   onChange: (value: string | null) => void;
 } & Omit<
   AutocompleteProps<SelectOption, false, false, false>,
@@ -33,12 +31,13 @@ const AutocompleteField = ({
   currentValue,
   defaultValue,
   label,
-  renderInput,
   onChange,
   ...rest
 }: AutocompleteFieldProps) => {
   const handleRenderInput = (params: AutocompleteRenderInputParams) => (
-    <TextField {...params} label={label} />
+    <FormFieldSkeleton isLoading={isLoading} hideLabel>
+      <TextField {...params} label={label} />
+    </FormFieldSkeleton>
   );
 
   const handleChange = (
@@ -54,24 +53,17 @@ const AutocompleteField = ({
     onChange(newValue?.value ?? null);
   };
 
-  if (isLoading) {
-    return (
-      <Box width={300}>
-        <FormFieldSkeleton hideLabel />
-      </Box>
-    );
-  }
-
   const optionsWithAll = [allOption, ...options];
 
   return (
     <Autocomplete
+      disabled={isLoading}
       defaultValue={defaultValue}
       isOptionEqualToValue={(option) => option.value === currentValue}
       getOptionLabel={(option) => option.label}
       onChange={handleChange}
       options={optionsWithAll}
-      renderInput={renderInput ?? handleRenderInput}
+      renderInput={handleRenderInput}
       {...rest}
     />
   );
