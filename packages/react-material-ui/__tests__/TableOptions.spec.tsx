@@ -7,7 +7,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import TableOptions from '../src/components/Table/TableOptions';
 
-describe('Table component', () => {
+describe('TableOptions component', () => {
   const props = {
     row: { id: '1', name: 'test', email: 'test@test.com' },
     customRowOptions: [
@@ -49,7 +49,7 @@ describe('Table component', () => {
   });
 
   it('should render custom row options as a function correctly', async () => {
-    const { getByTestId, getByText, queryByText, debug } = render(
+    const { getByTestId, getByText, queryByText } = render(
       <TableOptions
         {...props}
         customRowOptions={({ row, close }) => (
@@ -72,24 +72,23 @@ describe('Table component', () => {
 
     fireEvent.click(itemB);
 
-    waitFor(() => {
+    await waitFor(() => {
       const itemBAfterClick = queryByText('Item B');
       expect(itemBAfterClick).not.toBeInTheDocument();
     });
   });
 
   it('should apply horizontal toggle direction by default', () => {
-    const { getByTestId, debug } = render(<TableOptions {...props} />);
+    const { getByTestId } = render(<TableOptions {...props} />);
     const horizontalIcon = getByTestId('MoreHorizIcon');
 
     expect(horizontalIcon).toBeInTheDocument();
   });
 
   it('should apply vertical toggle direction correctly if passed', () => {
-    const { getByTestId, debug } = render(
+    const { getByTestId } = render(
       <TableOptions {...props} toggleDirection="vertical" />,
     );
-    debug();
     const horizontalIcon = getByTestId('MoreVertIcon');
 
     expect(horizontalIcon).toBeInTheDocument();

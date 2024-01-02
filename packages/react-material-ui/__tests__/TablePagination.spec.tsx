@@ -14,7 +14,7 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(),
 }));
 
-describe('Table component', () => {
+describe('TablePagination component', () => {
   const props = {
     rows: [
       { id: '1', name: 'John', age: 35 },

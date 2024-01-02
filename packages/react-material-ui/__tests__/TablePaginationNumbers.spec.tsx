@@ -17,7 +17,7 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(),
 }));
 
-describe('Table component', () => {
+describe('TablePaginationNumbers component', () => {
   const generateRows: GenerateRowsProps = (length: number) => {
     const rows: RowProps[] = [];
     for (let i = 0; i < length; i++) {
