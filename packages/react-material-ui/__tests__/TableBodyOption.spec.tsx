@@ -4,8 +4,7 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { TableBodyCells } from '../src/components/Table/TableBody/TableBodyCells';
+import { render, fireEvent } from '@testing-library/react';
 import { TableBodyOption } from '../src/components/Table/TableBody/TableBodyOption';
 import { Table as RocketsTable } from '../src/';
 import { TableBody, TableContainer } from '@mui/material';
@@ -55,7 +54,7 @@ describe('TableBodyOption component', () => {
                     customRowOptions={customRowOptions(row)}
                     toggleDirection="horizontal"
                   />
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>
@@ -80,7 +79,7 @@ describe('TableBodyOption component', () => {
                     customRowOptions={customRowOptions(row)}
                     toggleDirection="vertical"
                   />
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>

@@ -5,7 +5,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { TableBodyCells } from '../src/components/Table/TableBody/TableBodyCells';
 import { TableBodyCheckbox } from '../src/components/Table/TableBody/TableBodyCheckbox';
 import { Table as RocketsTable } from '../src/';
 import { TableBody, TableContainer } from '@mui/material';
@@ -27,7 +26,7 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(),
 }));
 
-describe('TableBodyCells component', () => {
+describe('TableBodyCheckbox component', () => {
   const props = {
     rows: generateRows(3),
     headers: [
@@ -46,7 +45,7 @@ describe('TableBodyCells component', () => {
               {props.rows?.map((row) => (
                 <RocketsTable.BodyRow row={row} key={row.id}>
                   <TableBodyCheckbox row={row} labelId={row.id} />
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>
@@ -68,7 +67,7 @@ describe('TableBodyCells component', () => {
               {props.rows?.map((row) => (
                 <RocketsTable.BodyRow row={row} key={row.id}>
                   <TableBodyCheckbox row={row} labelId={row.id} />
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>
@@ -90,7 +89,7 @@ describe('TableBodyCells component', () => {
               {props.rows?.map((row) => (
                 <RocketsTable.BodyRow row={row} key={row.id}>
                   <TableBodyCheckbox row={row} labelId={row.id} />
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>

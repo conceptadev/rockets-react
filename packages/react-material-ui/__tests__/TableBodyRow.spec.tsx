@@ -5,7 +5,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { TableBodyCells } from '../src/components/Table/TableBody/TableBodyCells';
 import { Table as RocketsTable } from '../src/';
 import { TableBody, TableContainer } from '@mui/material';
 import { RowProps } from '../src/components/Table/types';
@@ -44,7 +43,7 @@ describe('TableBodyRow component', () => {
             <TableBody>
               {props.rows?.map((row) => (
                 <RocketsTable.BodyRow row={row} key={row.id}>
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>
@@ -73,7 +72,7 @@ describe('TableBodyRow component', () => {
             <TableBody>
               {props.rows?.map((row) => (
                 <RocketsTable.BodyRow row={row} key={row.id} hasCheckboxes>
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>
@@ -95,7 +94,7 @@ describe('TableBodyRow component', () => {
             <TableBody>
               {props.rows?.map((row) => (
                 <RocketsTable.BodyRow row={row} key={row.id} hasCheckboxes>
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>
@@ -122,7 +121,7 @@ describe('TableBodyRow component', () => {
             <TableBody>
               {props.rows?.map((row) => (
                 <RocketsTable.BodyRow row={row} key={row.id}>
-                  <TableBodyCells row={row} />
+                  <RocketsTable.BodyCell row={row} />
                 </RocketsTable.BodyRow>
               ))}
             </TableBody>

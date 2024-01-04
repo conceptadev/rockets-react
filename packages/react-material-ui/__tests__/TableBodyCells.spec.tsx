@@ -5,7 +5,6 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import { TableBodyCells } from '../src/components/Table/TableBody/TableBodyCells';
 import { Table as RocketsTable } from '../src/';
 import { TableBody, TableContainer } from '@mui/material';
 
@@ -51,7 +50,7 @@ describe('TableBodyCells component', () => {
           <RocketsTable.Table stickyHeader variant="clean">
             <TableBody>
               <RocketsTable.BodyRow row={row0}>
-                <TableBodyCells row={row0} />
+                <RocketsTable.BodyCell row={row0} />
               </RocketsTable.BodyRow>
             </TableBody>
           </RocketsTable.Table>
@@ -70,7 +69,7 @@ describe('TableBodyCells component', () => {
           <RocketsTable.Table stickyHeader variant="clean">
             <TableBody>
               <RocketsTable.BodyRow row={row0}>
-                <TableBodyCells row={row0} />
+                <RocketsTable.BodyCell row={row0} />
               </RocketsTable.BodyRow>
             </TableBody>
           </RocketsTable.Table>
@@ -95,7 +94,7 @@ describe('TableBodyCells component', () => {
           <RocketsTable.Table stickyHeader variant="clean">
             <TableBody>
               <RocketsTable.BodyRow row={row1}>
-                <TableBodyCells row={row1} />
+                <RocketsTable.BodyCell row={row1} />
               </RocketsTable.BodyRow>
             </TableBody>
           </RocketsTable.Table>
@@ -117,7 +116,7 @@ describe('TableBodyCells component', () => {
           <RocketsTable.Table stickyHeader variant="clean">
             <TableBody>
               <RocketsTable.BodyRow row={row2}>
-                <TableBodyCells row={row2} />
+                <RocketsTable.BodyCell row={row2} />
               </RocketsTable.BodyRow>
             </TableBody>
           </RocketsTable.Table>
@@ -145,7 +144,7 @@ describe('TableBodyCells component', () => {
           <RocketsTable.Table stickyHeader variant="clean">
             <TableBody>
               <RocketsTable.BodyRow row={row3}>
-                <TableBodyCells row={row3} />
+                <RocketsTable.BodyCell row={row3} />
               </RocketsTable.BodyRow>
             </TableBody>
           </RocketsTable.Table>
