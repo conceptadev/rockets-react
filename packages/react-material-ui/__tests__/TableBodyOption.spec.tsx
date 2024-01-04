@@ -32,7 +32,7 @@ jest.mock('next/navigation', () => ({
   usePathname: jest.fn(),
 }));
 
-describe('TableBodyCells component', () => {
+describe('TableBodyOption component', () => {
   const props = {
     rows: generateRows(3),
     headers: [
