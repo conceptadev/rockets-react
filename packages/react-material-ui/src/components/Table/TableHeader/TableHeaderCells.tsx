@@ -19,12 +19,20 @@ export const TableHeaderCells = ({ renderCell }: TableHeaderCellsProps) => {
   const { headers } = useTableRoot();
 
   if (!renderCell) {
-    return headers.map((header) => (
-      <TableHeaderCell key={header.id} cell={header} />
-    ));
+    return (
+      <>
+        {headers.map((header) => (
+          <TableHeaderCell key={header.id} cell={header} />
+        ))}
+      </>
+    );
   }
 
-  return headers.map((header) => {
-    return renderCell({ ...header, key: header.id });
-  });
+  return (
+    <>
+      {headers.map((header) => {
+        return renderCell({ ...header, key: header.id });
+      })}
+    </>
+  );
 };
