@@ -81,7 +81,7 @@ describe('TableBodyCheckbox component', () => {
   });
 
   it('calls handleSelectCheckboxItem when checkbox is clicked', async () => {
-    const { queryAllByRole, debug } = render(
+    const { queryAllByRole } = render(
       <RocketsTable.Root {...props}>
         <TableContainer>
           <RocketsTable.Table stickyHeader variant="clean">

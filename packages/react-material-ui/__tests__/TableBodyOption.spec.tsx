@@ -67,7 +67,7 @@ describe('TableBodyOption component', () => {
   });
 
   it('should render the TableOptions component with the correct values', async () => {
-    const { getAllByTestId, getByText, debug } = render(
+    const { getAllByTestId, getByText } = render(
       <RocketsTable.Root {...props}>
         <TableContainer>
           <RocketsTable.Table stickyHeader variant="clean">
@@ -89,7 +89,6 @@ describe('TableBodyOption component', () => {
     );
     const menus = getAllByTestId('fade-button');
     expect(menus).toHaveLength(3);
-    debug();
 
     const horizontalIcon = getAllByTestId('MoreVertIcon');
     expect(horizontalIcon).toHaveLength(3);
