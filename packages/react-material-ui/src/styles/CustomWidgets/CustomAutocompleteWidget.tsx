@@ -140,12 +140,6 @@ export default function CustomAutocompleteWidget<
     }
   }, [JSON.stringify(queryParams)]);
 
-  // TODO: This has to be done in a more generic way
-  // e.g. BaseInputTemplate
-  if (isPending) {
-    return <FormFieldSkeleton />;
-  }
-
   return (
     <Autocomplete
       multiple={multiple}
@@ -178,27 +172,29 @@ export default function CustomAutocompleteWidget<
       value={controlledValue}
       onChange={_onChange}
       renderInput={(params) => (
-        <TextField
-          {...params}
-          id={id}
-          name={id}
-          label={labelValue(label || undefined, hideLabel, false)}
-          required={required}
-          disabled={disabled || readonly}
-          autoFocus={autofocus}
-          placeholder={placeholder}
-          error={rawErrors.length > 0}
-          {...(textFieldProps as TextFieldProps)}
-          InputLabelProps={{
-            ...textFieldProps.InputLabelProps,
-            shrink: !isEmpty,
-          }}
-          SelectProps={{
-            ...textFieldProps.SelectProps,
-            multiple,
-          }}
-          aria-describedby={ariaDescribedByIds<T>(id)}
-        />
+        <FormFieldSkeleton isLoading={isPending}>
+          <TextField
+            {...params}
+            id={id}
+            name={id}
+            label={labelValue(label || undefined, hideLabel, false)}
+            required={required}
+            disabled={disabled || readonly}
+            autoFocus={autofocus}
+            placeholder={placeholder}
+            error={rawErrors.length > 0}
+            {...(textFieldProps as TextFieldProps)}
+            InputLabelProps={{
+              ...textFieldProps.InputLabelProps,
+              shrink: !isEmpty,
+            }}
+            SelectProps={{
+              ...textFieldProps.SelectProps,
+              multiple,
+            }}
+            aria-describedby={ariaDescribedByIds<T>(id)}
+          />
+        </FormFieldSkeleton>
       )}
     />
   );
