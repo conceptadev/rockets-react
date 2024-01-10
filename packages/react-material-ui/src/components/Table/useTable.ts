@@ -132,12 +132,11 @@ const useTable: UseTableProps = (resource, options) => {
       for (const entries of Object.entries(simpleFilter)) {
         const [key, value] = entries;
 
-        if (!value && !updatedState?.simpleFilter?.[key]) continue;
-
-        if (!value) {
-          delete updatedState.simpleFilter[key];
+        // Loose equality evals for `undefined` and `null`
+        if (value == null) {
+          delete updatedState?.simpleFilter?.[key];
         } else {
-          if (typeof updatedState.simpleFilter === 'undefined') {
+          if (typeof updatedState?.simpleFilter === 'undefined') {
             updatedState.simpleFilter = {
               [key]: value,
             };
@@ -179,12 +178,13 @@ const useTable: UseTableProps = (resource, options) => {
       for (const entries of Object.entries(search)) {
         const [key, value] = entries;
 
-        if (!value && !updatedState?.search?.[key]) continue;
-
-        if (!value) {
-          delete updatedState.search[key];
+        // Loose equality evals for `undefined` and `null`
+        if (value == null) {
+          delete updatedState?.search?.[key];
         } else {
-          if (typeof updatedState.search === 'undefined') {
+          // This will update the search
+          // should only no update if value is null or undefined
+          if (typeof updatedState?.search === 'undefined') {
             updatedState.search = {
               [key]: value,
             };
