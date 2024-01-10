@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import Checkbox from '../../components/Checkbox';
 import { WidgetProps } from '@rjsf/utils';
 
-const CustomCheckboxWidget: FC<WidgetProps> = (props) => (
+const CustomCheckboxWidget = (props: WidgetProps) => (
   <Checkbox
     checked={props.value}
     label={props.label}

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -9,7 +9,7 @@ type Props = {
   onClick: () => void;
 };
 
-const ArrayFieldActionButton: FC<Props> = (props) => {
+const ArrayFieldActionButton = (props: Props) => {
   const { type, onClick } = props;
 
   return (

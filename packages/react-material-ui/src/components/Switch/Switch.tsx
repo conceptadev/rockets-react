@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import MuiSwitch, { SwitchProps } from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,7 +10,7 @@ type Props = {
   textProps?: TextProps;
 };
 
-const Switch: FC<Props & SwitchProps> = (props) => {
+const Switch = (props: Props & SwitchProps) => {
   const {
     label,
     disabled,

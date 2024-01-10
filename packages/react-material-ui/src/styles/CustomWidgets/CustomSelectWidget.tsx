@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import Select from '../../components/Select';
 import { WidgetProps } from '@rjsf/utils';
 
-const CustomSelectWidget: FC<WidgetProps> = ({
+const CustomSelectWidget = ({
   id,
   options,
   label,
@@ -13,7 +13,7 @@ const CustomSelectWidget: FC<WidgetProps> = ({
   multiple,
   onChange,
   rawErrors = [],
-}) => {
+}: WidgetProps) => {
   const { enumOptions, enumDisabled } = options;
 
   const emptyValue = multiple ? [] : '';

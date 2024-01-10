@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { ArrayFieldTemplateProps } from '@rjsf/utils';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ArrayFieldActionButton from './ArrayFieldActionButton';
 
-const ArrayFieldTemplate: FC<ArrayFieldTemplateProps> = (props) => {
+const ArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
   const { items, canAdd, onAddClick, schema } = props;
 
   return (

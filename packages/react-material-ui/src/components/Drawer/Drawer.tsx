@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useEffect, ReactNode } from 'react';
+import React, { useState, useCallback, useEffect, ReactNode } from 'react';
 import { StyledDrawer, StyledDrawerProps } from './Styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -32,7 +32,7 @@ export type DrawerProps = {
   expandedWidth?: StyledDrawerProps['expandedWidth'];
 };
 
-const Drawer: FC<DrawerProps> = (props) => {
+const Drawer = (props: DrawerProps) => {
   const {
     items,
     currentId,

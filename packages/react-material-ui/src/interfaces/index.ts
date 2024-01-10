@@ -5,4 +5,5 @@ export interface TextProps {
   fontSize?: TypographyProps['fontSize'];
   fontWeight?: TypographyProps['fontWeight'];
   color?: TypographyProps['color'];
+  lineHeight?: TypographyProps['lineHeight'];
 }

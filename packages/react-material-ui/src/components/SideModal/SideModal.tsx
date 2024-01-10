@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { useTheme } from '@mui/material';
 import { SxProps, Theme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -22,7 +22,7 @@ export type SideModalProps = {
   children?: ReactNode;
 };
 
-const SideModal: FC<SideModalProps> = (props) => {
+const SideModal = (props: SideModalProps) => {
   const {
     open,
     toggleDrawer,

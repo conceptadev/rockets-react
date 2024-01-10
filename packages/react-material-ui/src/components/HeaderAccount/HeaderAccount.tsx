@@ -1,4 +1,4 @@
-import React, { FC, useState, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Text from '../Text';
 import Avatar from '../Avatar';
@@ -19,7 +19,7 @@ export type HeaderAccountProps = {
   menuOptions?: (handleClose: () => void) => ReactNode;
 };
 
-const HeaderAccount: FC<HeaderAccountProps> = ({
+const HeaderAccount = ({
   avatar,
   avatarSize = 36,
   text,
@@ -38,7 +38,7 @@ const HeaderAccount: FC<HeaderAccountProps> = ({
   },
   iconColor = 'text.primary',
   menuOptions,
-}) => {
+}: HeaderAccountProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleOpenMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {

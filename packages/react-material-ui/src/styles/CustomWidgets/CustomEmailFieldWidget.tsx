@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { WidgetProps } from '@rjsf/utils';
 import CustomTextFieldWidget from './CustomTextFieldWidget';
 
-const CustomEmailFieldWidget: FC<WidgetProps> = (props) => (
+const CustomEmailFieldWidget = (props: WidgetProps) => (
   <CustomTextFieldWidget {...props} type="email" />
 );
 

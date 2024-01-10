@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import Box from '@mui/material/Box';
 import { AppBarContext } from './hooks/useAppBarRoot';
 
@@ -6,7 +6,7 @@ export type AppBarRootProps = {
   children: ReactNode;
 };
 
-const AppBarRoot: FC<AppBarRootProps> = ({ children }) => {
+const AppBarRoot = ({ children }: AppBarRootProps) => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const toggleMobileOpen = () => {

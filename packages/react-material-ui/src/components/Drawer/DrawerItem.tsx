@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { DrawerButton, DrawerButtonProps } from './Styles';
 import Text from '../Text';
 import { TextProps } from 'interfaces';
@@ -15,7 +15,7 @@ export type DrawerItemProps = {
   temporary?: boolean;
 } & DrawerButtonProps;
 
-const DrawerItem: FC<DrawerItemProps> = (props) => {
+const DrawerItem = (props: DrawerItemProps) => {
   const {
     id,
     icon,

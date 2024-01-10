@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,7 +15,7 @@ export interface CustomDialogProps {
   dividers?: boolean;
 }
 
-const Dialog: FC<CustomDialogProps & DialogProps> = (props) => {
+const Dialog = (props: CustomDialogProps & DialogProps) => {
   const {
     open,
     handleClose,

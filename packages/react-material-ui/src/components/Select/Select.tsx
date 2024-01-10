@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
@@ -16,7 +16,7 @@ type Props = {
   textProps?: TextProps;
 };
 
-const Select: FC<Props & TextFieldProps> = (props) => {
+const Select = (props: Props & TextFieldProps) => {
   const {
     id,
     label,
