@@ -36,7 +36,7 @@ export const getPaginatedRows = (
  * @returns A React JSX element representing the default row.
  */
 const renderDefaultRow = (row: RowProps) => (
-  <TableBodyRow row={row}>
+  <TableBodyRow key={row.id} row={row}>
     <TableBodyCells row={row} />
   </TableBodyRow>
 );
