@@ -29,7 +29,7 @@ These are very rough examples. We intend to improve them ASAP.
 ```typescript
 import { AuthProvider, useAuth } from '@concepta/auth-provider';
 
-const AppWrapper: React.FC = () => {
+const AppWrapper = () => {
   const { doLogin, user } = useAuth();
 
   const onClickSignIn = async (user: string, password: string) => {

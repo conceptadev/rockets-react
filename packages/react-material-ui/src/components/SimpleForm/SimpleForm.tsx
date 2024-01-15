@@ -76,13 +76,13 @@ type Props = {
   onError?: (error: any) => any;
 };
 
-const SimpleForm: FC<Props> = ({
+const SimpleForm = ({
   form,
   initialData,
   onSubmit,
   validate,
   onError,
-}) => {
+}: Props) => {
   const { fields, titleTextProps, formProps, submitButtonProps } = form;
 
   const generateRequired = (_fields: Fields) => {

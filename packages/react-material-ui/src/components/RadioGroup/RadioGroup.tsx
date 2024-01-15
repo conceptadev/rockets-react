@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MuiRadio, { RadioProps } from '@mui/material/Radio';
 import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup';
@@ -20,9 +20,7 @@ type CustomRadioGroupProps = {
   textProps?: TextProps;
 };
 
-const Radio: FC<CustomRadioGroupProps & RadioGroupProps & RadioProps> = (
-  props,
-) => {
+const Radio = (props: CustomRadioGroupProps & RadioGroupProps & RadioProps) => {
   const {
     id,
     options,

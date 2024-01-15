@@ -12,10 +12,14 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "baseUrl": ".",
     "paths": {
-      "*": ["./packages/react-material-ui/src/*"]
+      "*": [
+        "./packages/react-material-ui/src/*"
+      ]
     }
   },
   "files": [],
@@ -25,12 +29,6 @@
     },
     {
       "path": "packages/react-data-provider"
-    },
-    {
-      "path": "packages/react-notification-provider"
-    },
-    {
-      "path": "packages/react-router"
     },
     {
       "path": "packages/react-material-ui"

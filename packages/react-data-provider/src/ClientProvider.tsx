@@ -1,6 +1,5 @@
 import React, {
   createContext,
-  FC,
   ReactNode,
   useEffect,
   useState,
@@ -26,11 +25,11 @@ type Props = {
   children: ReactNode;
 };
 
-const ClientProvider: FC<Props> = ({
+const ClientProvider = ({
   baseUrl: outerBaseUrl,
   onRefreshTokenError,
   children,
-}) => {
+}: Props) => {
   const [baseUrl, setBaseUrl] = useState<string>();
 
   useEffect(() => {

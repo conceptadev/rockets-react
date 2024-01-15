@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, MouseEvent, useMemo } from 'react';
+import React, { ReactNode, useState, MouseEvent, useMemo } from 'react';
 import Menu from '@mui/material/Menu';
 import Fade from '@mui/material/Fade';
 import Tooltip from '@mui/material/Tooltip';
@@ -25,7 +25,7 @@ type Props = {
   textProps?: TextProps;
 };
 
-const Dropdown: FC<Props> = ({
+const Dropdown = ({
   options,
   toggleDirection = 'horizontal',
   textProps = {
@@ -33,7 +33,7 @@ const Dropdown: FC<Props> = ({
     fontWeight: 400,
     color: 'text.primary',
   },
-}) => {
+}: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 

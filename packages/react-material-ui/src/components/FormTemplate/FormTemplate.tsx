@@ -19,7 +19,7 @@ interface FormTemplateProps {
   cardProps?: CardProps;
 }
 
-const FormTemplate: React.FC<FormTemplateProps> = ({
+const FormTemplate = ({
   title,
   subtitle,
   icon,
@@ -28,7 +28,7 @@ const FormTemplate: React.FC<FormTemplateProps> = ({
   containerProps,
   subtitleTextProps,
   cardProps,
-}) => {
+}: FormTemplateProps) => {
   return (
     <Container
       maxWidth="xs"

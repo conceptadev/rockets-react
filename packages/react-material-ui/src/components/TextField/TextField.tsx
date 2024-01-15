@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import MuiTextField, { TextFieldProps } from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
@@ -26,7 +26,7 @@ interface Props {
   options?: TextAreaProps;
 }
 
-const TextField: FC<TextFieldProps & Props> = (props) => {
+const TextField = (props: TextFieldProps & Props) => {
   const {
     label,
     required,

@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
 import RadioGroup from '../../components/RadioGroup';
 import { RadioOptions } from '../../components/RadioGroup/RadioGroup';
 import { WidgetProps } from '@rjsf/utils';
 
-const CustomRadioWidget: FC<WidgetProps> = (props) => {
+const CustomRadioWidget = (props: WidgetProps) => {
   const { id, schema, options, value, required, disabled, label, onChange } =
     props;
   const { enumOptions } = options;

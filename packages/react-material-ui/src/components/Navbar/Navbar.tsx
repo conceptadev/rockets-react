@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
@@ -19,7 +19,7 @@ export type NavbarProps = {
   sx?: SxProps<Theme>;
 };
 
-const Navbar: FC<NavbarProps> = ({
+const Navbar = ({
   drawerToggle,
   showNotifications,
   notificationsNumber,
@@ -29,7 +29,7 @@ const Navbar: FC<NavbarProps> = ({
   subText,
   headerMenuOptions,
   sx,
-}) => {
+}: NavbarProps) => {
   return (
     <Box
       data-testid="navbarContainer"

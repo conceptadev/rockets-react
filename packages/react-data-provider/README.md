@@ -58,7 +58,7 @@ These are very rough examples. We intend to improve them ASAP.
 ```typescript
 import useDataProvider from '@concepta/react-data-provider';
 
-const Home: React.FC = () => {
+const Home = () => {
   const { post } = useDataProvider();
 
   const handleClick = () => {
@@ -85,7 +85,7 @@ If you need more control over the request process, you can use the `useQuery` ho
 ```typescript
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
-const Main: FC = () => {
+const Main = () => {
   const { get } = useDataProvider();
 
   const getPokemon = () =>

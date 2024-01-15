@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -22,7 +22,7 @@ export interface DialogTitleProps {
   onClose: () => void;
 }
 
-const CustomDialogTitle: FC<DialogTitleProps> = (props) => {
+const CustomDialogTitle = (props: DialogTitleProps) => {
   const { children, onClose, ...other } = props;
 
   return (

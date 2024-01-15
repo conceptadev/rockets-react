@@ -1,7 +1,12 @@
 'use client';
 
-import React, { ReactNode, SyntheticEvent } from 'react';
-import { Autocomplete, AutocompleteProps, Box, TextField } from '@mui/material';
+import React, { SyntheticEvent } from 'react';
+import {
+  Autocomplete,
+  AutocompleteProps,
+  AutocompleteRenderInputParams,
+  TextField,
+} from '@mui/material';
 import {
   SelectOption,
   allOption,
@@ -13,7 +18,7 @@ export type AutocompleteFieldProps = {
   isLoading: boolean;
   currentValue: string;
   defaultValue: SelectOption | undefined;
-  labelComponent?: ReactNode;
+  label?: string;
   onChange: (value: string | null) => void;
 } & Omit<
   AutocompleteProps<SelectOption, false, false, false>,
@@ -25,43 +30,40 @@ const AutocompleteField = ({
   isLoading,
   currentValue,
   defaultValue,
-  labelComponent,
+  label,
   onChange,
   ...rest
 }: AutocompleteFieldProps) => {
+  const handleRenderInput = (params: AutocompleteRenderInputParams) => (
+    <FormFieldSkeleton isLoading={isLoading} hideLabel>
+      <TextField {...params} label={label} />
+    </FormFieldSkeleton>
+  );
+
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
     newValue: SelectOption | null,
-  ) => onChange(newValue?.value ?? null);
+    reason?: string,
+  ) => {
+    if (reason === 'clear') {
+      onChange(allOption.value);
+      return;
+    }
 
-  if (isLoading) {
-    return (
-      <Box width={300}>
-        <FormFieldSkeleton hideLabel />
-      </Box>
-    );
-  }
+    onChange(newValue?.value ?? null);
+  };
 
   const optionsWithAll = [allOption, ...options];
 
   return (
     <Autocomplete
+      disabled={isLoading}
       defaultValue={defaultValue}
       isOptionEqualToValue={(option) => option.value === currentValue}
       getOptionLabel={(option) => option.label}
       onChange={handleChange}
       options={optionsWithAll}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          InputProps={{
-            ...params.InputProps,
-            ...(labelComponent && {
-              startAdornment: labelComponent,
-            }),
-          }}
-        />
-      )}
+      renderInput={handleRenderInput}
       {...rest}
     />
   );

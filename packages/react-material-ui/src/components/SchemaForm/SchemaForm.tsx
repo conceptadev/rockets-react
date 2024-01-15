@@ -1,6 +1,6 @@
 'use client';
 
-import React, { FC, Fragment, ReactNode } from 'react';
+import React, { Fragment, ReactNode } from 'react';
 import validator from '@rjsf/validator-ajv6';
 import RJSFForm from '@rjsf/mui';
 import Box from '@mui/material/Box';
@@ -26,7 +26,7 @@ export type SchemaFormProps = Omit<FormProps, 'schema' | 'validator'> & {
   advancedPropertiesMapper?: AdvancedPropertiesMapper;
 };
 
-const Form: FC<SchemaFormProps> = ({
+const Form = ({
   uiSchema,
   schema,
   formData,
@@ -34,7 +34,7 @@ const Form: FC<SchemaFormProps> = ({
   children,
   advancedPropertiesMapper = mapAdvancedProperties,
   ...props
-}) => {
+}: SchemaFormProps) => {
   const finalSchema: RJSFSchema = {
     ...schema,
     properties: advancedPropertiesMapper(schema, advancedProperties),

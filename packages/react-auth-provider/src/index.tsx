@@ -18,9 +18,11 @@ const AuthContext = createContext<AuthProviderTypes | null>(null);
 
 const useAuth = () => useContext<AuthProviderTypes>(AuthContext);
 
-const AuthProvider: React.FC<
-  PropsWithChildren<AuthProviderProps & unknown>
-> = ({ children, onSuccess, onError }) => {
+const AuthProvider = ({
+  children,
+  onSuccess,
+  onError,
+}: PropsWithChildren<AuthProviderProps & unknown>) => {
   const { post } = useDataProvider();
 
   const [user, setUser] = useState<unknown>();

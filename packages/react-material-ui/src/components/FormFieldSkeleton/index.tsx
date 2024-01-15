@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { Box, Skeleton, useTheme } from '@mui/material';
 
 type FormFieldSkeletonProps = {
+  isLoading?: boolean;
   hideLabel?: boolean;
 };
 
-const FormFieldSkeleton = ({ hideLabel }: FormFieldSkeletonProps) => {
+const FormFieldSkeleton = ({
+  isLoading = true,
+  children,
+  hideLabel,
+}: PropsWithChildren<FormFieldSkeletonProps>) => {
   const theme = useTheme();
+
+  if (!isLoading) return <>{children}</>;
 
   return (
     <Box width="100%">
@@ -19,7 +26,9 @@ const FormFieldSkeleton = ({ hideLabel }: FormFieldSkeletonProps) => {
           }}
         />
       )}
-      <Skeleton variant="rounded" height={42} width="100%" />
+      <Skeleton variant="rounded" height={42} width="100%">
+        {children}
+      </Skeleton>
     </Box>
   );
 };
