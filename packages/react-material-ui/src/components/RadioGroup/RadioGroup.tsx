@@ -23,6 +23,7 @@ type CustomRadioGroupProps = {
 const Radio = (props: CustomRadioGroupProps & RadioGroupProps & RadioProps) => {
   const {
     id,
+    name,
     options,
     label,
     required,
@@ -40,10 +41,12 @@ const Radio = (props: CustomRadioGroupProps & RadioGroupProps & RadioProps) => {
   return (
     <>
       {label && (
-        <Text {...textProps}>
-          {label}
-          {required && ' *'}
-        </Text>
+        <label htmlFor={name}>
+          <Text {...textProps}>
+            {label}
+            {required && ' *'}
+          </Text>
+        </label>
       )}
       <RadioGroup id={id} value={`${value}`} row={row} onChange={onChange}>
         {options.map((option: RadioOptions, i: number) => (
