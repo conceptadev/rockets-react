@@ -72,8 +72,8 @@ describe('TextField Component', () => {
   });
 
   it('renders the multiline with passed props', () => {
-    const { getByTestId } = render(
-      <TextField label="Test Input" multiline rows={5} maxRows={10} />,
+    const { getByTestId, debug } = render(
+      <TextField label="Test Input" multiline rows={5} />,
     );
 
     const wrapper = getByTestId('text-field');
@@ -91,7 +91,7 @@ describe('TextField Component', () => {
     expect(input).toHaveClass('MuiInputBase-inputSizeSmall');
   });
 
-  it('renders TextField with small size as default', () => {
+  it('renders TextField without label if hiddenLabel is provided', () => {
     const { queryByText } = render(
       <TextField label="Test Label" hiddenLabel />,
     );

@@ -61,16 +61,15 @@ const TextField = (props: TextFieldProps & Props) => {
   return (
     <Box {...containerProps}>
       <FormControl>
-        {!ishiddenLabel && label && typeof label === 'string' ? (
+        {!ishiddenLabel && !!label && typeof label === 'string' && (
           <FormLabel
             name={name}
             label={label}
             required={required}
             labelProps={labelProps}
           />
-        ) : (
-          label
         )}
+        {!ishiddenLabel && !!label && typeof label != 'string' && label}
 
         <MuiTextField
           {...rest}
