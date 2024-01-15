@@ -1,4 +1,4 @@
-import { Order } from '../../components/Table/types';
+import { Order } from '../types';
 import descendingComparator from './descendingComparator';
 
 /**

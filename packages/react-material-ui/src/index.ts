@@ -30,6 +30,7 @@ export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
 
 import Table from './components/Table';
+export * from './components/Table/utils';
 export { Table };
 
 export { default as Text } from './components/Text';
@@ -43,5 +44,3 @@ export { default as SchemaForm } from './components/SchemaForm';
 
 import FormFieldSkeleton from './components/FormFieldSkeleton';
 export { FormFieldSkeleton };
-
-export * from './utils';

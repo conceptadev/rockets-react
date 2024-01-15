@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { sortTable } from '../../../utils/table';
+import { sortTable } from '../utils';
 import { Order, RenderRowFunction, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 import { TableBodyRow } from './TableBodyRow';

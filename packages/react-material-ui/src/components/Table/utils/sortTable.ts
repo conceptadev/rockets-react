@@ -1,4 +1,4 @@
-import { CustomTableCell, Order, RowProps } from '../../components/Table/types';
+import { CustomTableCell, Order, RowProps } from '../types';
 
 const descendingComparator = (a: string | number, b: string | number) => {
   if (b < a) {
