@@ -1,11 +1,33 @@
 import React from 'react';
 import { WidgetProps } from '@rjsf/utils';
+import {
+  Box,
+  BoxProps,
+  FormControl,
+  FormLabel,
+  Grid,
+  TypographyProps,
+} from '@mui/material';
 import Checkbox from '../../components/Checkbox';
-import { Grid, Typography } from '@mui/material';
+import Text from '../../components/Text';
 
-const CustomCheckboxesWidget = (props: WidgetProps) => {
+const TEXT_INITIAL_PROPS = {
+  fontSize: 14,
+  fontWeight: 500,
+  color: 'text.primary',
+};
+
+interface Props {
+  containerProps?: BoxProps;
+  labelProps?: TypographyProps;
+}
+
+const CustomCheckboxesWidget = (props: WidgetProps & Props) => {
   const {
     label,
+    name,
+    labelProps,
+    containerProps,
     uiSchema,
     id,
     disabled,
@@ -44,40 +66,43 @@ const CustomCheckboxesWidget = (props: WidgetProps) => {
     };
 
   return (
-    <>
-      {label && (
-        <Typography>
-          {label}
-          {required && ' *'}
-        </Typography>
-      )}
+    <Box {...containerProps}>
+      <FormControl>
+        {label && (
+          <FormLabel htmlFor={name}>
+            <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
+              {`${label}${required ? ' *' : ''}`}
+            </Text>
+          </FormLabel>
+        )}
 
-      <Grid
-        display="flex"
-        flexDirection={uiSchema?.['ui:inline'] ? 'row' : 'column'}
-        flexWrap="wrap"
-      >
-        {(enumOptions as any).map((option: any, index: number) => {
-          const checked = value.indexOf(option.value) !== -1;
+        <Grid
+          display="flex"
+          flexDirection={uiSchema?.['ui:inline'] ? 'row' : 'column'}
+          flexWrap="wrap"
+        >
+          {(enumOptions as any).map((option: any, index: number) => {
+            const checked = value.indexOf(option.value) !== -1;
 
-          const itemDisabled =
-            enumDisabled && (enumDisabled as any).indexOf(option.value) != -1;
+            const itemDisabled =
+              enumDisabled && (enumDisabled as any).indexOf(option.value) != -1;
 
-          return (
-            <Checkbox
-              id={`${id}_${index}`}
-              checked={checked}
-              disabled={disabled || itemDisabled || readonly}
-              autoFocus={autofocus && index === 0}
-              onChange={_onChange(option)}
-              key={index}
-              label={option.label}
-              required={required}
-            />
-          );
-        })}
-      </Grid>
-    </>
+            return (
+              <Checkbox
+                id={`${id}_${index}`}
+                checked={checked}
+                disabled={disabled || itemDisabled || readonly}
+                autoFocus={autofocus && index === 0}
+                onChange={_onChange(option)}
+                key={index}
+                label={option.label}
+                required={required}
+              />
+            );
+          })}
+        </Grid>
+      </FormControl>
+    </Box>
   );
 };
 
