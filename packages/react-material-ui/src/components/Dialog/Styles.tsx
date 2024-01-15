@@ -6,7 +6,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 const CustomDialog = styled(Dialog, {
-  shouldForwardProp: () => true,
+  // prevent jest error
+  shouldForwardProp: (propName) => propName !== 'handleClose',
 })<DialogProps>(({ theme }) => ({
   '& .MuiDialogContent-root': {
     minWidth: 300,

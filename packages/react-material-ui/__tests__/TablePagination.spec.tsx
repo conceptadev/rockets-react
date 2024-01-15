@@ -99,7 +99,10 @@ describe('TablePagination component', () => {
   it('should render the correct rowsPerPageOptions', async () => {
     const { getByRole, getAllByRole } = render(
       <RocketsTable.Root {...props}>
-        <TablePagination variant="outlined" rowsPerPageOptions={[8, 20, 50]} />
+        <TablePagination
+          variant="outlined"
+          rowsPerPageOptions={[5, 8, 20, 50]}
+        />
       </RocketsTable.Root>,
     );
     const paginationSelect = getByRole('combobox');
@@ -107,10 +110,11 @@ describe('TablePagination component', () => {
 
     const options = getAllByRole('option');
 
-    expect(options).toHaveLength(3);
-    expect(options[0]).toHaveTextContent('8');
-    expect(options[1]).toHaveTextContent('20');
-    expect(options[2]).toHaveTextContent('50');
+    expect(options).toHaveLength(4);
+    expect(options[0]).toHaveTextContent('5');
+    expect(options[1]).toHaveTextContent('8');
+    expect(options[2]).toHaveTextContent('20');
+    expect(options[3]).toHaveTextContent('50');
   });
 
   it('should render the default rowsPerPageOptions if not provided', async () => {

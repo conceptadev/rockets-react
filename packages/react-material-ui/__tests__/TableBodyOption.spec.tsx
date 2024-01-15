@@ -21,8 +21,8 @@ const generateRows: GenerateRowsProps = (length: number) => {
 };
 
 const customRowOptions = (row: RowProps) => [
-  { onClick: () => {}, key: row.id, text: `row ${row.id} option 0` },
-  { onClick: () => {}, key: row.id, text: `row ${row.id} option 1` },
+  { onClick: () => {}, key: `${row.id} key 0`, text: `row ${row.id} option 0` },
+  { onClick: () => {}, key: `${row.id} key 1`, text: `row ${row.id} option 1` },
 ];
 
 jest.mock('next/navigation', () => ({

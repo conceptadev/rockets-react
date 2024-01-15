@@ -206,14 +206,12 @@ describe('SimpleForm Component', () => {
       age: '10',
     };
     const validate = (formData: FormData, errors: FormValidation) => {
-      console.log('formData', formData);
       if (formData.name.length < 3) {
         errors?.name?.addError('Name must be at least 3 characters long');
       }
       if (Number(formData.age) < 18) {
         errors?.age?.addError('You must be at least 18 years old');
       }
-      console.log('errors', errors);
       return errors;
     };
     const onSubmit = jest.fn();
