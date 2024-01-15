@@ -3,7 +3,6 @@ import {
   Box,
   BoxProps,
   FormControl,
-  FormLabel,
   InputAdornment,
   TextField as MuiTextField,
   TextFieldProps,
@@ -12,13 +11,7 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
-import Text from '../Text';
-
-const TEXT_INITIAL_PROPS = {
-  fontSize: 14,
-  fontWeight: 500,
-  color: 'text.primary',
-};
+import FormLabel from '../FormLabel';
 
 interface TextAreaProps {
   multiline?: boolean;
@@ -68,12 +61,15 @@ const TextField = (props: TextFieldProps & Props) => {
   return (
     <Box {...containerProps}>
       <FormControl>
-        {!ishiddenLabel && label && (
-          <FormLabel htmlFor={name}>
-            <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-              {`${label}${required ? ' *' : ''}`}
-            </Text>
-          </FormLabel>
+        {!ishiddenLabel && label && typeof label === 'string' ? (
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+          />
+        ) : (
+          label
         )}
 
         <MuiTextField

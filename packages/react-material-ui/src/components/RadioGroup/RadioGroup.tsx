@@ -4,20 +4,13 @@ import {
   BoxProps,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio as MuiRadio,
   RadioGroup,
   RadioGroupProps,
   RadioProps,
 } from '@mui/material';
-import Text from '../Text';
+import FormLabel from '../FormLabel';
 import { TextProps } from 'interfaces';
-
-const TEXT_INITIAL_PROPS = {
-  fontSize: 14,
-  fontWeight: 500,
-  color: 'text.primary',
-};
 
 export type RadioOptions = {
   label: string;
@@ -54,11 +47,12 @@ const Radio = (props: CustomRadioGroupProps & RadioGroupProps & RadioProps) => {
     <Box {...containerProps}>
       <FormControl>
         {label && (
-          <FormLabel htmlFor={name}>
-            <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-              {`${label}${required ? ' *' : ''}`}
-            </Text>
-          </FormLabel>
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+          />
         )}
         <RadioGroup id={id} value={`${value}`} row={row} onChange={onChange}>
           {options.map((option: RadioOptions, i: number) => (

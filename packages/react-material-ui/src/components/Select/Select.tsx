@@ -3,19 +3,12 @@ import {
   Box,
   BoxProps,
   FormControl,
-  FormLabel,
   MenuItem,
   TextField,
   TextFieldProps,
 } from '@mui/material';
-import Text from '../Text';
+import FormLabel from '../FormLabel';
 import { TextProps } from 'interfaces';
-
-const TEXT_INITIAL_PROPS = {
-  fontSize: 14,
-  fontWeight: 500,
-  color: 'text.primary',
-};
 
 export type SelectOptions = {
   label: string;
@@ -50,12 +43,15 @@ const Select = (props: Props & TextFieldProps) => {
   return (
     <Box {...containerProps}>
       <FormControl>
-        {label && (
-          <FormLabel htmlFor={name}>
-            <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-              {`${label}${required ? ' *' : ''}`}
-            </Text>
-          </FormLabel>
+        {label && typeof label === 'string' ? (
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+          />
+        ) : (
+          label
         )}
 
         <TextField

@@ -4,18 +4,11 @@ import {
   Box,
   BoxProps,
   FormControl,
-  FormLabel,
   Grid,
   TypographyProps,
 } from '@mui/material';
 import Checkbox from '../../components/Checkbox';
-import Text from '../../components/Text';
-
-const TEXT_INITIAL_PROPS = {
-  fontSize: 14,
-  fontWeight: 500,
-  color: 'text.primary',
-};
+import FormLabel from '../../components/FormLabel';
 
 interface Props {
   containerProps?: BoxProps;
@@ -68,12 +61,15 @@ const CustomCheckboxesWidget = (props: WidgetProps & Props) => {
   return (
     <Box {...containerProps}>
       <FormControl>
-        {label && (
-          <FormLabel htmlFor={name}>
-            <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-              {`${label}${required ? ' *' : ''}`}
-            </Text>
-          </FormLabel>
+        {label && typeof label === 'string' ? (
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+          />
+        ) : (
+          label
         )}
 
         <Grid
