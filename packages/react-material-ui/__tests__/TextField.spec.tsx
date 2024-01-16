@@ -8,94 +8,93 @@ import { render, fireEvent } from '@testing-library/react';
 import TextField from '../src/components/TextField/TextField';
 
 describe('TextField Component', () => {
-  // it('should render correctly', () => {
-  //   render(<TextField />);
-  // });
+  it('should render correctly', () => {
+    render(<TextField />);
+  });
 
-  // it('renders label correctly', () => {
-  //   const { getByText } = render(<TextField label="Test Label" />);
-  //   const labelElement = getByText('Test Label');
-  //   expect(labelElement).toBeInTheDocument();
-  // });
+  it('renders label correctly', () => {
+    const { getByText } = render(<TextField label="Test Label" />);
+    const labelElement = getByText('Test Label');
+    expect(labelElement).toBeInTheDocument();
+  });
 
-  // it('renders required label correctly', () => {
-  //   const { getByText } = render(<TextField label="Test Label" required />);
-  //   const label = getByText('Test Label *');
-  //   expect(label).toBeInTheDocument();
-  // });
+  it('renders required label correctly', () => {
+    const { getByText } = render(<TextField label="Test Label" required />);
+    const label = getByText('Test Label *');
+    expect(label).toBeInTheDocument();
+  });
 
-  // it('should toggle password visibility', () => {
-  //   const { getByTestId } = render(
-  //     <TextField label="Password" type="password" />,
-  //   );
-  //   const wrapper = getByTestId('text-field');
-  //   const toggleButton = getByTestId('toggle-password-button');
+  it('should toggle password visibility', () => {
+    const { getByTestId } = render(
+      <TextField label="Password" type="password" />,
+    );
+    const wrapper = getByTestId('text-field');
+    const toggleButton = getByTestId('toggle-password-button');
 
-  //   const input = wrapper.querySelector('input');
-  //   fireEvent.click(toggleButton);
-  //   expect(input?.getAttribute('type')).toBe('text');
+    const input = wrapper.querySelector('input');
+    fireEvent.click(toggleButton);
+    expect(input?.getAttribute('type')).toBe('text');
 
-  //   fireEvent.click(toggleButton);
-  //   expect(input?.getAttribute('type')).toBe('password');
-  // });
+    fireEvent.click(toggleButton);
+    expect(input?.getAttribute('type')).toBe('password');
+  });
 
-  // it('renders the correct value', () => {
-  //   const { getByTestId } = render(
-  //     <TextField label="Test Input" value="Test Value" />,
-  //   );
-  //   const wrapper = getByTestId('text-field');
-  //   const input = wrapper.querySelector('input');
-  //   input && fireEvent.change(input, { target: { value: 'Test Value' } });
-  //   expect(input).toHaveValue('Test Value');
-  // });
+  it('renders the correct value', () => {
+    const { getByTestId } = render(
+      <TextField label="Test Input" value="Test Value" />,
+    );
+    const wrapper = getByTestId('text-field');
+    const input = wrapper.querySelector('input');
+    input && fireEvent.change(input, { target: { value: 'Test Value' } });
+    expect(input).toHaveValue('Test Value');
+  });
 
-  // it('calls onChange when input value changes', () => {
-  //   const onChangeMock = jest.fn();
-  //   const { getByTestId } = render(
-  //     <TextField label="Test Input" onChange={onChangeMock} />,
-  //   );
-  //   const wrapper = getByTestId('text-field');
-  //   const input = wrapper.querySelector('input');
-  //   input && fireEvent.change(input, { target: { value: 'Test Value' } });
-  //   expect(onChangeMock).toHaveBeenCalledTimes(1);
-  // });
+  it('calls onChange when input value changes', () => {
+    const onChangeMock = jest.fn();
+    const { getByTestId } = render(
+      <TextField label="Test Input" onChange={onChangeMock} />,
+    );
+    const wrapper = getByTestId('text-field');
+    const input = wrapper.querySelector('input');
+    input && fireEvent.change(input, { target: { value: 'Test Value' } });
+    expect(onChangeMock).toHaveBeenCalledTimes(1);
+  });
 
-  // it('renders as a multiline text field if multiline is true', () => {
-  //   const { getByTestId } = render(<TextField label="Test Input" multiline />);
+  it('renders as a multiline text field if multiline is true', () => {
+    const { getByTestId } = render(<TextField label="Test Input" multiline />);
 
-  //   const wrapper = getByTestId('text-field');
-  //   const input = wrapper.querySelector('input');
-  //   expect(input).not.toBeInTheDocument();
+    const wrapper = getByTestId('text-field');
+    const input = wrapper.querySelector('input');
+    expect(input).not.toBeInTheDocument();
 
-  //   const textarea = wrapper.querySelector('textarea');
-  //   expect(textarea).toBeInTheDocument();
-  // });
+    const textarea = wrapper.querySelector('textarea');
+    expect(textarea).toBeInTheDocument();
+  });
 
   it('renders the multiline with passed props', () => {
     const { getByTestId } = render(
       <TextField label="Test Input" multiline rows={5} />,
     );
 
-  //   const wrapper = getByTestId('text-field');
-  //   const textarea = wrapper.querySelector('textarea');
+    const wrapper = getByTestId('text-field');
+    const textarea = wrapper.querySelector('textarea');
 
-  //   expect(textarea).toHaveAttribute('rows', '5');
-  // });
+    expect(textarea).toHaveAttribute('rows', '5');
+  });
 
-  // it('renders TextField with small size as default', () => {
-  //   const { getByTestId } = render(<TextField label="Test Label" />);
+  it('renders TextField with small size as default', () => {
+    const { getByTestId } = render(<TextField label="Test Label" />);
 
-  //   const wrapper = getByTestId('text-field');
-  //   const input = wrapper.querySelector('input');
+    const wrapper = getByTestId('text-field');
+    const input = wrapper.querySelector('input');
 
-  //   expect(input).toHaveClass('MuiInputBase-inputSizeSmall');
-  // });
+    expect(input).toHaveClass('MuiInputBase-inputSizeSmall');
+  });
 
   it('renders TextField without label if hiddenLabel is provided', () => {
-    const { queryByText, debug } = render(
+    const { queryByText } = render(
       <TextField label="Test Label" hiddenLabel />,
     );
-    debug();
     const labelElement = queryByText('Test Label');
     expect(labelElement).not.toBeInTheDocument();
   });
