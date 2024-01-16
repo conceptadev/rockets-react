@@ -24,8 +24,8 @@ describe('Table component', () => {
 
   it('should render the table with the specified variant', () => {
     const { getByTestId } = render(
-      <Table variant="clean">
-        <TableContainer>
+      <TableContainer>
+        <Table variant="clean">
           <TableHead>
             <TableRow>
               <TableCell data-testid="header">Header</TableCell>
@@ -36,8 +36,8 @@ describe('Table component', () => {
               <TableCell data-testid="body">Body</TableCell>
             </TableRow>
           </TableBody>
-        </TableContainer>
-      </Table>,
+        </Table>
+      </TableContainer>,
     );
     const header = getByTestId('header');
     const body = getByTestId('body');
@@ -52,8 +52,8 @@ describe('Table component', () => {
 
   it('should render the table with the default variant if no variant is provided', () => {
     const { getByTestId } = render(
-      <Table>
-        <TableContainer>
+      <TableContainer>
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell data-testid="header">Header</TableCell>
@@ -64,8 +64,8 @@ describe('Table component', () => {
               <TableCell data-testid="body">Body</TableCell>
             </TableRow>
           </TableBody>
-        </TableContainer>
-      </Table>,
+        </Table>
+      </TableContainer>,
     );
     const header = getByTestId('header');
     const body = getByTestId('body');
