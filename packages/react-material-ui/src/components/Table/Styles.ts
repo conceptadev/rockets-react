@@ -21,7 +21,7 @@ const contained = (theme: Theme) => ({
         ? theme.palette.grey[100]
         : theme.palette.grey[800],
   },
-  'td:first-child': {
+  'td:first-of-type': {
     borderLeftStyle: 'solid',
     borderTopLeftRadius: '10px',
     borderBottomLeftRadius: '10px',
@@ -42,7 +42,7 @@ const outlined = (theme: Theme) => ({
         ? theme.palette.grey[100]
         : theme.palette.grey[800],
 
-    '&:first-child': {
+    '&:first-of-type': {
       borderTopLeftRadius: '10px',
       borderLeftStyle: 'solid',
     },
@@ -52,7 +52,7 @@ const outlined = (theme: Theme) => ({
     },
   },
   td: {
-    '&:first-child': {
+    '&:first-of-type': {
       borderLeft: 'solid 1px #e5e7eb',
     },
     '&:last-child': {
