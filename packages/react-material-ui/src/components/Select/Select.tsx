@@ -45,6 +45,7 @@ const Select = (props: Props & TextFieldProps) => {
       <FormControl>
         {label && typeof label === 'string' ? (
           <FormLabel
+            id={labelId}
             name={name}
             label={label}
             required={required}
@@ -57,6 +58,7 @@ const Select = (props: Props & TextFieldProps) => {
         <TextField
           id={id}
           select
+          name={name}
           value={value}
           disabled={disabled}
           size={size || 'small'}

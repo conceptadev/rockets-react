@@ -18,6 +18,7 @@ describe('Select Component', () => {
     options,
     label: 'Select Field',
     onChange: jest.fn(),
+    value: '',
   };
 
   it('should render correctly', () => {
@@ -63,9 +64,8 @@ describe('Select Component', () => {
 
     fireEvent.click(option2);
 
-    const selectInput = select?.querySelector('input');
     expect(props.onChange).toHaveBeenCalledTimes(1);
-    expect(selectInput).toHaveValue('option2');
+    expect(props.onChange.mock.calls[0][1].props.value).toBe(options[1].value);
   });
 
   it('disables the select component when disabled prop is true', () => {
@@ -87,14 +87,14 @@ describe('Select Component', () => {
   });
 
   it('applies custom text props correctly', () => {
-    const textProps = {
+    const labelProps = {
       fontSize: 18,
       fontWeight: 500,
       color: 'rgb(255, 0, 0)',
       fontFamily: "'Inter',sans-serif",
     };
 
-    const { getByText } = render(<Select {...props} textProps={textProps} />);
+    const { getByText } = render(<Select {...props} labelProps={labelProps} />);
 
     const label = getByText(props.label);
     const styles = getComputedStyle(label);
