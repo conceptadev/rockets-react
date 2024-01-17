@@ -30,6 +30,7 @@ const getStatusValue = (value: string) => {
 export type SelectFieldProps = {
   options: SelectOption[];
   defaultValue: string;
+  hasAllOption?: boolean;
   isLoading?: boolean;
   onChange: (value: string | null) => void;
 } & Omit<SelectProps, 'onChange'>;
@@ -37,6 +38,7 @@ export type SelectFieldProps = {
 const SelectField = ({
   options = [],
   defaultValue,
+  hasAllOption = true,
   isLoading = false,
   label,
   onChange,
@@ -47,7 +49,7 @@ const SelectField = ({
     onChange(getStatusValue(value));
   };
 
-  const optionsWithAll = [allOption, ...options];
+  const finalOptions = [...(hasAllOption ? [allOption] : []), ...options];
 
   return (
     <Box>
@@ -56,12 +58,12 @@ const SelectField = ({
           <InputLabel id="select-label">{label}</InputLabel>
           <Select
             labelId="select-label"
-            defaultValue={defaultValue ?? allOption.value}
+            defaultValue={defaultValue ?? (hasAllOption && allOption.value)}
             onChange={handleChange}
             label={label}
             {...rest}
           >
-            {optionsWithAll?.map((role) => (
+            {finalOptions?.map((role) => (
               <MenuItem key={role.value} value={role.value}>
                 {role.label}
               </MenuItem>
