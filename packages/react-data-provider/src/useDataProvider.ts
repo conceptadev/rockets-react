@@ -44,6 +44,11 @@ const useDataProvider = () => {
           },
         });
 
+        if (response?.accessToken && response?.refreshToken) {
+          localStorage.setItem('accessToken', response.accessToken);
+          localStorage.setItem('refreshToken', response.refreshToken);
+        }
+
         return Promise.resolve(response);
       } catch (error) {
         localStorage.removeItem('accessToken');
