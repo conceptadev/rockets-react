@@ -23,7 +23,7 @@ const FormLabel = (props: Props) => {
   return (
     <MuiFormLabel id={id} htmlFor={name}>
       <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-        {`${label}${required ? ' *' : ''}`}
+        {label && `${label}${required ? ' *' : ''}`}
       </Text>
     </MuiFormLabel>
   );
