@@ -24,9 +24,15 @@ const FormFieldSkeleton = ({
           sx={{
             fontSize: theme.typography.body1.fontSize,
           }}
+          data-testid="form-field-skeleton-label"
         />
       )}
-      <Skeleton variant="rounded" height={42} width="100%">
+      <Skeleton
+        variant="rounded"
+        height={42}
+        width="100%"
+        data-testid="form-field-skeleton-input"
+      >
         {children}
       </Skeleton>
     </Box>
