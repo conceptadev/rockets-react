@@ -39,6 +39,7 @@ const SearchField = ({
   wait = 500,
   onDebouncedSearchChange,
   onClear,
+  placeholder = 'Search',
   ...props
 }: SearchFieldProps) => {
   const firstRender = useRef(true);
@@ -68,7 +69,7 @@ const SearchField = ({
 
   return (
     <TextField
-      placeholder="Search"
+      placeholder={placeholder}
       variant="outlined"
       onChange={handleChange}
       value={search}
