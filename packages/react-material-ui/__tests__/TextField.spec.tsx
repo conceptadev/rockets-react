@@ -72,7 +72,7 @@ describe('TextField Component', () => {
   });
 
   it('renders the multiline with passed props', () => {
-    const { getByTestId, debug } = render(
+    const { getByTestId } = render(
       <TextField label="Test Input" multiline rows={5} />,
     );
 
