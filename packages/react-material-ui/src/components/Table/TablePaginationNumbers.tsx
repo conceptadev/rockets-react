@@ -21,6 +21,7 @@ export const TablePaginationNumbers = (props: PaginationProps) => {
         count={pageCount || (rows?.length && Math.ceil(rows?.length / 5)) || 0}
         onChange={handleChangePage}
         page={page}
+        data-testid="table-pagination"
         {...props}
       />
     </Box>

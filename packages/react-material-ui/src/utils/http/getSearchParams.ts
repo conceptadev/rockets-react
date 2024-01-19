@@ -5,7 +5,7 @@ const getSearchParams = (
   const newSearchParam = new URLSearchParams(searchParams);
 
   for (const [key, value] of Object.entries(newParams)) {
-    const param = searchParams.get(key);
+    const param = searchParams?.get(key);
     const parsedValue = typeof value === 'number' ? Number(param) : param;
 
     if (!value) {

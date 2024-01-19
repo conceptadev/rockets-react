@@ -59,12 +59,11 @@ describe('SchemaForm Component', () => {
         name: { type: 'string', title: 'Name' },
       },
     };
-    const { getByText, debug } = render(
+    const { getByText } = render(
       <SchemaForm.Form schema={schema}>
         <button>Test button</button>
       </SchemaForm.Form>,
     );
-    debug();
     const title = getByText('Test button');
     expect(title).toBeInTheDocument();
   });

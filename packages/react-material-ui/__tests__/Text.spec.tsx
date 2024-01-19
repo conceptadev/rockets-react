@@ -43,7 +43,7 @@ describe('Text component', () => {
   });
 
   it('renders children correctly', () => {
-    const { getByText, debug } = render(
+    const { getByText } = render(
       <Text color="#333">
         <span>Children</span>
       </Text>,

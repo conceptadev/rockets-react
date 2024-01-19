@@ -57,6 +57,7 @@ export const TablePagination = ({
           borderRightStyle: 'solid',
         }),
       }}
+      data-testid="table-pagination"
       {...rest}
     />
   );

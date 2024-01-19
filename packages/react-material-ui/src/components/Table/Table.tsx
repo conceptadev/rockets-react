@@ -19,7 +19,12 @@ export const Table = ({
   variant = 'contained',
   ...rest
 }: PropsWithChildren<TableProps>) => (
-  <MuiTable sx={{ minWidth: 750 }} variant={variant} {...rest}>
+  <MuiTable
+    sx={{ minWidth: 750 }}
+    variant={variant}
+    {...rest}
+    data-testid="mui-table"
+  >
     {children}
   </MuiTable>
 );

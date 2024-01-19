@@ -72,7 +72,7 @@ describe('TextField Component', () => {
   });
 
   it('renders the multiline with passed props', () => {
-    const { getByTestId, debug } = render(
+    const { getByTestId } = render(
       <TextField label="Test Input" multiline rows={5} maxRows={10} />,
     );
 
@@ -80,7 +80,6 @@ describe('TextField Component', () => {
     const textarea = wrapper.querySelector('textarea');
 
     expect(textarea).toHaveAttribute('rows', '5');
-    debug();
   });
 
   it('renders TextField with small size as default', () => {

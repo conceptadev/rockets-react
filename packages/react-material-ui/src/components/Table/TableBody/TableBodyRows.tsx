@@ -84,18 +84,26 @@ export const TableBodyRows = ({
   }
 
   if (isControlled) {
-    return rows.map((row, index) => {
-      const labelId = `table-checkbox-${index}`;
+    return (
+      <>
+        {rows.map((row, index) => {
+          const labelId = `table-checkbox-${index}`;
 
-      return renderTableRows(row, renderRow, labelId);
-    });
+          return renderTableRows(row, renderRow, labelId);
+        })}
+      </>
+    );
   }
 
-  return getPaginatedRows(rows, page, rowsPerPage, order, orderBy).map(
-    (row, index) => {
-      const labelId = `table-checkbox-${index}`;
+  return (
+    <>
+      {getPaginatedRows(rows, page, rowsPerPage, order, orderBy).map(
+        (row, index) => {
+          const labelId = `table-checkbox-${index}`;
 
-      return renderTableRows(row, renderRow, labelId);
-    },
+          return <>{renderTableRows(row, renderRow, labelId)}</>;
+        },
+      )}
+    </>
   );
 };
