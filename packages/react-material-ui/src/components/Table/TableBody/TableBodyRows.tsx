@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { sortTable } from '../utils';
 import { Order, RenderRowFunction, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
@@ -85,25 +85,29 @@ export const TableBodyRows = ({
 
   if (isControlled) {
     return (
-      <>
+      <Fragment>
         {rows.map((row, index) => {
           const labelId = `table-checkbox-${index}`;
 
           return renderTableRows(row, renderRow, labelId);
         })}
-      </>
+      </Fragment>
     );
   }
 
   return (
-    <>
+    <Fragment>
       {getPaginatedRows(rows, page, rowsPerPage, order, orderBy).map(
         (row, index) => {
           const labelId = `table-checkbox-${index}`;
 
-          return <>{renderTableRows(row, renderRow, labelId)}</>;
+          return (
+            <Fragment key={row.id}>
+              {renderTableRows(row, renderRow, labelId)}
+            </Fragment>
+          );
         },
       )}
-    </>
+    </Fragment>
   );
 };

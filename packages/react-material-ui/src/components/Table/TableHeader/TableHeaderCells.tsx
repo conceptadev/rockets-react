@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, Fragment } from 'react';
 import { useTableRoot } from '../hooks/useTableRoot';
 import { TableHeaderCell } from './TableHeaderCell';
 import { HeaderProps } from '../types';
@@ -18,21 +18,21 @@ type TableHeaderCellsProps = {
 export const TableHeaderCells = ({ renderCell }: TableHeaderCellsProps) => {
   const { headers } = useTableRoot();
 
-  if (!renderCell) {
-    return (
-      <>
-        {headers.map((header) => (
+  return (
+    <Fragment>
+      {!renderCell &&
+        headers.map((header) => (
           <TableHeaderCell key={header.id} cell={header} />
         ))}
-      </>
-    );
-  }
 
-  return (
-    <>
-      {headers.map((header) => {
-        return renderCell({ ...header, key: header.id });
-      })}
-    </>
+      {!!renderCell &&
+        headers.map((header) => {
+          return (
+            <Fragment key={header.id}>
+              {renderCell({ ...header, key: header.id })}
+            </Fragment>
+          );
+        })}
+    </Fragment>
   );
 };

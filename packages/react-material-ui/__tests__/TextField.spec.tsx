@@ -95,7 +95,6 @@ describe('TextField Component', () => {
     const { queryByText } = render(
       <TextField label="Test Label" hiddenLabel />,
     );
-
     const labelElement = queryByText('Test Label');
     expect(labelElement).not.toBeInTheDocument();
   });

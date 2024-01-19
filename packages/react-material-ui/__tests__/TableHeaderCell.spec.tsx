@@ -44,7 +44,7 @@ describe('TableHeaderCell component', () => {
             <TableHead>
               <TableRow>
                 {props.headers.map((header) => (
-                  <RocketsTable.HeaderCell cell={header} />
+                  <RocketsTable.HeaderCell key={header.id} cell={header} />
                 ))}
               </TableRow>
             </TableHead>
@@ -65,7 +65,7 @@ describe('TableHeaderCell component', () => {
             <TableHead>
               <TableRow>
                 {props.headers.map((header) => (
-                  <RocketsTable.HeaderCell cell={header} />
+                  <RocketsTable.HeaderCell key={header.id} cell={header} />
                 ))}
               </TableRow>
             </TableHead>
@@ -107,7 +107,7 @@ describe('TableHeaderCell component', () => {
             <TableHead>
               <TableRow>
                 {props.headers.map((header) => (
-                  <RocketsTable.HeaderCell cell={header} />
+                  <RocketsTable.HeaderCell key={header.id} cell={header} />
                 ))}
               </TableRow>
             </TableHead>
@@ -159,7 +159,7 @@ describe('TableHeaderCell component', () => {
             <TableHead>
               <TableRow>
                 {customHeaders.map((header) => (
-                  <RocketsTable.HeaderCell cell={header} />
+                  <RocketsTable.HeaderCell key={header.id} cell={header} />
                 ))}
               </TableRow>
             </TableHead>
@@ -189,7 +189,7 @@ describe('TableHeaderCell component', () => {
             <TableHead>
               <TableRow>
                 {customHeaders.map((header) => (
-                  <RocketsTable.HeaderCell cell={header} />
+                  <RocketsTable.HeaderCell key={header.id} cell={header} />
                 ))}
               </TableRow>
             </TableHead>
