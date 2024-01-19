@@ -1,8 +1,15 @@
 import React from 'react';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import MuiRadio, { RadioProps } from '@mui/material/Radio';
-import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup';
-import Text from '../Text';
+import {
+  Box,
+  BoxProps,
+  FormControl,
+  FormControlLabel,
+  Radio as MuiRadio,
+  RadioGroup,
+  RadioGroupProps,
+  RadioProps,
+} from '@mui/material';
+import FormLabel from '../FormLabel';
 import { TextProps } from 'interfaces';
 
 export type RadioOptions = {
@@ -17,12 +24,16 @@ type CustomRadioGroupProps = {
   required?: boolean;
   row?: boolean;
   disabled?: boolean;
-  textProps?: TextProps;
+  containerProps?: BoxProps;
+  labelProps?: TextProps;
 };
 
 const Radio = (props: CustomRadioGroupProps & RadioGroupProps & RadioProps) => {
   const {
     id,
+    name,
+    containerProps,
+    labelProps,
     options,
     label,
     required,
@@ -30,33 +41,32 @@ const Radio = (props: CustomRadioGroupProps & RadioGroupProps & RadioProps) => {
     value,
     onChange,
     disabled,
-    textProps = {
-      fontSize: 16,
-      fontWeight: 400,
-      color: 'text.primary',
-    },
   } = props;
 
   return (
-    <>
-      {label && (
-        <Text {...textProps}>
-          {label}
-          {required && ' *'}
-        </Text>
-      )}
-      <RadioGroup id={id} value={`${value}`} row={row} onChange={onChange}>
-        {options.map((option: RadioOptions, i: number) => (
-          <FormControlLabel
-            control={<MuiRadio name={`${id}-${i}`} color="primary" key={i} />}
-            label={`${option.label}`}
-            value={`${option.value}`}
-            key={i}
-            disabled={disabled || option.disabled}
+    <Box {...containerProps}>
+      <FormControl>
+        {label && (
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
           />
-        ))}
-      </RadioGroup>
-    </>
+        )}
+        <RadioGroup id={id} value={`${value}`} row={row} onChange={onChange}>
+          {options.map((option: RadioOptions, i: number) => (
+            <FormControlLabel
+              control={<MuiRadio name={`${id}-${i}`} color="primary" key={i} />}
+              label={`${option.label}`}
+              value={`${option.value}`}
+              key={i}
+              disabled={disabled || option.disabled}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
+    </Box>
   );
 };
 

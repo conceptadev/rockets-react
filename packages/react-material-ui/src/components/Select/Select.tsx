@@ -1,8 +1,13 @@
 import React from 'react';
-import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
-import TextField, { TextFieldProps } from '@mui/material/TextField';
-import Text from '../Text';
+import {
+  Box,
+  BoxProps,
+  FormControl,
+  MenuItem,
+  TextField,
+  TextFieldProps,
+} from '@mui/material';
+import FormLabel from '../FormLabel';
 import { TextProps } from 'interfaces';
 
 export type SelectOptions = {
@@ -12,8 +17,9 @@ export type SelectOptions = {
 };
 
 type Props = {
+  containerProps?: BoxProps;
+  labelProps?: TextProps;
   options: SelectOptions[];
-  textProps?: TextProps;
 };
 
 const Select = (props: Props & TextFieldProps) => {
@@ -22,6 +28,8 @@ const Select = (props: Props & TextFieldProps) => {
     label,
     size,
     value,
+    containerProps,
+    labelProps,
     options,
     onChange,
     required,
@@ -29,55 +37,53 @@ const Select = (props: Props & TextFieldProps) => {
     error,
     helperText,
     name,
-    textProps = {
-      fontSize: 14,
-      fontWeight: 500,
-      color: 'text.primary',
-    },
-    // ...otherProps
   } = props;
 
   const labelId = `label-${name}`;
   return (
-    <>
-      {label && (
-        <Box>
-          <label htmlFor={name} id={labelId}>
-            <Text {...textProps}>
-              {label}
-              {required && ' *'}
-            </Text>
-          </label>
-        </Box>
-      )}
+    <Box {...containerProps}>
+      <FormControl>
+        {label && typeof label === 'string' ? (
+          <FormLabel
+            id={labelId}
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+          />
+        ) : (
+          label
+        )}
 
-      <TextField
-        id={id}
-        select
-        value={value}
-        disabled={disabled}
-        size={size || 'small'}
-        error={error}
-        helperText={helperText}
-        onChange={onChange}
-        sx={{
-          marginTop: 0.5,
-          width: '100%',
-        }}
-        hiddenLabel={true}
-        label={''}
-        aria-labelledby={labelId}
-        data-testid="select"
-      >
-        {options.map(({ value, label }: SelectOptions, i: number) => {
-          return (
-            <MenuItem key={i} value={value} disabled={disabled}>
-              {label}
-            </MenuItem>
-          );
-        })}
-      </TextField>
-    </>
+        <TextField
+          id={id}
+          select
+          name={name}
+          value={value}
+          disabled={disabled}
+          size={size || 'small'}
+          error={error}
+          helperText={helperText}
+          onChange={onChange}
+          sx={{
+            marginTop: 0.5,
+            width: '100%',
+          }}
+          hiddenLabel={true}
+          label={''}
+          aria-labelledby={labelId}
+          data-testid="select"
+        >
+          {options.map(({ value, label }: SelectOptions, i: number) => {
+            return (
+              <MenuItem key={i} value={value} disabled={disabled}>
+                {label}
+              </MenuItem>
+            );
+          })}
+        </TextField>
+      </FormControl>
+    </Box>
   );
 };
 

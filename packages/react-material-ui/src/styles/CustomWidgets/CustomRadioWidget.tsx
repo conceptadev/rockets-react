@@ -15,23 +15,16 @@ const CustomRadioWidget = (props: WidgetProps) => {
   const row = options ? options.inline : false;
 
   return (
-    <>
-      {label && (
-        <>
-          {label}
-          {required && ' *'}
-        </>
-      )}
-
-      <RadioGroup
-        id={id}
-        options={enumOptions as RadioOptions[]}
-        onChange={_onChange}
-        row={row as boolean}
-        value={value}
-        disabled={disabled}
-      />
-    </>
+    <RadioGroup
+      id={id}
+      options={enumOptions as RadioOptions[]}
+      onChange={_onChange}
+      row={row as boolean}
+      value={value}
+      disabled={disabled}
+      required={required}
+      label={label}
+    />
   );
 };
 

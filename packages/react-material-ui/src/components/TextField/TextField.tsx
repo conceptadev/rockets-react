@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import MuiTextField, { TextFieldProps } from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
+import {
+  Box,
+  BoxProps,
+  FormControl,
+  InputAdornment,
+  TextField as MuiTextField,
+  TextFieldProps,
+  TypographyProps,
+} from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
-import Text from '../Text';
-import { Box, BoxProps, TypographyProps } from '@mui/material';
-
-const TEXT_INITIAL_PROPS = {
-  fontSize: 14,
-  fontWeight: 500,
-  color: 'text.primary',
-};
+import FormLabel from '../FormLabel';
 
 interface TextAreaProps {
   multiline?: boolean;
@@ -60,49 +60,55 @@ const TextField = (props: TextFieldProps & Props) => {
 
   return (
     <Box {...containerProps}>
-      {!ishiddenLabel && label && (
-        <label htmlFor={name}>
-          <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
-            {`${label}${required ? ' *' : ''}`}
-          </Text>
-        </label>
-      )}
+      <FormControl>
+        {!ishiddenLabel && !!label && typeof label === 'string' && (
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+          />
+        )}
+        {!ishiddenLabel && !!label && typeof label != 'string' && label}
 
-      <MuiTextField
-        {...rest}
-        sx={[
-          {
-            marginTop: 0.5,
-            mb: 0,
-            input: { color: 'text.primary' },
-          },
-          ...(Array.isArray(sx) ? sx : [sx]),
-        ]}
-        size={size || 'small'}
-        value={value || value === 0 ? value : ''}
-        hiddenLabel={label ? true : ishiddenLabel}
-        label={''}
-        fullWidth
-        type={isPassword ? (showPassword ? 'text' : 'password') : type}
-        InputProps={{
-          ...(isPassword && {
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={togglePassword}
-                  onMouseDown={handleMouseDownPassword}
-                  data-testid="toggle-password-button"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }),
-          ...props.InputProps,
-        }}
-        data-testid="text-field"
-      />
+        <MuiTextField
+          {...rest}
+          sx={[
+            {
+              marginTop: 0.5,
+              mb: 0,
+              input: { color: 'text.primary' },
+            },
+            ...(Array.isArray(sx) ? sx : [sx]),
+          ]}
+          id={name}
+          name={name}
+          size={size || 'small'}
+          value={value || value === 0 ? value : ''}
+          hiddenLabel={label ? true : ishiddenLabel}
+          label={''}
+          fullWidth
+          type={isPassword ? (showPassword ? 'text' : 'password') : type}
+          InputProps={{
+            ...(isPassword && {
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={togglePassword}
+                    onMouseDown={handleMouseDownPassword}
+                    data-testid="toggle-password-button"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }),
+            ...props.InputProps,
+          }}
+          data-testid="text-field"
+        />
+      </FormControl>
     </Box>
   );
 };

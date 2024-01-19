@@ -1,11 +1,26 @@
 import React from 'react';
 import { WidgetProps } from '@rjsf/utils';
+import {
+  Box,
+  BoxProps,
+  FormControl,
+  Grid,
+  TypographyProps,
+} from '@mui/material';
 import Checkbox from '../../components/Checkbox';
-import { Grid, Typography } from '@mui/material';
+import FormLabel from '../../components/FormLabel';
 
-const CustomCheckboxesWidget = (props: WidgetProps) => {
+interface Props {
+  containerProps?: BoxProps;
+  labelProps?: TypographyProps;
+}
+
+const CustomCheckboxesWidget = (props: WidgetProps & Props) => {
   const {
     label,
+    name,
+    labelProps,
+    containerProps,
     uiSchema,
     id,
     disabled,
@@ -44,40 +59,46 @@ const CustomCheckboxesWidget = (props: WidgetProps) => {
     };
 
   return (
-    <>
-      {label && (
-        <Typography>
-          {label}
-          {required && ' *'}
-        </Typography>
-      )}
+    <Box {...containerProps}>
+      <FormControl>
+        {label && typeof label === 'string' ? (
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+          />
+        ) : (
+          label
+        )}
 
-      <Grid
-        display="flex"
-        flexDirection={uiSchema?.['ui:inline'] ? 'row' : 'column'}
-        flexWrap="wrap"
-      >
-        {(enumOptions as any).map((option: any, index: number) => {
-          const checked = value.indexOf(option.value) !== -1;
+        <Grid
+          display="flex"
+          flexDirection={uiSchema?.['ui:inline'] ? 'row' : 'column'}
+          flexWrap="wrap"
+        >
+          {(enumOptions as any).map((option: any, index: number) => {
+            const checked = value.indexOf(option.value) !== -1;
 
-          const itemDisabled =
-            enumDisabled && (enumDisabled as any).indexOf(option.value) != -1;
+            const itemDisabled =
+              enumDisabled && (enumDisabled as any).indexOf(option.value) != -1;
 
-          return (
-            <Checkbox
-              id={`${id}_${index}`}
-              checked={checked}
-              disabled={disabled || itemDisabled || readonly}
-              autoFocus={autofocus && index === 0}
-              onChange={_onChange(option)}
-              key={index}
-              label={option.label}
-              required={required}
-            />
-          );
-        })}
-      </Grid>
-    </>
+            return (
+              <Checkbox
+                id={`${id}_${index}`}
+                checked={checked}
+                disabled={disabled || itemDisabled || readonly}
+                autoFocus={autofocus && index === 0}
+                onChange={_onChange(option)}
+                key={index}
+                label={option.label}
+                required={required}
+              />
+            );
+          })}
+        </Grid>
+      </FormControl>
+    </Box>
   );
 };
 
