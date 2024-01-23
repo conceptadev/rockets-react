@@ -15,7 +15,7 @@ import FormFieldSkeleton from '../../components/FormFieldSkeleton';
 
 export type AutocompleteFieldProps = {
   options: SelectOption[];
-  isLoading: boolean;
+  isLoading?: boolean;
   currentValue: string;
   defaultValue: SelectOption | undefined;
   label?: string;
@@ -27,7 +27,7 @@ export type AutocompleteFieldProps = {
 
 const AutocompleteField = ({
   options = [],
-  isLoading,
+  isLoading = false,
   currentValue,
   defaultValue,
   label,
