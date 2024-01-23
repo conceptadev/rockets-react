@@ -2,10 +2,19 @@ import React from 'react';
 import MuiLink, { LinkProps } from '@mui/material/Link';
 
 const Link = (props: LinkProps) => {
-  const { children, color = 'primary.dark' } = props;
+  const { children, color = 'primary.dark', sx } = props;
 
   return (
-    <MuiLink sx={{ textDecoration: 'none' }} color={color} {...props}>
+    <MuiLink
+      color={color}
+      {...props}
+      sx={[
+        {
+          textDecoration: 'none',
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
+    >
       {children}
     </MuiLink>
   );
