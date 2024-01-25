@@ -79,4 +79,31 @@ describe('TableHeaderCells component', () => {
     expect(customHeaders[1]).toHaveTextContent('Custom header Name');
     expect(customHeaders[2]).toHaveTextContent('Custom header Age');
   });
+
+  it('should apply correct width if provided', () => {
+    const customHeaders = [
+      { id: 'id', label: 'ID' },
+      { id: 'name', label: 'Name' },
+      { id: 'age', label: 'Age', width: 123 },
+    ];
+    const { getByText } = render(
+      <RocketsTable.Root {...props} headers={customHeaders}>
+        <TableContainer>
+          <RocketsTable.Table>
+            <TableHead>
+              <TableRow>
+                <RocketsTable.HeaderCells />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableBodyRows />
+            </TableBody>
+          </RocketsTable.Table>
+        </TableContainer>
+      </RocketsTable.Root>,
+    );
+
+    const ageHeader = getByText('Age');
+    expect(ageHeader).toHaveStyle('width: 123');
+  });
 });

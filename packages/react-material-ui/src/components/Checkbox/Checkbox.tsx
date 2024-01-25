@@ -20,6 +20,7 @@ const Checkbox = (props: CheckboxProps & Props) => {
       fontWeight: 400,
       color: 'text.primary',
     },
+    ...otherProps
   } = props;
 
   return (
@@ -27,7 +28,7 @@ const Checkbox = (props: CheckboxProps & Props) => {
       {label ? (
         <FormGroup>
           <FormControlLabel
-            control={<MuiCheckbox onChange={props.onChange} />}
+            control={<MuiCheckbox {...otherProps} />}
             label={
               <Text role="label" {...textProps}>
                 {label}
@@ -38,7 +39,7 @@ const Checkbox = (props: CheckboxProps & Props) => {
           />
         </FormGroup>
       ) : (
-        <MuiCheckbox {...props} sx={{ ...props.sx }} />
+        <MuiCheckbox checked={checked} required={required} {...otherProps} />
       )}
     </>
   );

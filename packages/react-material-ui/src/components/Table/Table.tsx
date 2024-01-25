@@ -17,12 +17,18 @@ export type TableProps = {
 export const Table = ({
   children,
   variant = 'contained',
+  sx,
   ...rest
 }: PropsWithChildren<TableProps>) => (
   <MuiTable
-    sx={{ minWidth: 750 }}
     variant={variant}
     {...rest}
+    sx={[
+      {
+        minWidth: 750,
+      },
+      ...(Array.isArray(sx) ? sx : [sx]),
+    ]}
     data-testid="mui-table"
   >
     {children}

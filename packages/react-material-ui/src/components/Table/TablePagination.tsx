@@ -24,6 +24,7 @@ type TablePaginationProps = {
 export const TablePagination = ({
   variant,
   rowsPerPageOptions = [5, 10, 25],
+  sx,
   ...rest
 }: TablePaginationProps) => {
   const theme = useTheme();
@@ -43,22 +44,25 @@ export const TablePagination = ({
         handleChangePage(event, page + 1)
       }
       onRowsPerPageChange={handleChangeRowsPerPage}
-      sx={{
-        ...(variant === 'outlined' && {
-          backgroundColor:
-            theme.palette.mode === 'light'
-              ? theme.palette.grey[100]
-              : theme.palette.grey[800],
-          border: `solid 1px #e5e7eb`,
-          borderTop: 'none',
-          borderBottomLeftRadius: '10px',
-          borderBottomRightRadius: '10px',
-          borderLeftStyle: 'solid',
-          borderRightStyle: 'solid',
-        }),
-      }}
-      data-testid="table-pagination"
       {...rest}
+      sx={[
+        {
+          ...(variant === 'outlined' && {
+            backgroundColor:
+              theme.palette.mode === 'light'
+                ? theme.palette.grey[100]
+                : theme.palette.grey[800],
+            border: `solid 1px #e5e7eb`,
+            borderTop: 'none',
+            borderBottomLeftRadius: '10px',
+            borderBottomRightRadius: '10px',
+            borderLeftStyle: 'solid',
+            borderRightStyle: 'solid',
+          }),
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
+      data-testid="table-pagination"
     />
   );
 };

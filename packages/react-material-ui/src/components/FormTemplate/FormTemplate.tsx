@@ -32,8 +32,16 @@ const FormTemplate = ({
   return (
     <Container
       maxWidth="xs"
-      sx={{ textAlign: 'center', padding: '48px 0' }}
       {...containerProps}
+      sx={[
+        {
+          textAlign: 'center',
+          padding: '48px 0',
+        },
+        ...(Array.isArray(containerProps.sx)
+          ? containerProps.sx
+          : [containerProps.sx]),
+      ]}
     >
       {icon && icon}
       {title && (
@@ -55,14 +63,17 @@ const FormTemplate = ({
         </Text>
       )}
       <Card
-        sx={{
-          marginTop: '26px',
-          padding: '24px 24px 24px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-        }}
         {...cardProps}
+        sx={[
+          {
+            marginTop: '26px',
+            padding: '24px 24px 24px 24px',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          },
+          ...(Array.isArray(cardProps.sx) ? cardProps.sx : [cardProps.sx]),
+        ]}
       >
         {children}
       </Card>
