@@ -9,15 +9,15 @@ import {
   AsyncStatus,
 } from './interfaces';
 
-const useQuery = <T extends AsyncFunction>(
-  asyncFn: T,
+const useQuery = <TQueryFn extends AsyncFunction, TError = unknown>(
+  asyncFn: TQueryFn,
   immediate = false,
-  options?: DataProviderRequestOptions,
+  options?: DataProviderRequestOptions<AsyncReturnType<TQueryFn>, TError>,
   arg?: unknown,
 ) => {
   const [status, setStatus] = useState(AsyncStatus.idle);
-  const [data, setData] = useState<AsyncReturnType<T>>();
-  const [error, setError] = useState<unknown>();
+  const [data, setData] = useState<AsyncReturnType<TQueryFn>>();
+  const [error, setError] = useState<TError>();
   const [isPending, setIsPending] = useState(false);
 
   const { onError, onSuccess, onFinish, formatData } = options || {};

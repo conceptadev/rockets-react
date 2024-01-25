@@ -108,7 +108,9 @@ const useDataProvider = () => {
     throw err;
   };
 
-  const post = async (requestParams: PostRequestOptions) => {
+  const post = async <TRequestBody>(
+    requestParams: PostRequestOptions<TRequestBody>,
+  ) => {
     return makeRequest({
       ...requestParams,
       method: 'POST',
@@ -121,13 +123,17 @@ const useDataProvider = () => {
       method: 'GET',
     });
   };
-  const put = async (requestParams: PutRequestOptions) => {
+  const put = async <TRequestBody>(
+    requestParams: PutRequestOptions<TRequestBody>,
+  ) => {
     return makeRequest({
       ...requestParams,
       method: 'PUT',
     });
   };
-  const patch = async (requestParams: PatchRequestOptions) => {
+  const patch = async <TRequestBody>(
+    requestParams: PatchRequestOptions<TRequestBody>,
+  ) => {
     return makeRequest({
       ...requestParams,
       method: 'PATCH',

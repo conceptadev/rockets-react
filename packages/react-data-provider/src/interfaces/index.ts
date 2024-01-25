@@ -6,11 +6,24 @@ export interface RequestParams {
   signal?: AbortSignal;
 }
 
-export type PostRequestOptions = Omit<RequestParams, 'method'> & { body?: any };
+export type PostRequestOptions<TRequestBody = any> = Omit<
+  RequestParams,
+  'method'
+> & {
+  body?: TRequestBody;
+};
 export type GetRequestOptions = Omit<RequestParams, 'method'>;
-export type PutRequestOptions = Omit<RequestParams, 'method'> & { body?: any };
-export type PatchRequestOptions = Omit<RequestParams, 'method'> & {
-  body?: any;
+export type PutRequestOptions<TRequestBody = any> = Omit<
+  RequestParams,
+  'method'
+> & {
+  body?: TRequestBody;
+};
+export type PatchRequestOptions<TRequestBody = any> = Omit<
+  RequestParams,
+  'method'
+> & {
+  body?: TRequestBody;
 };
 export type DeleteRequestOptions = Omit<RequestParams, 'method'>;
 
@@ -63,9 +76,16 @@ export interface AsyncFunction {
 export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
   T extends (...args: any) => Promise<infer R> ? R : any;
 
-export interface DataProviderRequestOptions {
-  onError?: (error: unknown) => void;
-  onSuccess?: (data: AsyncReturnType<any>) => void;
+type ErrorFn<TError = unknown> = (error: TError) => void;
+type SuccessFn<TData = AsyncReturnType<any>> = (data: TData) => void;
+type FormatFn<TData = AsyncReturnType<any>> = (data: TData) => any;
+
+export interface DataProviderRequestOptions<
+  TQueryFnData = any,
+  TError = unknown,
+> {
+  onError?: ErrorFn<TError>;
+  onSuccess?: SuccessFn<TQueryFnData>;
   onFinish?: (status: AsyncStatus) => void;
-  formatData?: (data: AsyncReturnType<any>) => any;
+  formatData?: FormatFn<TQueryFnData>;
 }
