@@ -176,13 +176,13 @@ export const TableRoot = ({
     const newOrderProperties = {
       order: isAsc ? Order.Desc : Order.Asc,
       orderBy: property,
+      page: 1,
     };
 
     handleUpdateTableQuery((prevState) => ({
       ...prevState,
       ...newOrderProperties,
     }));
-    handleChangePage('', 1);
 
     const newSearchParam = getSearchParams(searchParams, newOrderProperties);
 
