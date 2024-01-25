@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { Order, Search, SimpleFilter, TableQueryStateProps } from './types';
 import {
@@ -58,6 +58,7 @@ const useTable: UseTableProps = (resource, options) => {
   const pathname = usePathname();
   const router = useRouter();
   const { get } = useDataProvider();
+  const firstRender = useRef(true);
 
   const { tableQueryState, setTableQueryState } = useTableQueryState(options);
 
@@ -146,10 +147,6 @@ const useTable: UseTableProps = (resource, options) => {
         }
       }
 
-      if (!resetPage) {
-        return updatedState;
-      }
-
       const updatedSimpleFilter =
         updatedState?.simpleFilter &&
         Object.keys(updatedState.simpleFilter).length > 0
@@ -159,10 +156,17 @@ const useTable: UseTableProps = (resource, options) => {
       const res = {
         ...(updatedState && {
           ...updatedState,
+          ...(resetPage &&
+            !firstRender.current && {
+              page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
+            }),
           simpleFilter: updatedSimpleFilter,
-          page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
         }),
       };
+
+      if (firstRender.current) {
+        firstRender.current = false;
+      }
 
       return res;
     });
@@ -194,10 +198,6 @@ const useTable: UseTableProps = (resource, options) => {
         }
       }
 
-      if (!resetPage) {
-        return updatedState;
-      }
-
       const updatedSearch =
         updatedState?.search && Object.keys(updatedState.search).length > 0
           ? updatedState.search
@@ -206,10 +206,17 @@ const useTable: UseTableProps = (resource, options) => {
       const res = {
         ...(updatedState && {
           ...updatedState,
+          ...(resetPage &&
+            !firstRender.current && {
+              page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
+            }),
           search: updatedSearch,
-          page: TABLE_QUERY_STATE_DEFAULT_VALUE.page,
         }),
       };
+
+      if (firstRender.current) {
+        firstRender.current = false;
+      }
 
       return res;
     });
