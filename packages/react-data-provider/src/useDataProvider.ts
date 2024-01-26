@@ -83,20 +83,20 @@ const useDataProvider = () => {
     },
   });
 
-  const makeRequest = (requestParams: RequestParams) => {
+  const makeRequest = <TResponse>(requestParams: RequestParams) => {
     return client
       .executeRequest(requestParams)
-      .then((res) => handleServerResponse(res))
+      .then((res) => handleServerResponse<TResponse>(res))
       .catch((err) => handleServerError(err));
   };
 
   //TODO
   //if we need to normalize response no matter what client we are using or use a custom response
   //that will be more user friendly
-  const handleServerResponse = (response: HttpResponse) => {
+  const handleServerResponse = <TResponse = any>(response: HttpResponse) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { config, data, headers, status } = response;
-    return data;
+    return data as TResponse;
   };
 
   //TODO
@@ -108,39 +108,39 @@ const useDataProvider = () => {
     throw err;
   };
 
-  const post = async <TRequestBody>(
+  const post = async <TRequestBody, TResponse = any>(
     requestParams: PostRequestOptions<TRequestBody>,
   ) => {
-    return makeRequest({
+    return makeRequest<TResponse>({
       ...requestParams,
       method: 'POST',
     });
   };
 
-  const get = async (requestParams: GetRequestOptions) => {
-    return makeRequest({
+  const get = async <TResponse = any>(requestParams: GetRequestOptions) => {
+    return makeRequest<TResponse>({
       ...requestParams,
       method: 'GET',
     });
   };
-  const put = async <TRequestBody>(
+  const put = async <TRequestBody, TResponse = any>(
     requestParams: PutRequestOptions<TRequestBody>,
   ) => {
-    return makeRequest({
+    return makeRequest<TResponse>({
       ...requestParams,
       method: 'PUT',
     });
   };
-  const patch = async <TRequestBody>(
+  const patch = async <TRequestBody, TResponse = any>(
     requestParams: PatchRequestOptions<TRequestBody>,
   ) => {
-    return makeRequest({
+    return makeRequest<TResponse>({
       ...requestParams,
       method: 'PATCH',
     });
   };
-  const del = async (requestParams: DeleteRequestOptions) => {
-    return makeRequest({
+  const del = async <TResponse = any>(requestParams: DeleteRequestOptions) => {
+    return makeRequest<TResponse>({
       ...requestParams,
       method: 'DELETE',
     });
