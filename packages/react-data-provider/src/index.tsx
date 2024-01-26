@@ -5,18 +5,17 @@ import ClientProvider from './ClientProvider';
 import {
   AsyncFunction,
   DataProviderRequestOptions,
-  AsyncReturnType,
   AsyncStatus,
 } from './interfaces';
 
-const useQuery = <TQueryFn extends AsyncFunction, TError = unknown>(
-  asyncFn: TQueryFn,
+const useQuery = <TQueryData, TError = unknown>(
+  asyncFn: AsyncFunction,
   immediate = false,
-  options?: DataProviderRequestOptions<AsyncReturnType<TQueryFn>, TError>,
+  options?: DataProviderRequestOptions<TQueryData, TError>,
   arg?: unknown,
 ) => {
   const [status, setStatus] = useState(AsyncStatus.idle);
-  const [data, setData] = useState<AsyncReturnType<TQueryFn>>();
+  const [data, setData] = useState<TQueryData>();
   const [error, setError] = useState<TError>();
   const [isPending, setIsPending] = useState(false);
 

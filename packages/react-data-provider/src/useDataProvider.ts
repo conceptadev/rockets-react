@@ -83,20 +83,20 @@ const useDataProvider = () => {
     },
   });
 
-  const makeRequest = <TResponse>(requestParams: RequestParams) => {
+  const makeRequest = <TQueryData>(requestParams: RequestParams) => {
     return client
       .executeRequest(requestParams)
-      .then((res) => handleServerResponse<TResponse>(res))
+      .then((res) => handleServerResponse<TQueryData>(res))
       .catch((err) => handleServerError(err));
   };
 
   //TODO
   //if we need to normalize response no matter what client we are using or use a custom response
   //that will be more user friendly
-  const handleServerResponse = <TResponse = any>(response: HttpResponse) => {
+  const handleServerResponse = <TQueryData = any>(response: HttpResponse) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { config, data, headers, status } = response;
-    return data as TResponse;
+    return data as TQueryData;
   };
 
   //TODO
@@ -108,39 +108,39 @@ const useDataProvider = () => {
     throw err;
   };
 
-  const post = async <TRequestBody, TResponse = any>(
+  const post = async <TRequestBody, TQueryData = any>(
     requestParams: PostRequestOptions<TRequestBody>,
   ) => {
-    return makeRequest<TResponse>({
+    return makeRequest<TQueryData>({
       ...requestParams,
       method: 'POST',
     });
   };
 
-  const get = async <TResponse = any>(requestParams: GetRequestOptions) => {
-    return makeRequest<TResponse>({
+  const get = async <TQueryData = any>(requestParams: GetRequestOptions) => {
+    return makeRequest<TQueryData>({
       ...requestParams,
       method: 'GET',
     });
   };
-  const put = async <TRequestBody, TResponse = any>(
+  const put = async <TRequestBody, TQueryData = any>(
     requestParams: PutRequestOptions<TRequestBody>,
   ) => {
-    return makeRequest<TResponse>({
+    return makeRequest<TQueryData>({
       ...requestParams,
       method: 'PUT',
     });
   };
-  const patch = async <TRequestBody, TResponse = any>(
+  const patch = async <TRequestBody, TQueryData = any>(
     requestParams: PatchRequestOptions<TRequestBody>,
   ) => {
-    return makeRequest<TResponse>({
+    return makeRequest<TQueryData>({
       ...requestParams,
       method: 'PATCH',
     });
   };
-  const del = async <TResponse = any>(requestParams: DeleteRequestOptions) => {
-    return makeRequest<TResponse>({
+  const del = async <TQueryData = any>(requestParams: DeleteRequestOptions) => {
+    return makeRequest<TQueryData>({
       ...requestParams,
       method: 'DELETE',
     });
