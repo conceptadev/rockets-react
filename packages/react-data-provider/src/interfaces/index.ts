@@ -6,20 +6,20 @@ export interface RequestParams {
   signal?: AbortSignal;
 }
 
-export type PostRequestOptions<TRequestBody = any> = Omit<
+export type PostRequestOptions<TRequestBody = unknown> = Omit<
   RequestParams,
   'method'
 > & {
   body?: TRequestBody;
 };
 export type GetRequestOptions = Omit<RequestParams, 'method'>;
-export type PutRequestOptions<TRequestBody = any> = Omit<
+export type PutRequestOptions<TRequestBody = unknown> = Omit<
   RequestParams,
   'method'
 > & {
   body?: TRequestBody;
 };
-export type PatchRequestOptions<TRequestBody = any> = Omit<
+export type PatchRequestOptions<TRequestBody = unknown> = Omit<
   RequestParams,
   'method'
 > & {
