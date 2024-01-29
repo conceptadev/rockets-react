@@ -73,19 +73,28 @@ export interface AsyncFunction {
   (params?: any): Promise<any>;
 }
 
-export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
-  T extends (...args: any) => Promise<infer R> ? R : any;
+export type AsyncReturnType<T extends (...args: any) => Promise<unknown>> =
+  T extends (...args: any) => Promise<infer R> ? R : unknown;
 
 type ErrorFn<TError = unknown> = (error: TError) => void;
 type SuccessFn<TData = AsyncReturnType<any>> = (data: TData) => void;
-type FormatFn<TData = AsyncReturnType<any>> = (data: TData) => any;
+type FormatFn<TData = AsyncReturnType<any>> = (data: TData) => unknown;
 
 export interface DataProviderRequestOptions<
-  TQueryFnData = any,
+  TQueryFnData = unknown,
   TError = unknown,
 > {
   onError?: ErrorFn<TError>;
   onSuccess?: SuccessFn<TQueryFnData>;
   onFinish?: (status: AsyncStatus) => void;
   formatData?: FormatFn<TQueryFnData>;
+}
+
+export interface RefreshTokenBody {
+  refreshToken: string;
+}
+
+export interface RefreshTokenRes {
+  accessToken: string;
+  refreshToken: string;
 }

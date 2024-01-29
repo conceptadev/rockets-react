@@ -12,6 +12,8 @@ import {
   PatchRequestOptions,
   DeleteRequestOptions,
   Token,
+  RefreshTokenBody,
+  RefreshTokenRes,
 } from './interfaces';
 import { useClient } from './ClientProvider';
 
@@ -37,7 +39,7 @@ const useDataProvider = () => {
       try {
         const refreshToken = localStorage.getItem('refreshToken');
 
-        const response = await post({
+        const response = await post<RefreshTokenBody, RefreshTokenRes>({
           uri: '/token/refresh',
           body: {
             refreshToken,
@@ -93,7 +95,9 @@ const useDataProvider = () => {
   //TODO
   //if we need to normalize response no matter what client we are using or use a custom response
   //that will be more user friendly
-  const handleServerResponse = <TQueryData = any>(response: HttpResponse) => {
+  const handleServerResponse = <TQueryData = unknown>(
+    response: HttpResponse,
+  ) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { config, data, headers, status } = response;
     return data as TQueryData;
@@ -108,7 +112,7 @@ const useDataProvider = () => {
     throw err;
   };
 
-  const post = async <TRequestBody, TQueryData = any>(
+  const post = async <TRequestBody = unknown, TQueryData = unknown>(
     requestParams: PostRequestOptions<TRequestBody>,
   ) => {
     return makeRequest<TQueryData>({
@@ -117,13 +121,15 @@ const useDataProvider = () => {
     });
   };
 
-  const get = async <TQueryData = any>(requestParams: GetRequestOptions) => {
+  const get = async <TQueryData = unknown>(
+    requestParams: GetRequestOptions,
+  ) => {
     return makeRequest<TQueryData>({
       ...requestParams,
       method: 'GET',
     });
   };
-  const put = async <TRequestBody, TQueryData = any>(
+  const put = async <TRequestBody = unknown, TQueryData = unknown>(
     requestParams: PutRequestOptions<TRequestBody>,
   ) => {
     return makeRequest<TQueryData>({
@@ -131,7 +137,7 @@ const useDataProvider = () => {
       method: 'PUT',
     });
   };
-  const patch = async <TRequestBody, TQueryData = any>(
+  const patch = async <TRequestBody = unknown, TQueryData = unknown>(
     requestParams: PatchRequestOptions<TRequestBody>,
   ) => {
     return makeRequest<TQueryData>({
@@ -139,7 +145,9 @@ const useDataProvider = () => {
       method: 'PATCH',
     });
   };
-  const del = async <TQueryData = any>(requestParams: DeleteRequestOptions) => {
+  const del = async <TQueryData = unknown>(
+    requestParams: DeleteRequestOptions,
+  ) => {
     return makeRequest<TQueryData>({
       ...requestParams,
       method: 'DELETE',
