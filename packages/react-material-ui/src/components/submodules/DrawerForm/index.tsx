@@ -7,7 +7,7 @@ import { Box, Drawer, Button, CircularProgress } from '@mui/material';
 import validator from '@rjsf/validator-ajv6';
 import { toast } from 'react-toastify';
 
-import SchemaForm from 'components/SchemaForm';
+import SchemaForm from '../../../components/SchemaForm';
 
 import useDataProvider, { useQuery } from '../../../../../react-data-provider';
 

@@ -25,10 +25,10 @@ import {
 } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
-import Filter from 'components/Filter';
-import { FilterType } from 'components/Filter/Filter';
-import { createTableStyles } from 'components/Table/utils';
-import Table from 'components/Table';
+import Filter from '../../../components/Filter';
+import { FilterType } from '../../../components/Filter/Filter';
+import { createTableStyles } from '../../../components/Table/utils';
+import Table from '../../../components/Table';
 
 import useDataProvider, { useQuery } from '../../../../../react-data-provider';
 

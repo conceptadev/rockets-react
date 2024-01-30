@@ -8,11 +8,11 @@ import { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 import { toast } from 'react-toastify';
 
-import useTable from 'components/Table/useTable';
-import Text from 'components/Text';
-import TableSubmodule from 'components/submodules/Table';
-import DrawerFormSubmodule from 'components/submodules/DrawerForm';
-import ModalFormSubmodule from 'components/submodules/ModalForm';
+import useTable from '../../components/Table/useTable';
+import Text from '../../components/Text';
+import TableSubmodule from '../../components/submodules/Table';
+import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
+import ModalFormSubmodule from '../../components/submodules/ModalForm';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 

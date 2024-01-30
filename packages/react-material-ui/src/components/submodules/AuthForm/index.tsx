@@ -12,10 +12,10 @@ import validator from '@rjsf/validator-ajv6';
 import { toast } from 'react-toastify';
 import { Box, Button, Container, Card, CircularProgress } from '@mui/material';
 
-import Text from 'components/Text';
-import Link from 'components/Link';
-import SchemaForm from 'components/SchemaForm';
-import Image from 'components/Image';
+import Text from '../../../components/Text';
+import Link from '../../../components/Link';
+import SchemaForm from '../../../components/SchemaForm';
+import Image from '../../../components/Image';
 
 import useDataProvider, { useQuery } from '../../../../../react-data-provider';
 import { useAuth } from '../../../../../react-auth-provider';
