@@ -3,7 +3,13 @@
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import { Order, Search, SimpleFilter, TableQueryStateProps } from './types';
+import {
+  Order,
+  Search,
+  SimpleFilter,
+  TableQueryStateProps,
+  TableResponseData,
+} from './types';
 import {
   TABLE_QUERY_STATE_DEFAULT_VALUE,
   useTableQueryState,
@@ -114,11 +120,8 @@ const useTable: UseTableProps = (resource, options) => {
     });
   };
 
-  const { data, execute, refresh, isPending, error } = useQuery(
-    getResource,
-    false,
-    options?.callbacks,
-  );
+  const { data, execute, refresh, isPending, error } =
+    useQuery<TableResponseData>(getResource, false, options?.callbacks);
 
   // TODO: This will be refactored with Query Builder
   // For now it works even though not optmized

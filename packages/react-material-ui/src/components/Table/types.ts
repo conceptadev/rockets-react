@@ -66,3 +66,11 @@ export type TableQueryStateProps = {
 };
 
 export type RenderRowFunction = (row: RowProps, labelId: string) => ReactNode;
+
+export type TableResponseData = {
+  data: unknown[];
+  count: number;
+  total: number;
+  page: number;
+  pageCount: number;
+};
