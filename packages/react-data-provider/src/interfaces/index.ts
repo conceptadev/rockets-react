@@ -1,8 +1,10 @@
+import { AxiosRequestConfig } from 'axios';
+
 export interface RequestParams {
   uri: string;
   method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
-  headers?: any;
-  queryParams?: any;
+  headers?: Record<string, string>;
+  queryParams?: Record<string, string | number>;
   signal?: AbortSignal;
 }
 
@@ -29,20 +31,20 @@ export type DeleteRequestOptions = Omit<RequestParams, 'method'>;
 
 export interface HttpBaseConfigs {
   skipAuthUris: string[];
-  headers: any;
+  headers: Record<string, string>;
   baseURL: string;
 }
 
 export interface HttpResponse {
-  config: any;
+  config: AxiosRequestConfig;
   data: any;
-  headers: any;
-  status: any;
+  headers: Record<string, string>;
+  status: number;
 }
 
 export interface HttpError {
   response: HttpResponse;
-  code: any;
+  code: number;
   message: string;
 }
 
