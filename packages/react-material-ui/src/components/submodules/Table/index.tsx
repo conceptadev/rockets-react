@@ -252,6 +252,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         headers={tableHeaders}
         sx={tableTheme.root}
         {...props}
+        updateTableQueryState={props.setTableQueryState}
       >
         <TableContainer sx={tableTheme.tableContainer}>
           <Table.Table stickyHeader variant="outlined" sx={tableTheme.table}>
