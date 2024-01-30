@@ -11,6 +11,7 @@ type TableContextProps = {
   pageCount: number;
   tableQuery: TableQueryStateProps;
   selected: RowProps[];
+  setHeaders: React.Dispatch<React.SetStateAction<HeaderProps[]>>;
   isSelected: (id: string) => boolean;
   handleChangePage: (event: unknown, newPage: number) => void;
   handleChangeRowsPerPage: (event: React.ChangeEvent<HTMLInputElement>) => void;

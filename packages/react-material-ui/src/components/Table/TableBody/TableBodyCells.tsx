@@ -54,6 +54,8 @@ export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
   return (
     <>
       {headers.map((header) => {
+        if (header.disabled) return null;
+
         return (
           <TableCell key={header.id} {...rest}>
             {getCellData(row[header.id])}
