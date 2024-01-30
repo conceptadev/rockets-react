@@ -14,12 +14,11 @@ import {
   IconButton,
 } from '@mui/material';
 import { Close as CloseIcon } from '@mui/icons-material';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 import { toast } from 'react-toastify';
 
 import SchemaForm from '../../../components/SchemaForm';
-
-import useDataProvider, { useQuery } from '../../../../../react-data-provider';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 

@@ -23,14 +23,13 @@ import {
   Delete as DeleteIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { toast } from 'react-toastify';
 
 import Filter from '../../../components/Filter';
 import { FilterType } from '../../../components/Filter/Filter';
 import { createTableStyles } from '../../../components/Table/utils';
 import Table from '../../../components/Table';
-
-import useDataProvider, { useQuery } from '../../../../../react-data-provider';
 
 import { defaultTableProps } from '../../../modules/crud/constants';
 

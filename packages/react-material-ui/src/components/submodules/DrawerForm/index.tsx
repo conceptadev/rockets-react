@@ -4,12 +4,11 @@ import type { RJSFSchema, UiSchema } from '@rjsf/utils';
 import type { IChangeEvent } from '@rjsf/core';
 
 import { Box, Drawer, Button, CircularProgress } from '@mui/material';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 import { toast } from 'react-toastify';
 
 import SchemaForm from '../../../components/SchemaForm';
-
-import useDataProvider, { useQuery } from '../../../../../react-data-provider';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 

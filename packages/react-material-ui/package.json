@@ -11,7 +11,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "@concepta/react-data-provider": "^1.0.0-alpha.5"
+    "@concepta/react-data-provider": "^1.0.0-alpha.23",
+    "@concepta/react-auth-provider": "^1.0.0-alpha.23"
   },
   "peerDependenciesMeta": {
     "@types/react": {
