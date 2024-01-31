@@ -127,7 +127,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
   return (
     <Dialog
       open={props.viewMode !== null}
-      maxWidth="lg"
+      maxWidth="md"
       fullWidth
       onClose={props.onClose}
     >
