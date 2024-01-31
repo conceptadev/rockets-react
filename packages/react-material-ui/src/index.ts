@@ -44,3 +44,6 @@ export { default as SchemaForm } from './components/SchemaForm';
 
 import FormFieldSkeleton from './components/FormFieldSkeleton';
 export { FormFieldSkeleton };
+
+export { default as AuthModule } from './modules/auth';
+export { default as CrudModule } from './modules/crud';
