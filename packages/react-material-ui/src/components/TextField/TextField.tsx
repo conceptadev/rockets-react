@@ -60,7 +60,7 @@ const TextField = (props: TextFieldProps & Props) => {
 
   return (
     <Box {...containerProps}>
-      <FormControl>
+      <FormControl fullWidth>
         {!ishiddenLabel && !!label && typeof label === 'string' && (
           <FormLabel
             name={name}

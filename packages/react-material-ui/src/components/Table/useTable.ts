@@ -91,7 +91,7 @@ const useTable: UseTableProps = (resource, options) => {
     for (const [key, value] of Object.entries(tableQueryState.simpleFilter)) {
       queryArr.push(`${key}${value}`);
     }
-    return queryArr;
+    return queryArr as string[];
   };
 
   useEffect(() => {

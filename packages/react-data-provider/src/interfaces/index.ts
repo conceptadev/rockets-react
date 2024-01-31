@@ -4,7 +4,7 @@ export interface RequestParams {
   uri: string;
   method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: Record<string, string>;
-  queryParams?: Record<string, string | number>;
+  queryParams?: Record<string, string | string[] | number | undefined>;
   signal?: AbortSignal;
 }
 
