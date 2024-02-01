@@ -12,6 +12,9 @@ export { Drawer, DrawerProps, DrawerItemProps };
 import Dropdown, { DropdownItem } from './components/Dropdown';
 export { Dropdown, DropdownItem };
 
+import OrderableDropDown, { ListItem } from './components/OrderableDropDown';
+export { OrderableDropDown, ListItem };
+
 export { default as FormTemplate } from './components/FormTemplate';
 
 import HeaderAccount, { HeaderAccountProps } from './components/HeaderAccount';

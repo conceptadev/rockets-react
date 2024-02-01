@@ -42,6 +42,8 @@ const SelectField = ({
   isLoading = false,
   label,
   onChange,
+  fullWidth,
+  size,
   ...rest
 }: SelectFieldProps) => {
   const handleChange = (event: SelectChangeEvent<string>) => {
@@ -54,13 +56,15 @@ const SelectField = ({
   return (
     <Box>
       <FormFieldSkeleton isLoading={isLoading} hideLabel>
-        <FormControl>
+        <FormControl fullWidth={fullWidth} size={size}>
           <InputLabel id="select-label">{label}</InputLabel>
           <Select
             labelId="select-label"
             defaultValue={defaultValue ?? (hasAllOption && allOption.value)}
             onChange={handleChange}
             label={label}
+            fullWidth={fullWidth}
+            size={size}
             {...rest}
           >
             {finalOptions?.map((role) => (
