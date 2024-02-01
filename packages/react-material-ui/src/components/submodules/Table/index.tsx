@@ -67,7 +67,7 @@ interface TableSubmoduleProps {
   >;
   searchParam?: string;
   hideActionsColumn?: boolean;
-  overrideDefaults?: boolean;
+  hideForm?: boolean;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -125,7 +125,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
   const tableHeaders: TableSchemaItem[] = useMemo(() => {
     return [
       ...props.tableSchema,
-      { id: !props.hideActionsColumn ? 'actions' : '', label: '' },
+      {
+        id: !props.hideActionsColumn && !props.hideForm ? 'actions' : '',
+        label: '',
+      },
     ];
   }, [props]);
 
@@ -203,9 +206,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             ]}
           />
         </Box>
-        <Button variant="contained" onClick={props.onAddNew}>
-          Add new
-        </Button>
+        {!props.hideForm && (
+          <Button variant="contained" onClick={props.onAddNew}>
+            Add new
+          </Button>
+        )}
       </Box>
 
       <Table.Root

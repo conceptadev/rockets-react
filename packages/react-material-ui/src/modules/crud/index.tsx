@@ -82,6 +82,7 @@ const CrudModule = (props: ModuleProps) => {
           setSelectedRow(null);
           setDrawerViewMode('creation');
         }}
+        hideForm={!props.formProps}
         {...tableProps}
         {...props.tableProps}
       />
