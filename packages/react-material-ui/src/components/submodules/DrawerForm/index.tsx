@@ -12,8 +12,6 @@ import SchemaForm from '../../../components/SchemaForm';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
-import { defaultFormProps } from '../../../modules/crud/constants';
-
 const widgets = {
   TextWidget: CustomTextFieldWidget,
 };
@@ -31,7 +29,6 @@ interface DrawerFormSubmoduleProps {
   cancelButtonTitle?: string;
   onClose?: () => void;
   onSubmitSuccess?: () => void;
-  overrideDefaults?: boolean;
 }
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
@@ -94,23 +91,11 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
       <Box padding={4} mb={2}>
         <SchemaForm.Form
           schema={{
-            ...defaultFormProps.formSchema,
             ...props.formSchema,
-            required: props.overrideDefaults
-              ? props.formSchema?.required || []
-              : [
-                  ...(defaultFormProps.formSchema.required || []),
-                  ...(props.formSchema?.required || []),
-                ],
-            properties: props.overrideDefaults
-              ? props.formSchema?.properties || {}
-              : {
-                  ...(defaultFormProps.formSchema.properties || {}),
-                  ...(props.formSchema?.properties || {}),
-                },
+            required: props.formSchema?.required || [],
+            properties: props.formSchema?.properties || {},
           }}
           uiSchema={{
-            ...defaultFormProps.formUiSchema,
             ...props.formUiSchema,
           }}
           validator={validator}

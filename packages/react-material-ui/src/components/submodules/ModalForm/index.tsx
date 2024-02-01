@@ -22,8 +22,6 @@ import SchemaForm from '../../../components/SchemaForm';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
-import { defaultFormProps } from '../../../modules/crud/constants';
-
 const widgets = {
   TextWidget: CustomTextFieldWidget,
 };
@@ -99,31 +97,6 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     }
   };
 
-  const formUiSchema = useMemo(() => {
-    if (props.overrideDefaults) {
-      return props.formUiSchema || {};
-    }
-
-    return Object.entries(defaultFormProps.formUiSchema).reduce(
-      (currentSchema, currentItem) => {
-        const itemKey = currentItem[0];
-
-        if (props.formUiSchema && props.formUiSchema[itemKey]) {
-          return {
-            ...currentSchema,
-            [itemKey]: { ...currentItem[1], ...props.formUiSchema[itemKey] },
-          };
-        }
-
-        return {
-          ...currentSchema,
-          [itemKey]: currentItem[1],
-        };
-      },
-      {},
-    );
-  }, [props.overrideDefaults, props.formUiSchema]);
-
   return (
     <Dialog
       open={props.viewMode !== null}
@@ -147,24 +120,11 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
       <DialogContent>
         <SchemaForm.Form
           schema={{
-            ...defaultFormProps.formSchema,
             ...props.formSchema,
-            required: props.overrideDefaults
-              ? props.formSchema?.required || []
-              : [
-                  ...(defaultFormProps.formSchema.required || []),
-                  ...(props.formSchema?.required || []),
-                ],
-            properties: props.overrideDefaults
-              ? props.formSchema?.properties || {}
-              : {
-                  ...(defaultFormProps.formSchema.properties || {}),
-                  ...(props.formSchema?.properties || {}),
-                },
+            required: props.formSchema?.required || [],
+            properties: props.formSchema?.properties || {},
           }}
-          uiSchema={{
-            ...formUiSchema,
-          }}
+          uiSchema={props.formUiSchema}
           validator={validator}
           onSubmit={handleFormSubmit}
           noHtml5Validate={true}

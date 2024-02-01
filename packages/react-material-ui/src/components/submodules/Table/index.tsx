@@ -28,10 +28,8 @@ import { toast } from 'react-toastify';
 
 import Filter from '../../../components/Filter';
 import { FilterType } from '../../../components/Filter/Filter';
-import { createTableStyles } from '../../../components/Table/utils';
 import Table from '../../../components/Table';
-
-import { defaultTableProps } from '../../../modules/crud/constants';
+import { generateTableTheme } from './constants';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -45,12 +43,12 @@ type ActionCallbackPayload = {
 };
 
 type TableSchemaItem = HeaderProps & {
-  format?: (data: string | number) => string | number;
+  format?: (data: unknown) => string | number;
 };
 
 interface TableSubmoduleProps {
   queryResource: string;
-  tableSchema?: TableSchemaItem[];
+  tableSchema: TableSchemaItem[];
   onAction?: ({ action, row }: ActionCallbackPayload) => void;
   onAddNew?: () => void;
   refresh: () => void;
@@ -100,14 +98,14 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
   const handleSearchChange = (term: string) => {
     setSearchTerm(term);
 
-    if (!props.updateSimpleFilter) {
+    if (!props.updateSimpleFilter || !props.searchParam) {
       return;
     }
 
     if (!term) {
       props.updateSimpleFilter(
         {
-          [props.searchParam || defaultTableProps.searchParam]: null,
+          [props.searchParam]: null,
         },
         true,
       );
@@ -116,54 +114,17 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
     }
 
     const filter = {
-      [props.searchParam || defaultTableProps.searchParam]: `||$contL||${term}`,
+      [props.searchParam]: `||$contL||${term}`,
     };
 
     props.updateSimpleFilter(filter, true);
   };
 
-  const tableTheme = createTableStyles({
-    table: {
-      height: '100%',
-    },
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      flex: 1,
-      overflow: 'auto',
-    },
-    tableHeader: {
-      ...theme.typography.caption,
-      lineHeight: 1,
-      fontWeight: 500,
-      color: theme.palette.grey[500],
-    },
-    tableRow: {
-      backgroundColor: '#F9FAFB',
-      textTransform: 'uppercase',
-    },
-    tableContainer: {
-      flex: 1,
-    },
-  });
+  const tableTheme = generateTableTheme(theme);
 
   const tableHeaders: TableSchemaItem[] = useMemo(() => {
-    let headers: TableSchemaItem[] = [];
-
-    if (!props.overrideDefaults && !props.tableSchema) {
-      headers = defaultTableProps.tableSchema;
-    }
-
-    if (props.overrideDefaults && props.tableSchema) {
-      headers = props.tableSchema;
-    }
-
-    if (!props.overrideDefaults && props.tableSchema) {
-      headers = [...defaultTableProps.tableSchema, ...props.tableSchema];
-    }
-
     return [
-      ...headers,
+      ...props.tableSchema,
       { id: !props.hideActionsColumn ? 'actions' : '', label: '' },
     ];
   }, [props]);
@@ -183,7 +144,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         }
 
         if (schemaItem.format) {
-          newData[key] = schemaItem.format(String(data));
+          newData[key] = schemaItem.format(data);
         }
       });
 

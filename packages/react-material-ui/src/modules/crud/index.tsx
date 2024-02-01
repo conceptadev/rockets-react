@@ -19,14 +19,13 @@ type Action = 'creation' | 'edit' | 'details' | null;
 type SelectedRow = Record<string, unknown> | null;
 
 type TableSchemaItem = HeaderProps & {
-  format?: (data: string | number) => string | number;
+  format?: (data: any) => string | number;
 };
 
 interface TableProps {
-  tableSchema?: TableSchemaItem[];
+  tableSchema: TableSchemaItem[];
   searchParam?: string;
   hideActionsColumn?: boolean;
-  overrideDefaults?: boolean;
 }
 
 interface FormProps {
@@ -34,13 +33,12 @@ interface FormProps {
   formUiSchema?: UiSchema;
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
-  overrideDefaults?: boolean;
 }
 
 interface ModuleProps {
   title?: string;
   resource: string;
-  tableProps?: TableProps;
+  tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
   formProps?: FormProps;
 }
@@ -88,22 +86,24 @@ const CrudModule = (props: ModuleProps) => {
         {...props.tableProps}
       />
 
-      <FormComponent
-        title={props.title}
-        queryResource={props.resource}
-        viewMode={drawerViewMode}
-        formData={selectedRow}
-        onSubmitSuccess={() => {
-          tableProps.refresh();
-          setSelectedRow(null);
-          setDrawerViewMode(null);
-        }}
-        onClose={() => {
-          setSelectedRow(null);
-          setDrawerViewMode(null);
-        }}
-        {...props.formProps}
-      />
+      {props.formProps && (
+        <FormComponent
+          title={props.title}
+          queryResource={props.resource}
+          viewMode={drawerViewMode}
+          formData={selectedRow}
+          onSubmitSuccess={() => {
+            tableProps.refresh();
+            setSelectedRow(null);
+            setDrawerViewMode(null);
+          }}
+          onClose={() => {
+            setSelectedRow(null);
+            setDrawerViewMode(null);
+          }}
+          {...props.formProps}
+        />
+      )}
     </Box>
   );
 };
