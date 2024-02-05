@@ -54,7 +54,7 @@ const SelectField = ({
   return (
     <Box>
       <FormFieldSkeleton isLoading={isLoading} hideLabel>
-        <FormControl>
+        <FormControl fullWidth>
           <InputLabel id="select-label">{label}</InputLabel>
           <Select
             labelId="select-label"
