@@ -42,7 +42,7 @@ const Select = (props: Props & TextFieldProps) => {
   const labelId = `label-${name}`;
   return (
     <Box {...containerProps}>
-      <FormControl>
+      <FormControl fullWidth>
         {label && typeof label === 'string' ? (
           <FormLabel
             id={labelId}
