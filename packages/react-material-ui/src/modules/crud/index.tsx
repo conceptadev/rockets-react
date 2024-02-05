@@ -9,8 +9,11 @@ import { Box } from '@mui/material';
 import { toast } from 'react-toastify';
 
 import useTable from '../../components/Table/useTable';
+import { TableProps as InnerTableProps } from '../../components/Table/Table';
 import Text from '../../components/Text';
-import TableSubmodule from '../../components/submodules/Table';
+import TableSubmodule, {
+  StyleDefinition,
+} from '../../components/submodules/Table';
 import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
 import ModalFormSubmodule from '../../components/submodules/ModalForm';
 
@@ -19,11 +22,13 @@ type Action = 'creation' | 'edit' | 'details' | null;
 type SelectedRow = Record<string, unknown> | null;
 
 type TableSchemaItem = HeaderProps & {
-  format?: (data: any) => string | number;
+  format?: (data: unknown) => string | number;
 };
 
 interface TableProps {
   tableSchema: TableSchemaItem[];
+  tableProps: InnerTableProps;
+  tableTheme: StyleDefinition;
   searchParam?: string;
   hideActionsColumn?: boolean;
 }

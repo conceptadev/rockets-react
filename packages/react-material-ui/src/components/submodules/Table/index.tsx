@@ -17,6 +17,8 @@ import {
   TableHead,
   TableRow,
   useTheme,
+  Theme,
+  SxProps,
 } from '@mui/material';
 import {
   Edit as EditIcon,
@@ -30,6 +32,8 @@ import Filter from '../../../components/Filter';
 import { FilterType } from '../../../components/Filter/Filter';
 import Table from '../../../components/Table';
 import { generateTableTheme } from './constants';
+import { TableRootProps } from '../../../components/Table/TableRoot';
+import { TableProps } from '../../../components/Table/Table';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -42,11 +46,26 @@ type ActionCallbackPayload = {
   row: Record<string, unknown>;
 };
 
+export type StyleDefinition = {
+  root?: SxProps<Theme>;
+  table?: SxProps<Theme>;
+  tableContainer?: SxProps<Theme>;
+  tableHeader?: SxProps<Theme>;
+  tableHeaderRow?: SxProps<Theme>;
+  tableHeaderCell?: SxProps<Theme>;
+  tableBodyRow?: SxProps<Theme>;
+  tableBodyCell?: SxProps<Theme>;
+  [key: string]: SxProps<Theme>;
+};
+
 type TableSchemaItem = HeaderProps & {
   format?: (data: unknown) => string | number;
 };
 
 interface TableSubmoduleProps {
+  tableRootProps?: TableRootProps;
+  tableProps?: TableProps;
+  tableTheme?: StyleDefinition;
   queryResource: string;
   tableSchema: TableSchemaItem[];
   onAction?: ({ action, row }: ActionCallbackPayload) => void;
@@ -120,7 +139,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
     props.updateSimpleFilter(filter, true);
   };
 
-  const tableTheme = generateTableTheme(theme);
+  const tableTheme = generateTableTheme(theme, props.tableTheme);
 
   const tableHeaders: TableSchemaItem[] = useMemo(() => {
     return [
@@ -194,18 +213,20 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         justifyContent="space-between"
         mb={2}
       >
-        <Box sx={{ width: '60%' }}>
-          <Filter
-            filters={[
-              {
-                type: FilterType.Text,
-                defaultValue: searchTerm,
-                placeholder: 'Search',
-                onChange: handleSearchChange,
-              },
-            ]}
-          />
-        </Box>
+        {props.searchParam && (
+          <Box sx={{ width: '60%' }}>
+            <Filter
+              filters={[
+                {
+                  type: FilterType.Text,
+                  defaultValue: searchTerm,
+                  placeholder: 'Search',
+                  onChange: handleSearchChange,
+                },
+              ]}
+            />
+          </Box>
+        )}
         {!props.hideForm && (
           <Button variant="contained" onClick={props.onAddNew}>
             Add new
@@ -216,20 +237,34 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
       <Table.Root
         rows={tableRows}
         headers={tableHeaders}
+        total={props.total}
+        pageCount={props.pageCount}
         sx={tableTheme.root}
-        {...props}
+        tableQueryState={props.tableQueryState}
         updateTableQueryState={props.setTableQueryState}
+        {...props.tableRootProps}
       >
         <TableContainer sx={tableTheme.tableContainer}>
-          <Table.Table stickyHeader variant="outlined" sx={tableTheme.table}>
+          <Table.Table
+            stickyHeader
+            variant="outlined"
+            sx={tableTheme.table}
+            {...props.tableProps}
+          >
             <TableHead>
-              <TableRow sx={tableTheme.tableRow}>
-                <Table.HeaderCells />
+              <TableRow sx={tableTheme.tableHeaderRow}>
+                {tableHeaders.map((header) => (
+                  <Table.HeaderCell
+                    key={header.id}
+                    cell={header}
+                    sx={tableTheme.tableHeaderCell}
+                  />
+                ))}
               </TableRow>
             </TableHead>
             <TableBody>
               {Boolean(searchTerm && !props.data?.length) && (
-                <TableRow>
+                <TableRow sx={tableTheme.tableBodyRow}>
                   <TableCell
                     colSpan={tableHeaders.length}
                     sx={{
@@ -240,7 +275,18 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                   </TableCell>
                 </TableRow>
               )}
-              <Table.BodyRows isLoading={props.isPending || false} />
+              <Table.BodyRows
+                renderRow={(row) => (
+                  <Table.BodyRow
+                    row={row}
+                    hasCheckboxes={false}
+                    hover={false}
+                    sx={tableTheme.tableBodyRow}
+                  >
+                    <Table.BodyCell row={row} sx={tableTheme.tableBodyCell} />
+                  </Table.BodyRow>
+                )}
+              />
             </TableBody>
           </Table.Table>
         </TableContainer>
