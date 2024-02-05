@@ -1,24 +1,33 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-import type { RJSFSchema, UiSchema } from '@rjsf/utils';
-import type { IChangeEvent } from '@rjsf/core';
+import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
+import type { IChangeEvent, FormProps } from '@rjsf/core';
 
 import { Box, Drawer, Button, CircularProgress } from '@mui/material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 import { toast } from 'react-toastify';
 
-import SchemaForm from '../../../components/SchemaForm';
+import SchemaForm, { SchemaFormProps } from '../../../components/SchemaForm';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
-const widgets = {
-  TextWidget: CustomTextFieldWidget,
-};
-
 type Action = 'creation' | 'edit' | 'details' | null;
 
-interface DrawerFormSubmoduleProps {
+type DrawerFormSubmoduleProps = PropsWithChildren<
+  Omit<
+    SchemaFormProps,
+    | 'schema'
+    | 'uiSchema'
+    | 'validator'
+    | 'onSubmit'
+    | 'noHtml5Validate'
+    | 'showErrorList'
+    | 'formData'
+    | 'readonly'
+    | 'customValidate'
+  >
+> & {
   queryResource: string;
   title?: string;
   formSchema?: RJSFSchema;
@@ -29,15 +38,32 @@ interface DrawerFormSubmoduleProps {
   cancelButtonTitle?: string;
   onClose?: () => void;
   onSubmitSuccess?: () => void;
-}
+  customValidate?: CustomValidator;
+  widgets?: FormProps['widgets'];
+};
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
+  const {
+    queryResource,
+    onSubmitSuccess,
+    viewMode,
+    widgets,
+    formSchema,
+    formUiSchema,
+    formData,
+    customValidate,
+    submitButtonTitle,
+    onClose,
+    cancelButtonTitle,
+    children,
+    ...otherProps
+  } = props;
   const { post, patch } = useDataProvider();
 
   const { execute: createItem, isPending: isLoadingCreation } = useQuery(
     (data: Record<string, unknown>) =>
       post({
-        uri: `/${props.queryResource}`,
+        uri: `/${queryResource}`,
         body: data,
       }),
     false,
@@ -45,8 +71,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
       onSuccess: () => {
         toast.success('Data successfully created.');
 
-        if (props.onSubmitSuccess) {
-          props.onSubmitSuccess();
+        if (onSubmitSuccess) {
+          onSubmitSuccess();
         }
       },
       onError: () => toast.error('Failed to create data.'),
@@ -56,7 +82,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
   const { execute: editItem, isPending: isLoadingEdit } = useQuery(
     (data: Record<string, unknown>) =>
       patch({
-        uri: `/${props.queryResource}/${data.id}`,
+        uri: `/${queryResource}/${data.id}`,
         body: data,
       }),
     false,
@@ -64,8 +90,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
       onSuccess: () => {
         toast.success('Data successfully updated.');
 
-        if (props.onSubmitSuccess) {
-          props.onSubmitSuccess();
+        if (onSubmitSuccess) {
+          onSubmitSuccess();
         }
       },
       onError: () => toast.error('Failed to edit data.'),
@@ -77,62 +103,72 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
   ) => {
     const fields = values.formData || {};
 
-    if (props.viewMode === 'creation') {
+    if (viewMode === 'creation') {
       await createItem(fields);
     }
 
-    if (props.viewMode === 'edit') {
+    if (viewMode === 'edit') {
       await editItem(fields);
     }
   };
 
+  const _widgets = {
+    TextWidget: CustomTextFieldWidget,
+    ...widgets,
+  };
+
   return (
-    <Drawer open={props.viewMode !== null} anchor="right">
+    <Drawer open={viewMode !== null} anchor="right">
       <Box padding={4} mb={2}>
         <SchemaForm.Form
           schema={{
-            ...props.formSchema,
-            required: props.formSchema?.required || [],
-            properties: props.formSchema?.properties || {},
+            ...formSchema,
+            required: formSchema?.required || [],
+            properties: formSchema?.properties || {},
           }}
           uiSchema={{
-            ...props.formUiSchema,
+            ...formUiSchema,
           }}
           validator={validator}
           onSubmit={handleFormSubmit}
           noHtml5Validate={true}
           showErrorList={false}
-          formData={props.formData}
-          readonly={props.viewMode === 'details'}
-          widgets={widgets}
+          formData={formData}
+          readonly={viewMode === 'details'}
+          widgets={_widgets}
+          customValidate={customValidate}
+          {...otherProps}
         >
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mt={4}
-          >
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={isLoadingCreation || isLoadingEdit}
-              sx={{ flex: 1, mr: 1 }}
+          <>
+            {children}
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mt={4}
             >
-              {isLoadingCreation || isLoadingEdit ? (
-                <CircularProgress sx={{ color: 'white' }} size={24} />
-              ) : (
-                props.submitButtonTitle || 'Save'
-              )}
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={props.onClose}
-              sx={{ flex: 1, ml: 1 }}
-            >
-              {props.cancelButtonTitle || 'Close'}
-            </Button>
-          </Box>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={isLoadingCreation || isLoadingEdit}
+                sx={{ flex: 1, mr: 1 }}
+              >
+                {isLoadingCreation || isLoadingEdit ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  submitButtonTitle || 'Save'
+                )}
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={onClose}
+                sx={{ flex: 1, ml: 1 }}
+              >
+                {cancelButtonTitle || 'Close'}
+              </Button>
+            </Box>
+          </>
         </SchemaForm.Form>
       </Box>
     </Drawer>

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-import type { RJSFSchema, UiSchema } from '@rjsf/utils';
+import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
 import type { HeaderProps } from '../../components/Table/types';
 
@@ -38,6 +38,7 @@ interface FormProps {
   formUiSchema?: UiSchema;
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
+  customValidate?: CustomValidator;
 }
 
 interface ModuleProps {
@@ -45,7 +46,7 @@ interface ModuleProps {
   resource: string;
   tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
-  formProps?: FormProps;
+  formProps?: PropsWithChildren<FormProps>;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -108,7 +109,9 @@ const CrudModule = (props: ModuleProps) => {
             setDrawerViewMode(null);
           }}
           {...props.formProps}
-        />
+        >
+          {props.formProps.children}
+        </FormComponent>
       )}
     </Box>
   );
