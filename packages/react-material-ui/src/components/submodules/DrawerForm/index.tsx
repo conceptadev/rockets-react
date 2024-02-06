@@ -148,23 +148,21 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
               justifyContent="space-between"
               mt={4}
             >
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={isLoadingCreation || isLoadingEdit}
-                sx={{ flex: 1, mr: 1 }}
-              >
-                {isLoadingCreation || isLoadingEdit ? (
-                  <CircularProgress sx={{ color: 'white' }} size={24} />
-                ) : (
-                  submitButtonTitle || 'Save'
-                )}
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={onClose}
-                sx={{ flex: 1, ml: 1 }}
-              >
+              {viewMode !== 'details' && (
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={isLoadingCreation || isLoadingEdit}
+                  sx={{ flex: 1, mr: 2 }}
+                >
+                  {isLoadingCreation || isLoadingEdit ? (
+                    <CircularProgress sx={{ color: 'white' }} size={24} />
+                  ) : (
+                    submitButtonTitle || 'Save'
+                  )}
+                </Button>
+              )}
+              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
                 {cancelButtonTitle || 'Close'}
               </Button>
             </Box>
