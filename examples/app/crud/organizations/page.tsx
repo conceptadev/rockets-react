@@ -1,7 +1,13 @@
 'use client';
 
-import CrudModule from '../../../../packages/react-material-ui/dist/modules/crud';
-import { CustomSelectWidget } from '../../../../packages/react-material-ui/dist/styles/CustomWidgets';
+import dynamic from 'next/dynamic';
+
+const CrudModule = dynamic(
+  () => import('@concepta/react-material-ui/dist/modules/crud'),
+  { ssr: false },
+);
+
+import { CustomSelectWidget } from '@concepta/react-material-ui/dist/styles/CustomWidgets';
 
 const getMaskedPhone = (text: string) => {
   const numericInput = text.replace(/\D/g, '');
