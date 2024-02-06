@@ -27,8 +27,8 @@ type TableSchemaItem = HeaderProps & {
 
 interface TableProps {
   tableSchema: TableSchemaItem[];
-  tableProps: InnerTableProps;
-  tableTheme: StyleDefinition;
+  tableProps?: InnerTableProps;
+  tableTheme?: StyleDefinition;
   searchParam?: string;
   hideActionsColumn?: boolean;
 }
@@ -46,7 +46,10 @@ interface ModuleProps {
   resource: string;
   tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
-  formProps?: PropsWithChildren<FormProps>;
+  detailsFormProps?: PropsWithChildren<FormProps>;
+  createFormProps?: PropsWithChildren<FormProps>;
+  editFormProps?: PropsWithChildren<FormProps>;
+  hideDeleteButton?: boolean;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -70,6 +73,24 @@ const CrudModule = (props: ModuleProps) => {
     }
   }, [props.formContainerVariation]);
 
+  const formProps = useMemo(() => {
+    switch (drawerViewMode) {
+      case 'creation':
+        return props.createFormProps;
+      case 'edit':
+        return props.editFormProps;
+      case 'details':
+        return props.detailsFormProps;
+      default:
+        return props.createFormProps;
+    }
+  }, [
+    drawerViewMode,
+    props.createFormProps,
+    props.detailsFormProps,
+    props.editFormProps,
+  ]);
+
   return (
     <Box>
       {props.title ? (
@@ -88,12 +109,15 @@ const CrudModule = (props: ModuleProps) => {
           setSelectedRow(null);
           setDrawerViewMode('creation');
         }}
-        hideForm={!props.formProps}
+        hideAddButton={!props.createFormProps}
+        hideEditButton={!props.editFormProps}
+        hideDeleteButton={props.hideDeleteButton}
+        hideDetailsButton={!props.detailsFormProps}
         {...tableProps}
         {...props.tableProps}
       />
 
-      {props.formProps && (
+      {formProps && (
         <FormComponent
           title={props.title}
           queryResource={props.resource}
@@ -108,9 +132,9 @@ const CrudModule = (props: ModuleProps) => {
             setSelectedRow(null);
             setDrawerViewMode(null);
           }}
-          {...props.formProps}
+          {...formProps}
         >
-          {props.formProps.children}
+          {formProps.children}
         </FormComponent>
       )}
     </Box>

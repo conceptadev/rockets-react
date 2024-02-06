@@ -86,7 +86,10 @@ interface TableSubmoduleProps {
   >;
   searchParam?: string;
   hideActionsColumn?: boolean;
-  hideForm?: boolean;
+  hideEditButton?: boolean;
+  hideDeleteButton?: boolean;
+  hideDetailsButton?: boolean;
+  hideAddButton?: boolean;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -141,13 +144,15 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
+  const noActions =
+    props.hideEditButton && props.hideDeleteButton && props.hideDetailsButton;
+
   const tableHeaders: TableSchemaItem[] = useMemo(() => {
     return [
       ...props.tableSchema,
-      {
-        id: !props.hideActionsColumn && !props.hideForm ? 'actions' : '',
-        label: '',
-      },
+      ...(!props.hideActionsColumn && !noActions
+        ? [{ id: 'actions', label: '' }]
+        : []),
     ];
   }, [props]);
 
@@ -176,27 +181,35 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         actions: {
           component: (
             <Box>
-              <IconButton
-                onClick={() => {
-                  if (props.onAction) {
-                    props.onAction({ action: 'edit', row: rowData });
-                  }
-                }}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => deleteItem(rowData.id)}>
-                <DeleteIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  if (props.onAction) {
-                    props.onAction({ action: 'details', row: rowData });
-                  }
-                }}
-              >
-                <ChevronRightIcon />
-              </IconButton>
+              {!props.hideEditButton && (
+                <IconButton
+                  onClick={() => {
+                    if (props.onAction) {
+                      props.onAction({ action: 'edit', row: rowData });
+                    }
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+              )}
+
+              {!props.hideDeleteButton && (
+                <IconButton onClick={() => deleteItem(rowData.id)}>
+                  <DeleteIcon />
+                </IconButton>
+              )}
+
+              {!props.hideDetailsButton && (
+                <IconButton
+                  onClick={() => {
+                    if (props.onAction) {
+                      props.onAction({ action: 'details', row: rowData });
+                    }
+                  }}
+                >
+                  <ChevronRightIcon />
+                </IconButton>
+              )}
             </Box>
           ),
         },
@@ -227,7 +240,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             />
           </Box>
         )}
-        {!props.hideForm && (
+        {!props.hideAddButton && (
           <Button variant="contained" onClick={props.onAddNew}>
             Add new
           </Button>
