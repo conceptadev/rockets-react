@@ -16,7 +16,7 @@ export type HeaderProps = {
   textAlign?: 'left' | 'center' | 'right';
   sortable?: boolean;
   key?: number | string;
-  disabled?: boolean;
+  hide?: boolean;
 };
 
 export type CustomTableCell = {

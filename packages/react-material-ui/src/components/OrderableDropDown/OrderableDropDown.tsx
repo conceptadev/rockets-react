@@ -35,7 +35,7 @@ export interface ListItem {
   id: string;
   label: string;
   hide?: boolean;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface Props {
@@ -55,7 +55,7 @@ function SortableItem(props: SortableItemProps) {
   const { id, checked, label, handleToggle, labelId } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id });
+    useSortable({ id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -98,7 +98,7 @@ const OrderableDropDown: FC<Props> = ({ list, setList }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const [checked, setChecked] = useState(
-    list.filter((listItem) => !listItem.disabled).map((li) => li.id),
+    list.filter((listItem) => !listItem.hide).map((li) => li.id),
   );
 
   const handleToggle = (value: string) => () => {

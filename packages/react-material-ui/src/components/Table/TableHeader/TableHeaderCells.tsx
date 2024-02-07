@@ -22,16 +22,14 @@ export const TableHeaderCells = ({ renderCell }: TableHeaderCellsProps) => {
     <Fragment>
       {!renderCell &&
         headers.map((header) => {
-          if (header.disabled) {
-            return null;
-          }
+          if (header.hide) return null;
 
           return <TableHeaderCell key={header.id} cell={header} />;
         })}
 
       {!!renderCell &&
         headers.map((header) => {
-          if (header.disabled) return null;
+          if (header.hide) return null;
 
           return (
             <Fragment key={header.id}>
