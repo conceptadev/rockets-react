@@ -15,7 +15,7 @@ import { TableRoot } from './TableRoot';
 import { TableHeaderCell } from './TableHeader/TableHeaderCell';
 import { TableRowSkeleton } from './TableRowSkeleton';
 import { TableCellSkeleton } from './TableCellSkeleton';
-import { TableHeaderCustomization } from './TableHeaderCustomization';
+import { TableColumnOrderable } from './TableColumnOrderable';
 
 const TableComponent = {
   Table,
@@ -33,7 +33,7 @@ const TableComponent = {
   Root: TableRoot,
   CellSkeleton: TableCellSkeleton,
   RowSkeleton: TableRowSkeleton,
-  HeaderCustomization: TableHeaderCustomization,
+  ColumnOrderable: TableColumnOrderable,
 };
 
 export default TableComponent;
