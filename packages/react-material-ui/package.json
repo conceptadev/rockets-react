@@ -11,7 +11,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "@concepta/react-data-provider": "^1.0.0-alpha.5"
+    "@concepta/react-data-provider": "^1.0.0-alpha.23",
+    "@concepta/react-auth-provider": "^1.0.0-alpha.23"
   },
   "peerDependenciesMeta": {
     "@types/react": {
@@ -38,7 +39,8 @@
     "lodash": "^4.17.21",
     "next": "^13.4.19",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-toastify": "^10.0.4"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.198",

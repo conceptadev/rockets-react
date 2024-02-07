@@ -1,35 +1,50 @@
+import { AxiosRequestConfig } from 'axios';
+
 export interface RequestParams {
   uri: string;
   method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
-  headers?: any;
-  queryParams?: any;
+  headers?: Record<string, string>;
+  queryParams?: Record<string, string | string[] | number | undefined>;
   signal?: AbortSignal;
 }
 
-export type PostRequestOptions = Omit<RequestParams, 'method'> & { body?: any };
+export type PostRequestOptions<TRequestBody = unknown> = Omit<
+  RequestParams,
+  'method'
+> & {
+  body?: TRequestBody;
+};
 export type GetRequestOptions = Omit<RequestParams, 'method'>;
-export type PutRequestOptions = Omit<RequestParams, 'method'> & { body?: any };
-export type PatchRequestOptions = Omit<RequestParams, 'method'> & {
-  body?: any;
+export type PutRequestOptions<TRequestBody = unknown> = Omit<
+  RequestParams,
+  'method'
+> & {
+  body?: TRequestBody;
+};
+export type PatchRequestOptions<TRequestBody = unknown> = Omit<
+  RequestParams,
+  'method'
+> & {
+  body?: TRequestBody;
 };
 export type DeleteRequestOptions = Omit<RequestParams, 'method'>;
 
 export interface HttpBaseConfigs {
   skipAuthUris: string[];
-  headers: any;
+  headers: Record<string, string>;
   baseURL: string;
 }
 
 export interface HttpResponse {
-  config: any;
+  config: AxiosRequestConfig;
   data: any;
-  headers: any;
-  status: any;
+  headers: Record<string, string>;
+  status: number;
 }
 
 export interface HttpError {
   response: HttpResponse;
-  code: any;
+  code: number;
   message: string;
 }
 
@@ -60,12 +75,28 @@ export interface AsyncFunction {
   (params?: any): Promise<any>;
 }
 
-export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
-  T extends (...args: any) => Promise<infer R> ? R : any;
+export type AsyncReturnType<T extends (...args: any) => Promise<unknown>> =
+  T extends (...args: any) => Promise<infer R> ? R : unknown;
 
-export interface DataProviderRequestOptions {
-  onError?: (error: unknown) => void;
-  onSuccess?: (data: AsyncReturnType<any>) => void;
+type ErrorFn<TError = unknown> = (error: TError) => void;
+type SuccessFn<TData = AsyncReturnType<any>> = (data: TData) => void;
+type FormatFn<TData = AsyncReturnType<any>> = (data: TData) => unknown;
+
+export interface DataProviderRequestOptions<
+  TQueryFnData = unknown,
+  TError = unknown,
+> {
+  onError?: ErrorFn<TError>;
+  onSuccess?: SuccessFn<TQueryFnData>;
   onFinish?: (status: AsyncStatus) => void;
-  formatData?: (data: AsyncReturnType<any>) => any;
+  formatData?: FormatFn<TQueryFnData>;
+}
+
+export interface RefreshTokenBody {
+  refreshToken: string;
+}
+
+export interface RefreshTokenRes {
+  accessToken: string;
+  refreshToken: string;
 }

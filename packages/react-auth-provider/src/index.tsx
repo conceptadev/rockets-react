@@ -12,6 +12,7 @@ import {
   LoginParams,
   AuthProviderProps,
   AuthProviderTypes,
+  AuthReponse,
 } from './interfaces';
 
 const AuthContext = createContext<AuthProviderTypes | null>(null);
@@ -43,7 +44,7 @@ const AuthProvider = ({
       },
     });
 
-  const { execute, isPending } = useQuery(authLogin, false, {
+  const { execute, isPending } = useQuery<AuthReponse>(authLogin, false, {
     onSuccess: (data) => {
       if (data) {
         setAccessToken(data.accessToken);

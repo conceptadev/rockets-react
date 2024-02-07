@@ -9,6 +9,7 @@ export type Search = Record<string, any>;
 export type HeaderProps = {
   disablePadding?: boolean;
   id: string;
+  source?: string;
   label: string;
   width?: number;
   numeric?: boolean;
@@ -67,3 +68,11 @@ export type TableQueryStateProps = {
 };
 
 export type RenderRowFunction = (row: RowProps, labelId: string) => ReactNode;
+
+export type TableResponseData = {
+  data: unknown[];
+  count: number;
+  total: number;
+  page: number;
+  pageCount: number;
+};

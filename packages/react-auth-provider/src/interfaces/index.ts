@@ -18,3 +18,8 @@ export type AuthProviderTypes = {
   accessToken: string;
   refreshToken: string;
 };
+
+export interface AuthReponse {
+  accessToken: string;
+  refreshToken: string;
+}

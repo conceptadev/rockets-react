@@ -102,7 +102,7 @@ export default function CustomAutocompleteWidget<
       queryParams,
     });
   };
-  const { execute, data, isPending } = useQuery(getResource, false);
+  const { execute, data, isPending } = useQuery<unknown[]>(getResource, false);
 
   const resourceOptions = [
     ...(Array.isArray(additionalOptions) ? additionalOptions : []),
