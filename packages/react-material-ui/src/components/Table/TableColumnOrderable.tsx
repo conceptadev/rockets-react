@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { useTableRoot } from './hooks/useTableRoot';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 
-export const TableHeaderCustomization = () => {
+export const TableColumnOrderable = () => {
   const { headers, setHeaders } = useTableRoot();
 
   const [headerOrder, setHeaderOrder] = useState<ListItem[]>(
