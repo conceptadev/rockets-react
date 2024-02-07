@@ -9,7 +9,7 @@ import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
 import { type FormData, schema } from './constants';
 
-const uri = '/forms/api/login';
+const uri = '/api/login';
 
 const Login = () => {
   const [formData, setFormData] = useState<FormData>({

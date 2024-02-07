@@ -23,7 +23,7 @@ import {
   processFile,
 } from './constants';
 
-const uri = '/forms/api/feedback';
+const uri = '/api/feedback';
 
 const FileWidget = (props: WidgetProps) => {
   return (
