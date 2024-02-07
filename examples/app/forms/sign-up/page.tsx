@@ -14,7 +14,7 @@ import {
   widgets,
 } from './constants';
 
-const uri = '/forms/api/sign-up';
+const uri = '/api/sign-up';
 
 const SignUp = () => {
   const [formData, setFormData] = useState<SignUpFormData>({

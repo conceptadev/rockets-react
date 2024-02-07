@@ -15,7 +15,7 @@ import {
   uiSchema,
 } from './constants';
 
-const uri = '/forms/api/payment-method-registration';
+const uri = '/api/payment-method-registration';
 
 const PaymentMethodRegistration = () => {
   const [formData, setFormData] = useState<PaymentMethodRegistrationFormData>({

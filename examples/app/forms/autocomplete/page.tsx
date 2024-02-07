@@ -27,7 +27,7 @@ import {
   getMaskedCurrency,
 } from './constants';
 
-const uri = '/forms/api/autocomplete';
+const uri = '/api/autocomplete';
 
 const AutocompleteWidget = (props: WidgetProps) => {
   const [options, setOptions] = useState([]);
