@@ -31,6 +31,7 @@ interface TableProps {
   tableTheme?: StyleDefinition;
   searchParam?: string;
   hideActionsColumn?: boolean;
+  reordable?: boolean;
 }
 
 interface FormProps {

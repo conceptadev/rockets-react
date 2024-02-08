@@ -90,6 +90,7 @@ interface TableSubmoduleProps {
   hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   hideAddButton?: boolean;
+  reordable?: boolean;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -231,6 +232,8 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             <Filter
               filters={[
                 {
+                  id: 'search',
+                  label: 'Search',
                   type: FilterType.Text,
                   defaultValue: searchTerm,
                   placeholder: 'Search',
@@ -257,6 +260,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
+        {props.reordable !== false && <Table.ColumnOrderable />}
         <TableContainer sx={tableTheme.tableContainer}>
           <Table.Table
             stickyHeader
