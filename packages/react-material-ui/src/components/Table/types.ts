@@ -9,6 +9,7 @@ export type Search = Record<string, any>;
 export type HeaderProps = {
   disablePadding?: boolean;
   id: string;
+  source?: string;
   label: string;
   width?: number;
   numeric?: boolean;

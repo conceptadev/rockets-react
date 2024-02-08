@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-import type { RJSFSchema, UiSchema } from '@rjsf/utils';
-import type { IChangeEvent } from '@rjsf/core';
-
-import { useMemo } from 'react';
+import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
+import type { IChangeEvent, FormProps } from '@rjsf/core';
 import {
   Box,
   Button,
@@ -18,19 +16,25 @@ import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 import { toast } from 'react-toastify';
 
-import SchemaForm from '../../../components/SchemaForm';
-
+import SchemaForm, { SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
-
-import { defaultFormProps } from '../../../modules/crud/constants';
-
-const widgets = {
-  TextWidget: CustomTextFieldWidget,
-};
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
-interface ModalFormSubmoduleProps {
+type ModalFormSubmoduleProps = PropsWithChildren<
+  Omit<
+    SchemaFormProps,
+    | 'schema'
+    | 'uiSchema'
+    | 'validator'
+    | 'onSubmit'
+    | 'noHtml5Validate'
+    | 'showErrorList'
+    | 'formData'
+    | 'readonly'
+    | 'customValidate'
+  >
+> & {
   title?: string;
   queryResource: string;
   formSchema?: RJSFSchema;
@@ -42,15 +46,34 @@ interface ModalFormSubmoduleProps {
   onClose?: () => void;
   onSubmitSuccess?: () => void;
   overrideDefaults?: boolean;
-}
+  customValidate?: CustomValidator;
+  widgets?: FormProps['widgets'];
+};
 
 const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
+  const {
+    queryResource,
+    onSubmitSuccess,
+    viewMode,
+    widgets,
+    onClose,
+    title,
+    formSchema,
+    formUiSchema,
+    formData,
+    customValidate,
+    submitButtonTitle,
+    cancelButtonTitle,
+    children,
+    ...otherProps
+  } = props;
+
   const { post, patch } = useDataProvider();
 
   const { execute: createItem, isPending: isLoadingCreation } = useQuery(
     (data: Record<string, unknown>) =>
       post({
-        uri: `/${props.queryResource}`,
+        uri: `/${queryResource}`,
         body: data,
       }),
     false,
@@ -58,8 +81,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
       onSuccess: () => {
         toast.success('Data successfully created.');
 
-        if (props.onSubmitSuccess) {
-          props.onSubmitSuccess();
+        if (onSubmitSuccess) {
+          onSubmitSuccess();
         }
       },
       onError: () => toast.error('Failed to create data.'),
@@ -69,7 +92,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
   const { execute: editItem, isPending: isLoadingEdit } = useQuery(
     (data: Record<string, unknown>) =>
       patch({
-        uri: `/${props.queryResource}/${data.id}`,
+        uri: `/${queryResource}/${data.id}`,
         body: data,
       }),
     false,
@@ -77,8 +100,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
       onSuccess: () => {
         toast.success('Data successfully updated.');
 
-        if (props.onSubmitSuccess) {
-          props.onSubmitSuccess();
+        if (onSubmitSuccess) {
+          onSubmitSuccess();
         }
       },
       onError: () => toast.error('Failed to edit data.'),
@@ -90,51 +113,26 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
   ) => {
     const fields = values.formData || {};
 
-    if (props.viewMode === 'creation') {
+    if (viewMode === 'creation') {
       await createItem(fields);
     }
 
-    if (props.viewMode === 'edit') {
+    if (viewMode === 'edit') {
       await editItem(fields);
     }
   };
 
-  const formUiSchema = useMemo(() => {
-    if (props.overrideDefaults) {
-      return props.formUiSchema || {};
-    }
-
-    return Object.entries(defaultFormProps.formUiSchema).reduce(
-      (currentSchema, currentItem) => {
-        const itemKey = currentItem[0];
-
-        if (props.formUiSchema && props.formUiSchema[itemKey]) {
-          return {
-            ...currentSchema,
-            [itemKey]: { ...currentItem[1], ...props.formUiSchema[itemKey] },
-          };
-        }
-
-        return {
-          ...currentSchema,
-          [itemKey]: currentItem[1],
-        };
-      },
-      {},
-    );
-  }, [props.overrideDefaults, props.formUiSchema]);
+  const _widgets = {
+    TextWidget: CustomTextFieldWidget,
+    ...widgets,
+  };
 
   return (
-    <Dialog
-      open={props.viewMode !== null}
-      maxWidth="md"
-      fullWidth
-      onClose={props.onClose}
-    >
-      <DialogTitle>{props.title}</DialogTitle>
+    <Dialog open={viewMode !== null} maxWidth="md" fullWidth onClose={onClose}>
+      <DialogTitle>{title}</DialogTitle>
       <IconButton
         aria-label="close"
-        onClick={props.onClose}
+        onClick={onClose}
         sx={{
           position: 'absolute',
           right: (theme) => theme.spacing(1),
@@ -147,55 +145,49 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
       <DialogContent>
         <SchemaForm.Form
           schema={{
-            ...defaultFormProps.formSchema,
-            ...props.formSchema,
-            required: props.overrideDefaults
-              ? props.formSchema?.required || []
-              : [
-                  ...(defaultFormProps.formSchema.required || []),
-                  ...(props.formSchema?.required || []),
-                ],
-            properties: props.overrideDefaults
-              ? props.formSchema?.properties || {}
-              : {
-                  ...(defaultFormProps.formSchema.properties || {}),
-                  ...(props.formSchema?.properties || {}),
-                },
+            ...formSchema,
+            required: formSchema?.required || [],
+            properties: formSchema?.properties || {},
           }}
-          uiSchema={{
-            ...formUiSchema,
-          }}
+          uiSchema={formUiSchema}
           validator={validator}
           onSubmit={handleFormSubmit}
           noHtml5Validate={true}
           showErrorList={false}
-          formData={props.formData}
-          readonly={props.viewMode === 'details'}
-          widgets={widgets}
+          formData={formData}
+          readonly={viewMode === 'details'}
+          widgets={_widgets}
+          customValidate={customValidate}
+          {...otherProps}
         >
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="flex-end"
-            mt={4}
-          >
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={isLoadingCreation || isLoadingEdit}
-              sx={{ mr: 1 }}
+          <>
+            {children}
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="flex-end"
+              mt={4}
             >
-              {isLoadingCreation || isLoadingEdit ? (
-                <CircularProgress sx={{ color: 'white' }} size={24} />
-              ) : (
-                props.submitButtonTitle || 'Save'
+              {viewMode !== 'details' && (
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={isLoadingCreation || isLoadingEdit}
+                  sx={{ flex: 1, mr: 2 }}
+                >
+                  {isLoadingCreation || isLoadingEdit ? (
+                    <CircularProgress sx={{ color: 'white' }} size={24} />
+                  ) : (
+                    submitButtonTitle || 'Save'
+                  )}
+                </Button>
               )}
-            </Button>
-            <Button variant="outlined" onClick={props.onClose} sx={{ ml: 1 }}>
-              {props.cancelButtonTitle || 'Close'}
-            </Button>
-          </Box>
+              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                {cancelButtonTitle || 'Close'}
+              </Button>
+            </Box>
+          </>
         </SchemaForm.Form>
       </DialogContent>
     </Dialog>

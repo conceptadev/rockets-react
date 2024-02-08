@@ -8,7 +8,7 @@ import { useTableQueryState } from './hooks/useTableQueryState';
 import { TableContext } from './hooks/useTableRoot';
 import { getSearchParams } from '../../utils/http';
 
-type TableRootProps =
+export type TableRootProps =
   | {
       rows: RowProps[];
       headers: HeaderProps[];
