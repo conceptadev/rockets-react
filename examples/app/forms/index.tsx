@@ -31,29 +31,29 @@ const FormsGrid = () => {
         <MuiGrid container spacing={2}>
           <MuiGrid item xs={3}>
             <GridItem>
-              <GridItemContent href="/login">Login</GridItemContent>
+              <GridItemContent href="/forms/login">Login</GridItemContent>
             </GridItem>
           </MuiGrid>
           <MuiGrid item xs={3}>
             <GridItem>
-              <GridItemContent href="/sign-up">Sign up</GridItemContent>
+              <GridItemContent href="/forms/sign-up">Sign up</GridItemContent>
             </GridItem>
           </MuiGrid>
           <MuiGrid item xs={3}>
             <GridItem>
-              <GridItemContent href="/feedback">Feedback</GridItemContent>
+              <GridItemContent href="/forms/feedback">Feedback</GridItemContent>
             </GridItem>
           </MuiGrid>
           <MuiGrid item xs={3}>
             <GridItem>
-              <GridItemContent href="/payment-method-registration">
+              <GridItemContent href="/forms/payment-method-registration">
                 Payment method registration
               </GridItemContent>
             </GridItem>
           </MuiGrid>
           <MuiGrid item xs={3}>
             <GridItem>
-              <GridItemContent href="/forms/autocomplete">
+              <GridItemContent href="/forms/forms/autocomplete">
                 Autocomplete
               </GridItemContent>
             </GridItem>
