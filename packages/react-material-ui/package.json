@@ -1,6 +1,6 @@
 {
   "name": "@concepta/react-material-ui",
-  "version": "1.0.0-alpha.23",
+  "version": "1.0.0-alpha.24",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "BSD-3-Clause",
@@ -11,8 +11,8 @@
     "dist"
   ],
   "peerDependencies": {
-    "@concepta/react-data-provider": "^1.0.0-alpha.23",
-    "@concepta/react-auth-provider": "^1.0.0-alpha.23"
+    "@concepta/react-auth-provider": "^1.0.0-alpha.23",
+    "@concepta/react-data-provider": "^1.0.0-alpha.23"
   },
   "peerDependenciesMeta": {
     "@types/react": {
