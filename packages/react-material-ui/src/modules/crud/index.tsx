@@ -130,6 +130,11 @@ const CrudModule = (props: ModuleProps) => {
           queryResource={props.resource}
           viewMode={drawerViewMode}
           formData={selectedRow}
+          onClose={() => {
+            setSelectedRow(null);
+            setDrawerViewMode(null);
+          }}
+          {...formProps}
           onSuccess={(data) => {
             tableProps.refresh();
             setSelectedRow(null);
@@ -139,11 +144,6 @@ const CrudModule = (props: ModuleProps) => {
               formProps.onSuccess(data);
             }
           }}
-          onClose={() => {
-            setSelectedRow(null);
-            setDrawerViewMode(null);
-          }}
-          {...formProps}
         >
           {formProps.children}
         </FormComponent>
