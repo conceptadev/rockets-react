@@ -25,7 +25,7 @@ Array of rules to validate one or more fields in a more specific logic. Each arr
 ```js
 [
   {
-    field: "passwordConfirmation",
+    field: 'passwordConfirmation',
     test: (value, formData) => value !== formData.password,
     message: "Passwords don't match!",
   },
@@ -133,6 +133,20 @@ Source of the logo image displayed above the form card.
 
 **type**: `string`\
 **default**: `/logo.svg`\
+**required**: `false`
+
+### **onSuccess**
+
+Callback called when the form's submit method returns successfully.
+
+**type**: `function`\
+**required**: `false`
+
+### **onError**
+
+Callback called when the form's submit method returns an error.
+
+**type**: `function`\
 **required**: `false`
 
 ## Props
