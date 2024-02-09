@@ -23,19 +23,19 @@ const getCellData = (cell: CustomTableCell | string | number | undefined) => {
     return cell.component;
   }
 
-  if (!('title' in cell)) {
-    return (
-      <Text fontSize={14} fontWeight={400} color="text.primary">
-        {cell.value ?? ''}
-      </Text>
-    );
-  } else {
+  if ('title' in cell) {
     return (
       <Tooltip title={cell.title}>
         <span>{cell.value ?? ''}</span>
       </Tooltip>
     );
   }
+
+  return (
+    <Text fontSize={14} fontWeight={400} color="text.primary">
+      {cell.value ?? ''}
+    </Text>
+  );
 };
 
 type TableBodyCellsProps = {
@@ -54,6 +54,8 @@ export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
   return (
     <>
       {headers.map((header) => {
+        if (header.hide) return null;
+
         return (
           <TableCell key={header.id} {...rest}>
             {getCellData(row[header.source || header.id])}

@@ -37,7 +37,7 @@ export type TableRootProps =
 export const TableRoot = ({
   children,
   rows = [],
-  headers = [],
+  headers: initialHeaders = [],
   total,
   pageCount,
   tableQueryState: controlledTableQueryState,
@@ -50,6 +50,7 @@ export const TableRoot = ({
   const { tableQueryState, setTableQueryState } = useTableQueryState();
 
   const [selected, setSelected] = useState<RowProps[]>([]);
+  const [headers, setHeaders] = useState<HeaderProps[]>(initialHeaders);
 
   const isControlled = !!controlledTableQueryState;
   const handleUpdateTableQuery = isControlled
@@ -201,6 +202,7 @@ export const TableRoot = ({
         isControlled,
         tableQuery: isControlled ? controlledTableQueryState : tableQueryState,
         selected,
+        setHeaders,
         isSelected,
         handleChangePage,
         handleChangeRowsPerPage,

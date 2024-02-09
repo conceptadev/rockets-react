@@ -29,7 +29,7 @@ export type SearchFieldProps = {
   searchIconPlacement?: 'start' | 'end';
   defaultValue?: string;
   wait?: number;
-  onDebouncedSearchChange: (searchTerm: string) => void;
+  onDebouncedSearchChange?: (value: string) => void;
   onClear?: () => void;
 } & TextFieldProps;
 
@@ -40,6 +40,7 @@ const SearchField = ({
   onDebouncedSearchChange,
   onClear,
   placeholder = 'Search',
+  onChange,
   ...props
 }: SearchFieldProps) => {
   const firstRender = useRef(true);
@@ -52,8 +53,10 @@ const SearchField = ({
     [],
   );
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+    onChange?.(event);
+  };
 
   useEffect(() => {
     // Keep track of the first render to avoid triggering onDebouncedSearchChange
@@ -66,6 +69,15 @@ const SearchField = ({
     // Avoid adding handleDebouncedSearch to the dependency array
     // to prevent an infinite loop.
   }, [value]);
+
+  const handleClear = () => {
+    if (onClear) {
+      return onClear();
+    }
+    setSearch('');
+    // force the onChange event to be triggered with empty value
+    onChange?.({ target: { value: '' } } as ChangeEvent<HTMLInputElement>);
+  };
 
   return (
     <TextField
@@ -90,7 +102,7 @@ const SearchField = ({
                 visibility: value ? 'visible' : 'hidden',
               }}
               aria-label="clear search"
-              onClick={() => (onClear ? onClear() : setSearch(''))}
+              onClick={handleClear}
             >
               <Clear fontSize="small" />
             </IconButton>

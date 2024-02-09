@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { Grid, GridProps } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Grid, GridProps } from '@mui/material';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
@@ -12,6 +12,7 @@ import {
   allOption,
 } from '../../components/SelectField/SelectField';
 import { SearchFieldProps } from '../../components/SearchField/SearchField';
+import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 
 export enum FilterType {
   Text = 'text',
@@ -20,9 +21,13 @@ export enum FilterType {
 }
 
 type FilterCommon = {
+  id: string;
+  label: string;
   isLoading?: boolean;
   columns?: number;
   size?: SearchFieldProps['size'] | SelectFieldProps['size'];
+  showOnMount?: boolean;
+  hide?: boolean;
 };
 
 type TextFilter = {
@@ -30,12 +35,13 @@ type TextFilter = {
   placeholder?: string;
   defaultValue?: string;
   onChange: (value: string) => void;
+  onDebouncedSearchChange?: (value: string) => void;
+  value?: string;
 } & FilterCommon;
 
 type AutocompleteFilter = {
   type: FilterType.Autocomplete;
   options: SelectOption[];
-  label?: string;
   currentValue?: string;
   defaultValue?: SelectOption;
   onChange: (value: string | null) => void;
@@ -44,17 +50,17 @@ type AutocompleteFilter = {
 type SelectFilter = {
   type: FilterType.Select;
   options: SelectOption[];
-  label: string;
   defaultValue?: string;
   size?: SelectFieldProps['size'];
   onChange: (value: string | null) => void;
+  value?: string | null;
 } & FilterCommon;
 
 export type Filter = TextFilter | AutocompleteFilter | SelectFilter;
 
 const renderComponent = (filter: Filter) => {
   switch (filter.type) {
-    case 'autocomplete':
+    case 'autocomplete': {
       return (
         <AutocompleteField
           key={filter?.defaultValue?.value}
@@ -63,10 +69,12 @@ const renderComponent = (filter: Filter) => {
           options={filter.options}
           isLoading={filter.isLoading}
           onChange={filter.onChange}
-          currentValue={filter.currentValue}
+          currentValue={filter.currentValue || ''}
           defaultValue={filter.defaultValue ?? allOption}
+          label={filter.label}
         />
       );
+    }
 
     case 'select':
       return (
@@ -76,8 +84,9 @@ const renderComponent = (filter: Filter) => {
           label={filter.label}
           isLoading={filter.isLoading}
           options={filter.options}
-          defaultValue={filter.defaultValue}
+          defaultValue={filter.defaultValue || ''}
           onChange={filter.onChange}
+          value={filter.value}
         />
       );
 
@@ -88,7 +97,14 @@ const renderComponent = (filter: Filter) => {
           placeholder={filter.placeholder}
           size={filter.size ?? 'small'}
           defaultValue={filter.defaultValue}
-          onDebouncedSearchChange={filter.onChange}
+          label={filter.label}
+          value={filter.value}
+          onChange={(e) => filter.onChange?.(e.target.value)}
+          onDebouncedSearchChange={
+            filter.onDebouncedSearchChange
+              ? (value) => filter.onDebouncedSearchChange?.(value)
+              : undefined
+          }
         />
       );
 
@@ -104,14 +120,40 @@ export type FilterProps = {
 const Filter = (props: FilterProps) => {
   const { filters, ...rest } = props;
 
+  const [filterOrder, setFilterOrder] = useState<ListItem[]>(
+    filters.map((filter) => ({ id: filter.id, label: filter.label })),
+  );
+
   return (
-    <Grid container gap={2} {...rest}>
-      {filters.map((filter, index) => (
-        <Grid key={`filter-${index}`} item xs={12} md={filter.columns || 12}>
-          {renderComponent(filter)}
-        </Grid>
-      ))}
-    </Grid>
+    <Box display="flex" width="100%">
+      <Grid container spacing={2} {...rest}>
+        {filterOrder.map((filter, index) => {
+          const filterIndex = filters.findIndex((f) => f.id === filter.id);
+          if (filterIndex === -1) {
+            return null;
+          }
+          const currentFilter = filters[filterIndex];
+
+          if (filter.hide) {
+            return null;
+          }
+
+          return (
+            <Grid
+              key={`filter-${index}`}
+              item
+              xs={12}
+              md={currentFilter.columns || 12}
+            >
+              {renderComponent(currentFilter)}
+            </Grid>
+          );
+        })}
+      </Grid>
+      <Box>
+        <OrderableDropDown list={filterOrder} setList={setFilterOrder} />
+      </Box>
+    </Box>
   );
 };
 
