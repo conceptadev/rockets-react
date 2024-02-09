@@ -270,13 +270,15 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
           >
             <TableHead>
               <TableRow sx={tableTheme.tableHeaderRow}>
-                {tableHeaders.map((header) => (
-                  <Table.HeaderCell
-                    key={header.id}
-                    cell={header}
-                    sx={tableTheme.tableHeaderCell}
-                  />
-                ))}
+                <Table.HeaderCells
+                  renderCell={(cell: HeaderProps) => (
+                    <Table.HeaderCell
+                      key={cell.id}
+                      cell={cell}
+                      sx={tableTheme.tableHeaderCell}
+                    />
+                  )}
+                />
               </TableRow>
             </TableHead>
             <TableBody>
