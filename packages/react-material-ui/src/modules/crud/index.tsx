@@ -6,7 +6,6 @@ import type { HeaderProps } from '../../components/Table/types';
 
 import { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
-import { toast } from 'react-toastify';
 
 import useTable from '../../components/Table/useTable';
 import { TableProps as InnerTableProps } from '../../components/Table/Table';
@@ -32,6 +31,8 @@ interface TableProps {
   searchParam?: string;
   hideActionsColumn?: boolean;
   reordable?: boolean;
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
 }
 
 interface FormProps {
@@ -40,6 +41,8 @@ interface FormProps {
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
   customValidate?: CustomValidator;
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: unknown) => void;
 }
 
 interface ModuleProps {
@@ -51,6 +54,7 @@ interface ModuleProps {
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
   hideDeleteButton?: boolean;
+  onFetchError?: (error: unknown) => void;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -59,7 +63,7 @@ const CrudModule = (props: ModuleProps) => {
 
   const tableProps = useTable(props.resource, {
     callbacks: {
-      onError: () => toast.error('Failed to fetch data.'),
+      onError: props.onFetchError,
     },
   });
 
@@ -124,10 +128,14 @@ const CrudModule = (props: ModuleProps) => {
           queryResource={props.resource}
           viewMode={drawerViewMode}
           formData={selectedRow}
-          onSubmitSuccess={() => {
+          onSuccess={(data) => {
             tableProps.refresh();
             setSelectedRow(null);
             setDrawerViewMode(null);
+
+            if (formProps.onSuccess) {
+              formProps.onSuccess(data);
+            }
           }}
           onClose={() => {
             setSelectedRow(null);
