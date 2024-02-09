@@ -54,6 +54,7 @@ const AutocompleteField = ({
   };
 
   const optionsWithAll = [allOption, ...options];
+  const value = optionsWithAll.find((option) => option.value === currentValue);
 
   return (
     <Autocomplete
@@ -64,6 +65,7 @@ const AutocompleteField = ({
       onChange={handleChange}
       options={optionsWithAll}
       renderInput={handleRenderInput}
+      value={value}
       {...rest}
     />
   );
