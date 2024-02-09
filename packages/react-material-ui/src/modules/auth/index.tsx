@@ -32,8 +32,8 @@ interface ModuleProps {
   queryMethod?: string;
   submitButtonTitle?: string;
   logoSrc?: string;
-  successFeedbackMessage?: string;
-  errorFeedbackMessage?: string;
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: unknown) => void;
 }
 
 interface AuthModuleProps {

@@ -9,9 +9,8 @@ import type { ValidationRule } from '../../../utils/form/validation';
 import { useState } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { useAuth } from '@concepta/react-auth-provider';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import validator from '@rjsf/validator-ajv6';
-import { toast } from 'react-toastify';
 import { Box, Button, Container, Card, CircularProgress } from '@mui/material';
 
 import Text from '../../../components/Text';
@@ -51,15 +50,14 @@ interface AuthFormSubmoduleProps {
   customValidation?: ValidationRule<Record<string, string>>[];
   submitButtonTitle?: string;
   logoSrc?: string;
-  successFeedbackMessage?: string;
-  errorFeedbackMessage?: string;
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: unknown) => void;
   overrideDefaults?: boolean;
 }
 
 const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
-  const router = useRouter();
   const searchParams = useSearchParams();
   const passcode = searchParams.get('token');
 
@@ -81,21 +79,8 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
       }),
     false,
     {
-      onSuccess() {
-        toast.success(props.successFeedbackMessage || 'Success!');
-
-        if (props.signInPath) {
-          router.push(props.signInPath);
-        }
-      },
-      onError: (error) => {
-        toast.error(
-          props.errorFeedbackMessage ||
-            // @ts-expect-error TODO: fix types in rockets-react
-            error?.response?.data?.message ||
-            'An error has occurred. Please try again later or contact support for assistance.',
-        );
-      },
+      onSuccess: props.onSuccess,
+      onError: props.onError,
     },
   );
 

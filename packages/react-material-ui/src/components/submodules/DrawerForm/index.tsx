@@ -6,7 +6,6 @@ import type { IChangeEvent, FormProps } from '@rjsf/core';
 import { Box, Drawer, Button, CircularProgress } from '@mui/material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
-import { toast } from 'react-toastify';
 
 import SchemaForm, { SchemaFormProps } from '../../../components/SchemaForm';
 
@@ -37,15 +36,15 @@ type DrawerFormSubmoduleProps = PropsWithChildren<
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
   onClose?: () => void;
-  onSubmitSuccess?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: unknown) => void;
 };
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
   const {
     queryResource,
-    onSubmitSuccess,
     viewMode,
     widgets,
     formSchema,
@@ -56,6 +55,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     onClose,
     cancelButtonTitle,
     children,
+    onSuccess,
+    onError,
     ...otherProps
   } = props;
   const { post, patch } = useDataProvider();
@@ -68,14 +69,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
       }),
     false,
     {
-      onSuccess: () => {
-        toast.success('Data successfully created.');
-
-        if (onSubmitSuccess) {
-          onSubmitSuccess();
-        }
-      },
-      onError: () => toast.error('Failed to create data.'),
+      onSuccess: onSuccess,
+      onError: onError,
     },
   );
 
@@ -87,14 +82,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
       }),
     false,
     {
-      onSuccess: () => {
-        toast.success('Data successfully updated.');
-
-        if (onSubmitSuccess) {
-          onSubmitSuccess();
-        }
-      },
-      onError: () => toast.error('Failed to edit data.'),
+      onSuccess: onSuccess,
+      onError: onError,
     },
   );
 

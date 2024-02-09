@@ -14,7 +14,6 @@ import {
 import { Close as CloseIcon } from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
-import { toast } from 'react-toastify';
 
 import SchemaForm, { SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
@@ -44,16 +43,15 @@ type ModalFormSubmoduleProps = PropsWithChildren<
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
   onClose?: () => void;
-  onSubmitSuccess?: () => void;
-  overrideDefaults?: boolean;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: unknown) => void;
 };
 
 const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
   const {
     queryResource,
-    onSubmitSuccess,
     viewMode,
     widgets,
     onClose,
@@ -65,6 +63,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     submitButtonTitle,
     cancelButtonTitle,
     children,
+    onSuccess,
+    onError,
     ...otherProps
   } = props;
 
@@ -78,14 +78,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
       }),
     false,
     {
-      onSuccess: () => {
-        toast.success('Data successfully created.');
-
-        if (onSubmitSuccess) {
-          onSubmitSuccess();
-        }
-      },
-      onError: () => toast.error('Failed to create data.'),
+      onSuccess: onSuccess,
+      onError: onError,
     },
   );
 
@@ -97,14 +91,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
       }),
     false,
     {
-      onSuccess: () => {
-        toast.success('Data successfully updated.');
-
-        if (onSubmitSuccess) {
-          onSubmitSuccess();
-        }
-      },
-      onError: () => toast.error('Failed to edit data.'),
+      onSuccess: onSuccess,
+      onError: onError,
     },
   );
 
