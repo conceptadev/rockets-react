@@ -21,12 +21,12 @@ Important to mention that `format` represents a custom format for the column dat
 ```js
 [
   {
-    id: "fullName", // required
-    label: "Full Name", // required
+    id: 'fullName', // required
+    label: 'Full Name', // required
     disablePadding: false,
     width: 100,
     numeric: false,
-    textAlign: "left" | "center" | "right",
+    textAlign: 'left' | 'center' | 'right',
     sortable: true,
     format: (value: string | number) => new Date(value).toString(),
   },
@@ -61,7 +61,21 @@ Based on this prop, the table defaults can be overritten and only the values pas
 **default**: `false`\
 **required**: `false`
 
-## **DrawerFormProps**
+### **onDeleteSuccess**
+
+Callback called when the an item of the table is deleted successfully.
+
+**type**: `function`\
+**required**: `false`
+
+### **onDeleteError**
+
+Callback called when the delete item request returns an error.
+
+**type**: `function`\
+**required**: `false`
+
+## **FormProps**
 
 Props passed to modify layout/functionality of the edit/create form, displayed on a drawer by default.
 
@@ -103,6 +117,20 @@ Based on this prop, the edit/create form defaults can be overritten and only the
 **default**: `false`\
 **required**: `false`
 
+### **onSuccess**
+
+Callback called when the form's submit method returns successfully.
+
+**type**: `function`\
+**required**: `false`
+
+### **onError**
+
+Callback called when the form's submit method returns an error.
+
+**type**: `function`\
+**required**: `false`
+
 ## Props
 
 Set of props passed to the `CrudModule` instance.
@@ -134,5 +162,12 @@ Name of the API resource accessed by the module workflows. Directly implies how 
 
 ### **formProps**
 
-**type**: `DrawerFormProps`\
+**type**: `FormProps`\
+**required**: `false`
+
+### **onFetchError**
+
+Callback called when the table data fetching returns an error.
+
+**type**: `function`\
 **required**: `false`
