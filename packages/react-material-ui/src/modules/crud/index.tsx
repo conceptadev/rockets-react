@@ -30,6 +30,7 @@ interface TableProps {
   tableTheme?: StyleDefinition;
   searchParam?: string;
   hideActionsColumn?: boolean;
+  reordable?: boolean;
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
 }
