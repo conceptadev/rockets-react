@@ -89,6 +89,7 @@ interface TableSubmoduleProps {
   hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   hideAddButton?: boolean;
+  reordable?: boolean;
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
 }
@@ -234,6 +235,8 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             <Filter
               filters={[
                 {
+                  id: 'search',
+                  label: 'Search',
                   type: FilterType.Text,
                   defaultValue: searchTerm,
                   placeholder: 'Search',
@@ -260,6 +263,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
+        {props.reordable !== false && <Table.ColumnOrderable />}
         <TableContainer sx={tableTheme.tableContainer}>
           <Table.Table
             stickyHeader
@@ -269,13 +273,15 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
           >
             <TableHead>
               <TableRow sx={tableTheme.tableHeaderRow}>
-                {tableHeaders.map((header) => (
-                  <Table.HeaderCell
-                    key={header.id}
-                    cell={header}
-                    sx={tableTheme.tableHeaderCell}
-                  />
-                ))}
+                <Table.HeaderCells
+                  renderCell={(cell: HeaderProps) => (
+                    <Table.HeaderCell
+                      key={cell.id}
+                      cell={cell}
+                      sx={tableTheme.tableHeaderCell}
+                    />
+                  )}
+                />
               </TableRow>
             </TableHead>
             <TableBody>
