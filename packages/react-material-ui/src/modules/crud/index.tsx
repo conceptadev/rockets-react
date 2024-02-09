@@ -41,7 +41,7 @@ interface FormProps {
   customValidate?: CustomValidator;
 }
 
-interface ModuleProps {
+export interface ModuleProps {
   title?: string;
   resource: string;
   tableProps: TableProps;
