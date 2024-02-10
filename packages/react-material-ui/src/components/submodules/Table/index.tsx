@@ -26,7 +26,6 @@ import {
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import { toast } from 'react-toastify';
 
 import Table from '../../../components/Table';
 import { generateTableTheme } from './constants';
@@ -92,6 +91,8 @@ export interface TableSubmoduleProps {
   hideAddButton?: boolean;
   reordable?: boolean;
   filters?: FilterDetails[];
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -106,14 +107,16 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
       }),
     false,
     {
-      onSuccess: () => {
-        toast.success('Data successfully deleted.');
-
+      onSuccess: (data: unknown) => {
         if (props.refresh) {
           props.refresh();
         }
+
+        if (props.onDeleteSuccess) {
+          props.onDeleteSuccess(data);
+        }
       },
-      onError: () => toast.error('Failed to delete data.'),
+      onError: props.onDeleteError,
     },
   );
 
