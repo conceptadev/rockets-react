@@ -28,12 +28,13 @@ import {
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { toast } from 'react-toastify';
 
-import Filter from '../../../components/Filter';
-import { FilterType } from '../../../components/Filter/Filter';
 import Table from '../../../components/Table';
 import { generateTableTheme } from './constants';
 import { TableRootProps } from '../../../components/Table/TableRoot';
 import { TableProps } from '../../../components/Table/Table';
+import FilterSubmodule, {
+  FilterDetails,
+} from '../../../components/submodules/Filter';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -62,7 +63,7 @@ type TableSchemaItem = HeaderProps & {
   format?: (data: unknown) => string | number;
 };
 
-interface TableSubmoduleProps {
+export interface TableSubmoduleProps {
   tableRootProps?: TableRootProps;
   tableProps?: TableProps;
   tableTheme?: StyleDefinition;
@@ -84,18 +85,16 @@ interface TableSubmoduleProps {
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
   >;
-  searchParam?: string;
   hideActionsColumn?: boolean;
   hideEditButton?: boolean;
   hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   hideAddButton?: boolean;
   reordable?: boolean;
+  filters?: FilterDetails[];
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
-  const [searchTerm, setSearchTerm] = useState('');
-
   const theme = useTheme();
 
   const { del } = useDataProvider();
@@ -117,31 +116,6 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
       onError: () => toast.error('Failed to delete data.'),
     },
   );
-
-  const handleSearchChange = (term: string) => {
-    setSearchTerm(term);
-
-    if (!props.updateSimpleFilter || !props.searchParam) {
-      return;
-    }
-
-    if (!term) {
-      props.updateSimpleFilter(
-        {
-          [props.searchParam]: null,
-        },
-        true,
-      );
-
-      return;
-    }
-
-    const filter = {
-      [props.searchParam]: `||$contL||${term}`,
-    };
-
-    props.updateSimpleFilter(filter, true);
-  };
 
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
@@ -220,36 +194,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
   return (
     <Box>
-      <Box
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={2}
-      >
-        {props.searchParam && (
-          <Box sx={{ width: '60%' }}>
-            <Filter
-              filters={[
-                {
-                  id: 'search',
-                  label: 'Search',
-                  type: FilterType.Text,
-                  defaultValue: searchTerm,
-                  placeholder: 'Search',
-                  onChange: handleSearchChange,
-                },
-              ]}
-            />
-          </Box>
-        )}
-        {!props.hideAddButton && (
-          <Button variant="contained" onClick={props.onAddNew}>
-            Add new
-          </Button>
-        )}
-      </Box>
-
+      {!props.hideAddButton && (
+        <Button variant="contained" onClick={props.onAddNew} sx={{ mb: 2 }}>
+          Add new
+        </Button>
+      )}
       <Table.Root
         rows={tableRows}
         headers={tableHeaders}
@@ -260,7 +209,19 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
-        {props.reordable !== false && <Table.ColumnOrderable />}
+        {(props.filters || props.reordable !== false) && (
+          <Box display="flex" mb={2} pt={1} justifyContent="flex-end">
+            {props.filters && (
+              <FilterSubmodule
+                filters={props.filters}
+                updateSimpleFilter={props.updateSimpleFilter}
+                simpleFilter={props.simpleFilter}
+              />
+            )}
+            {props.reordable !== false && <Table.ColumnOrderable />}
+          </Box>
+        )}
+
         <TableContainer sx={tableTheme.tableContainer}>
           <Table.Table
             stickyHeader
@@ -282,7 +243,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {Boolean(searchTerm && !props.data?.length) && (
+              {Boolean(!props.isPending && !props.data?.length) && (
                 <TableRow sx={tableTheme.tableBodyRow}>
                   <TableCell
                     colSpan={tableHeaders.length}

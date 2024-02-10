@@ -48,10 +48,9 @@ const SearchField = ({
 
   const value = props.value ?? search;
 
-  const handleDebouncedSearch = useMemo(
-    () => debounce(onDebouncedSearchChange, wait),
-    [],
-  );
+  const handleDebouncedSearch =
+    onDebouncedSearchChange &&
+    useMemo(() => debounce(onDebouncedSearchChange, wait), []);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);

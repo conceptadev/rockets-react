@@ -7,6 +7,7 @@ import {
   Order,
   Search,
   SimpleFilter,
+  UpdateSimpleFilter,
   TableQueryStateProps,
   TableResponseData,
 } from './types';
@@ -39,10 +40,7 @@ export type UseTableProps = (
   pageCount: number;
   execute: () => void;
   refresh: () => void;
-  updateSimpleFilter: (
-    simpleFilter: SimpleFilter | null,
-    resetPage?: boolean,
-  ) => void;
+  updateSimpleFilter: UpdateSimpleFilter;
   updateSearch: (search: Search | null, resetPage?: boolean) => void;
   simpleFilter: SimpleFilter;
   search: Search;

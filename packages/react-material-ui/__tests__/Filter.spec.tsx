@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
-import Filter, { FilterType } from '../src/components/Filter/Filter';
+import Filter from '../src/components/Filter/Filter';
 
 describe('Filter Component', () => {
   it('renders textfield component if type is "Text"', () => {
@@ -13,7 +13,9 @@ describe('Filter Component', () => {
       <Filter
         filters={[
           {
-            type: FilterType['Text'],
+            id: 'text',
+            label: 'Text',
+            type: 'text',
             placeholder: 'Test Placeholder',
             onChange: jest.fn(),
           },
@@ -30,7 +32,8 @@ describe('Filter Component', () => {
       <Filter
         filters={[
           {
-            type: FilterType['Autocomplete'],
+            id: 'autocomplete',
+            type: 'autocomplete',
             options: [
               {
                 label: 'Test',
@@ -54,7 +57,8 @@ describe('Filter Component', () => {
       <Filter
         filters={[
           {
-            type: FilterType['Select'],
+            id: 'select',
+            type: 'select',
             options: [
               {
                 label: 'Test',
@@ -77,12 +81,15 @@ describe('Filter Component', () => {
       <Filter
         filters={[
           {
-            type: FilterType['Text'],
+            id: 'text',
+            label: 'Text',
+            type: 'text',
             placeholder: 'Text Test Placeholder',
             onChange: jest.fn(),
           },
           {
-            type: FilterType['Autocomplete'],
+            id: 'autocomplete',
+            type: 'autocomplete',
             options: [
               {
                 label: 'Autocomplete Test',
@@ -94,7 +101,8 @@ describe('Filter Component', () => {
             isLoading: false,
           },
           {
-            type: FilterType['Select'],
+            id: 'select',
+            type: 'select',
             options: [
               {
                 label: 'Test',
