@@ -74,7 +74,8 @@ const FilterSubmodule: FC<Props> = ({
   };
 
   const filterObjs: FilterType[] = filters.map((filter) => {
-    const { id, label, columns, type, options, operator } = filter;
+    const { id, label, columns, type, options, operator, isLoading, size } =
+      filter;
 
     const initialValue = String(simpleFilter?.[id])?.split('||')[2];
 
@@ -88,6 +89,8 @@ const FilterSubmodule: FC<Props> = ({
       options,
       operator,
       value,
+      isLoading,
+      size,
       onChange: (val: string | null) => onFilterChange(id, val, true),
       ...(type === 'text' && {
         onChange: (val: string | null) => onFilterChange(id, val, false),
