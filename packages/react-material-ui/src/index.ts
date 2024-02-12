@@ -50,4 +50,4 @@ export { FormFieldSkeleton };
 
 export { default as AuthModule } from './modules/auth';
 export { default as CrudModule } from './modules/crud';
-export { default as UsersModule } from './modules/user';
+export { default as UsersModule } from './modules/users';

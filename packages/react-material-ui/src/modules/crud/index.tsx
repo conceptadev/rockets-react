@@ -98,6 +98,13 @@ const CrudModule = (props: ModuleProps) => {
     props.editFormProps,
   ]);
 
+  // To prevent accidental overriding of the `onSuccess` callback
+  // during props destructuring in the `FormComponent`,
+  // we remove it from `formProps` and store it separately.
+  const formOnSuccess = formProps?.onSuccess;
+  const enhancedFormProps = { ...formProps };
+  delete enhancedFormProps.onSuccess;
+
   return (
     <Box>
       {props.title ? (
@@ -124,7 +131,7 @@ const CrudModule = (props: ModuleProps) => {
         {...props.tableProps}
       />
 
-      {formProps && (
+      {enhancedFormProps && (
         <FormComponent
           title={props.title}
           queryResource={props.resource}
@@ -135,17 +142,17 @@ const CrudModule = (props: ModuleProps) => {
             setSelectedRow(null);
             setDrawerViewMode(null);
 
-            if (formProps.onSuccess) {
-              formProps.onSuccess(data);
+            if (formOnSuccess) {
+              formOnSuccess(data);
             }
           }}
           onClose={() => {
             setSelectedRow(null);
             setDrawerViewMode(null);
           }}
-          {...formProps}
+          {...enhancedFormProps}
         >
-          {formProps.children}
+          {enhancedFormProps.children}
         </FormComponent>
       )}
     </Box>
