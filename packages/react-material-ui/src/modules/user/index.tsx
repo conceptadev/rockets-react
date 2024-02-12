@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import CrudModule, { ModuleProps } from 'modules/crud';
+import CrudModule, { ModuleProps } from '../../modules/crud';
 import { headers, schema, uiSchema } from './constants';
 
 const UsersModule = (props: ModuleProps) => {
@@ -11,6 +11,7 @@ const UsersModule = (props: ModuleProps) => {
       resource="user"
       tableProps={{
         tableSchema: headers,
+        reordable: true,
       }}
       editFormProps={{
         formSchema: schema,

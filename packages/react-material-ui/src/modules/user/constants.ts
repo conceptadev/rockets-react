@@ -1,6 +1,6 @@
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
 import { HeaderProps } from 'components/Table/types';
-import { CustomTextFieldWidget } from 'styles/CustomWidgets';
+import { CustomTextFieldWidget } from '../../styles/CustomWidgets';
 
 export const schema: RJSFSchema = {
   type: 'object',
