@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
+import { FilterAlt } from '@mui/icons-material';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
@@ -147,7 +148,11 @@ const Filter = (props: FilterProps) => {
         })}
       </Grid>
       <Box>
-        <OrderableDropDown list={filterOrder} setList={setFilterOrder} />
+        <OrderableDropDown
+          icon={<FilterAlt />}
+          list={filterOrder}
+          setList={setFilterOrder}
+        />
       </Box>
     </Box>
   );

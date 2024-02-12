@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, FC } from 'react';
+import React, { useState, ReactNode } from 'react';
 import ListItem from '@mui/material/ListItem';
 
 import {
@@ -40,6 +40,7 @@ export interface ListItem {
 
 interface Props {
   list: ListItem[];
+  icon?: ReactNode;
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
 }
 
@@ -87,7 +88,11 @@ function SortableItem(props: SortableItemProps) {
   );
 }
 
-const OrderableDropDown: FC<Props> = ({ list, setList }) => {
+const OrderableDropDown = ({
+  list,
+  setList,
+  icon = <SettingsSuggest />,
+}: Props) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -141,7 +146,7 @@ const OrderableDropDown: FC<Props> = ({ list, setList }) => {
           setAnchorEl(event.currentTarget);
         }}
       >
-        <SettingsSuggest />
+        {icon}
       </IconButton>
       <Menu open={open} anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
         <DndContext
