@@ -12,6 +12,7 @@ import { TableProps as InnerTableProps } from '../../components/Table/Table';
 import Text from '../../components/Text';
 import TableSubmodule, {
   StyleDefinition,
+  TableSubmoduleProps,
 } from '../../components/submodules/Table';
 import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
 import ModalFormSubmodule from '../../components/submodules/ModalForm';
@@ -31,6 +32,7 @@ interface TableProps {
   searchParam?: string;
   hideActionsColumn?: boolean;
   reordable?: boolean;
+  filters?: TableSubmoduleProps['filters'];
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
 }
