@@ -14,13 +14,9 @@ import {
 import { SearchFieldProps } from '../../components/SearchField/SearchField';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 
-export enum FilterType {
-  Text = 'text',
-  Autocomplete = 'autocomplete',
-  Select = 'select',
-}
+export type FilterVariant = 'text' | 'autocomplete' | 'select';
 
-type FilterCommon = {
+export type FilterCommon = {
   id: string;
   label: string;
   isLoading?: boolean;
@@ -31,16 +27,16 @@ type FilterCommon = {
 };
 
 type TextFilter = {
-  type: FilterType.Text;
+  type: 'text';
   placeholder?: string;
   defaultValue?: string;
-  onChange: (value: string) => void;
+  onChange?: (value: string) => void;
   onDebouncedSearchChange?: (value: string) => void;
   value?: string;
 } & FilterCommon;
 
 type AutocompleteFilter = {
-  type: FilterType.Autocomplete;
+  type: 'autocomplete';
   options: SelectOption[];
   currentValue?: string;
   defaultValue?: SelectOption;
@@ -48,7 +44,7 @@ type AutocompleteFilter = {
 } & FilterCommon;
 
 type SelectFilter = {
-  type: FilterType.Select;
+  type: 'select';
   options: SelectOption[];
   defaultValue?: string;
   size?: SelectFieldProps['size'];
@@ -56,9 +52,9 @@ type SelectFilter = {
   value?: string | null;
 } & FilterCommon;
 
-export type Filter = TextFilter | AutocompleteFilter | SelectFilter;
+export type FilterType = TextFilter | AutocompleteFilter | SelectFilter;
 
-const renderComponent = (filter: Filter) => {
+const renderComponent = (filter: FilterType) => {
   switch (filter.type) {
     case 'autocomplete': {
       return (
@@ -114,7 +110,7 @@ const renderComponent = (filter: Filter) => {
 };
 
 export type FilterProps = {
-  filters: Filter[];
+  filters: FilterType[];
 } & GridProps;
 
 const Filter = (props: FilterProps) => {

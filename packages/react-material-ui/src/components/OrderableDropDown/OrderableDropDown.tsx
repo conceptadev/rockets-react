@@ -135,7 +135,7 @@ const OrderableDropDown: FC<Props> = ({ list, setList }) => {
   };
 
   return (
-    <Box display="flex" justifyContent="flex-end" mb={2}>
+    <Box>
       <IconButton
         onClick={(event: React.MouseEvent<HTMLElement>) => {
           setAnchorEl(event.currentTarget);
