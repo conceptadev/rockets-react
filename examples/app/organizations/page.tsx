@@ -57,6 +57,22 @@ const Organizations = () => {
           },
         ],
         searchParam: 'name',
+        filters: [
+          {
+            id: 'id',
+            label: 'ID',
+            operator: 'eq',
+            type: 'text',
+            columns: 3,
+          },
+          {
+            id: 'name',
+            label: 'Name',
+            operator: 'contL',
+            type: 'text',
+            columns: 3,
+          },
+        ],
       }}
       formProps={{
         overrideDefaults: true,
