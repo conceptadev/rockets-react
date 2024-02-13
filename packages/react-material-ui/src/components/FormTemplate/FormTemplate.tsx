@@ -38,9 +38,9 @@ const FormTemplate = ({
           textAlign: 'center',
           padding: '48px 0',
         },
-        ...(Array.isArray(containerProps.sx)
+        ...(Array.isArray(containerProps?.sx)
           ? containerProps.sx
-          : [containerProps.sx]),
+          : [containerProps?.sx]),
       ]}
     >
       {icon && icon}
@@ -72,7 +72,7 @@ const FormTemplate = ({
             flexDirection: 'column',
             justifyContent: 'center',
           },
-          ...(Array.isArray(cardProps.sx) ? cardProps.sx : [cardProps.sx]),
+          ...(Array.isArray(cardProps?.sx) ? cardProps.sx : [cardProps?.sx]),
         ]}
       >
         {children}
