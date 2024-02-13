@@ -60,7 +60,6 @@ const renderComponent = (filter: FilterType) => {
     case 'autocomplete': {
       return (
         <AutocompleteField
-          key={filter?.defaultValue?.value}
           fullWidth
           size={filter.size ?? 'small'}
           options={filter.options}
@@ -124,7 +123,7 @@ const Filter = (props: FilterProps) => {
   return (
     <Box display="flex" width="100%">
       <Grid container spacing={2} {...rest}>
-        {filterOrder.map((filter, index) => {
+        {filterOrder.map((filter) => {
           const filterIndex = filters.findIndex((f) => f.id === filter.id);
           if (filterIndex === -1) {
             return null;
@@ -137,7 +136,7 @@ const Filter = (props: FilterProps) => {
 
           return (
             <Grid
-              key={`filter-${index}`}
+              key={`filter-${filter.id}`}
               item
               xs={12}
               md={currentFilter.columns || 12}

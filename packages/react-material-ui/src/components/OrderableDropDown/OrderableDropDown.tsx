@@ -52,7 +52,7 @@ interface SortableItemProps {
   labelId: string;
 }
 
-function SortableItem(props: SortableItemProps) {
+const SortableItem = (props: SortableItemProps) => {
   const { id, checked, label, handleToggle, labelId } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -86,7 +86,7 @@ function SortableItem(props: SortableItemProps) {
       </ListItem>
     </div>
   );
-}
+};
 
 const OrderableDropDown = ({
   list,
