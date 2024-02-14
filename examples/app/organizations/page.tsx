@@ -31,29 +31,17 @@ const Organizations = () => {
       formContainerVariation="modal"
       title="Organization management"
       tableProps={{
-        overrideDefaults: true,
         tableSchema: [
           { id: 'id', label: 'ID' },
           { id: 'name', label: 'Name' },
           { id: 'address', label: 'Address' },
           { id: 'city', label: 'City' },
           { id: 'state', label: 'State' },
-          {
-            id: 'phone',
-            label: 'Phone',
-            format: (row: Record<string, string>) => getMaskedPhone(row.phone),
-          },
-          {
-            id: 'owner',
-            label: 'Owner',
-            format: (row: Record<string, Record<string, string>>) =>
-              `${row.owner.firstName} ${row.owner.lastName}`,
-          },
+          { id: 'phone', label: 'Phone' },
           {
             id: 'creationDate',
             label: 'Creation Date',
-            format: (row: Record<string, string>) =>
-              new Date(row.creationDate).toDateString(),
+            format: (data: unknown) => new Date(String(data)).toDateString(),
           },
         ],
         searchParam: 'name',
@@ -74,8 +62,79 @@ const Organizations = () => {
           },
         ],
       }}
-      formProps={{
-        overrideDefaults: true,
+      createFormProps={{
+        formSchema: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', title: 'Name' },
+            address: { type: 'string', title: 'Address' },
+            city: { type: 'string', title: 'City' },
+            state: { type: 'string', title: 'State' },
+            phone: { type: 'string', title: 'Phone' },
+            owner: {
+              type: 'number',
+              title: 'Owner',
+              oneOf: [
+                { const: 1, title: 'John Doe' },
+                { const: 2, title: 'Jane Doe' },
+              ],
+            },
+          },
+        },
+        formUiSchema: {
+          city: {
+            'ui:gridColumns': 6,
+          },
+          state: {
+            'ui:gridColumns': 6,
+          },
+          phone: {
+            'ui:gridColumns': 6,
+            'ui:formatter': (value: string) => getMaskedPhone(value),
+          },
+          owner: {
+            'ui:widget': CustomSelectWidget,
+            'ui:gridColumns': 6,
+          },
+        },
+      }}
+      editFormProps={{
+        formSchema: {
+          type: 'object',
+          properties: {
+            name: { type: 'string', title: 'Name' },
+            address: { type: 'string', title: 'Address' },
+            city: { type: 'string', title: 'City' },
+            state: { type: 'string', title: 'State' },
+            phone: { type: 'string', title: 'Phone' },
+            owner: {
+              type: 'number',
+              title: 'Owner',
+              oneOf: [
+                { const: 1, title: 'John Doe' },
+                { const: 2, title: 'Jane Doe' },
+              ],
+            },
+          },
+        },
+        formUiSchema: {
+          city: {
+            'ui:gridColumns': 6,
+          },
+          state: {
+            'ui:gridColumns': 6,
+          },
+          phone: {
+            'ui:gridColumns': 6,
+            'ui:formatter': (value: string) => getMaskedPhone(value),
+          },
+          owner: {
+            'ui:widget': CustomSelectWidget,
+            'ui:gridColumns': 6,
+          },
+        },
+      }}
+      detailsFormProps={{
         formSchema: {
           type: 'object',
           properties: {
