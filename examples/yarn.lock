@@ -52,26 +52,29 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@concepta/react-auth-provider@^1.0.0-alpha.23":
-  version "1.0.0-alpha.23"
-  resolved "https://registry.yarnpkg.com/@concepta/react-auth-provider/-/react-auth-provider-1.0.0-alpha.23.tgz#c1ba3484fd7ed5a5bd731a3303b8913972037b75"
-  integrity sha512-mNa8KhZG3aISEFzMKincfFmwOb1QyjJ8xfzzTUnKWzFJAxhSRLNZYFT7Ijg6smlVBCDZVTeeAjb1cgiOvNFaXw==
+"@concepta/react-auth-provider@^1.0.0-alpha.25":
+  version "1.0.0-alpha.25"
+  resolved "https://registry.yarnpkg.com/@concepta/react-auth-provider/-/react-auth-provider-1.0.0-alpha.25.tgz#4154742a3277e0a9032ce1d9e0f1d57c7af4a1e4"
+  integrity sha512-dC/UG+k72TNe258tb8+8zYwkpBZMjxXZxjrM4Gqv5BAsuI7bcu9SD74BMXvaYdGMHR9VuuaM3akQZSPnm4PpYQ==
   dependencies:
-    "@concepta/react-data-provider" "^1.0.0-alpha.23"
+    "@concepta/react-data-provider" "^1.0.0-alpha.25"
 
-"@concepta/react-data-provider@^1.0.0-alpha.23":
-  version "1.0.0-alpha.23"
-  resolved "https://registry.yarnpkg.com/@concepta/react-data-provider/-/react-data-provider-1.0.0-alpha.23.tgz#def69ca0223e5719034f0be241d3fe9e3432e7b9"
-  integrity sha512-3vTGBrvzWu5B0ty//cvNisZTd17lrGEOvmrZQ2zIWzTggCCjEvL+cB7T0Bp67dDbRCPcqlUYvfDZI3J/JLlczw==
+"@concepta/react-data-provider@^1.0.0-alpha.25":
+  version "1.0.0-alpha.25"
+  resolved "https://registry.yarnpkg.com/@concepta/react-data-provider/-/react-data-provider-1.0.0-alpha.25.tgz#9d3f799a9b51496ba3e87083946bf50e1d048cbb"
+  integrity sha512-9VvDSoUzTD8OF4SD5y58FXA8n43WCBGoLkxo1a7NTOUqKrQwJ/SIfi03s1bVZJ2OoYfanE6ly22r37hhOWGZHg==
   dependencies:
     axios "^0.24.0"
     memoizee "^0.4.15"
 
-"@concepta/react-material-ui@^1.0.0-alpha.23":
-  version "1.0.0-alpha.23"
-  resolved "https://registry.yarnpkg.com/@concepta/react-material-ui/-/react-material-ui-1.0.0-alpha.23.tgz#a577f850e4cd810f96bf74126913526b14794d29"
-  integrity sha512-RT1RKLu4mlLp4eIenaqK2HIAcrU72WEvXSEtW0sUqcOL50GaR+M14UIfkHnRS6/+07lo+skE1IIOYe/VpGOjYQ==
+"@concepta/react-material-ui@^1.0.0-alpha.25":
+  version "1.0.0-alpha.25"
+  resolved "https://registry.yarnpkg.com/@concepta/react-material-ui/-/react-material-ui-1.0.0-alpha.25.tgz#e57cdafff97f0b9cca2526fb2a3fb680766f706d"
+  integrity sha512-vdWZcVx/nezmsT6iG8YwglMrW+4rgh3QwiKHFHv8dxw8ArswNmBxyv7o4yMOHLPRpax84BnOo2w/l61SKnY5Iw==
   dependencies:
+    "@dnd-kit/core" "^6.1.0"
+    "@dnd-kit/sortable" "^8.0.0"
+    "@dnd-kit/utilities" "^3.2.2"
     "@emotion/react" "^11.10.4"
     "@emotion/styled" "^11.10.4"
     "@mui/icons-material" "^5.10.6"
@@ -86,6 +89,37 @@
     next "^13.4.19"
     react "^18.2.0"
     react-dom "^18.2.0"
+
+"@dnd-kit/accessibility@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/accessibility/-/accessibility-3.1.0.tgz#1054e19be276b5f1154ced7947fc0cb5d99192e0"
+  integrity sha512-ea7IkhKvlJUv9iSHJOnxinBcoOI3ppGnnL+VDJ75O45Nss6HtZd8IdN8touXPDtASfeI2T2LImb8VOZcL47wjQ==
+  dependencies:
+    tslib "^2.0.0"
+
+"@dnd-kit/core@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/core/-/core-6.1.0.tgz#e81a3d10d9eca5d3b01cbf054171273a3fe01def"
+  integrity sha512-J3cQBClB4TVxwGo3KEjssGEXNJqGVWx17aRTZ1ob0FliR5IjYgTxl5YJbKTzA6IzrtelotH19v6y7uoIRUZPSg==
+  dependencies:
+    "@dnd-kit/accessibility" "^3.1.0"
+    "@dnd-kit/utilities" "^3.2.2"
+    tslib "^2.0.0"
+
+"@dnd-kit/sortable@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/sortable/-/sortable-8.0.0.tgz#086b7ac6723d4618a4ccb6f0227406d8a8862a96"
+  integrity sha512-U3jk5ebVXe1Lr7c2wU7SBZjcWdQP+j7peHJfCspnA81enlu88Mgd7CC8Q+pub9ubP7eKVETzJW+IBAhsqbSu/g==
+  dependencies:
+    "@dnd-kit/utilities" "^3.2.2"
+    tslib "^2.0.0"
+
+"@dnd-kit/utilities@^3.2.2":
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/@dnd-kit/utilities/-/utilities-3.2.2.tgz#5a32b6af356dc5f74d61b37d6f7129a4040ced7b"
+  integrity sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==
+  dependencies:
+    tslib "^2.0.0"
 
 "@emotion/babel-plugin@^11.11.0":
   version "11.11.0"
@@ -1059,7 +1093,7 @@ to-fast-properties@^2.0.0:
   resolved "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-2.0.0.tgz"
   integrity sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==
 
-tslib@^2.4.0:
+tslib@^2.0.0, tslib@^2.4.0:
   version "2.6.2"
   resolved "https://registry.npmjs.org/tslib/-/tslib-2.6.2.tgz"
   integrity sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==
