@@ -1,12 +1,13 @@
 import React from 'react';
 
 import type {
+  CustomTableCell,
   HeaderProps,
   RowProps,
   TableQueryStateProps,
 } from '../../Table/types';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Box,
   Button,
@@ -58,8 +59,9 @@ export type StyleDefinition = {
   [key: string]: SxProps<Theme>;
 };
 
-type TableSchemaItem = HeaderProps & {
+export type TableSchemaItem = HeaderProps & {
   format?: (data: unknown) => string | number;
+  renderTableCell?: (data: unknown) => CustomTableCell;
 };
 
 export interface TableSubmoduleProps {
@@ -150,6 +152,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
         if (schemaItem.format) {
           newData[key] = schemaItem.format(data);
+        }
+
+        if (schemaItem.renderTableCell) {
+          newData[key] = schemaItem.renderTableCell(data);
         }
       });
 
