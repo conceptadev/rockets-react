@@ -1,9 +1,9 @@
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
-import { HeaderProps } from 'components/Table/types';
 import { CustomTextFieldWidget } from '../../styles/CustomWidgets';
 import { FilterDetails } from 'components/submodules/Filter';
+import { TableSchemaItem } from 'components/submodules/Table';
 
-export const headers: HeaderProps[] = [
+export const headers: TableSchemaItem[] = [
   {
     id: 'id',
     label: 'ID',
