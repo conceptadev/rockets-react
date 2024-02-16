@@ -4,117 +4,70 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render } from '@testing-library/react';
-import Filter from '../src/components/Filter/Filter';
+import { fireEvent, render, waitFor } from '@testing-library/react';
+import Filter, { FilterType } from '../src/components/Filter/Filter';
 
 describe('Filter Component', () => {
+  const allFilters: FilterType[] = [
+    {
+      id: 'text',
+      label: 'Text',
+      type: 'text',
+      placeholder: 'Text Test Placeholder',
+      onChange: jest.fn(),
+    },
+    {
+      id: 'autocomplete',
+      type: 'autocomplete',
+      options: [
+        {
+          label: 'Autocomplete Test',
+          value: 'autocompleteTest',
+        },
+      ],
+      label: 'Autocomplete Test Label',
+      onChange: jest.fn(),
+      isLoading: false,
+    },
+    {
+      id: 'select',
+      type: 'select',
+      options: [
+        {
+          label: 'Test',
+          value: 'test',
+        },
+      ],
+      label: 'Select Test Label',
+      onChange: jest.fn(),
+    },
+  ];
+
   it('renders textfield component if type is "Text"', () => {
     const { getByPlaceholderText } = render(
-      <Filter
-        filters={[
-          {
-            id: 'text',
-            label: 'Text',
-            type: 'text',
-            placeholder: 'Test Placeholder',
-            onChange: jest.fn(),
-          },
-        ]}
-      />,
+      <Filter filters={[allFilters[0]]} />,
     );
 
-    const input = getByPlaceholderText('Test Placeholder');
+    const input = getByPlaceholderText('Text Test Placeholder');
     expect(input).toHaveClass('MuiInputBase-input');
   });
 
   it('renders autocomplete component if type is "Autocomplete"', () => {
-    const { getByRole } = render(
-      <Filter
-        filters={[
-          {
-            id: 'autocomplete',
-            type: 'autocomplete',
-            options: [
-              {
-                label: 'Test',
-                value: 'test',
-              },
-            ],
-            label: 'Test Label',
-            onChange: jest.fn(),
-            isLoading: false,
-          },
-        ]}
-      />,
-    );
+    const { getByRole } = render(<Filter filters={[allFilters[1]]} />);
 
     const input = getByRole('combobox');
     expect(input).toHaveClass('MuiAutocomplete-input');
   });
 
   it('renders select component if type is "Select"', () => {
-    const { getByLabelText } = render(
-      <Filter
-        filters={[
-          {
-            id: 'select',
-            type: 'select',
-            options: [
-              {
-                label: 'Test',
-                value: 'test',
-              },
-            ],
-            label: 'Test Label',
-            onChange: jest.fn(),
-          },
-        ]}
-      />,
-    );
+    const { getByLabelText } = render(<Filter filters={[allFilters[2]]} />);
 
-    const input = getByLabelText('Test Label');
+    const input = getByLabelText('Select Test Label');
     expect(input).toHaveClass('MuiSelect-select');
   });
 
   it('renders array of filters correctly', () => {
-    const { container } = render(
-      <Filter
-        filters={[
-          {
-            id: 'text',
-            label: 'Text',
-            type: 'text',
-            placeholder: 'Text Test Placeholder',
-            onChange: jest.fn(),
-          },
-          {
-            id: 'autocomplete',
-            type: 'autocomplete',
-            options: [
-              {
-                label: 'Autocomplete Test',
-                value: 'autocompleteTest',
-              },
-            ],
-            label: 'Autocomplete Test Label',
-            onChange: jest.fn(),
-            isLoading: false,
-          },
-          {
-            id: 'select',
-            type: 'select',
-            options: [
-              {
-                label: 'Test',
-                value: 'test',
-              },
-            ],
-            label: 'Select Test Label',
-            onChange: jest.fn(),
-          },
-        ]}
-      />,
-    );
+    const { container } = render(<Filter filters={allFilters} />);
 
     const inputs = container.querySelectorAll('input');
 
@@ -129,5 +82,53 @@ describe('Filter Component', () => {
 
     const input = inputs[2];
     expect(input).toHaveClass('MuiSelect-nativeInput');
+  });
+
+  it('renders dropdown button', () => {
+    const { queryByTestId } = render(<Filter filters={allFilters} />);
+
+    const dropdownButton = queryByTestId('FilterAltIcon');
+    expect(dropdownButton).toBeInTheDocument();
+  });
+
+  it('opens dropdown button on click', () => {
+    const { queryByTestId, queryAllByTestId } = render(
+      <Filter filters={allFilters} />,
+    );
+
+    const dropdownButton = queryByTestId('FilterAltIcon');
+    dropdownButton && fireEvent.click(dropdownButton);
+
+    const filterItems = queryAllByTestId('orderable-item');
+    expect(filterItems.length).toBe(3);
+
+    filterItems.forEach((item, index) => {
+      expect(item).toHaveTextContent(allFilters[index].label);
+    });
+  });
+
+  it('Hides filter on checkbox click', async () => {
+    const {
+      queryByTestId,
+      getByPlaceholderText,
+      getByRole,
+      queryByPlaceholderText,
+    } = render(<Filter filters={[allFilters[0]]} />);
+
+    const textInput = getByPlaceholderText('Text Test Placeholder');
+    expect(textInput).toBeInTheDocument();
+
+    const dropdownButton = queryByTestId('FilterAltIcon');
+    dropdownButton && fireEvent.click(dropdownButton);
+
+    const textCheckbox = getByRole('checkbox');
+    textCheckbox && fireEvent.click(textCheckbox);
+
+    await waitFor(() => {
+      const missingHiddenInput = queryByPlaceholderText(
+        'Text Test Placeholder',
+      );
+      expect(missingHiddenInput).not.toBeInTheDocument();
+    });
   });
 });
