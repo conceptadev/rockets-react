@@ -61,7 +61,7 @@ export type StyleDefinition = {
 
 export type TableSchemaItem = HeaderProps & {
   format?: (data: unknown) => string | number;
-  renderTableCell?: (data: unknown) => CustomTableCell;
+  renderTableCell?: (data: unknown, rowData: unknown) => CustomTableCell;
 };
 
 export interface TableSubmoduleProps {
@@ -155,7 +155,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         }
 
         if (schemaItem.renderTableCell) {
-          newData[key] = schemaItem.renderTableCell(data);
+          newData[key] = schemaItem.renderTableCell(data, rowData);
         }
       });
 

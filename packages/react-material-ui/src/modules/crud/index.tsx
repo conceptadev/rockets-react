@@ -26,7 +26,7 @@ type SelectedRow = Record<string, unknown> | null;
 
 type TableSchemaItem = HeaderProps & {
   format?: (data: unknown) => string | number;
-  renderTableCell?: (data: unknown) => CustomTableCell;
+  renderTableCell?: (data: unknown, rowData: unknown) => CustomTableCell;
 };
 
 interface TableProps {

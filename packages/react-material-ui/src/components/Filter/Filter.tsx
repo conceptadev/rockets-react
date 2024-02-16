@@ -60,6 +60,7 @@ const renderComponent = (filter: FilterType) => {
     case 'autocomplete': {
       return (
         <AutocompleteField
+          key={JSON.stringify(filter.isLoading)}
           fullWidth
           size={filter.size ?? 'small'}
           options={filter.options}
