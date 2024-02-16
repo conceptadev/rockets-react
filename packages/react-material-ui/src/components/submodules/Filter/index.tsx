@@ -88,6 +88,7 @@ const FilterSubmodule: FC<Props> = ({
       type,
       options,
       operator,
+      currentValue: value,
       value,
       isLoading,
       size,
