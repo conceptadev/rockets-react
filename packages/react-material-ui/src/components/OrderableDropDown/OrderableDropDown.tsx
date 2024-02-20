@@ -64,7 +64,12 @@ const SortableItem = (props: SortableItemProps) => {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      data-testid="orderable-item"
+    >
       <ListItem
         key={id}
         secondaryAction={

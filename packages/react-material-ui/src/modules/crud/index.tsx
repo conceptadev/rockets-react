@@ -33,7 +33,6 @@ interface TableProps {
   tableSchema: TableSchemaItem[];
   tableProps?: InnerTableProps;
   tableTheme?: StyleDefinition;
-  searchParam?: string;
   hideActionsColumn?: boolean;
   reordable?: boolean;
   filters?: TableSubmoduleProps['filters'];

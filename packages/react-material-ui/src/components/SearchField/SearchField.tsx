@@ -61,7 +61,7 @@ const SearchField = ({
     // Keep track of the first render to avoid triggering onDebouncedSearchChange
     // on the initial render. Only trigger when the 'value' changes.
     if (!firstRender.current) {
-      handleDebouncedSearch(value as string);
+      handleDebouncedSearch?.(value as string);
     } else {
       firstRender.current = false;
     }
