@@ -140,10 +140,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
     const data = props.data || [];
 
     return data.map((row) => {
-      const rowData = row as Record<
-        string,
-        string | number | Record<string, string>
-      >;
+      const rowData = row as Record<string, unknown>;
 
       const newData = { ...rowData };
 
