@@ -141,9 +141,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
     return data.map((row) => {
       const rowData = row as Record<string, unknown>;
+
       const newData = { ...rowData };
 
-      Object.entries(rowData).forEach(([key, data]) => {
+      Object.entries(rowData).forEach(([key]) => {
         const schemaItem = tableHeaders.find((item) => item.id === key);
 
         if (!schemaItem) {
@@ -151,7 +152,9 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         }
 
         if (schemaItem.format) {
-          newData[key] = schemaItem.format(data);
+          newData[key] = schemaItem.format(
+            rowData as Record<string, string | number | Record<string, string>>,
+          );
         }
 
         if (schemaItem.renderTableCell) {
