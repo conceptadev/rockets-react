@@ -1,173 +1,247 @@
 # CrudModule
 
-## **TableProps**
+## Minimal configuration
 
-Props that modify the layout and/or functionality of the module Table.
+The `CrudModule` component is imported from the `@concepta/react-material-ui` package, as follows:
 
-### **formContainerVariation**
-
-String that identifies in which container the creation/edit/details form will be displayed. Can be `drawer` or `modal`.
-
-**type**: `string`\
-**default**: `drawer`\
-**required**: `false`
-
-### **tableSchema**
-
-Array of union types containing `HeaderProps` (imported from `@concepta/react-material-ui/dist/components/Table/types`) and additional atributes representing columns that should be rendered by the table. Each arary item can contain `id`, `label`, `disablePadding`, `width`, `numeric`, `textAlign`, `sortable` and `format` attributes, being `id` and `label` the only required ones.
-
-Important to mention that `format` represents a custom format for the column data.
-
-```js
-[
-  {
-    id: 'fullName', // required
-    label: 'Full Name', // required
-    disablePadding: false,
-    width: 100,
-    numeric: false,
-    textAlign: 'left' | 'center' | 'right',
-    sortable: true,
-    format: (value: string | number) => new Date(value).toString(),
-  },
-];
+```jsx
+import { CrudModule } from '@concepta/react-material-ui';
 ```
 
-**type**: `HeaderProps[]`\
-**default**: `ID`, `Email`, `Username` and `Actions`
-**required**: `false`
+For the module to work out of the box, a minimal configuration is required, laying the base for the main features of the module.
 
-### **searchParam**
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+  }}
+/>
+```
 
-ID of a column data by which table items can be filtered when changing the search input value.
+With this implementation, a paginated table should be visible in the screen, fetching data from the `API_URL/{resource}` endpoint.
 
-**type**: `string`\
-**default**: `email`\
-**required**: `false`
+A button with a gear icon should also appear above the table, displaying a list of selectable/draggable items when clicked. This list corresponds to the items passed in the `tableSchema` array and controls the appearance and order of the table columns, respectively. To hide this button and disable reordering of table columns, the `reordable` boolean prop can be passed as false in the `tableProps` object.
 
-### **hideActionColumn**
+## Describing the minimal props
 
-Actions table column is visible by default. This prop is responsible for changing that.
+The `resource` prop relates to which API will be used for the CRUD actions, i.e. `/users` for fetching all users (it's important that the objects returned are included in a `data` array), `/users/{id}` for fetching/creating data related to a specific user, and so on.
 
-**type**: `boolean`\
-**default**: `false`\
-**required**: `false`
+If it's necessary to display a title for the page where the module is being implemented, the `title` string prop can be passed.
 
-### **overrideDefaults**
+All configuration related to the module table is controlled by the `tableProps` object prop, and the only required value for this object is the `tableSchema` array, which controls what table columns will be displayed. Each object passed in this array have two required attributes:
 
-Based on this prop, the table defaults can be overritten and only the values passed by prop are considered by the table.
+- `id`: identifies which attribute of each row object should be displayed in this column;
+- `label`: the name the column itself.
 
-**type**: `boolean`\
-**default**: `false`\
-**required**: `false`
+Besides that, other non-required values can be present in each object if further configuration is necessary:
 
-### **onDeleteSuccess**
+- `source`?: string;
+- `key`?: number | string;
+- `disablePadding`?: boolean;
+- `width`?: number;
+- `numeric`?: boolean;
+- `textAlign`?: 'left' | 'center' | 'right';
+- `sortable`?: boolean;
+- `hide`?: boolean;
+- `format`?: (data: unknown) => string | number;
+- `renderTableCell`?: (data: unknown, rowData: unknown) => CustomTableCell;
 
-Callback called when the an item of the table is deleted successfully.
+## Data fecthing feedback
 
-**type**: `function`\
-**required**: `false`
+By default, displaying valid data on the table is the success feedback for the fetching process, but nothing besides en empty table is displayed when there's an error getting the initial data. To have a proper way of feedback when that happens, the `onFetchError` prop can be passed, as follows:
 
-### **onDeleteError**
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+  }}
+  onFetchError={() => window.alert('Error fecthing data!')}
+/>
+```
 
-Callback called when the delete item request returns an error.
+If needed, the `error` argument can be passed to the function as a way to access the specific network error provided by the query.
 
-**type**: `function`\
-**required**: `false`
+## Delete action feedback
 
-## **FormProps**
+By default, only the `delete` button is visible, appearing as a trash can icon. By clicking on the delete button of an item, a request is performed to the `API_URL/{resource}/{id}` endpoint, but no feedback is displayed by default. To add custom handlers for success and error of this request, the `onDeleteSuccess` and `onDeleteError` function props can be passed to the `tableProps` object, as follows:
 
-Props passed to modify layout/functionality of the edit/create form, displayed on a drawer by default.
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+    onDeleteSuccess: () => window.alert('Item successfully deleted!'),
+    onDeleteError: () => window.alert('Error deleting item!'),
+  }}
+/>
+```
 
-### **formSchema**
+To overwrite this default and hide the delete button, the `hideDeleteButton` boolean prop can be passed to the `tableProps` object.
 
-Schema for the title, name and data of the drawer form fields, imported from `@rjsf/utils`.
+## Styling the table
 
-**type**: `RJSFSchema`\
-**required**: `false`
+To modify the theme/style of the module table, a `tableTheme` prop can be passed inside the `tableProps` object. Based on this prop, a set of table parts can be stylized:
 
-### **formUiSchema**
+- `root`?: SxProps<Theme>;
+- `table`?: SxProps<Theme>;
+- `tableContainer`?: SxProps<Theme>;
+- `tableHeader`?: SxProps<Theme>;
+- `tableHeaderRow`?: SxProps<Theme>;
+- `tableHeaderCell`?: SxProps<Theme>;
+- `tableBodyRow`?: SxProps<Theme>;
+- `tableBodyCell`?: SxProps<Theme>;
 
-Schema for the layout of drawer form fields, imported from `@rjsf/utils`.
+## Filters
 
-**type**: `UiSchema`\
-**required**: `false`
+To filter table items, the `filters` prop can be passed to the `tableProps` object. This prop is an array of settings for filter inputs displayed above the table, and can have the following structure:
 
-### **submitButtonTitle**
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+    filters: [
+      {
+        id: 'email',
+        label: 'Email',
+        type: 'text',
+        operator: 'contL',
+        columns: 3,
+      },
+      {
+        id: 'active',
+        label: 'Status',
+        type: 'select',
+        operator: 'eq',
+        options: [
+          { value: 'true', label: 'Active' },
+          { value: 'false', label: 'Inactive' },
+        ],
+        columns: 3,
+      },
+      {
+        id: 'role',
+        label: 'Role',
+        type: 'autocomplete',
+        operator: 'eq',
+        options: [
+          { value: 'programmer', label: 'Programmer' },
+          { value: 'manager', label: 'Manager' },
+        ],
+        columns: 3,
+      },
+    ],
+  }}
+/>
+```
 
-Text displayed in the drawer form submit button.
+Each filter can have the following set of attributes:
 
-**type**: `string`\
-**default**: `Send`\
-**required**: `false`
+- `id`: identifies which attribute of a row is filtered;
+- `label`: the label of the filter input;
+- `isLoading`: identifies if the input is in loading state;
+- `columns`: number of columns occupied by the input in a grid of 12 columns;
+- `size`: overall size of the input, small or medium;
+- `operator`: string that describes how much of the input value should match the data value;
+- `type`: the type of the filter input, one of text, autocomplete or select;
+- `options`: array of options displayed in the autocomplete or select inputs.
 
-### **cancelButtonTitle**
+## Forms
 
-Text displayed in the drawer form cancel button.
+For CRUD actions such as creation and edit, the module utilizes a form that is displayed on a lateral drawer container by default. This container can be changed to a modal via the `formContainerVariation` prop, with value of `drawer` or `modal`, as follows:
 
-**type**: `string`\
-**default**: `Close`\
-**required**: `false`
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+  }}
+  formContainerVariation="modal"
+/>
+```
 
-### **overrideDefaults**
+The structure of CRUD forms in this module follows the `RJSFSchema`, imported from `@rjsf/utils`. These schemas represent a way to write input/format properties based on a JSON.
 
-Based on this prop, the edit/create form defaults can be overritten and only the values passed by prop are considered by the form.
+In the case of the CRUD module, a schema can be passed as props relating to each action form: `createFormProps`, `editFormProps` and `detailsFormProps`. The latter describes the Read action from CRUD, displaying the data of a table item in a disabled form instead of a new page.
 
-**type**: `boolean`\
-**default**: `false`\
-**required**: `false`
+The input structure and layout of each form is composed by a set of values passed inside the form props. Every form props object can have the following attributes:
 
-### **onSuccess**
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+  }}
+  formContainerVariation="modal"
+  createFormProps={{
+    formSchema: {
+      type: 'object',
+      required: ['fullName', 'email', 'username'],
+      properties: {
+        fullName: { type: 'string', title: 'Full Name' },
+        email: {
+          type: 'string',
+          title: 'Email',
+          minLength: 3,
+          format: 'email',
+        },
+        username: { type: 'string', title: 'Username', minLength: 3 },
+      },
+    },
+    formUiSchema: {
+      email: {
+        'ui:widget': CustomTextFieldWidget,
+        'ui:disabled': true,
+      },
+      username: {
+        'ui:widget': CustomTextFieldWidget,
+        'ui:disabled': true,
+      },
+    },
+    submitButtonTitle: 'Submit',
+    cancelButtonTitle: 'Cancel',
+    onSuccess: (data) => window.alert(`${data.email} created successfully!`),
+    onError: (error) => window.alert(error?.data?.message),
+  }}
+/>
+```
 
-Callback called when the form's submit method returns successfully.
+The `formUiSchema` prop describes how specific input(s) of the form should appear, and follows the structure of the `UiSchema` interface, also imported from `@rjsf/utils`.
 
-**type**: `function`\
-**required**: `false`
+Feedback handlers can be passed as values to the `onSuccess` and `onError` props, having `data` and `error` arguments received directly from the query performed on each action.
 
-### **onError**
+## Custom form validation
 
-Callback called when the form's submit method returns an error.
-
-**type**: `function`\
-**required**: `false`
-
-## Props
-
-Set of props passed to the `CrudModule` instance.
-
-### **title**
-
-Name of the CRUD workflow performed by the module.
-
-**type**: `string`\
-**required**: `false`
-
-### **resource**
-
-Name of the API resource accessed by the module workflows. Directly implies how the workflow will happen, and because of that, the API must be structured in the following way:
-
-[GET] `/{resource}` (list all data, returns array in a `data` response property)\
-[GET] `/{resource}?simpleFilter="email"contL"john"` (filters data that contain `john` in their `email`)\
-[POST] `/{resource}` (create new data based on request body)\
-[PATCH] `/{resource}/id` (edit data based on request body)\
-[DELETE] `/{resource}/id` (delete data based on id)\
-
-**type**: `string`\
-**required**: `true`
-
-### **tableProps**
-
-**type**: `TableProps`\
-**required**: `false`
-
-### **formProps**
-
-**type**: `FormProps`\
-**required**: `false`
-
-### **onFetchError**
-
-Callback called when the table data fetching returns an error.
-
-**type**: `function`\
-**required**: `false`
+DESCRIBE CUSTOM VALIDATE PROP HERE
