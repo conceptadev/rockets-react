@@ -1,172 +1,121 @@
 # AuthModule
 
-## **FormProps**
+## Minimal configuration
 
-Props that modify the layout and/or functionality of the Auth form.
+The `AuthModule` component is imported from the `@concepta/react-material-ui` package, as follows:
 
-### **formSchema**
-
-Schema for the title, name and data of form fields, imported from `@rjsf/utils`.
-
-**type**: `RJSFSchema`\
-**required**: `false`
-
-### **formUiSchema**
-
-Schema for the layout of form fields, imported from `@rjsf/utils`.
-
-**type**: `UiSchema`\
-**required**: `false`
-
-### **customValidation**
-
-Array of rules to validate one or more fields in a more specific logic. Each array item must contain `field`, `test` and `message` attributes, as follows:
-
-```js
-[
-  {
-    field: 'passwordConfirmation',
-    test: (value, formData) => value !== formData.password,
-    message: "Passwords don't match!",
-  },
-];
+```jsx
+import { AuthModule } from '@concepta/react-material-ui';
 ```
 
-**type**: `ValidationRule<Record<string, string>>[]`\
-**required**: `false`
+For the module to work out of the box, a minimal configuration is required, laying the base for the main features of the module.
 
-### **overrideDefaults**
+```jsx
+<AuthModule route="signIn" />
+```
 
-Based on this prop, the form defaults can be overritten and only the values passed by prop are considered by the form.
+With this implementation, a form with `username` and `password` fields should appear in the screen, performing a request for `API_URL/auth/login`, which can be modified by passing a value to the `signInRequestPath` prop. This is available only for the `signIn` route, as the request performed in this flow is made by a custom `doLogin` method, present in the `useAuth` hook imported from the `@concepta/react-auth-provider` package.
 
-**type**: `boolean`\
-**default**: `false`\
-**required**: `false`
+The request url and method can be modified passing both the `queryUri` and `queryMethod` props inside a `moduleProps` object, as follows:
 
-## **ModuleProps**
+```jsx
+<AuthModule
+  route="signIn"
+  moduleProps={{
+    queryUri: '/auth/sign-in',
+    queryMethod: 'post',
+  }}
+/>
+```
 
-Overall props for the module. Can alter parts of the module that doesn't modify the form specifically.
+The `route` prop relates to which part of the authentication process this form represents, and can be one of `signIn`, `signUp`, `forgotPassword` and `resetPassword`.
 
-### **title**
+## Form structure
 
-Title displayed above the form fields to indicate which form is being displayed.
+The auth form has default fields for each route, but this form structure can be modified by passing a configuration object to the `formProps` object, i.e.:
 
-**type**: `string`\
-**default**: `Sign In`, `Sign up`, `Recover password` or `Reset Password`\
-**required**: `false`
+```jsx
+<AuthModule
+  route="signIn"
+  formProps={{
+    overrideDefaults: true,
+    formSchema: {
+      type: 'object',
+      required: ['email', 'password'],
+      properties: {
+        username: { type: 'string', title: 'Email', format: 'email' },
+        password: { type: 'string', title: 'Password', minLength: 8 },
+      },
+    },
+  }}
+/>
+```
 
-### **signInRequestPath**
+Passing a form schema as props will merge the default object with the custom one, so it's important to also pass the `overrideDefaults` prop, in a way that the form object will correspond only with what is passed as props.
 
-Path for the sign in request. Passing a value here will mount the request as `{baseURL}{signInRequestPath}` on submitting the sign in form.
+The structure of auth forms in this module follows the `RJSFSchema`, imported from `@rjsf/utils`. These schemas represent a way to write input/format properties based on a JSON.
 
-**type**: `string`\
-**default**: `/auth/login`\
-**required**: `false`
+The `formUiSchema` prop describes how specific input(s) of the form should appear, and follows the structure of the `UiSchema` interface, also imported from `@rjsf/utils`.
 
-### **forgotPasswordPath**
+```jsx
+<AuthModule
+  route="signIn"
+  formProps={{
+    overrideDefaults: true,
+    formSchema: {
+      type: 'object',
+      required: ['email', 'password'],
+      properties: {
+        username: { type: 'string', title: 'Email', format: 'email' },
+        password: { type: 'string', title: 'Password', minLength: 8 },
+      },
+    },
+    formUiSchema: {
+      email: {
+        'ui:widget': CustomTextFieldWidget,
+      },
+      password: {
+        'ui:widget': CustomPasswordFieldWidget,
+      },
+    },
+  }}
+/>
+```
 
-Route of the `Recover Password` page. Passing an empty string will hide the link for this page on the specific module.
+## Custom validation
 
-**type**: `string`\
-**default**: `/forgot-password`\
-**required**: `false`
+DESCRIBE CUSTOM VALIDATION HERE
 
-### **signUpPath**
+## Action feedback
 
-Route of the `Sign Up` page. Passing an empty string will hide the link for this page on the specific module.
+To use custom handlers for success/error on any auth form, the `onSuccess` and `onError` props can be passed to the `moduleProps` object, as follows:
 
-**type**: `string`\
-**default**: `/sign-up`\
-**required**: `false`
+```jsx
+<AuthModule
+  route="signIn"
+  moduleProps={{
+    onSuccess: () => window.alert('Success!'),
+    onError: (error) => window.alert(error?.response?.data?.message),
+  }}
+/>
+```
 
-### **signInPath**
+## Linking forms
 
-Route of the `Sign In` page. Passing an empty string will hide the link for this page on the specific module.
+The auth forms are linked to each other by links, and those can be controlled by passing the other pages urls as props, as listed below:
 
-**type**: `string`\
-**default**: `/sign-in`\
-**required**: `false`
+- `forgotPasswordPath`: represents a link to the Recover Password page;
+- `signUpPath`: represents a link to the Sign Up page;
+- `signInPath`: represents a link to the Sign In page.
 
-### **queryUri**
+Passing an empty string will hide the link each prop is related to.
 
-Uri for the query of any auth workflow outside of `Sign In`. Passing a value here will mount the request as `{baseURL}{queryUri}` on submitting the form.
+No link prop is avalable for the Reset Password page, as this flow is made by a link sent by email.
 
-**type**: `string`\
-**default**: `/user` or `/auth/recovery/password`\
-**required**: `false`
+## Other modifications
 
-### **queryMethod**
+Some parts of the page like logo and title can be modified by passing custom props to the `moduleProps` object, as follows:
 
-REST method of the request performed on form submit. Can be `post`, `patch` or `put`.
-
-**type**: `string`\
-**default**: `post`\
-**required**: `false`
-
-### **submitButtonTitle**
-
-Text displayed in the form submit button.
-
-**type**: `string`\
-**default**: `Send`\
-**required**: `false`
-
-### **successFeedbackMessage**
-
-Message displayed when the query runs successfully.
-
-**type**: `string`\
-**default**: `Success!`\
-**required**: `false`
-
-### **errorFeedbackMessage**
-
-Message displayed when the query returns an error.
-
-**type**: `string`\
-**default**: `An error has occurred. Please try again later or contact support for assistance.`\
-**required**: `false`
-
-### **logoSrc**
-
-Source of the logo image displayed above the form card.
-
-**type**: `string`\
-**default**: `/logo.svg`\
-**required**: `false`
-
-### **onSuccess**
-
-Callback called when the form's submit method returns successfully.
-
-**type**: `function`\
-**required**: `false`
-
-### **onError**
-
-Callback called when the form's submit method returns an error.
-
-**type**: `function`\
-**required**: `false`
-
-## Props
-
-Set of props passed to the `AuthModule` instance.
-
-### **route**
-
-Auth workflow that the module will perform. Can be `signIn`, `signUp`, `forgotPassword` or `resetPassword`.
-
-**type**: `string`\
-**default**: `signIn`\
-**required**: `true`
-
-### **formProps**
-
-**type**: `FormProps`\
-**required**: `false`
-
-### **moduleProps**
-
-**type**: `ModuleProps`\
-**required**: `false`
+- `title`: modifies the title displayed in each page, overriding the default title that corresponds to the page;
+- `submitButtonTitle`: changes the text displayed in the form's submit button;
+- `logoSrc`: modifies the logo image displayed on top of the form container;
