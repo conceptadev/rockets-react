@@ -99,14 +99,14 @@ To overwrite this default and hide the delete button, the `hideDeleteButton` boo
 
 To modify the theme/style of the module table, a `tableTheme` prop can be passed inside the `tableProps` object. Based on this prop, a set of table parts can be stylized:
 
-- `root`?: SxProps<Theme>;
-- `table`?: SxProps<Theme>;
-- `tableContainer`?: SxProps<Theme>;
-- `tableHeader`?: SxProps<Theme>;
-- `tableHeaderRow`?: SxProps<Theme>;
-- `tableHeaderCell`?: SxProps<Theme>;
-- `tableBodyRow`?: SxProps<Theme>;
-- `tableBodyCell`?: SxProps<Theme>;
+- `root`: main table wrapper, enclosing the actual table and the pagination component;
+- `tableContainer`: wrapper enclosing just the table;
+- `table`: actual table element;
+- `tableHeader`: table head container;
+- `tableHeaderRow`: table head row container;
+- `tableHeaderCell`: container for each table head row cell;
+- `tableBodyRow`?: table body row container;
+- `tableBodyCell`?: container for each table body cell;
 
 ## Filters
 
@@ -241,7 +241,3 @@ The input structure and layout of each form is composed by a set of values passe
 The `formUiSchema` prop describes how specific input(s) of the form should appear, and follows the structure of the `UiSchema` interface, also imported from `@rjsf/utils`.
 
 Feedback handlers can be passed as values to the `onSuccess` and `onError` props, having `data` and `error` arguments received directly from the query performed on each action.
-
-## Custom form validation
-
-DESCRIBE CUSTOM VALIDATE PROP HERE
