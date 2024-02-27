@@ -16,6 +16,7 @@ import TableSubmodule, {
 } from '../../components/submodules/Table';
 import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
 import ModalFormSubmodule from '../../components/submodules/ModalForm';
+import { Search } from '../../components/Table/types';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -56,13 +57,15 @@ export interface ModuleProps {
   editFormProps?: PropsWithChildren<FormProps>;
   hideDeleteButton?: boolean;
   onFetchError?: (error: unknown) => void;
+  filterCallback?: (filter: unknown) => void;
+  externalSearch?: Search;
 }
 
 const CrudModule = (props: ModuleProps) => {
   const [drawerViewMode, setDrawerViewMode] = useState<Action>(null);
   const [selectedRow, setSelectedRow] = useState<SelectedRow>(null);
 
-  const tableProps = useTable(props.resource, {
+  const { updateSearch, search, ...tableProps } = useTable(props.resource, {
     callbacks: {
       onError: props.onFetchError,
     },
@@ -126,6 +129,10 @@ const CrudModule = (props: ModuleProps) => {
         hideEditButton={!props.editFormProps}
         hideDeleteButton={props.hideDeleteButton}
         hideDetailsButton={!props.detailsFormProps}
+        filterCallback={props.filterCallback}
+        externalSearch={props.externalSearch}
+        search={search}
+        updateSearch={updateSearch}
         {...tableProps}
         {...props.tableProps}
       />

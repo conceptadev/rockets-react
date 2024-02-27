@@ -29,6 +29,10 @@ interface UseTableOptions {
   noPagination?: boolean;
 }
 
+export interface UpdateSearch {
+  (search: Search | null, resetPage?: boolean): void;
+}
+
 export type UseTableProps = (
   resource: string,
   options?: UseTableOptions,
@@ -175,7 +179,10 @@ const useTable: UseTableProps = (resource, options) => {
 
   // TODO: This will be refactored with Query Builder
   // For now it works even though not optmized
-  const updateSearch = (search: Search | null, resetPage = true) => {
+  const updateSearch: UpdateSearch = (
+    search: Search | null,
+    resetPage = true,
+  ) => {
     setTableQueryState((prevState) => {
       // Removed current search from state
       const updatedState = { ...prevState };

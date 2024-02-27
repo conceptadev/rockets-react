@@ -6,7 +6,7 @@ import type {
   TableQueryStateProps,
 } from '../../Table/types';
 
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import {
   Box,
   Button,
@@ -34,6 +34,8 @@ import { TableProps } from '../../../components/Table/Table';
 import FilterSubmodule, {
   FilterDetails,
 } from '../../../components/submodules/Filter';
+import { Search } from '../../../components/Table/types';
+import { UpdateSearch } from '../../../components/Table/useTable';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -93,6 +95,10 @@ export interface TableSubmoduleProps {
   filters?: FilterDetails[];
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
+  filterCallback?: (filter: unknown) => void;
+  externalSearch?: Search;
+  search?: Search;
+  updateSearch?: UpdateSearch;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -219,6 +225,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                 filters={props.filters}
                 updateSimpleFilter={props.updateSimpleFilter}
                 simpleFilter={props.simpleFilter}
+                filterCallback={props.filterCallback}
+                externalSearch={props.externalSearch}
+                search={props.search}
+                updateSearch={props.updateSearch}
               />
             )}
             {props.reordable !== false && <Table.ColumnOrderable />}
