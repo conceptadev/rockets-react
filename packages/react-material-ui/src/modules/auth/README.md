@@ -84,7 +84,31 @@ The `formUiSchema` prop describes how specific input(s) of the form should appea
 
 ## Custom validation
 
-DESCRIBE CUSTOM VALIDATION HERE
+Each field of an auth form can be validated in a custom way by passing an array of objects containing the rule for said validation, as follows:
+
+```jsx
+<AuthModule
+  route="signIn"
+  formProps={{
+    overrideDefaults: true,
+    formSchema: {
+      type: 'object',
+      required: ['email', 'password'],
+      properties: {
+        username: { type: 'string', title: 'Email', format: 'email' },
+        password: { type: 'string', title: 'Password', minLength: 8 },
+      },
+    },
+    customValidation: [
+      {
+        field: 'email',
+        test: (value) => testFn(value),
+        message: 'Invalid email!',
+      },
+    ],
+  }}
+/>
+```
 
 ## Action feedback
 
