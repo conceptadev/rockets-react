@@ -100,7 +100,7 @@ const FilterSubmodule: FC<Props> = (props) => {
 
   useEffect(() => {
     if (!hasExternalSearch) {
-      search && updateSearch(null);
+      updateSearch(null);
       setShouldUpdate(true);
     }
     if (hasExternalSearch) {

@@ -187,21 +187,27 @@ const useTable: UseTableProps = (resource, options) => {
       // Removed current search from state
       const updatedState = { ...prevState };
 
-      for (const entries of Object.entries(search)) {
-        const [key, value] = entries;
+      if (search === null) {
+        updatedState.search = undefined;
+      }
 
-        // Loose equality evals for `undefined` and `null`
-        if (value == null) {
-          delete updatedState?.search?.[key];
-        } else {
-          // This will update the search
-          // should only no update if value is null or undefined
-          if (typeof updatedState?.search === 'undefined') {
-            updatedState.search = {
-              [key]: value,
-            };
+      if (search) {
+        for (const entries of Object.entries(search)) {
+          const [key, value] = entries;
+
+          // Loose equality evals for `undefined` and `null`
+          if (value == null) {
+            delete updatedState?.search?.[key];
           } else {
-            updatedState.search[key] = value;
+            // This will update the search
+            // should only no update if value is null or undefined
+            if (typeof updatedState?.search === 'undefined') {
+              updatedState.search = {
+                [key]: value,
+              };
+            } else {
+              updatedState.search[key] = value;
+            }
           }
         }
       }
