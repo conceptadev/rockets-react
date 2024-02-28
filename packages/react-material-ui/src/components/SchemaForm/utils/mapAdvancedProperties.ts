@@ -20,9 +20,11 @@ const fieldTypesMap: Record<string, JSONSchema7TypeName> = {
   switch: 'boolean',
 };
 
+export type AdvancedProperties = Record<string, AdvancedProperty>;
+
 export const mapAdvancedProperties = (
   _schema?: JSONSchema7,
-  _advancedProperties?: Record<string, AdvancedProperty>,
+  _advancedProperties?: AdvancedProperties,
 ): JSONSchema7['properties'] => {
   if (!_schema?.properties || typeof _schema?.properties !== 'object') return;
 
@@ -62,7 +64,7 @@ export const mapAdvancedProperties = (
           ...value,
           type: 'object',
           properties: mapAdvancedProperties(
-            advancedProperty.properties,
+            { properties: advancedProperty.properties },
             advancedProperty.advancedProperties,
           ),
         };
