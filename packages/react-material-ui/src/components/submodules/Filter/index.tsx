@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Filter, {
   FilterVariant,
   FilterCommon,
@@ -48,8 +48,6 @@ const FilterSubmodule = () => {
     externalSearch &&
     Object.values(externalSearch).filter((value) => value).length > 0;
 
-  const [shouldUpdate, setShouldUpdate] = useState(false);
-
   const simpleFilterValue = (_filterValues: FilterValues) =>
     filters.reduce((acc, filter) => {
       const value = _filterValues[filter.id];
@@ -85,7 +83,7 @@ const FilterSubmodule = () => {
   useEffect(() => {
     if (!hasExternalSearch) {
       updateSearch(null);
-      setShouldUpdate(true);
+      updateSimpleFilter(simpleFilterValue(filterValues), true);
     }
     if (hasExternalSearch) {
       const combinedFilter = {
@@ -97,20 +95,19 @@ const FilterSubmodule = () => {
     }
   }, [externalSearch]);
 
-  useEffect(() => {
-    if (shouldUpdate) {
-      updateSimpleFilter(simpleFilterValue(filterValues), true);
-      setShouldUpdate(false);
-    }
-  }, [shouldUpdate]);
-
   const onFilterChange = (
     id: string,
     value: string | null,
     updateFilter?: boolean,
   ) => {
-    setFilterValues((prv) => ({ ...prv, [id]: value }));
-    updateFilter && setShouldUpdate(true);
+    setFilterValues((prv) => {
+      const newFilterValues = { ...prv, [id]: value };
+
+      if (updateFilter) {
+        updateSimpleFilter(simpleFilterValue(newFilterValues), true);
+      }
+      return newFilterValues;
+    });
   };
 
   const filterObjs: FilterType[] = filters.map((filter) => {
