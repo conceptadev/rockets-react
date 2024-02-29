@@ -1,16 +1,11 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Filter, {
   FilterVariant,
   FilterCommon,
   FilterType,
 } from '../../../components/Filter';
 import { SelectOption } from '../../../components/SelectField/SelectField';
-import {
-  UpdateSimpleFilter,
-  SimpleFilter,
-  Search,
-} from 'components/Table/types';
-import { UpdateSearch } from '../../../components/Table/useTable';
+import { useCrudRoot, FilterValues } from '../../../modules/crud/useCrudRoot';
 
 type Operator =
   | 'eq'
@@ -36,34 +31,23 @@ export type FilterDetails = {
   options?: SelectOption[];
 } & Omit<FilterCommon, 'showOnMount' | 'hide'>;
 
-interface Props {
-  filters: FilterDetails[];
-  updateSimpleFilter: UpdateSimpleFilter;
-  simpleFilter: SimpleFilter;
-  filterCallback?: (filter: unknown) => void;
-  externalSearch?: Search;
-  search?: Search;
-  updateSearch?: UpdateSearch;
-}
+export type FilterCallback = (filter: FilterValues) => void;
 
-type FilterValues = Record<string, string | null>;
-
-const FilterSubmodule: FC<Props> = (props) => {
+const FilterSubmodule = () => {
   const {
     filters,
-    updateSimpleFilter,
-    simpleFilter,
-    filterCallback,
-    externalSearch,
     updateSearch,
-    search,
-  } = props;
+    simpleFilter,
+    updateSimpleFilter,
+    externalSearch,
+    filterValues,
+    setFilterValues,
+  } = useCrudRoot();
 
   const hasExternalSearch =
     externalSearch &&
     Object.values(externalSearch).filter((value) => value).length > 0;
 
-  const [filterValues, setFilterValues] = useState<FilterValues>({});
   const [shouldUpdate, setShouldUpdate] = useState(false);
 
   const simpleFilterValue = (_filterValues: FilterValues) =>
@@ -109,7 +93,7 @@ const FilterSubmodule: FC<Props> = (props) => {
         ...externalSearch,
       };
 
-      updateSearch(combinedFilter);
+      updateSearch(combinedFilter, true);
     }
   }, [externalSearch]);
 
@@ -119,10 +103,6 @@ const FilterSubmodule: FC<Props> = (props) => {
       setShouldUpdate(false);
     }
   }, [shouldUpdate]);
-
-  useEffect(() => {
-    filterCallback?.(filterValues);
-  }, [filterValues]);
 
   const onFilterChange = (
     id: string,

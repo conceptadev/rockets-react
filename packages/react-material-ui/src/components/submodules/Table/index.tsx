@@ -31,11 +31,10 @@ import Table from '../../../components/Table';
 import { generateTableTheme } from './constants';
 import { TableRootProps } from '../../../components/Table/TableRoot';
 import { TableProps } from '../../../components/Table/Table';
-import FilterSubmodule, {
-  FilterDetails,
-} from '../../../components/submodules/Filter';
+import FilterSubmodule from '../../../components/submodules/Filter';
 import { Search } from '../../../components/Table/types';
 import { UpdateSearch } from '../../../components/Table/useTable';
+import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -92,7 +91,6 @@ export interface TableSubmoduleProps {
   hideDetailsButton?: boolean;
   hideAddButton?: boolean;
   reordable?: boolean;
-  filters?: FilterDetails[];
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
@@ -103,6 +101,7 @@ export interface TableSubmoduleProps {
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
   const theme = useTheme();
+  const { filters } = useCrudRoot();
 
   const { del } = useDataProvider();
 
@@ -218,19 +217,9 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
-        {(props.filters || props.reordable !== false) && (
+        {(filters || props.reordable !== false) && (
           <Box display="flex" mb={2} pt={1} justifyContent="flex-end">
-            {props.filters && (
-              <FilterSubmodule
-                filters={props.filters}
-                updateSimpleFilter={props.updateSimpleFilter}
-                simpleFilter={props.simpleFilter}
-                filterCallback={props.filterCallback}
-                externalSearch={props.externalSearch}
-                search={props.search}
-                updateSearch={props.updateSearch}
-              />
-            )}
+            {filters && <FilterSubmodule />}
             {props.reordable !== false && <Table.ColumnOrderable />}
           </Box>
         )}

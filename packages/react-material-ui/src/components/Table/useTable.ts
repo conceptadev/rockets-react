@@ -33,10 +33,7 @@ export interface UpdateSearch {
   (search: Search | null, resetPage?: boolean): void;
 }
 
-export type UseTableProps = (
-  resource: string,
-  options?: UseTableOptions,
-) => {
+export interface UseTableResult {
   data: unknown[];
   isPending: boolean;
   error: unknown;
@@ -52,7 +49,12 @@ export type UseTableProps = (
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
   >;
-};
+}
+
+export type UseTableProps = (
+  resource: string,
+  options?: UseTableOptions,
+) => UseTableResult;
 
 /**
  * A custom hook for managing table data and state, including pagination, sorting, and filtering.
