@@ -60,7 +60,8 @@ const renderComponent = (filter: FilterType) => {
     case 'autocomplete': {
       return (
         <AutocompleteField
-          key={JSON.stringify(filter.isLoading)}
+          // We want to re-render the component when loading finishes
+          key={String(filter.isLoading)}
           fullWidth
           size={filter.size ?? 'small'}
           options={filter.options}
