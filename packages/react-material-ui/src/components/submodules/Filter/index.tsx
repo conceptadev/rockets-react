@@ -48,46 +48,36 @@ const FilterSubmodule = () => {
     externalSearch &&
     Object.values(externalSearch).filter((value) => value).length > 0;
 
-  const simpleFilterValue = (_filterValues: FilterValues) =>
+  const reduceFilters = (
+    _filterValues: FilterValues,
+    format: 'simpleFilter' | 'search',
+  ) =>
     filters.reduce((acc, filter) => {
       const value = _filterValues[filter.id];
 
       if (!filter.operator) return acc;
       if (typeof value === 'undefined') return acc;
 
-      return {
-        ...acc,
-        [filter.id]:
-          value === null || value === 'all' || value === ''
-            ? null
-            : `||$${filter.operator}||${value}`,
-      };
-    }, {});
-
-  const searchFilterValue = (_filterValues: FilterValues) =>
-    filters.reduce((acc, filter) => {
-      const value = _filterValues[filter.id];
-
-      if (!filter.operator) return acc;
-      if (typeof value === 'undefined') return acc;
+      const data =
+        format === 'simpleFilter'
+          ? `||$${filter.operator}||${value}`
+          : { [`$${filter.operator}`]: value };
 
       return {
         ...acc,
         [filter.id]:
-          value === null || value === 'all' || value === ''
-            ? null
-            : { [`$${filter.operator}`]: value },
+          value === null || value === 'all' || value === '' ? null : data,
       };
     }, {});
 
   useEffect(() => {
     if (!hasExternalSearch) {
       updateSearch(null);
-      updateSimpleFilter(simpleFilterValue(filterValues), true);
+      updateSimpleFilter(reduceFilters(filterValues, 'simpleFilter'), true);
     }
     if (hasExternalSearch) {
       const combinedFilter = {
-        ...searchFilterValue(filterValues),
+        ...reduceFilters(filterValues, 'search'),
         ...externalSearch,
       };
 
@@ -104,7 +94,10 @@ const FilterSubmodule = () => {
       const newFilterValues = { ...prv, [id]: value };
 
       if (updateFilter) {
-        updateSimpleFilter(simpleFilterValue(newFilterValues), true);
+        updateSimpleFilter(
+          reduceFilters(newFilterValues, 'simpleFilter'),
+          true,
+        );
       }
       return newFilterValues;
     });
