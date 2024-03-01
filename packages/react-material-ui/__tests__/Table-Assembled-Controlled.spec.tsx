@@ -225,11 +225,14 @@ describe('Assembled Table - Controlled', () => {
     );
 
     expect(nextPageButton).toBeInTheDocument();
-    // get element with "MuiTablePagination-displayedRows" class
     const paginationInfo = container.querySelector(
       '.MuiTablePagination-displayedRows',
     );
     expect(paginationInfo).toHaveTextContent('1–5 of 7');
+
+    nextPageButton && fireEvent.click(nextPageButton);
+
+    expect(paginationInfo).toHaveTextContent('6–7 of 7');
   });
 
   it('should handle change of rows per page', () => {
