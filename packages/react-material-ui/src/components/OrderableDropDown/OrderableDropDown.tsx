@@ -5,8 +5,8 @@ import ListItem from '@mui/material/ListItem';
 
 import {
   Box,
+  Button,
   Checkbox,
-  IconButton,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
@@ -146,13 +146,20 @@ const OrderableDropDown = ({
 
   return (
     <Box>
-      <IconButton
+      <Button
         onClick={(event: React.MouseEvent<HTMLElement>) => {
           setAnchorEl(event.currentTarget);
         }}
+        startIcon={icon}
+        variant="outlined"
+        sx={{
+          textTransform: 'capitalize',
+          color: '#374151',
+          borderColor: '#374151',
+        }}
       >
-        {icon}
-      </IconButton>
+        Settings
+      </Button>
       <Menu open={open} anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
         <DndContext
           sensors={sensors}

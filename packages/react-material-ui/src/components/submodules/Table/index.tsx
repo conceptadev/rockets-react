@@ -25,6 +25,7 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   ChevronRight as ChevronRightIcon,
+  Add as AddIcon,
 } from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
@@ -213,11 +214,6 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
   return (
     <Box>
-      {!props.hideAddButton && (
-        <Button variant="contained" onClick={props.onAddNew} sx={{ mb: 2 }}>
-          Add new
-        </Button>
-      )}
       <Table.Root
         rows={tableRows}
         headers={tableHeaders}
@@ -228,12 +224,26 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
-        {(filters || props.reordable !== false) && (
-          <Box display="flex" mb={2} pt={1} justifyContent="flex-end">
-            {filters && <FilterSubmodule />}
-            {props.reordable !== false && <Table.ColumnOrderable />}
-          </Box>
-        )}
+        <Box sx={{ padding: '24px 0' }}>{filters && <FilterSubmodule />}</Box>
+
+        <Box
+          display="flex"
+          alignItems="flex-start"
+          justifyContent="space-between"
+          sx={{ mb: 2 }}
+        >
+          {props.reordable !== false && <Table.ColumnOrderable />}
+          {!props.hideAddButton && (
+            <Button
+              variant="contained"
+              onClick={props.onAddNew}
+              startIcon={<AddIcon />}
+              sx={{ textTransform: 'capitalize' }}
+            >
+              Add new
+            </Button>
+          )}
+        </Box>
 
         <TableContainer sx={tableTheme.tableContainer}>
           <Table.Table
