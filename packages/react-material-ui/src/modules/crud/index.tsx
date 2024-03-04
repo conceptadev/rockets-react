@@ -2,11 +2,6 @@ import React, { PropsWithChildren } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
-import type {
-  CustomTableCell,
-  HeaderProps,
-} from '../../components/Table/types';
-
 import { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 
@@ -24,13 +19,8 @@ type Action = 'creation' | 'edit' | 'details' | null;
 
 type SelectedRow = Record<string, unknown> | null;
 
-type TableSchemaItem = HeaderProps & {
-  format?: (data: unknown) => string | number;
-  renderTableCell?: (data: unknown, rowData: unknown) => CustomTableCell;
-};
-
 interface TableProps {
-  tableSchema: TableSchemaItem[];
+  tableSchema: TableSubmoduleProps['tableSchema'];
   tableProps?: InnerTableProps;
   tableTheme?: StyleDefinition;
   hideActionsColumn?: boolean;

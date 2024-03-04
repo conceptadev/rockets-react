@@ -60,7 +60,7 @@ export type StyleDefinition = {
 };
 
 export type TableSchemaItem = HeaderProps & {
-  format?: (data: unknown) => string | number;
+  format?: (data: unknown) => string | number | React.ReactNode;
   renderTableCell?: (data: unknown, rowData: unknown) => CustomTableCell;
 };
 
@@ -141,22 +141,27 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
     return data.map((row) => {
       const rowData = row as Record<string, unknown>;
-      const newData = { ...rowData };
+      const newData = {};
 
-      Object.entries(rowData).forEach(([key, data]) => {
-        const schemaItem = tableHeaders.find((item) => item.id === key);
-
-        if (!schemaItem) {
+      tableHeaders.forEach((schemaItem) => {
+        if (schemaItem.format) {
+          const formattedData = schemaItem.format(rowData);
+          if (['string', 'number'].includes(typeof formattedData)) {
+            newData[schemaItem.id] = schemaItem.format(rowData);
+            return;
+          }
+          newData[schemaItem.id] = {
+            component: schemaItem.format(rowData),
+          };
           return;
         }
 
-        if (schemaItem.format) {
-          newData[key] = schemaItem.format(data);
+        if (schemaItem.renderTableCell) {
+          newData[schemaItem.id] = schemaItem.renderTableCell(data, rowData);
+          return;
         }
 
-        if (schemaItem.renderTableCell) {
-          newData[key] = schemaItem.renderTableCell(data, rowData);
-        }
+        newData[schemaItem.id] = rowData[schemaItem.source || schemaItem.id];
       });
 
       return {
