@@ -1,11 +1,19 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ReactNode } from 'react';
 
 import { useTableRoot } from './hooks/useTableRoot';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 
-export const TableColumnOrderable = () => {
+type TableColumnOrderableProps = {
+  text: string;
+  icon?: ReactNode;
+};
+
+export const TableColumnOrderable = ({
+  text,
+  icon,
+}: TableColumnOrderableProps) => {
   const { headers, setHeaders } = useTableRoot();
 
   const [headerOrder, setHeaderOrder] = useState<ListItem[]>(
@@ -20,5 +28,12 @@ export const TableColumnOrderable = () => {
     setHeaders(newOrderedHeaders);
   }, [headerOrder]);
 
-  return <OrderableDropDown list={headerOrder} setList={setHeaderOrder} />;
+  return (
+    <OrderableDropDown
+      list={headerOrder}
+      setList={setHeaderOrder}
+      icon={icon}
+      text={text}
+    />
+  );
 };

@@ -232,7 +232,9 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
           justifyContent="space-between"
           sx={{ mb: 2 }}
         >
-          {props.reordable !== false && <Table.ColumnOrderable />}
+          {props.reordable !== false && (
+            <Table.ColumnOrderable text="Table Settings" />
+          )}
           {!props.hideAddButton && (
             <Button
               variant="contained"

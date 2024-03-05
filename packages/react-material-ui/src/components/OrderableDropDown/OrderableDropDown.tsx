@@ -42,6 +42,7 @@ interface Props {
   list: ListItem[];
   icon?: ReactNode;
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
+  text?: string;
 }
 
 interface SortableItemProps {
@@ -97,6 +98,7 @@ const OrderableDropDown = ({
   list,
   setList,
   icon = <SettingsSuggest />,
+  text,
 }: Props) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -156,9 +158,10 @@ const OrderableDropDown = ({
           textTransform: 'capitalize',
           color: '#374151',
           borderColor: '#374151',
+          textWrap: 'nowrap',
         }}
       >
-        Settings
+        {text}
       </Button>
       <Menu open={open} anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
         <DndContext

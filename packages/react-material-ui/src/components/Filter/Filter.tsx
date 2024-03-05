@@ -154,6 +154,7 @@ const Filter = (props: FilterProps) => {
           icon={<FilterAlt />}
           list={filterOrder}
           setList={setFilterOrder}
+          text="Filter Settings"
         />
       </Box>
     </Box>
