@@ -15,10 +15,12 @@ import { TableProps as InnerTableProps } from '../../components/Table/Table';
 import Text from '../../components/Text';
 import TableSubmodule, {
   StyleDefinition,
-  TableSubmoduleProps,
 } from '../../components/submodules/Table';
 import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
 import ModalFormSubmodule from '../../components/submodules/ModalForm';
+import { Search } from '../../components/Table/types';
+import CrudRoot from './CrudRoot';
+import { FilterDetails } from '../../components/submodules/Filter';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -35,7 +37,7 @@ interface TableProps {
   tableTheme?: StyleDefinition;
   hideActionsColumn?: boolean;
   reordable?: boolean;
-  filters?: TableSubmoduleProps['filters'];
+  filters?: FilterDetails[];
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
 }
@@ -60,13 +62,15 @@ export interface ModuleProps {
   editFormProps?: PropsWithChildren<FormProps>;
   hideDeleteButton?: boolean;
   onFetchError?: (error: unknown) => void;
+  filterCallback?: (filter: unknown) => void;
+  externalSearch?: Search;
 }
 
 const CrudModule = (props: ModuleProps) => {
   const [drawerViewMode, setDrawerViewMode] = useState<Action>(null);
   const [selectedRow, setSelectedRow] = useState<SelectedRow>(null);
 
-  const tableProps = useTable(props.resource, {
+  const useTableReturn = useTable(props.resource, {
     callbacks: {
       onError: props.onFetchError,
     },
@@ -108,57 +112,71 @@ const CrudModule = (props: ModuleProps) => {
   const enhancedFormProps = { ...formProps };
   delete enhancedFormProps.onSuccess;
 
+  const { filters, ...tableSubmoduleProps } = props.tableProps;
+
   return (
-    <Box>
-      {props.title ? (
-        <Text fontFamily="Inter" fontSize={20} fontWeight={800} mt={4} mb={4}>
-          {props.title}
-        </Text>
-      ) : null}
+    <CrudRoot
+      filters={filters}
+      search={useTableReturn.search}
+      updateSearch={useTableReturn.updateSearch}
+      simpleFilter={useTableReturn.simpleFilter}
+      updateSimpleFilter={useTableReturn.updateSimpleFilter}
+      filterCallback={props.filterCallback}
+      externalSearch={props.externalSearch}
+    >
+      <Box>
+        {props.title ? (
+          <Text fontFamily="Inter" fontSize={20} fontWeight={800} mt={4} mb={4}>
+            {props.title}
+          </Text>
+        ) : null}
 
-      <TableSubmodule
-        queryResource={props.resource}
-        onAction={(payload) => {
-          setSelectedRow(payload.row);
-          setDrawerViewMode(payload.action);
-        }}
-        onAddNew={() => {
-          setSelectedRow(null);
-          setDrawerViewMode('creation');
-        }}
-        hideAddButton={!props.createFormProps}
-        hideEditButton={!props.editFormProps}
-        hideDeleteButton={props.hideDeleteButton}
-        hideDetailsButton={!props.detailsFormProps}
-        {...tableProps}
-        {...props.tableProps}
-      />
-
-      {enhancedFormProps && (
-        <FormComponent
-          title={props.title}
+        <TableSubmodule
           queryResource={props.resource}
-          viewMode={drawerViewMode}
-          formData={selectedRow}
-          onSuccess={(data) => {
-            tableProps.refresh();
+          onAction={(payload) => {
+            setSelectedRow(payload.row);
+            setDrawerViewMode(payload.action);
+          }}
+          onAddNew={() => {
             setSelectedRow(null);
-            setDrawerViewMode(null);
+            setDrawerViewMode('creation');
+          }}
+          hideAddButton={!props.createFormProps}
+          hideEditButton={!props.editFormProps}
+          hideDeleteButton={props.hideDeleteButton}
+          hideDetailsButton={!props.detailsFormProps}
+          filterCallback={props.filterCallback}
+          externalSearch={props.externalSearch}
+          {...useTableReturn}
+          {...tableSubmoduleProps}
+        />
 
-            if (formOnSuccess) {
-              formOnSuccess(data);
-            }
-          }}
-          onClose={() => {
-            setSelectedRow(null);
-            setDrawerViewMode(null);
-          }}
-          {...enhancedFormProps}
-        >
-          {enhancedFormProps.children}
-        </FormComponent>
-      )}
-    </Box>
+        {enhancedFormProps && (
+          <FormComponent
+            title={props.title}
+            queryResource={props.resource}
+            viewMode={drawerViewMode}
+            formData={selectedRow}
+            onSuccess={(data) => {
+              useTableReturn.refresh();
+              setSelectedRow(null);
+              setDrawerViewMode(null);
+
+              if (formOnSuccess) {
+                formOnSuccess(data);
+              }
+            }}
+            onClose={() => {
+              setSelectedRow(null);
+              setDrawerViewMode(null);
+            }}
+            {...enhancedFormProps}
+          >
+            {enhancedFormProps.children}
+          </FormComponent>
+        )}
+      </Box>
+    </CrudRoot>
   );
 };
 

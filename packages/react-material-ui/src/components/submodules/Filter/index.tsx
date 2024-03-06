@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { useEffect } from 'react';
 import Filter, {
   FilterVariant,
   FilterCommon,
   FilterType,
 } from '../../../components/Filter';
 import { SelectOption } from '../../../components/SelectField/SelectField';
-import { UpdateSimpleFilter, SimpleFilter } from 'components/Table/types';
+import { useCrudRoot, FilterValues } from '../../../modules/crud/useCrudRoot';
 
 type Operator =
   | 'eq'
@@ -26,51 +26,81 @@ type Operator =
   | 'exclL';
 
 export type FilterDetails = {
-  operator: Operator;
   type: FilterVariant;
+  operator?: Operator;
   options?: SelectOption[];
 } & Omit<FilterCommon, 'showOnMount' | 'hide'>;
 
-interface Props {
-  filters: FilterDetails[];
-  updateSimpleFilter: UpdateSimpleFilter;
-  simpleFilter: SimpleFilter;
-}
+export type FilterCallback = (filter: FilterValues) => void;
 
-const FilterSubmodule: FC<Props> = ({
-  filters,
-  updateSimpleFilter,
-  simpleFilter,
-}) => {
-  const [filterValues, setFilterValues] = useState<
-    Record<string, string | null>
-  >({});
+const FilterSubmodule = () => {
+  const {
+    filters,
+    updateSearch,
+    simpleFilter,
+    updateSimpleFilter,
+    externalSearch,
+    filterValues,
+    setFilterValues,
+  } = useCrudRoot();
+
+  const hasExternalSearch =
+    externalSearch &&
+    Object.values(externalSearch).filter((value) => value).length > 0;
+
+  const reduceFilters = (
+    _filterValues: FilterValues,
+    format: 'simpleFilter' | 'search',
+  ) =>
+    filters.reduce((acc, filter) => {
+      const value = _filterValues[filter.id];
+
+      if (!filter.operator) return acc;
+      if (typeof value === 'undefined') return acc;
+
+      const data =
+        format === 'simpleFilter'
+          ? `||$${filter.operator}||${value}`
+          : { [`$${filter.operator}`]: value };
+
+      return {
+        ...acc,
+        [filter.id]:
+          value === null || value === 'all' || value === '' ? null : data,
+      };
+    }, {});
+
+  useEffect(() => {
+    if (!hasExternalSearch) {
+      updateSearch(null);
+      updateSimpleFilter(reduceFilters(filterValues, 'simpleFilter'), true);
+    }
+    if (hasExternalSearch) {
+      const combinedFilter = {
+        ...reduceFilters(filterValues, 'search'),
+        ...externalSearch,
+      };
+
+      updateSearch(combinedFilter, true);
+    }
+  }, [externalSearch]);
 
   const onFilterChange = (
     id: string,
     value: string | null,
     updateFilter?: boolean,
   ) => {
-    const _filterValues = { ...filterValues, [id]: value };
-    setFilterValues(_filterValues);
+    setFilterValues((prv) => {
+      const newFilterValues = { ...prv, [id]: value };
 
-    if (updateFilter) {
-      const simpleFilter = filters.reduce((acc, filter) => {
-        const value = _filterValues[filter.id];
-
-        if (typeof value === 'undefined') return acc;
-
-        return {
-          ...acc,
-          [filter.id]:
-            value === null || value === 'all' || value === ''
-              ? null
-              : `||$${filter.operator}||${value}`,
-        };
-      }, {});
-
-      updateSimpleFilter(simpleFilter, true);
-    }
+      if (updateFilter) {
+        updateSimpleFilter(
+          reduceFilters(newFilterValues, 'simpleFilter'),
+          true,
+        );
+      }
+      return newFilterValues;
+    });
   };
 
   const filterObjs: FilterType[] = filters.map((filter) => {
