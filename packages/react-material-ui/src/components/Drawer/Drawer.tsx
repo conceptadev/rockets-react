@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, ReactNode } from 'react';
+import { darken } from '@mui/material/styles';
 import { StyledDrawer, StyledDrawerProps } from './Styles';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -22,7 +23,10 @@ export type DrawerProps = {
   sx?: StyledDrawerProps['sx'];
   buttonSx?: SxProps<Theme>;
   horizontal?: boolean;
-  collapsable?: boolean;
+  collapsible?: boolean;
+  collapsibleIcon?: ReactNode | ((collapsed?: boolean) => ReactNode);
+  collapsibleIconColor?: string;
+  collapsibleIconBgColor?: string;
   collapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
   backgroundColor?: StyledDrawerProps['backgroundColor'];
@@ -44,7 +48,10 @@ const Drawer = (props: DrawerProps) => {
     sx,
     buttonSx,
     horizontal,
-    collapsable = true,
+    collapsible = true,
+    collapsibleIcon,
+    collapsibleIconColor,
+    collapsibleIconBgColor,
     collapsed = false,
     onCollapsedChange,
     backgroundColor,
@@ -87,9 +94,10 @@ const Drawer = (props: DrawerProps) => {
         </Toolbar>
 
         {items.map((item, i) => {
+          const isActive = !!currentId && currentId.startsWith(item.id);
           if (item.component)
             return (
-              <Box onClick={item.onClick}>
+              <Box onClick={item.onClick} className={isActive ? 'active' : ''}>
                 {typeof item.component === 'function'
                   ? item.component(
                       !!currentId && currentId.startsWith(item.id),
@@ -104,10 +112,10 @@ const Drawer = (props: DrawerProps) => {
               key={item.id || i}
               {...item}
               collapsed={!mobileIsOpen && _collapsed}
-              active={!!currentId && currentId.startsWith(item.id)}
+              active={isActive}
               textProps={textProps}
-              sx={buttonSx}
-              horizontal={horizontal}
+              sx={[buttonSx, ...(Array.isArray(sx) ? sx : [sx])]}
+              horizontal={item.horizontal || horizontal}
               iconColor={iconColor}
               activeIconColor={activeIconColor}
               temporary={hideToggle}
@@ -116,11 +124,11 @@ const Drawer = (props: DrawerProps) => {
         })}
 
         {!hideToggle &&
-          collapsable &&
+          collapsible &&
           !!customToggle &&
           customToggle(toggleDrawer, _collapsed)}
 
-        {!hideToggle && collapsable && !customToggle && (
+        {!hideToggle && collapsible && !customToggle && (
           <Toolbar
             sx={{
               marginTop: 'auto',
@@ -130,11 +138,31 @@ const Drawer = (props: DrawerProps) => {
               px: [1],
             }}
           >
-            <IconButton onClick={toggleDrawer}>
-              <Text color="primary.contrastText">
-                {_collapsed ? <ChevronRight /> : <ChevronLeft />}
-              </Text>
-            </IconButton>
+            <Text color={collapsibleIconColor || 'primary.contrastText'}>
+              <IconButton
+                className="Rockets-CollapsibleButton"
+                onClick={toggleDrawer}
+                sx={{
+                  backgroundColor: collapsibleIconBgColor || 'transparent',
+                  ...(collapsibleIconBgColor && {
+                    '&:hover': {
+                      backgroundColor: darken(collapsibleIconBgColor, 0.1),
+                    },
+                  }),
+                }}
+              >
+                {collapsibleIcon &&
+                  typeof collapsibleIcon === 'function' &&
+                  collapsibleIcon(_collapsed)}
+
+                {collapsibleIcon &&
+                  typeof collapsibleIcon != 'function' &&
+                  collapsibleIcon}
+
+                {!collapsibleIcon &&
+                  (_collapsed ? <ChevronRight /> : <ChevronLeft />)}
+              </IconButton>
+            </Text>
           </Toolbar>
         )}
       </Box>
@@ -145,6 +173,7 @@ const Drawer = (props: DrawerProps) => {
     <>
       <StyledDrawer
         variant="temporary"
+        className="Rockets-Drawer Rockets-Drawer-temporary"
         open={mobileIsOpen}
         ModalProps={{
           keepMounted: true,
@@ -165,6 +194,7 @@ const Drawer = (props: DrawerProps) => {
       </StyledDrawer>
       <StyledDrawer
         variant="permanent"
+        className="Rockets-Drawer Rockets-Drawer-permanent"
         sx={{
           display: { xs: 'none', sm: 'block' },
           '& .MuiDrawer-paper': {
