@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box } from '@mui/material';
 import { DrawerButton, DrawerButtonProps } from './Styles';
 import Text from '../Text';
 import { TextProps } from 'interfaces';
@@ -41,6 +42,7 @@ const DrawerItem = (props: DrawerItemProps) => {
 
   return (
     <DrawerButton
+      className={`Rockets-DrawerButton ${active ? 'active' : ''}`}
       data-testid={`drawer-item-${id}-${temporary ? 'temporary' : 'permanent'}`}
       active={active}
       collapsed={collapsed}
@@ -51,7 +53,24 @@ const DrawerItem = (props: DrawerItemProps) => {
       activeIconColor={activeIconColor}
     >
       {typeof icon === 'function' ? icon(!!active) : icon}
-      {text && <Text {...textProps}>{text}</Text>}
+      {text && horizontal && (
+        <Box display="flex" alignItems="center">
+          <Text {...textProps} position="absolute">
+            {text}
+          </Text>
+        </Box>
+      )}
+      {text && !horizontal && (
+        <Text
+          {...textProps}
+          sx={{
+            position: 'absolute',
+            bottom: 0,
+          }}
+        >
+          {text}
+        </Text>
+      )}
     </DrawerButton>
   );
 };
