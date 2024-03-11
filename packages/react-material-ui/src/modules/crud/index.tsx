@@ -10,7 +10,8 @@ import { TableProps as InnerTableProps } from '../../components/Table/Table';
 import Text from '../../components/Text';
 import TableSubmodule, {
   StyleDefinition,
-  TableSubmoduleProps,
+  TableSchemaItem,
+  PaginationStyle,
 } from '../../components/submodules/Table';
 import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
 import ModalFormSubmodule from '../../components/submodules/ModalForm';
@@ -23,12 +24,13 @@ type Action = 'creation' | 'edit' | 'details' | null;
 type SelectedRow = Record<string, unknown> | null;
 
 interface TableProps {
-  tableSchema: TableSubmoduleProps['tableSchema'];
+  tableSchema: TableSchemaItem[];
   tableProps?: InnerTableProps;
   tableTheme?: StyleDefinition;
   hideActionsColumn?: boolean;
   reordable?: boolean;
   filters?: FilterDetails[];
+  paginationStyle?: PaginationStyle;
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
 }

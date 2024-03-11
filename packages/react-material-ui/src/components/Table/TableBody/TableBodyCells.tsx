@@ -5,8 +5,13 @@ import Text from '../../Text';
 import { TableCell, TableCellProps, Tooltip } from '@mui/material';
 import { CustomTableCell, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
+import get from 'lodash/get';
 
-const getCellData = (cell: CustomTableCell | string | number | undefined) => {
+const getCellData = (row: RowProps, dataOrigin: string) => {
+  const cell: CustomTableCell | string | number | undefined = get(
+    row,
+    dataOrigin,
+  );
   if (
     typeof cell === 'number' ||
     typeof cell === 'string' ||
@@ -50,7 +55,6 @@ type TableBodyCellsProps = {
  */
 export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
   const { headers } = useTableRoot();
-
   return (
     <>
       {headers.map((header) => {
@@ -58,7 +62,7 @@ export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
 
         return (
           <TableCell key={header.id} {...rest}>
-            {getCellData(row[header.source || header.id])}
+            {getCellData(row, header.source || header.id)}
           </TableCell>
         );
       })}
