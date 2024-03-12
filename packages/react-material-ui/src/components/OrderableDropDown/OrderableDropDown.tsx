@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Checkbox,
+  IconButton,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
@@ -148,21 +149,31 @@ const OrderableDropDown = ({
 
   return (
     <Box>
-      <Button
-        onClick={(event: React.MouseEvent<HTMLElement>) => {
-          setAnchorEl(event.currentTarget);
-        }}
-        startIcon={icon}
-        variant="outlined"
-        sx={{
-          textTransform: 'capitalize',
-          color: '#374151',
-          borderColor: '#374151',
-          textWrap: 'nowrap',
-        }}
-      >
-        {text}
-      </Button>
+      {text ? (
+        <Button
+          onClick={(event: React.MouseEvent<HTMLElement>) => {
+            setAnchorEl(event.currentTarget);
+          }}
+          startIcon={icon}
+          variant="outlined"
+          sx={{
+            textTransform: 'capitalize',
+            color: '#374151',
+            borderColor: '#374151',
+            textWrap: 'nowrap',
+          }}
+        >
+          {text}
+        </Button>
+      ) : (
+        <IconButton
+          onClick={(event: React.MouseEvent<HTMLElement>) => {
+            setAnchorEl(event.currentTarget);
+          }}
+        >
+          {icon}
+        </IconButton>
+      )}
       <Menu open={open} anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
         <DndContext
           sensors={sensors}

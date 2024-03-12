@@ -6,7 +6,7 @@ import { useTableRoot } from './hooks/useTableRoot';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 
 type TableColumnOrderableProps = {
-  text: string;
+  text?: string;
   icon?: ReactNode;
 };
 

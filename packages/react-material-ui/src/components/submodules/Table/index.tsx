@@ -224,27 +224,26 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
-        <Box sx={{ padding: '24px 0' }}>{filters && <FilterSubmodule />}</Box>
-
         <Box
           display="flex"
           alignItems="flex-start"
           justifyContent="space-between"
           sx={{ mb: 2 }}
         >
-          {props.reordable !== false && (
-            <Table.ColumnOrderable text="Table Settings" />
-          )}
-          {!props.hideAddButton && (
-            <Button
-              variant="contained"
-              onClick={props.onAddNew}
-              startIcon={<AddIcon />}
-              sx={{ textTransform: 'capitalize' }}
-            >
-              Add new
-            </Button>
-          )}
+          {filters && <FilterSubmodule />}
+          <Box display="flex" alignItems="center">
+            {props.reordable !== false && <Table.ColumnOrderable />}
+            {!props.hideAddButton && (
+              <Button
+                variant="contained"
+                onClick={props.onAddNew}
+                startIcon={<AddIcon />}
+                sx={{ textTransform: 'capitalize', textWrap: 'nowrap' }}
+              >
+                Add new
+              </Button>
+            )}
+          </Box>
         </Box>
 
         <TableContainer sx={tableTheme.tableContainer}>
