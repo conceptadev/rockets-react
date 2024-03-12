@@ -27,6 +27,7 @@ import {
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+import get from 'lodash/get';
 
 import Table from '../../../components/Table';
 import { generateTableTheme } from './constants';
@@ -47,6 +48,8 @@ type ActionCallbackPayload = {
   action: Action;
   row: Record<string, unknown>;
 };
+
+export type PaginationStyle = 'default' | 'numeric';
 
 export type StyleDefinition = {
   root?: SxProps<Theme>;
@@ -99,6 +102,7 @@ export interface TableSubmoduleProps {
   externalSearch?: Search;
   search?: Search;
   updateSearch?: UpdateSearch;
+  paginationStyle?: PaginationStyle;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -146,7 +150,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
     return data.map((row) => {
       const rowData = row as Record<string, unknown>;
-      const newData = {};
+      const newData = { ...rowData, id: String(rowData.id) };
 
       tableHeaders.forEach((schemaItem) => {
         if (schemaItem.format) {
@@ -162,16 +166,20 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         }
 
         if (schemaItem.renderTableCell) {
-          newData[schemaItem.id] = schemaItem.renderTableCell(data, rowData);
+          const cellData: CustomTableCell | string | number | undefined = get(
+            row,
+            schemaItem.source || schemaItem.id,
+          );
+          newData[schemaItem.id] = schemaItem.renderTableCell(
+            cellData,
+            rowData,
+          );
           return;
         }
-
-        newData[schemaItem.id] = rowData[schemaItem.source || schemaItem.id];
       });
 
       return {
         ...newData,
-        id: String(rowData.id),
         actions: {
           component: (
             <Box>
@@ -283,7 +291,13 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             </TableBody>
           </Table.Table>
         </TableContainer>
-        <Table.Pagination variant="outlined" />
+        {props.paginationStyle === 'numeric' ? (
+          <Box mt={2}>
+            <Table.PaginationNumbers />
+          </Box>
+        ) : (
+          <Table.Pagination variant="outlined" />
+        )}
       </Table.Root>
     </Box>
   );

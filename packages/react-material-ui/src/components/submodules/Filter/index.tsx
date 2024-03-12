@@ -3,6 +3,7 @@ import Filter, {
   FilterVariant,
   FilterCommon,
   FilterType,
+  TextFilter,
 } from '../../../components/Filter';
 import { SelectOption } from '../../../components/SelectField/SelectField';
 import { useCrudRoot, FilterValues } from '../../../modules/crud/useCrudRoot';
@@ -29,6 +30,7 @@ export type FilterDetails = {
   type: FilterVariant;
   operator?: Operator;
   options?: SelectOption[];
+  searchIconPlacement?: TextFilter['searchIconPlacement'];
 } & Omit<FilterCommon, 'showOnMount' | 'hide'>;
 
 export type FilterCallback = (filter: FilterValues) => void;
@@ -126,6 +128,7 @@ const FilterSubmodule = () => {
       ...(type === 'text' && {
         onChange: (val: string | null) => onFilterChange(id, val, false),
         onDebouncedSearchChange: (val: string) => onFilterChange(id, val, true),
+        searchIconPlacement: filter.searchIconPlacement,
       }),
     };
   });

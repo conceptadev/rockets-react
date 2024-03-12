@@ -85,6 +85,16 @@ export const DrawerButton = styled(MuiButton, {
       _iconColor = activeIconColor || theme.palette.common.white;
     }
 
+    const paddingBottom = () => {
+      if (horizontal) {
+        return '8px';
+      }
+      if (collapsed) {
+        return '6px';
+      }
+      return '18px';
+    };
+
     return [
       {
         color: active
@@ -96,13 +106,15 @@ export const DrawerButton = styled(MuiButton, {
         alignItems: 'center',
         whiteSpace: horizontal ? 'nowrap' : 'break-spaces',
         margin: '2px 8px',
-        padding: '8px',
+        paddingX: '8px',
+        paddingTop: '8px',
+        paddingBottom: paddingBottom(),
         minWidth: 0,
         overflow: 'hidden',
         textTransform: 'none',
         textAlign: 'left',
         maxHeight: collapsed ? '40px' : '85px',
-        transition: 'max-height 300ms',
+        transition: 'max-height 300ms, padding-bottom 300ms',
         backgroundColor: active
           ? alpha(theme.palette.common.black, 0.2)
           : 'transparent',

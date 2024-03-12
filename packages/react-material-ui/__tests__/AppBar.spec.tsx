@@ -17,7 +17,7 @@ describe('AppBar Component', () => {
   it('should render correctly', () => {
     render(
       <AppBar.Root>
-        <AppBar.Drawer collapsable currentId="home" items={items} />
+        <AppBar.Drawer collapsible currentId="home" items={items} />
         <AppBar.Main>
           <AppBar.Nav text="Test Text" subText="Test Subtext" />
           <div>Child Component</div>
@@ -29,7 +29,7 @@ describe('AppBar Component', () => {
   it('should render drawer correctly', () => {
     const { getByRole, getAllByText } = render(
       <AppBar.Root>
-        <AppBar.Drawer collapsable currentId="home" items={items} />
+        <AppBar.Drawer collapsible currentId="home" items={items} />
         <AppBar.Main>
           <AppBar.Nav text="Test Text" subText="Test Subtext" />
           <div>Child Component</div>

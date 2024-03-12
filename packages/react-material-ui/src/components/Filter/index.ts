@@ -1,4 +1,9 @@
-import Filter, { FilterVariant, FilterCommon, FilterType } from './Filter';
+import Filter, {
+  FilterVariant,
+  FilterCommon,
+  FilterType,
+  TextFilter,
+} from './Filter';
 
-export { FilterVariant, FilterCommon, FilterType };
+export { FilterVariant, FilterCommon, FilterType, TextFilter };
 export default Filter;

@@ -27,13 +27,14 @@ export type FilterCommon = {
   hide?: boolean;
 };
 
-type TextFilter = {
+export type TextFilter = {
   type: 'text';
   placeholder?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
   onDebouncedSearchChange?: (value: string) => void;
   value?: string;
+  searchIconPlacement?: SearchFieldProps['searchIconPlacement'];
 } & FilterCommon;
 
 type AutocompleteFilter = {
@@ -104,6 +105,7 @@ const renderComponent = (filter: FilterType) => {
               ? (value) => filter.onDebouncedSearchChange?.(value)
               : undefined
           }
+          searchIconPlacement={filter.searchIconPlacement}
         />
       );
 
