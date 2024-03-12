@@ -12,6 +12,9 @@ const getCellData = (row: RowProps, dataOrigin: string) => {
     row,
     dataOrigin,
   );
+
+  if (!cell) return '';
+
   if (
     typeof cell === 'number' ||
     typeof cell === 'string' ||
