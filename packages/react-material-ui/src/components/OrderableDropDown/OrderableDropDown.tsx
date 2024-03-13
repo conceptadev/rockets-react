@@ -59,6 +59,7 @@ const SortableItem = (props: SortableItemProps) => {
     useSortable({ id });
 
   const style = {
+    touchAction: 'none',
     transform: CSS.Transform.toString(transform),
     transition,
   };
@@ -99,7 +100,12 @@ const OrderableDropDown = ({
   icon = <SettingsSuggest />,
 }: Props) => {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 0,
+        tolerance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
