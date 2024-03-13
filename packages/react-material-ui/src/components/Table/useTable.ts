@@ -29,10 +29,11 @@ interface UseTableOptions {
   noPagination?: boolean;
 }
 
-export type UseTableProps = (
-  resource: string,
-  options?: UseTableOptions,
-) => {
+export interface UpdateSearch {
+  (search: Search | null, resetPage?: boolean): void;
+}
+
+export interface UseTableResult {
   data: unknown[];
   isPending: boolean;
   error: unknown;
@@ -48,7 +49,12 @@ export type UseTableProps = (
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
   >;
-};
+}
+
+export type UseTableProps = (
+  resource: string,
+  options?: UseTableOptions,
+) => UseTableResult;
 
 /**
  * A custom hook for managing table data and state, including pagination, sorting, and filtering.
@@ -175,26 +181,35 @@ const useTable: UseTableProps = (resource, options) => {
 
   // TODO: This will be refactored with Query Builder
   // For now it works even though not optmized
-  const updateSearch = (search: Search | null, resetPage = true) => {
+  const updateSearch: UpdateSearch = (
+    search: Search | null,
+    resetPage = true,
+  ) => {
     setTableQueryState((prevState) => {
       // Removed current search from state
       const updatedState = { ...prevState };
 
-      for (const entries of Object.entries(search)) {
-        const [key, value] = entries;
+      if (search === null) {
+        updatedState.search = undefined;
+      }
 
-        // Loose equality evals for `undefined` and `null`
-        if (value == null) {
-          delete updatedState?.search?.[key];
-        } else {
-          // This will update the search
-          // should only no update if value is null or undefined
-          if (typeof updatedState?.search === 'undefined') {
-            updatedState.search = {
-              [key]: value,
-            };
+      if (search) {
+        for (const entries of Object.entries(search)) {
+          const [key, value] = entries;
+
+          // Loose equality evals for `undefined` and `null`
+          if (value == null) {
+            delete updatedState?.search?.[key];
           } else {
-            updatedState.search[key] = value;
+            // This will update the search
+            // should only no update if value is null or undefined
+            if (typeof updatedState?.search === 'undefined') {
+              updatedState.search = {
+                [key]: value,
+              };
+            } else {
+              updatedState.search[key] = value;
+            }
           }
         }
       }

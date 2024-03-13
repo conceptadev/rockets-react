@@ -87,6 +87,7 @@ const renderComponent = (filter: FilterType) => {
           defaultValue={filter.defaultValue || ''}
           onChange={filter.onChange}
           value={filter.value}
+          variant="outlined"
         />
       );
 

@@ -32,9 +32,10 @@ import Table from '../../../components/Table';
 import { generateTableTheme } from './constants';
 import { TableRootProps } from '../../../components/Table/TableRoot';
 import { TableProps } from '../../../components/Table/Table';
-import FilterSubmodule, {
-  FilterDetails,
-} from '../../../components/submodules/Filter';
+import FilterSubmodule from '../../../components/submodules/Filter';
+import { Search } from '../../../components/Table/types';
+import { UpdateSearch } from '../../../components/Table/useTable';
+import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -60,7 +61,7 @@ export type StyleDefinition = {
 };
 
 export type TableSchemaItem = HeaderProps & {
-  format?: (data: unknown) => string | number;
+  format?: (data: unknown) => string | number | React.ReactNode;
   renderTableCell?: (data: unknown, rowData: unknown) => CustomTableCell;
 };
 
@@ -92,13 +93,17 @@ export interface TableSubmoduleProps {
   hideDetailsButton?: boolean;
   hideAddButton?: boolean;
   reordable?: boolean;
-  filters?: FilterDetails[];
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
+  filterCallback?: (filter: unknown) => void;
+  externalSearch?: Search;
+  search?: Search;
+  updateSearch?: UpdateSearch;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
   const theme = useTheme();
+  const { filters } = useCrudRoot();
 
   const { del } = useDataProvider();
 
@@ -141,22 +146,27 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
     return data.map((row) => {
       const rowData = row as Record<string, unknown>;
-      const newData = { ...rowData };
+      const newData = {};
 
-      Object.entries(rowData).forEach(([key, data]) => {
-        const schemaItem = tableHeaders.find((item) => item.id === key);
-
-        if (!schemaItem) {
+      tableHeaders.forEach((schemaItem) => {
+        if (schemaItem.format) {
+          const formattedData = schemaItem.format(rowData);
+          if (['string', 'number'].includes(typeof formattedData)) {
+            newData[schemaItem.id] = schemaItem.format(rowData);
+            return;
+          }
+          newData[schemaItem.id] = {
+            component: schemaItem.format(rowData),
+          };
           return;
         }
 
-        if (schemaItem.format) {
-          newData[key] = schemaItem.format(data);
+        if (schemaItem.renderTableCell) {
+          newData[schemaItem.id] = schemaItem.renderTableCell(data, rowData);
+          return;
         }
 
-        if (schemaItem.renderTableCell) {
-          newData[key] = schemaItem.renderTableCell(data, rowData);
-        }
+        newData[schemaItem.id] = rowData[schemaItem.source || schemaItem.id];
       });
 
       return {
@@ -218,15 +228,9 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
-        {(props.filters || props.reordable !== false) && (
+        {(filters || props.reordable !== false) && (
           <Box display="flex" mb={2} pt={1} justifyContent="flex-end">
-            {props.filters && (
-              <FilterSubmodule
-                filters={props.filters}
-                updateSimpleFilter={props.updateSimpleFilter}
-                simpleFilter={props.simpleFilter}
-              />
-            )}
+            {filters && <FilterSubmodule />}
             {props.reordable !== false && <Table.ColumnOrderable />}
           </Box>
         )}
