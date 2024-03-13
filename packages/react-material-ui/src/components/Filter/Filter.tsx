@@ -39,7 +39,9 @@ type TextFilter = {
 type AutocompleteFilter = {
   type: 'autocomplete';
   options: SelectOption[];
-  currentValue?: string;
+  resource?: string;
+  resourceLabel?: string;
+  resourceValue?: string;
   defaultValue?: SelectOption;
   onChange: (value: string | null) => void;
 } & FilterCommon;
@@ -60,15 +62,16 @@ const renderComponent = (filter: FilterType) => {
     case 'autocomplete': {
       return (
         <AutocompleteField
-          key={JSON.stringify(filter.isLoading)}
           fullWidth
           size={filter.size ?? 'small'}
           options={filter.options}
           isLoading={filter.isLoading}
           onChange={filter.onChange}
-          currentValue={filter.currentValue || ''}
           defaultValue={filter.defaultValue ?? allOption}
           label={filter.label}
+          resource={filter.resource}
+          resourceLabel={filter.resourceLabel}
+          resourceValue={filter.resourceValue}
         />
       );
     }
