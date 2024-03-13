@@ -114,6 +114,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             ...formSchema,
             required: formSchema?.required || [],
             properties: formSchema?.properties || {},
+            title: '',
           }}
           uiSchema={{
             ...formUiSchema,
