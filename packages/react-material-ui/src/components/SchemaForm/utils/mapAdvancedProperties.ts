@@ -22,10 +22,10 @@ const fieldTypesMap: Record<string, JSONSchema7TypeName> = {
 
 export type AdvancedProperties = Record<string, AdvancedProperty>;
 
-export function mapAdvancedProperties(
+export const mapAdvancedProperties = (
   _schema?: JSONSchema7,
   _advancedProperties?: AdvancedProperties,
-): JSONSchema7['properties'] {
+): JSONSchema7['properties'] => {
   if (!_schema?.properties || typeof _schema?.properties !== 'object') return;
 
   const schemaEntries = Object.entries(_schema?.properties);
@@ -79,4 +79,4 @@ export function mapAdvancedProperties(
     });
 
   return Object.fromEntries(overridenProperties);
-}
+};

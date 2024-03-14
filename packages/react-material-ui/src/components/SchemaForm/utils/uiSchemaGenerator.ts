@@ -3,10 +3,10 @@ import { UiSchema } from '@rjsf/utils';
 import { mapWidgetType } from './mapWidgetType';
 import { SchemaFormProps } from '../SchemaForm';
 
-export function uiSchemaGenerator(
+export const uiSchemaGenerator = (
   schema: JSONSchema7,
   advancedProperties: SchemaFormProps['advancedProperties'],
-): Record<string, UiSchema> {
+): Record<string, UiSchema> => {
   let uiSchema: Record<string, UiSchema> = {};
 
   if (!schema?.properties || typeof schema.properties !== 'object')
@@ -20,4 +20,4 @@ export function uiSchemaGenerator(
   });
 
   return uiSchema;
-}
+};
