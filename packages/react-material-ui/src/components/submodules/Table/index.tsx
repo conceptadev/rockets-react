@@ -225,20 +225,36 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         {...props.tableRootProps}
       >
         <Box
-          display="flex"
-          alignItems="flex-start"
-          justifyContent="space-between"
-          sx={{ mb: 2 }}
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            mb: 2,
+          }}
         >
           {filters && <FilterSubmodule />}
-          <Box display="flex" alignItems="center">
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: { xs: 'space-between', lg: 'initial' },
+              mt: { xs: filters ? 2 : 0, lg: 0 },
+              ml: { xs: 0, lg: 2 },
+              width: { xs: '100%', lg: 'auto' },
+            }}
+          >
             {props.reordable !== false && <Table.ColumnOrderable />}
             {!props.hideAddButton && (
               <Button
                 variant="contained"
                 onClick={props.onAddNew}
                 startIcon={<AddIcon />}
-                sx={{ textTransform: 'capitalize', textWrap: 'nowrap' }}
+                sx={{
+                  textTransform: 'capitalize',
+                  textWrap: 'nowrap',
+                  marginLeft: 2,
+                }}
               >
                 Add new
               </Button>
