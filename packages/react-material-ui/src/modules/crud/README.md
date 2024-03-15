@@ -28,6 +28,10 @@ With this implementation, a paginated table should be visible in the screen, fet
 
 A button with a gear icon should also appear above the table, displaying a list of selectable/draggable items when clicked. This list corresponds to the items passed in the `tableSchema` array and controls the appearance and order of the table columns, respectively. To hide this button and disable reordering of table columns, the `reordable` boolean prop can be passed as false in the `tableProps` object.
 
+## Table columns configuration
+
+The gear icon button described previously has the purpose of allowing the table columns to be configured, in a way that the final user can change the order and appearance of the table columns.
+
 ## Describing the minimal props
 
 The `resource` prop relates to which API will be used for the CRUD actions, i.e. `/users` for fetching all users (it's important that the objects returned are included in a `data` array), `/users/{id}` for fetching/creating data related to a specific user, and so on.
@@ -41,16 +45,16 @@ All configuration related to the module table is controlled by the `tableProps` 
 
 Besides that, other non-required values can be present in each object if further configuration is necessary:
 
-- `source`?: string;
-- `key`?: number | string;
-- `disablePadding`?: boolean;
-- `width`?: number;
-- `numeric`?: boolean;
-- `textAlign`?: 'left' | 'center' | 'right';
-- `sortable`?: boolean;
-- `hide`?: boolean;
-- `format`?: (data: unknown) => string | number;
-- `renderTableCell`?: (data: unknown, rowData: unknown) => CustomTableCell;
+- `source`: string that replaces the `id` and indicates a custom data attribute for the cell;
+- `key`: number | string;
+- `disablePadding`: if true, removes the default padding of the cell container;
+- `width`: width of the column;
+- `numeric`: indicates if the cell data represents a number;
+- `textAlign`: which corner the cell text should be aligned to, being `left`, `center` or `right`;
+- `sortable`: toggle for column sorting, which can be A-Z ASC or DESC;
+- `hide`: toggle appearance of the column;
+- `format`: function that allows custom formatting for the cell data, receives `data` as argument;
+- `renderTableCell`: function that allows a custom element on the cell, receives `data` and `rowData` as arguments;
 
 ## Data fecthing feedback
 
@@ -167,6 +171,10 @@ Each filter can have the following set of attributes:
 - `operator`: string that describes how much of the input value should match the data value;
 - `type`: the type of the filter input, one of text, autocomplete or select;
 - `options`: array of options displayed in the autocomplete or select inputs.
+
+## Filters appearance configuration
+
+When `filters` are passed to the module props, a button with a funnel icon is displayed alongside the inputs. The purpose of this button is to allow the same input order and appearance configuration as the table columns one.
 
 ## Forms
 
