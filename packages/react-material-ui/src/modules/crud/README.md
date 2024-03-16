@@ -172,6 +172,105 @@ Each filter can have the following set of attributes:
 - `type`: the type of the filter input, one of text, autocomplete or select;
 - `options`: array of options displayed in the autocomplete or select inputs.
 
+A callback can be passed to the module props if the current state of filters is needed after each input change. This callback is called `filterCallback` and is passed outside of the `tableProps`, as follows:
+
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  filterCallback={(filter: unknown) => handleFiltersObject(filter)}
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+    filters: [
+      {
+        id: 'email',
+        label: 'Email',
+        type: 'text',
+        operator: 'contL',
+        columns: 3,
+      },
+      {
+        id: 'active',
+        label: 'Status',
+        type: 'select',
+        operator: 'eq',
+        options: [
+          { value: 'true', label: 'Active' },
+          { value: 'false', label: 'Inactive' },
+        ],
+        columns: 3,
+      },
+      {
+        id: 'role',
+        label: 'Role',
+        type: 'autocomplete',
+        operator: 'eq',
+        options: [
+          { value: 'programmer', label: 'Programmer' },
+          { value: 'manager', label: 'Manager' },
+        ],
+        columns: 3,
+      },
+    ],
+  }}
+/>
+```
+
+In case of filtering being handled outside of the module and concatenated with module filters, the `externalSearch` prop can be passed. In the background, the module's `updateSearch` is executed each time this prop is updated. The `updateSearch` function does not update the values of filter inputs, but fecthes the table data accordingly. The structure of the module implementation when this prop is passed is as follows:
+
+```jsx
+<CrudModule
+  resource="users"
+  title="Users"
+  filterCallback={(filter: unknown) => handleFiltersObject(filter)}
+  externalSearch={{ fullName: { $contL: 'john' } }} // gets items that contain 'john' on the name
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+    filters: [
+      {
+        id: 'email',
+        label: 'Email',
+        type: 'text',
+        operator: 'contL',
+        columns: 3,
+      },
+      {
+        id: 'active',
+        label: 'Status',
+        type: 'select',
+        operator: 'eq',
+        options: [
+          { value: 'true', label: 'Active' },
+          { value: 'false', label: 'Inactive' },
+        ],
+        columns: 3,
+      },
+      {
+        id: 'role',
+        label: 'Role',
+        type: 'autocomplete',
+        operator: 'eq',
+        options: [
+          { value: 'programmer', label: 'Programmer' },
+          { value: 'manager', label: 'Manager' },
+        ],
+        columns: 3,
+      },
+    ],
+  }}
+/>
+```
+
+The `externalSearch` prop follows the pattern described on [nestjsx](https://github.com/nestjsx/crud)'s [filter conditions](https://github.com/nestjsx/crud/wiki/Requests#filter-conditions) documentation.
+
 ## Filters appearance configuration
 
 When `filters` are passed to the module props, a button with a funnel icon is displayed alongside the inputs. The purpose of this button is to allow the same input order and appearance configuration as the table columns one.
