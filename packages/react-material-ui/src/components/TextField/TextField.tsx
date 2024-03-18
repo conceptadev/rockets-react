@@ -2,7 +2,6 @@ import React, { ReactNode, useState } from 'react';
 import {
   Box,
   BoxProps,
-  FormControl,
   InputAdornment,
   TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps,
@@ -150,6 +149,7 @@ export const TextField = (props: TextFieldProps) => {
     value as string,
     passwordStrengthConfigDefault.rules,
   );
+
   const [passwordStrengthText, passwordRuleVariant] = getPasswordMatchInfo(
     passwordScore,
     passwordStrengthConfigDefault.matchRules,
@@ -157,7 +157,16 @@ export const TextField = (props: TextFieldProps) => {
 
   return (
     <Box {...containerProps}>
-      {/* {!ishiddenLabel && !!label && typeof label != 'string' && label} */}
+      {!ishiddenLabel && !!label && typeof label === 'string' && (
+        <FormLabel
+          name={name}
+          label={label}
+          required={required}
+          labelProps={labelProps}
+        />
+      )}
+
+      {!ishiddenLabel && !!label && typeof label !== 'string' && label}
 
       <MuiTextField
         {...rest}
@@ -174,19 +183,7 @@ export const TextField = (props: TextFieldProps) => {
         size={size || 'small'}
         value={value || value === 0 ? value : ''}
         hiddenLabel={label ? true : ishiddenLabel}
-        label={
-          !ishiddenLabel &&
-          !!label &&
-          typeof label === 'string' && (
-            <FormLabel
-              name={name}
-              label={label}
-              required={required}
-              labelProps={labelProps}
-            />
-          )
-        }
-        fullWidth
+        label={null}
         type={isPassword ? (showPassword ? 'text' : 'password') : type}
         InputProps={{
           ...(isPassword && {
@@ -206,6 +203,7 @@ export const TextField = (props: TextFieldProps) => {
           ...props.InputProps,
         }}
         data-testid="text-field"
+        fullWidth
       />
 
       {isPassword && (
