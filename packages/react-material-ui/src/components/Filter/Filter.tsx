@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 
@@ -142,6 +142,7 @@ const renderComponent = (filter: FilterType) => {
 
 export type FilterProps = {
   filters: FilterType[];
+  children?: ReactNode;
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
@@ -152,7 +153,12 @@ const Filter = (props: FilterProps) => {
   );
 
   return (
-    <Box display="flex" width="100%">
+    <Box
+      display="flex"
+      width="100%"
+      alignItems="flex-start"
+      justifyContent="space-between"
+    >
       <Grid container spacing={2} {...rest}>
         {filterOrder.map((filter) => {
           const filterIndex = filters.findIndex((f) => f.id === filter.id);
@@ -177,12 +183,13 @@ const Filter = (props: FilterProps) => {
           );
         })}
       </Grid>
-      <Box ml={2}>
+      <Box display="flex" alignItems="center">
         <OrderableDropDown
           icon={<FilterAlt />}
           list={filterOrder}
           setList={setFilterOrder}
         />
+        {props.children}
       </Box>
     </Box>
   );
