@@ -83,8 +83,17 @@ const SortableItem = (props: SortableItemProps) => {
         }
         disablePadding
       >
-        <ListItemButton>
-          <ListItemAvatar>
+        <ListItemButton
+          sx={{
+            columnGap: (theme) => theme.spacing(2),
+          }}
+        >
+          <ListItemAvatar
+            sx={{
+              display: 'flex',
+              minWidth: 'auto',
+            }}
+          >
             <DragIndicator {...listeners} />
           </ListItemAvatar>
           <ListItemText id={labelId} primary={label} />

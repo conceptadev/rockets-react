@@ -14,6 +14,8 @@ import {
 } from '../../components/SelectField/SelectField';
 import { SearchFieldProps } from '../../components/SearchField/SearchField';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
+import { DatePickerProps } from '@mui/x-date-pickers';
+import DatePickerField from '../../components/DatePickerField';
 
 export type FilterVariant = 'text' | 'autocomplete' | 'select';
 
@@ -36,6 +38,13 @@ type TextFilter = {
   value?: string;
 } & FilterCommon;
 
+type DateFilter = {
+  type: 'date';
+  onChange: (value: Date | null) => void;
+  onDebouncedSearchChange?: (value: Date) => void;
+} & FilterCommon &
+  DatePickerProps<Date>;
+
 type AutocompleteFilter = {
   type: 'autocomplete';
   options: SelectOption[];
@@ -53,7 +62,11 @@ type SelectFilter = {
   value?: string | null;
 } & FilterCommon;
 
-export type FilterType = TextFilter | AutocompleteFilter | SelectFilter;
+export type FilterType =
+  | TextFilter
+  | DateFilter
+  | AutocompleteFilter
+  | SelectFilter;
 
 const renderComponent = (filter: FilterType) => {
   switch (filter.type) {
@@ -73,6 +86,19 @@ const renderComponent = (filter: FilterType) => {
         />
       );
     }
+
+    case 'date':
+      return (
+        <DatePickerField
+          sx={{
+            width: '100%',
+          }}
+          label={filter.label}
+          value={filter.value}
+          onChange={filter.onChange}
+          onDebouncedSearchChange={filter.onDebouncedSearchChange}
+        />
+      );
 
     case 'select':
       return (
