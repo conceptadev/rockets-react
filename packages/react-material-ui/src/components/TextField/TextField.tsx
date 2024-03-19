@@ -2,7 +2,6 @@ import React, { ReactNode, useState } from 'react';
 import {
   Box,
   BoxProps,
-  FormControl,
   InputAdornment,
   TextField as MuiTextField,
   TextFieldProps,
@@ -102,6 +101,7 @@ const TextField = (props: TextFieldProps & Props) => {
     value as string,
     passwordStrengthConfigDefault.rules,
   );
+
   const [passwordStrengthText, passwordRuleVariant] = getPasswordMatchInfo(
     passwordScore,
     passwordStrengthConfigDefault.matchRules,
@@ -109,78 +109,77 @@ const TextField = (props: TextFieldProps & Props) => {
 
   return (
     <Box {...containerProps}>
-      <FormControl fullWidth>
-        {!ishiddenLabel && !!label && typeof label === 'string' && (
-          <FormLabel
-            name={name}
-            label={label}
-            required={required}
-            labelProps={labelProps}
-          />
-        )}
-        {!ishiddenLabel && !!label && typeof label != 'string' && label}
-
-        <MuiTextField
-          {...rest}
-          sx={[
-            {
-              marginTop: 0.5,
-              mb: 0,
-              input: { color: 'text.primary' },
-            },
-            ...(Array.isArray(sx) ? sx : [sx]),
-          ]}
-          id={name}
+      {!ishiddenLabel && !!label && typeof label === 'string' && (
+        <FormLabel
           name={name}
-          size={size || 'small'}
-          value={value || value === 0 ? value : ''}
-          hiddenLabel={label ? true : ishiddenLabel}
-          label={''}
-          fullWidth
-          type={isPassword ? (showPassword ? 'text' : 'password') : type}
-          InputProps={{
-            ...(isPassword && {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={togglePassword}
-                    onMouseDown={handleMouseDownPassword}
-                    data-testid="toggle-password-button"
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }),
-            ...props.InputProps,
-          }}
-          data-testid="text-field"
+          label={label}
+          required={required}
+          labelProps={labelProps}
         />
+      )}
 
-        {isPassword && (
-          <>
-            {!passwordStrengthConfigDefault.hideStrengthBar && (
-              <PasswordStrength
-                passwordRuleVariant={passwordRuleVariant}
-                passwordStrengthText={passwordStrengthText}
-                renderStrengthBar={
-                  passwordStrengthConfigDefault.renderStrengthBar
-                }
-              />
-            )}
+      {!ishiddenLabel && !!label && typeof label !== 'string' && label}
 
-            {!passwordStrengthConfigDefault.hideRulesText && (
-              <PasswordStrengthRules
-                name={name}
-                value={value}
-                rules={passwordStrengthConfigDefault.rules}
-                renderRulesText={passwordStrengthConfigDefault.renderRulesText}
-              />
-            )}
-          </>
-        )}
-      </FormControl>
+      <MuiTextField
+        {...rest}
+        sx={[
+          {
+            marginTop: 0.5,
+            mb: 0,
+            input: { color: 'text.primary' },
+          },
+          ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
+        id={name}
+        name={name}
+        size={size || 'small'}
+        value={value || value === 0 ? value : ''}
+        hiddenLabel={label ? true : ishiddenLabel}
+        label={null}
+        type={isPassword ? (showPassword ? 'text' : 'password') : type}
+        InputProps={{
+          ...(isPassword && {
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={togglePassword}
+                  onMouseDown={handleMouseDownPassword}
+                  data-testid="toggle-password-button"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }),
+          ...props.InputProps,
+        }}
+        data-testid="text-field"
+        fullWidth
+      />
+
+      {isPassword && (
+        <>
+          {!passwordStrengthConfigDefault.hideStrengthBar && (
+            <PasswordStrength
+              passwordRuleVariant={passwordRuleVariant}
+              passwordStrengthText={passwordStrengthText}
+              renderStrengthBar={
+                passwordStrengthConfigDefault.renderStrengthBar
+              }
+            />
+          )}
+
+          {!passwordStrengthConfigDefault.hideRulesText && (
+            <PasswordStrengthRules
+              name={name}
+              value={value}
+              rules={passwordStrengthConfigDefault.rules}
+              renderRulesText={passwordStrengthConfigDefault.renderRulesText}
+            />
+          )}
+        </>
+      )}
     </Box>
   );
 };
