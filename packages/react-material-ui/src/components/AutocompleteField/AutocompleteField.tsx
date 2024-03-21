@@ -130,7 +130,7 @@ const AutocompleteField = ({
   return (
     <Autocomplete
       disabled={loading}
-      getOptionLabel={(option) => option.label}
+      isOptionEqualToValue={(option) => option.value === currentValue}
       onChange={handleChange}
       options={optionsWithAll}
       renderInput={handleRenderInput}

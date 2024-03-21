@@ -143,6 +143,11 @@ const renderComponent = (filter: FilterType) => {
 export type FilterProps = {
   filters: FilterType[];
   children?: ReactNode;
+  complementaryGridItems?: {
+    component: ReactNode;
+    columns?: number;
+  }[];
+  complementaryActions?: ReactNode;
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
@@ -158,6 +163,10 @@ const Filter = (props: FilterProps) => {
       width="100%"
       alignItems="flex-start"
       justifyContent="space-between"
+      gap={2}
+      sx={{
+        flexDirection: { xs: 'column', md: 'row' },
+      }}
     >
       <Grid container spacing={2} {...rest}>
         {filterOrder.map((filter) => {
@@ -182,14 +191,34 @@ const Filter = (props: FilterProps) => {
             </Grid>
           );
         })}
+        {props.complementaryGridItems
+          ? props.complementaryGridItems.map((node, index) => (
+              <Grid
+                key={`filter-complementary-${index}`}
+                item
+                xs={12}
+                md={node.columns || 12}
+              >
+                {node.component}
+              </Grid>
+            ))
+          : null}
       </Grid>
-      <Box display="flex" alignItems="center">
+      <Box
+        display="flex"
+        alignItems="center"
+        sx={{
+          width: { xs: '100%', md: 'auto' },
+          justifyContent: { xs: 'end', md: 'unset' },
+          gap: { xs: 4, md: 2 },
+        }}
+      >
         <OrderableDropDown
           icon={<FilterAlt />}
           list={filterOrder}
           setList={setFilterOrder}
         />
-        {props.children}
+        {props.complementaryActions}
       </Box>
     </Box>
   );
