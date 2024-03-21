@@ -143,7 +143,7 @@ const renderComponent = (filter: FilterType) => {
 export type FilterProps = {
   filters: FilterType[];
   children?: ReactNode;
-  complementaryGridItems?: {
+  additionalGridItems?: {
     component: ReactNode;
     columns?: number;
   }[];
@@ -191,8 +191,8 @@ const Filter = (props: FilterProps) => {
             </Grid>
           );
         })}
-        {props.complementaryGridItems
-          ? props.complementaryGridItems.map((node, index) => (
+        {props.additionalGridItems
+          ? props.additionalGridItems.map((node, index) => (
               <Grid
                 key={`filter-complementary-${index}`}
                 item
