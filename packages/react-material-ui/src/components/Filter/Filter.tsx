@@ -177,7 +177,7 @@ const Filter = (props: FilterProps) => {
           );
         })}
       </Grid>
-      <Box>
+      <Box ml={2}>
         <OrderableDropDown
           icon={<FilterAlt />}
           list={filterOrder}
