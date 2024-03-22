@@ -7,20 +7,19 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import AutocompleteField from '../src/components/AutocompleteField/AutocompleteField';
 
-describe('AutocompleteField', () => {
-  const props = {
-    options: [
-      { value: 'option1', label: 'Option 1' },
-      { value: 'option2', label: 'Option 2' },
-      { value: 'option3', label: 'Option 3' },
-    ],
-    isLoading: false,
-    currentValue: '',
-    defaultValue: undefined,
-    label: 'Test Label',
-    onChange: jest.fn(),
-  };
+const props = {
+  options: [
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+    { value: 'option3', label: 'Option 3' },
+  ],
+  isLoading: false,
+  defaultValue: undefined,
+  label: 'Test Label',
+  onChange: jest.fn(),
+};
 
+describe('AutocompleteField', () => {
   it('should render correctly', () => {
     render(<AutocompleteField {...props} />);
   });
