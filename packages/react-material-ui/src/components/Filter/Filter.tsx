@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 
@@ -156,6 +156,23 @@ const Filter = (props: FilterProps) => {
   const [filterOrder, setFilterOrder] = useState<ListItem[]>(
     filters.map((filter) => ({ id: filter.id, label: filter.label })),
   );
+
+  useEffect(() => {
+    const hiddenItems = filterOrder.filter((item) => item.hide);
+
+    hiddenItems.forEach((item) => {
+      const filterItem = filters.find((filter) => filter.id === item.id);
+
+      if (filterItem && filterItem?.type === 'text') {
+        filterItem?.onChange('');
+        filterItem?.onDebouncedSearchChange('');
+      }
+
+      if (filterItem && filterItem?.type !== 'text') {
+        filterItem?.onChange(null);
+      }
+    });
+  }, [filterOrder]);
 
   return (
     <Box
