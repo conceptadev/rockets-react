@@ -9,8 +9,8 @@ import useTable from '../../components/Table/useTable';
 import { TableProps as InnerTableProps } from '../../components/Table/Table';
 import Text from '../../components/Text';
 import TableSubmodule, {
-  StyleDefinition,
   TableSubmoduleProps,
+  StyleDefinition,
 } from '../../components/submodules/Table';
 import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
 import ModalFormSubmodule from '../../components/submodules/ModalForm';
