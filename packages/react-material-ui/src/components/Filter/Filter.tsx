@@ -48,7 +48,9 @@ type DateFilter = {
 type AutocompleteFilter = {
   type: 'autocomplete';
   options: SelectOption[];
-  currentValue?: string;
+  resource?: string;
+  resourceLabel?: string;
+  resourceValue?: string;
   defaultValue?: SelectOption;
   onChange: (value: string | null) => void;
 } & FilterCommon;
@@ -73,16 +75,16 @@ const renderComponent = (filter: FilterType) => {
     case 'autocomplete': {
       return (
         <AutocompleteField
-          // We want to re-render the component when loading finishes
-          key={String(filter.isLoading)}
           fullWidth
           size={filter.size ?? 'small'}
           options={filter.options}
           isLoading={filter.isLoading}
           onChange={filter.onChange}
-          currentValue={filter.currentValue || ''}
           defaultValue={filter.defaultValue ?? allOption}
           label={filter.label}
+          resource={filter.resource}
+          resourceLabel={filter.resourceLabel}
+          resourceValue={filter.resourceValue}
         />
       );
     }

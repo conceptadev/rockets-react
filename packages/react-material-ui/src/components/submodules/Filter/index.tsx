@@ -27,6 +27,9 @@ type Operator =
 
 export type FilterDetails = {
   type: FilterVariant;
+  resource?: string;
+  resourceLabel?: string;
+  resourceValue?: string;
   operator?: Operator;
   options?: SelectOption[];
 } & Omit<FilterCommon, 'showOnMount' | 'hide'>;
@@ -104,8 +107,19 @@ const FilterSubmodule = () => {
   };
 
   const filterObjs: FilterType[] = filters.map((filter) => {
-    const { id, label, columns, type, options, operator, isLoading, size } =
-      filter;
+    const {
+      id,
+      label,
+      columns,
+      type,
+      options,
+      operator,
+      isLoading,
+      size,
+      resource,
+      resourceValue,
+      resourceLabel,
+    } = filter;
 
     const initialValue = String(simpleFilter?.[id])?.split('||')[2];
 
@@ -122,6 +136,9 @@ const FilterSubmodule = () => {
       value,
       isLoading,
       size,
+      resource,
+      resourceLabel,
+      resourceValue,
       onChange: (val: string | null) => onFilterChange(id, val, true),
       ...(type === 'text' && {
         onChange: (val: string | null) => onFilterChange(id, val, false),
