@@ -9,7 +9,6 @@ import useTable from '../../components/Table/useTable';
 import { TableProps as InnerTableProps } from '../../components/Table/Table';
 import Text from '../../components/Text';
 import TableSubmodule, {
-  TableSubmoduleProps,
   StyleDefinition,
   TableSubmoduleProps,
 } from '../../components/submodules/Table';
