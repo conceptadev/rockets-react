@@ -163,12 +163,19 @@ const Filter = (props: FilterProps) => {
     hiddenItems.forEach((item) => {
       const filterItem = filters.find((filter) => filter.id === item.id);
 
-      if (filterItem && filterItem?.type === 'text') {
-        filterItem?.onChange('');
-        filterItem?.onDebouncedSearchChange('');
+      if (filterItem && filterItem?.type === 'text' && filterItem?.onChange) {
+        filterItem.onChange('');
       }
 
-      if (filterItem && filterItem?.type !== 'text') {
+      if (
+        filterItem &&
+        filterItem?.type === 'text' &&
+        filterItem?.onDebouncedSearchChange
+      ) {
+        filterItem.onDebouncedSearchChange('');
+      }
+
+      if (filterItem && filterItem?.type !== 'text' && filterItem?.onChange) {
         filterItem?.onChange(null);
       }
     });
