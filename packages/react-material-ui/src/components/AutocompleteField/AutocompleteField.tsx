@@ -87,9 +87,12 @@ const AutocompleteField = ({
     ...(!!data?.length && !isPending ? resourceOptions : options),
   ];
 
-  const selectedValue = optionsWithAll.find(
-    (option) => option.value === currentValue,
-  );
+  const selectedValue = optionsWithAll.find((option) => {
+    const value =
+      typeof currentValue === 'string' ? currentValue : currentValue?.value;
+
+    return option.value === value;
+  });
 
   const handleRenderInput = (params: AutocompleteRenderInputParams) => (
     <FormFieldSkeleton isLoading={loading} hideLabel>
@@ -127,7 +130,6 @@ const AutocompleteField = ({
   return (
     <Autocomplete
       disabled={loading}
-      isOptionEqualToValue={(option) => option.value === currentValue}
       getOptionLabel={(option) => option.label}
       onChange={handleChange}
       options={optionsWithAll}
