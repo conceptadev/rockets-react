@@ -17,7 +17,7 @@ import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
 
-export type FilterVariant = 'text' | 'autocomplete' | 'select';
+export type FilterVariant = 'text' | 'autocomplete' | 'select' | 'date';
 
 export type FilterCommon = {
   id: string;
@@ -31,6 +31,7 @@ export type FilterCommon = {
 
 type TextFilter = {
   type: 'text';
+  helperText?: string;
   placeholder?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
@@ -47,7 +48,8 @@ type DateFilter = {
 
 type AutocompleteFilter = {
   type: 'autocomplete';
-  options: SelectOption[];
+  value?: string | null;
+  options?: SelectOption[];
   resource?: string;
   resourceLabel?: string;
   resourceValue?: string;
@@ -58,10 +60,11 @@ type AutocompleteFilter = {
 type SelectFilter = {
   type: 'select';
   options: SelectOption[];
+  multiple?: boolean;
   defaultValue?: string;
   size?: SelectFieldProps['size'];
-  onChange: (value: string | null) => void;
-  value?: string | null;
+  onChange: (value: string | string[] | null) => void;
+  value?: string | string[] | null;
 } & FilterCommon;
 
 export type FilterType =
@@ -80,6 +83,7 @@ const renderComponent = (filter: FilterType) => {
           options={filter.options}
           isLoading={filter.isLoading}
           onChange={filter.onChange}
+          value={filter.value}
           defaultValue={filter.defaultValue ?? allOption}
           label={filter.label}
           resource={filter.resource}
@@ -106,6 +110,7 @@ const renderComponent = (filter: FilterType) => {
       return (
         <SelectField
           fullWidth
+          multiple={filter.multiple}
           size={filter.size ?? 'small'}
           label={filter.label}
           isLoading={filter.isLoading}
@@ -121,6 +126,7 @@ const renderComponent = (filter: FilterType) => {
       return (
         <SearchField
           fullWidth
+          helperText={filter.helperText}
           placeholder={filter.placeholder}
           size={filter.size ?? 'small'}
           defaultValue={filter.defaultValue}

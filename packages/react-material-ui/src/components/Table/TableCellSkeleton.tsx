@@ -14,11 +14,15 @@ export const TableCellSkeleton = () => {
 
   return (
     <>
-      {headers.map((header) => (
-        <TableCell key={header.id}>
-          <Skeleton height={32} width={header.width} />
-        </TableCell>
-      ))}
+      {headers.map((header) => {
+        if (header.hide) return null;
+
+        return (
+          <TableCell key={header.id}>
+            <Skeleton height={32} width={header.width} />
+          </TableCell>
+        );
+      })}
     </>
   );
 };
