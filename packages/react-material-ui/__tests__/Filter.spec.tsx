@@ -26,6 +26,7 @@ describe('Filter Component', () => {
         },
       ],
       label: 'Autocomplete Test Label',
+      value: undefined,
       onChange: jest.fn(),
       isLoading: false,
     },

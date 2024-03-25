@@ -5,7 +5,7 @@ import { UseTableResult } from '../../components/Table/useTable';
 import { Search } from '../../components/Table/types';
 import { FilterDetails } from '../../components/submodules/Filter';
 
-export type FilterValues = Record<string, string | null>;
+export type FilterValues = Record<string, string | Date | null>;
 
 export type CrudContextProps = {
   filters: FilterDetails[];

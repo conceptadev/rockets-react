@@ -47,10 +47,10 @@ const AutocompleteField = ({
 }: AutocompleteFieldProps) => {
   const { get } = useDataProvider();
 
-  const [_value, setValue] = useState(defaultValue ?? value);
+  const [_value, setValue] = useState(value ?? defaultValue);
 
   const isControlled = value !== undefined;
-  const currentValue = isControlled ? defaultValue ?? value : _value;
+  const currentValue = isControlled ? value ?? defaultValue : _value;
 
   const simpleFilterQuery = () => {
     if (!filters) return;
