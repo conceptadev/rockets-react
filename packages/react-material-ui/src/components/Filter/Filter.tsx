@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 
@@ -142,6 +142,12 @@ const renderComponent = (filter: FilterType) => {
 
 export type FilterProps = {
   filters: FilterType[];
+  children?: ReactNode;
+  additionalGridItems?: {
+    component: ReactNode;
+    columns?: number;
+  }[];
+  complementaryActions?: ReactNode;
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
@@ -151,8 +157,41 @@ const Filter = (props: FilterProps) => {
     filters.map((filter) => ({ id: filter.id, label: filter.label })),
   );
 
+  useEffect(() => {
+    const hiddenItems = filterOrder.filter((item) => item.hide);
+
+    hiddenItems.forEach((item) => {
+      const filterItem = filters.find((filter) => filter.id === item.id);
+
+      if (filterItem && filterItem?.type === 'text' && filterItem?.onChange) {
+        filterItem.onChange('');
+      }
+
+      if (
+        filterItem &&
+        filterItem?.type === 'text' &&
+        filterItem?.onDebouncedSearchChange
+      ) {
+        filterItem.onDebouncedSearchChange('');
+      }
+
+      if (filterItem && filterItem?.type !== 'text' && filterItem?.onChange) {
+        filterItem?.onChange(null);
+      }
+    });
+  }, [filterOrder]);
+
   return (
-    <Box display="flex" width="100%">
+    <Box
+      display="flex"
+      width="100%"
+      alignItems="flex-start"
+      justifyContent="space-between"
+      gap={2}
+      sx={{
+        flexDirection: { xs: 'column', md: 'row' },
+      }}
+    >
       <Grid container spacing={2} {...rest}>
         {filterOrder.map((filter) => {
           const filterIndex = filters.findIndex((f) => f.id === filter.id);
@@ -176,13 +215,34 @@ const Filter = (props: FilterProps) => {
             </Grid>
           );
         })}
+        {props.additionalGridItems
+          ? props.additionalGridItems.map((node, index) => (
+              <Grid
+                key={`filter-complementary-${index}`}
+                item
+                xs={12}
+                md={node.columns || 12}
+              >
+                {node.component}
+              </Grid>
+            ))
+          : null}
       </Grid>
-      <Box ml={2}>
+      <Box
+        display="flex"
+        alignItems="center"
+        sx={{
+          width: { xs: '100%', md: 'auto' },
+          justifyContent: { xs: 'end', md: 'unset' },
+          gap: { xs: 4, md: 2 },
+        }}
+      >
         <OrderableDropDown
           icon={<FilterAlt />}
           list={filterOrder}
           setList={setFilterOrder}
         />
+        {props.complementaryActions}
       </Box>
     </Box>
   );
