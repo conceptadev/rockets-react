@@ -103,6 +103,8 @@ const renderComponent = (filter: FilterType) => {
           value={filter.value}
           onChange={filter.onChange}
           onDebouncedSearchChange={filter.onDebouncedSearchChange}
+          minDate={filter.minDate}
+          maxDate={filter.maxDate}
         />
       );
 
@@ -159,29 +161,23 @@ export type FilterProps = {
 const Filter = (props: FilterProps) => {
   const { filters, ...rest } = props;
 
+  const resetFilters = (item) => () => {
+    if (item && item?.onDebouncedSearchChange) {
+      item.onDebouncedSearchChange(null);
+    }
+
+    if (item && item?.onChange) {
+      item.onChange(null);
+    }
+  };
+
   const [filterOrder, setFilterOrder] = useState<ListItem[]>(
-    filters.map((filter) => ({ id: filter.id, label: filter.label })),
+    filters.map((filter) => ({
+      id: filter.id,
+      label: filter.label,
+      resetFilters: resetFilters(filter),
+    })),
   );
-
-  useEffect(() => {
-    const hiddenItems = filterOrder.filter((item) => item.hide);
-
-    hiddenItems.forEach((item) => {
-      const filterItem = filters.find((filter) => filter.id === item.id);
-
-      if (
-        filterItem &&
-        (filterItem?.type === 'text' || filterItem?.type === 'date') &&
-        filterItem?.onDebouncedSearchChange
-      ) {
-        filterItem.onDebouncedSearchChange(null);
-      }
-
-      if (filterItem && filterItem?.onChange) {
-        filterItem?.onChange(null);
-      }
-    });
-  }, [filterOrder]);
 
   return (
     <Box
