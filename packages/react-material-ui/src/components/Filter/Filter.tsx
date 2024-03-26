@@ -169,31 +169,15 @@ const Filter = (props: FilterProps) => {
     hiddenItems.forEach((item) => {
       const filterItem = filters.find((filter) => filter.id === item.id);
 
-      if (filterItem && filterItem?.type === 'text' && filterItem?.onChange) {
-        filterItem.onChange('');
-      }
-
       if (
         filterItem &&
-        filterItem?.type === 'text' &&
-        filterItem?.onDebouncedSearchChange
-      ) {
-        filterItem.onDebouncedSearchChange('');
-      }
-
-      if (filterItem && filterItem?.type === 'date' && filterItem?.onChange) {
-        filterItem.onChange(null);
-      }
-
-      if (
-        filterItem &&
-        filterItem?.type === 'date' &&
+        (filterItem?.type === 'text' || filterItem?.type === 'date') &&
         filterItem?.onDebouncedSearchChange
       ) {
         filterItem.onDebouncedSearchChange(null);
       }
 
-      if (filterItem && filterItem?.type !== 'text' && filterItem?.onChange) {
+      if (filterItem && filterItem?.onChange) {
         filterItem?.onChange(null);
       }
     });
