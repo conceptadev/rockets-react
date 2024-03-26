@@ -181,6 +181,18 @@ const Filter = (props: FilterProps) => {
         filterItem.onDebouncedSearchChange('');
       }
 
+      if (filterItem && filterItem?.type === 'date' && filterItem?.onChange) {
+        filterItem.onChange(null);
+      }
+
+      if (
+        filterItem &&
+        filterItem?.type === 'date' &&
+        filterItem?.onDebouncedSearchChange
+      ) {
+        filterItem.onDebouncedSearchChange(null);
+      }
+
       if (filterItem && filterItem?.type !== 'text' && filterItem?.onChange) {
         filterItem?.onChange(null);
       }
