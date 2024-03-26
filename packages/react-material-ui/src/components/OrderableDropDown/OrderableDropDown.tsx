@@ -36,6 +36,7 @@ export interface ListItem {
   id: string;
   label: string;
   hide?: boolean;
+  resetFilters?: () => void;
   [key: string]: unknown;
 }
 
@@ -140,10 +141,18 @@ const OrderableDropDown = ({
     }
 
     setList((prevState) =>
-      prevState.map((listItem) => ({
-        ...listItem,
-        hide: newChecked.includes(listItem.id) ? false : true,
-      })),
+      prevState.map((listItem) => {
+        const isHidden = newChecked.includes(listItem.id) ? false : true;
+
+        if (isHidden && listItem.resetFilters) {
+          listItem.resetFilters();
+        }
+
+        return {
+          ...listItem,
+          hide: isHidden,
+        };
+      }),
     );
 
     setChecked(newChecked);
