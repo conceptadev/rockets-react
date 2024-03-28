@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 
@@ -175,6 +175,7 @@ const Filter = (props: FilterProps) => {
     filters.map((filter) => ({
       id: filter.id,
       label: filter.label,
+      hide: filter.hide,
       resetFilters: resetFilters(filter),
     })),
   );
