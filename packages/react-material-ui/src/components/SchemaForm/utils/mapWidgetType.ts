@@ -14,11 +14,11 @@ import {
   CustomTextFieldWidget,
 } from '../../../styles/CustomWidgets';
 
-export function mapWidgetType(
+export const mapWidgetType = (
   propertyKey: string,
   schema: JSONSchema7,
   advancedProperties?: Record<string, AdvancedProperty>,
-) {
+) => {
   const widgetTypes: Record<string, FC<WidgetProps>> = {
     string: CustomTextFieldWidget,
     email: CustomEmailFieldWidget,
@@ -35,4 +35,4 @@ export function mapWidgetType(
   } else {
     return;
   }
-}
+};

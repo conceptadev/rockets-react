@@ -27,6 +27,9 @@ type Operator =
 
 export type FilterDetails = {
   type: FilterVariant;
+  resource?: string;
+  resourceLabel?: string;
+  resourceValue?: string;
   operator?: Operator;
   options?: SelectOption[];
 } & Omit<FilterCommon, 'showOnMount' | 'hide'>;
@@ -87,7 +90,7 @@ const FilterSubmodule = () => {
 
   const onFilterChange = (
     id: string,
-    value: string | null,
+    value: string | Date | null,
     updateFilter?: boolean,
   ) => {
     setFilterValues((prv) => {
@@ -104,30 +107,78 @@ const FilterSubmodule = () => {
   };
 
   const filterObjs: FilterType[] = filters.map((filter) => {
-    const { id, label, columns, type, options, operator, isLoading, size } =
-      filter;
-
-    const initialValue = String(simpleFilter?.[id])?.split('||')[2];
-
-    const value = filterValues[id] ?? initialValue;
-
-    return {
+    const {
       id,
       label,
       columns,
       type,
       options,
       operator,
-      currentValue: value,
-      value,
       isLoading,
       size,
-      onChange: (val: string | null) => onFilterChange(id, val, true),
-      ...(type === 'text' && {
-        onChange: (val: string | null) => onFilterChange(id, val, false),
-        onDebouncedSearchChange: (val: string) => onFilterChange(id, val, true),
-      }),
+      resource,
+      resourceValue,
+      resourceLabel,
+    } = filter;
+
+    const initialValue = String(simpleFilter?.[id])?.split('||')[2];
+
+    const value = filterValues[id] ?? initialValue;
+
+    const commonFields = {
+      id,
+      label,
+      columns,
+      isLoading,
+      size,
+      operator,
     };
+
+    switch (type) {
+      case 'text':
+        return {
+          ...commonFields,
+          type,
+          value: value as string,
+          onChange: (val: string | null) => onFilterChange(id, val, false),
+          onDebouncedSearchChange: (val: string) =>
+            onFilterChange(id, val, true),
+        };
+
+      case 'autocomplete':
+        return {
+          ...commonFields,
+          type,
+          options,
+          value: value as string,
+          resource,
+          resourceLabel,
+          resourceValue,
+          onChange: (val: string | null) => onFilterChange(id, val, false),
+        };
+
+      case 'select':
+        return {
+          ...commonFields,
+          type,
+          options,
+          value: value as string,
+          onChange: (val: string | null) => onFilterChange(id, val, false),
+        };
+
+      case 'date':
+        return {
+          ...commonFields,
+          type,
+          options,
+          value: value as unknown as Date,
+          onChange: (val: Date | null) => onFilterChange(id, val, false),
+          onDebouncedSearchChange: (val: Date) => onFilterChange(id, val, true),
+        };
+
+      default:
+        break;
+    }
   });
 
   if (filters.length === 0) return null;

@@ -1,14 +1,45 @@
 import React from 'react';
-import { ArrayFieldTemplateProps } from '@rjsf/utils';
+import {
+  ArrayFieldTemplateProps,
+  FormContextType,
+  getTemplate,
+  getUiOptions,
+  RJSFSchema,
+  StrictRJSFSchema,
+} from '@rjsf/utils';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ArrayFieldActionButton from './ArrayFieldActionButton';
 
-const ArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
-  const { items, canAdd, onAddClick, schema } = props;
+function ArrayFieldTemplate<
+  T = any,
+  S extends StrictRJSFSchema = RJSFSchema,
+  F extends FormContextType = any,
+>(props: ArrayFieldTemplateProps<T, S, F>) {
+  const {
+    items,
+    canAdd,
+    onAddClick,
+    registry,
+    uiSchema,
+    schema,
+    required,
+    idSchema,
+    title,
+  } = props;
+
+  const uiOptions = getUiOptions(uiSchema);
+  const ArrayFieldTitleTemplate = getTemplate<
+    'ArrayFieldTitleTemplate',
+    T,
+    S,
+    F
+  >('ArrayFieldTitleTemplate', registry, uiOptions);
 
   return (
     <Box
+      display="flex"
+      flexDirection="column"
       sx={{
         '& .MuiGrid-container': {
           marginTop: '0 !important',
@@ -18,6 +49,15 @@ const ArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
         },
       }}
     >
+      <ArrayFieldTitleTemplate
+        idSchema={idSchema}
+        title={uiOptions.title ?? title}
+        schema={schema}
+        uiSchema={uiSchema}
+        required={required}
+        registry={registry}
+      />
+
       {items.map((el, i) => {
         const child = {
           ...el.children,
@@ -50,6 +90,6 @@ const ArrayFieldTemplate = (props: ArrayFieldTemplateProps) => {
       )}
     </Box>
   );
-};
+}
 
 export default ArrayFieldTemplate;

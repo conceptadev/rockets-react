@@ -1,6 +1,6 @@
 {
   "name": "@concepta/react-material-ui",
-  "version": "1.0.0-alpha.26",
+  "version": "1.0.0-alpha.27",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "BSD-3-Clause",
@@ -31,6 +31,7 @@
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.6",
     "@mui/utils": "5.9.3",
+    "@mui/x-date-pickers": "^6.19.7",
     "@rjsf/core": "^5.0.0-beta.13",
     "@rjsf/mui": "^5.0.0-beta.13",
     "@rjsf/utils": "^5.0.0-beta.13",

@@ -3,9 +3,61 @@
  */
 
 import '@testing-library/jest-dom';
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import TableAssembledUncontrolled from './Table-Assembled-Uncontrolled';
+import React, { FC } from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Table as RocketsTable } from '../src';
+import { RowProps, HeaderProps } from '../src/components/Table/types';
+import useTable from '../src/components/Table/useTable';
+import { TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+
+interface Props {
+  headers: HeaderProps[];
+  hasCheckboxes?: boolean;
+}
+
+const TableAssembledUncontrolled: FC<Props> = ({ headers, hasCheckboxes }) => {
+  const { data, total, pageCount, tableQueryState, setTableQueryState } =
+    useTable('user', {
+      rowsPerPage: 5,
+    });
+
+  return (
+    <RocketsTable.Root
+      rows={data as RowProps[]}
+      headers={headers}
+      total={total}
+      pageCount={pageCount}
+      tableQueryState={tableQueryState}
+      updateTableQueryState={setTableQueryState}
+    >
+      <TableContainer>
+        <RocketsTable.Table>
+          <TableHead>
+            <TableRow>
+              {hasCheckboxes && <RocketsTable.HeaderCheckbox />}
+              <RocketsTable.HeaderCells />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {!hasCheckboxes ? (
+              <RocketsTable.BodyRows />
+            ) : (
+              <RocketsTable.BodyRows
+                renderRow={(row, labelId) => (
+                  <RocketsTable.BodyRow row={row} key={row.id}>
+                    <RocketsTable.BodyCheckboxes row={row} labelId={labelId} />
+                    <RocketsTable.BodyCell row={row} />
+                  </RocketsTable.BodyRow>
+                )}
+              />
+            )}
+          </TableBody>
+        </RocketsTable.Table>
+        <RocketsTable.Pagination variant="clean" />
+      </TableContainer>
+    </RocketsTable.Root>
+  );
+};
 
 const mockData = [
   {
@@ -87,6 +139,10 @@ describe('Assembled Table - Controlled', () => {
 
   it('should render correctly', () => {
     render(<TableAssembledUncontrolled headers={headers} />);
+
+    expect(screen.getByText('ID')).toBeInTheDocument();
+    expect(screen.getByText('Name')).toBeInTheDocument();
+    expect(screen.getByText('Age')).toBeInTheDocument();
   });
 
   it('should render correct headers', () => {

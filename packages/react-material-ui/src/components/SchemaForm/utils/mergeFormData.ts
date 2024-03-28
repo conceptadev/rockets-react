@@ -1,10 +1,10 @@
 import { JSONSchema7 } from 'json-schema';
 import { SchemaFormProps } from '../SchemaForm';
 
-export function mergeFormData(
+export const mergeFormData = (
   schema: JSONSchema7,
   formData: SchemaFormProps['formData'],
-) {
+) => {
   if (schema?.properties && typeof schema.properties === 'object') {
     const mergedFormData = {
       ...formData,
@@ -29,4 +29,4 @@ export function mergeFormData(
   }
 
   return null;
-}
+};

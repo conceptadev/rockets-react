@@ -32,7 +32,7 @@ export type SelectFieldProps = {
   defaultValue: string;
   hasAllOption?: boolean;
   isLoading?: boolean;
-  onChange: (value: string | null) => void;
+  onChange: (value: string | string[] | null) => void;
 } & Omit<SelectProps, 'onChange'>;
 
 const SelectField = ({

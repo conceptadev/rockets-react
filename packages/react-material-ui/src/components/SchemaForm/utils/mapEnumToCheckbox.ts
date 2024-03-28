@@ -2,9 +2,9 @@ import { JSONSchema7Definition } from 'json-schema';
 
 import { AdvancedProperty } from '../types';
 
-export function mapEnumToCheckbox(
+export const mapEnumToCheckbox = (
   advancedProperty: AdvancedProperty,
-): JSONSchema7Definition | JSONSchema7Definition[] | undefined {
+): JSONSchema7Definition | JSONSchema7Definition[] | undefined => {
   if (!advancedProperty.options) return;
 
   const isEnum = advancedProperty.options.every(
@@ -26,4 +26,4 @@ export function mapEnumToCheckbox(
           ),
         }),
   };
-}
+};

@@ -5,6 +5,7 @@ import ListItem from '@mui/material/ListItem';
 
 import {
   Box,
+  Button,
   Checkbox,
   IconButton,
   ListItemAvatar,
@@ -35,6 +36,7 @@ export interface ListItem {
   id: string;
   label: string;
   hide?: boolean;
+  resetFilters?: () => void;
   [key: string]: unknown;
 }
 
@@ -42,6 +44,7 @@ interface Props {
   list: ListItem[];
   icon?: ReactNode;
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
+  text?: string;
 }
 
 interface SortableItemProps {
@@ -59,6 +62,7 @@ const SortableItem = (props: SortableItemProps) => {
     useSortable({ id });
 
   const style = {
+    touchAction: 'none',
     transform: CSS.Transform.toString(transform),
     transition,
   };
@@ -82,8 +86,17 @@ const SortableItem = (props: SortableItemProps) => {
         }
         disablePadding
       >
-        <ListItemButton>
-          <ListItemAvatar>
+        <ListItemButton
+          sx={{
+            columnGap: (theme) => theme.spacing(2),
+          }}
+        >
+          <ListItemAvatar
+            sx={{
+              display: 'flex',
+              minWidth: 'auto',
+            }}
+          >
             <DragIndicator {...listeners} />
           </ListItemAvatar>
           <ListItemText id={labelId} primary={label} />
@@ -97,9 +110,15 @@ const OrderableDropDown = ({
   list,
   setList,
   icon = <SettingsSuggest />,
+  text,
 }: Props) => {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 0,
+        tolerance: 5,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     }),
@@ -122,10 +141,18 @@ const OrderableDropDown = ({
     }
 
     setList((prevState) =>
-      prevState.map((listItem) => ({
-        ...listItem,
-        hide: newChecked.includes(listItem.id) ? false : true,
-      })),
+      prevState.map((listItem) => {
+        const isHidden = newChecked.includes(listItem.id) ? false : true;
+
+        if (isHidden && listItem.resetFilters) {
+          listItem.resetFilters();
+        }
+
+        return {
+          ...listItem,
+          hide: isHidden,
+        };
+      }),
     );
 
     setChecked(newChecked);
@@ -146,13 +173,31 @@ const OrderableDropDown = ({
 
   return (
     <Box>
-      <IconButton
-        onClick={(event: React.MouseEvent<HTMLElement>) => {
-          setAnchorEl(event.currentTarget);
-        }}
-      >
-        {icon}
-      </IconButton>
+      {text ? (
+        <Button
+          onClick={(event: React.MouseEvent<HTMLElement>) => {
+            setAnchorEl(event.currentTarget);
+          }}
+          startIcon={icon}
+          variant="outlined"
+          sx={{
+            textTransform: 'capitalize',
+            color: '#374151',
+            borderColor: '#374151',
+            textWrap: 'nowrap',
+          }}
+        >
+          {text}
+        </Button>
+      ) : (
+        <IconButton
+          onClick={(event: React.MouseEvent<HTMLElement>) => {
+            setAnchorEl(event.currentTarget);
+          }}
+        >
+          {icon}
+        </IconButton>
+      )}
       <Menu open={open} anchorEl={anchorEl} onClose={() => setAnchorEl(null)}>
         <DndContext
           sensors={sensors}

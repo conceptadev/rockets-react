@@ -25,6 +25,7 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
   ChevronRight as ChevronRightIcon,
+  Add as AddIcon,
 } from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
@@ -213,11 +214,6 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
 
   return (
     <Box>
-      {!props.hideAddButton && (
-        <Button variant="contained" onClick={props.onAddNew} sx={{ mb: 2 }}>
-          Add new
-        </Button>
-      )}
       <Table.Root
         rows={tableRows}
         headers={tableHeaders}
@@ -228,12 +224,43 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         updateTableQueryState={props.setTableQueryState}
         {...props.tableRootProps}
       >
-        {(filters || props.reordable !== false) && (
-          <Box display="flex" mb={2} pt={1} justifyContent="flex-end">
-            {filters && <FilterSubmodule />}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', lg: 'row' },
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            mb: 2,
+          }}
+        >
+          {filters && <FilterSubmodule />}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: { xs: 'space-between', lg: 'initial' },
+              mt: { xs: filters ? 2 : 0, lg: 0 },
+              ml: { xs: 0, lg: 2 },
+              width: { xs: '100%', lg: 'auto' },
+            }}
+          >
             {props.reordable !== false && <Table.ColumnOrderable />}
+            {!props.hideAddButton && (
+              <Button
+                variant="contained"
+                onClick={props.onAddNew}
+                startIcon={<AddIcon />}
+                sx={{
+                  textTransform: 'capitalize',
+                  textWrap: 'nowrap',
+                  marginLeft: 2,
+                }}
+              >
+                Add new
+              </Button>
+            )}
           </Box>
-        )}
+        </Box>
 
         <TableContainer sx={tableTheme.tableContainer}>
           <Table.Table

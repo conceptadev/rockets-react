@@ -29,7 +29,7 @@ const CrudRoot = (props: PropsWithChildren<Props>) => {
   );
 
   useEffect(() => {
-    filterCallback?.(filterValues);
+    filterCallback && filterCallback(filterValues);
     const newFilterValues = getSearchParams(searchParams, {
       filterValues: JSON.stringify(filterValues),
     });

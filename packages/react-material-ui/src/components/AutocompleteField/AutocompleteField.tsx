@@ -1,6 +1,6 @@
 'use client';
 
-import React, { SyntheticEvent } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import {
   Autocomplete,
   AutocompleteProps,
@@ -12,30 +12,90 @@ import {
   allOption,
 } from '../../components/SelectField/SelectField';
 import FormFieldSkeleton from '../../components/FormFieldSkeleton';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+import { SimpleFilter } from 'components/Table/types';
 
 export type AutocompleteFieldProps = {
-  options: SelectOption[];
-  isLoading?: boolean;
-  currentValue: string;
-  defaultValue: SelectOption | undefined;
+  value?: string | null;
+  options?: SelectOption[];
+  sort?: string;
+  filters?: SimpleFilter;
+  resourceLabel?: string;
+  resourceValue?: string;
+  resource?: string;
   label?: string;
-  onChange: (value: string | null) => void;
+  isLoading?: boolean;
+  onChange?: (value: string | null) => void;
 } & Omit<
   AutocompleteProps<SelectOption, false, false, false>,
-  'renderInput' | 'onChange'
+  'renderInput' | 'onChange' | 'value' | 'options'
 >;
 
 const AutocompleteField = ({
+  value,
   options = [],
-  isLoading = false,
-  currentValue,
-  defaultValue,
+  sort,
+  filters,
+  resourceLabel = 'name',
+  resourceValue = 'id',
   label,
+  resource,
+  isLoading = false,
+  defaultValue,
   onChange,
   ...rest
 }: AutocompleteFieldProps) => {
+  const { get } = useDataProvider();
+
+  const [_value, setValue] = useState(value ?? defaultValue);
+
+  const isControlled = value !== undefined;
+  const currentValue = isControlled ? value ?? defaultValue : _value;
+
+  const simpleFilterQuery = () => {
+    if (!filters) return;
+
+    const queryArr = [];
+    for (const [key, value] of Object.entries(filters)) {
+      queryArr.push(`${key}${value}`);
+    }
+    return queryArr as string[];
+  };
+
+  const getResource = () => {
+    return get({
+      uri: `/${resource}`,
+      queryParams: {
+        sort,
+        filters: simpleFilterQuery(),
+      },
+    });
+  };
+
+  const { execute, data, isPending } = useQuery<unknown[]>(getResource, false);
+
+  const resourceOptions = [
+    ...(data?.map((resource) => ({
+      value: resource[resourceValue],
+      label: resource[resourceLabel],
+    })) ?? []),
+  ];
+  const loading = resource ? !data?.length || isPending : isLoading;
+
+  const optionsWithAll = [
+    allOption,
+    ...(!!data?.length && !isPending ? resourceOptions : options),
+  ];
+
+  const selectedValue = optionsWithAll.find((option) => {
+    const value =
+      typeof currentValue === 'string' ? currentValue : currentValue?.value;
+
+    return option.value === value;
+  });
+
   const handleRenderInput = (params: AutocompleteRenderInputParams) => (
-    <FormFieldSkeleton isLoading={isLoading} hideLabel>
+    <FormFieldSkeleton isLoading={loading} hideLabel>
       <TextField {...params} label={label} />
     </FormFieldSkeleton>
   );
@@ -45,27 +105,43 @@ const AutocompleteField = ({
     newValue: SelectOption | null,
     reason?: string,
   ) => {
+    const allOptionValue = allOption.value;
+
     if (reason === 'clear') {
-      onChange(allOption.value);
+      onChange(allOptionValue);
+      setValue(allOptionValue);
       return;
     }
 
-    onChange(newValue?.value ?? null);
+    const selectedValue = newValue?.value ?? null;
+    setValue(selectedValue);
+
+    if (onChange) {
+      onChange(selectedValue);
+    }
   };
 
-  const optionsWithAll = [allOption, ...options];
-  const value = optionsWithAll.find((option) => option.value === currentValue);
+  useEffect(() => {
+    if (resource) {
+      execute();
+    }
+  }, [filters]);
 
   return (
     <Autocomplete
-      disabled={isLoading}
-      defaultValue={defaultValue}
+      disabled={loading}
       isOptionEqualToValue={(option) => option.value === currentValue}
-      getOptionLabel={(option) => option.label}
       onChange={handleChange}
       options={optionsWithAll}
       renderInput={handleRenderInput}
-      value={value}
+      value={selectedValue ?? allOption}
+      renderOption={(props, option) => {
+        return (
+          <li {...props} key={option.value}>
+            {option.label}
+          </li>
+        );
+      }}
       {...rest}
     />
   );
