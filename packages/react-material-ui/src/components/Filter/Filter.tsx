@@ -1,8 +1,10 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
+import { useAuth } from '@concepta/react-auth-provider';
+import { usePathname } from 'next/navigation';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
@@ -16,6 +18,10 @@ import { SearchFieldProps } from '../../components/SearchField/SearchField';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
+import {
+  handlePageSettingsUpdate,
+  getPageSettings,
+} from '../../utils/settings/storage';
 
 export type FilterVariant = 'text' | 'autocomplete' | 'select' | 'date';
 
@@ -160,6 +166,8 @@ export type FilterProps = {
 
 const Filter = (props: FilterProps) => {
   const { filters, ...rest } = props;
+  const auth = useAuth();
+  const pathname = usePathname();
 
   const resetFilters = (item) => () => {
     if (item && item?.onDebouncedSearchChange) {
@@ -179,6 +187,27 @@ const Filter = (props: FilterProps) => {
       resetFilters: resetFilters(filter),
     })),
   );
+
+  useEffect(() => {
+    handlePageSettingsUpdate({
+      key: 'filterSettings',
+      user: (auth?.user as { id: string })?.id ?? '',
+      route: pathname,
+      list: filterOrder,
+    });
+  }, [filterOrder]);
+
+  useEffect(() => {
+    const filterSettings = getPageSettings({
+      key: 'filterSettings',
+      user: (auth?.user as { id: string })?.id ?? '',
+      route: pathname,
+    });
+
+    if (filterSettings.length) {
+      setFilterOrder(filterSettings);
+    }
+  }, []);
 
   return (
     <Box
