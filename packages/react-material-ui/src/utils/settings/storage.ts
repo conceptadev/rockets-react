@@ -34,18 +34,16 @@ export const handlePageSettingsUpdate = ({
     (item) => item.user === user && item.route === route,
   );
 
+  const newSettings = {
+    user,
+    route,
+    list,
+  };
+
   if (settingsItemIndex > -1) {
-    storageItem[settingsItemIndex] = {
-      user,
-      route,
-      list,
-    };
+    storageItem[settingsItemIndex] = newSettings;
   } else {
-    storageItem.push({
-      user,
-      route,
-      list,
-    });
+    storageItem.push(newSettings);
   }
 
   localStorage.setItem(key, JSON.stringify(storageItem));
