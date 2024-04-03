@@ -18,10 +18,7 @@ import { SearchFieldProps } from '../../components/SearchField/SearchField';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
-import {
-  handlePageSettingsUpdate,
-  getPageSettings,
-} from '../../utils/settings/storage';
+import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
 export type FilterVariant = 'text' | 'autocomplete' | 'select' | 'date';
 
@@ -168,6 +165,11 @@ const Filter = (props: FilterProps) => {
   const { filters, ...rest } = props;
   const auth = useAuth();
   const pathname = usePathname();
+  const [settings, setSettings] = useSettingsStorage({
+    key: 'filterSettings',
+    user: (auth?.user as { id: string })?.id ?? '',
+    route: pathname,
+  });
 
   const resetFilters = (item) => () => {
     if (item && item?.onDebouncedSearchChange) {
@@ -179,33 +181,44 @@ const Filter = (props: FilterProps) => {
     }
   };
 
-  const [filterOrder, setFilterOrder] = useState<ListItem[]>(
-    filters.map((filter) => ({
-      id: filter.id,
-      label: filter.label,
-      hide: filter.hide,
-      resetFilters: resetFilters(filter),
-    })),
-  );
+  const [filterOrder, setFilterOrder] = useState<ListItem[]>([]);
+
+  const handleFilterOrderChange = (list: ListItem[]) => {
+    setFilterOrder(list);
+    setSettings(list);
+  };
+
+  console.log('filter order: ', filterOrder);
+  console.log('settings: ', settings);
 
   useEffect(() => {
-    handlePageSettingsUpdate({
-      key: 'filterSettings',
-      user: (auth?.user as { id: string })?.id ?? '',
-      route: pathname,
-      list: filterOrder,
-    });
-  }, [filterOrder]);
-
-  useEffect(() => {
-    const filterSettings = getPageSettings({
-      key: 'filterSettings',
-      user: (auth?.user as { id: string })?.id ?? '',
-      route: pathname,
-    });
-
-    if (filterSettings.length) {
-      setFilterOrder(filterSettings);
+    if (settings?.length) {
+      setFilterOrder(
+        settings.map((item: ListItem) => ({
+          ...item,
+          hide: filters.find((filter) => filter.id === item.id).hide,
+          resetFilters: resetFilters(
+            filters.find((filter) => filter.id === item.id),
+          ),
+        })),
+      );
+    } else {
+      setFilterOrder(
+        filters.map((filter) => ({
+          id: filter.id,
+          label: filter.label,
+          hide: filter.hide,
+          resetFilters: resetFilters(filter),
+        })),
+      );
+      setSettings(
+        filters.map((filter) => ({
+          id: filter.id,
+          label: filter.label,
+          hide: Boolean(filter.hide),
+          resetFilters: resetFilters(filter).toString(),
+        })),
+      );
     }
   }, []);
 
@@ -268,7 +281,7 @@ const Filter = (props: FilterProps) => {
         <OrderableDropDown
           icon={<FilterAlt />}
           list={filterOrder}
-          setList={setFilterOrder}
+          setList={handleFilterOrderChange}
         />
         {props.complementaryActions}
       </Box>

@@ -1,10 +1,30 @@
-import { ListItem } from 'components/OrderableDropDown';
+import { useState, useEffect } from 'react';
+
+import { ListItem } from '../components/OrderableDropDown';
 
 type Settings = {
   key: string;
   user: string;
   route: string;
   list: ListItem[];
+};
+
+export const getPageSettings = ({
+  key,
+  user,
+  route,
+}: Omit<Settings, 'list'>) => {
+  const storageItem = JSON.parse(localStorage.getItem(key));
+
+  if (!storageItem) {
+    return;
+  }
+
+  const settingsItem = storageItem.find(
+    (item) => item.user === user && item.route === route,
+  );
+
+  return settingsItem.list || [];
 };
 
 export const handlePageSettingsUpdate = ({
@@ -49,20 +69,23 @@ export const handlePageSettingsUpdate = ({
   localStorage.setItem(key, JSON.stringify(storageItem));
 };
 
-export const getPageSettings = ({
+export const useSettingsStorage = ({
   key,
   user,
   route,
 }: Omit<Settings, 'list'>) => {
-  const storageItem = JSON.parse(localStorage.getItem(key));
+  const [settings, setSettings] = useState(() => {
+    return getPageSettings({ key, user, route });
+  });
 
-  if (!storageItem) {
-    return;
-  }
+  useEffect(() => {
+    handlePageSettingsUpdate({
+      key,
+      user,
+      route,
+      list: settings,
+    });
+  }, [key, settings]);
 
-  const settingsItem = storageItem.find(
-    (item) => item.user === user && item.route === route,
-  );
-
-  return settingsItem.list || [];
+  return [settings, setSettings];
 };

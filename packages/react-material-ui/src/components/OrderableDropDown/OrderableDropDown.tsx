@@ -142,6 +142,8 @@ const OrderableDropDown = ({
 
     setList((prevState) =>
       prevState.map((listItem) => {
+        console.log('list item: ', listItem);
+
         const isHidden = newChecked.includes(listItem.id) ? false : true;
 
         if (isHidden && listItem.resetFilters) {
