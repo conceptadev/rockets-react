@@ -24,7 +24,7 @@ export const getPageSettings = ({
     (item) => item.user === user && item.route === route,
   );
 
-  return settingsItem.list || [];
+  return settingsItem?.list || [];
 };
 
 export const handlePageSettingsUpdate = ({
@@ -35,30 +35,20 @@ export const handlePageSettingsUpdate = ({
 }: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(key));
 
-  if (!storageItem) {
-    localStorage.setItem(
-      key,
-      JSON.stringify([
-        {
-          user,
-          route,
-          list,
-        },
-      ]),
-    );
+  const newSettings = {
+    user,
+    route,
+    list,
+  };
 
+  if (!storageItem) {
+    localStorage.setItem(key, JSON.stringify([newSettings]));
     return;
   }
 
   const settingsItemIndex = storageItem.findIndex(
     (item) => item.user === user && item.route === route,
   );
-
-  const newSettings = {
-    user,
-    route,
-    list,
-  };
 
   if (settingsItemIndex > -1) {
     storageItem[settingsItemIndex] = newSettings;
