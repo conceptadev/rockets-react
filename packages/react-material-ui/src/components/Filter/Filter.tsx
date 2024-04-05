@@ -181,45 +181,43 @@ const Filter = (props: FilterProps) => {
     }
   };
 
-  const [filterOrder, setFilterOrder] = useState<ListItem[]>([]);
+  const [filterOrder, setFilterOrder] = useState<ListItem[]>(
+    filters.map((filter) => ({
+      id: filter.id,
+      label: filter.label,
+      hide: filter.hide,
+      resetFilters: resetFilters(filter),
+    })),
+  );
 
   const handleFilterOrderChange = (list: ListItem[]) => {
     setFilterOrder(list);
     setSettings(list);
   };
 
-  console.log('filter order: ', filterOrder);
-  console.log('settings: ', settings);
-
   useEffect(() => {
     if (settings?.length) {
       setFilterOrder(
-        settings.map((item: ListItem) => ({
-          ...item,
-          hide: filters.find((filter) => filter.id === item.id).hide,
-          resetFilters: resetFilters(
-            filters.find((filter) => filter.id === item.id),
-          ),
-        })),
+        settings.map((item: ListItem) => {
+          const filterItem = filters.find((filter) => filter.id === item.id);
+
+          return {
+            ...item,
+            label: filterItem.label,
+            resetFilters: resetFilters(filterItem),
+          };
+        }),
       );
-    } else {
-      setFilterOrder(
-        filters.map((filter) => ({
-          id: filter.id,
-          label: filter.label,
-          hide: filter.hide,
-          resetFilters: resetFilters(filter),
-        })),
-      );
-      setSettings(
-        filters.map((filter) => ({
-          id: filter.id,
-          label: filter.label,
-          hide: Boolean(filter.hide),
-          resetFilters: resetFilters(filter).toString(),
-        })),
-      );
+
+      return;
     }
+
+    setSettings(
+      filters.map((filter) => ({
+        id: filter.id,
+        hide: Boolean(filter.hide),
+      })),
+    );
   }, []);
 
   return (

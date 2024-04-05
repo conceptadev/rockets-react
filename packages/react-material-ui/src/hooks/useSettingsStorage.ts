@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 
-import { ListItem } from '../components/OrderableDropDown';
+type ListItem = {
+  id: string;
+  hide: boolean;
+};
 
 type Settings = {
   key: string;
@@ -21,7 +24,7 @@ export const getPageSettings = ({
   }
 
   const settingsItem = storageItem.find(
-    (item) => item.user === user && item.route === route,
+    (item: Settings) => item.user === user && item.route === route,
   );
 
   return settingsItem?.list || [];
@@ -47,7 +50,7 @@ export const handlePageSettingsUpdate = ({
   }
 
   const settingsItemIndex = storageItem.findIndex(
-    (item) => item.user === user && item.route === route,
+    (item: Settings) => item.user === user && item.route === route,
   );
 
   if (settingsItemIndex > -1) {
