@@ -159,6 +159,7 @@ export type FilterProps = {
     columns?: number;
   }[];
   complementaryActions?: ReactNode;
+  tableId?: string;
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
@@ -168,7 +169,7 @@ const Filter = (props: FilterProps) => {
   const [settings, setSettings] = useSettingsStorage({
     key: 'filterSettings',
     user: (auth?.user as { id: string })?.id ?? '',
-    route: pathname,
+    route: props.tableId || pathname,
   });
 
   const resetFilters = (item) => () => {
