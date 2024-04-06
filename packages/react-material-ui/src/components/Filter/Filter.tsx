@@ -169,7 +169,7 @@ const Filter = (props: FilterProps) => {
   const [settings, setSettings] = useSettingsStorage({
     key: 'filterSettings',
     user: (auth?.user as { id: string })?.id ?? '',
-    route: props.tableId || pathname,
+    tableId: props.tableId || pathname,
   });
 
   const resetFilters = (item) => () => {
