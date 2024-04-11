@@ -92,6 +92,7 @@ export interface TableSubmoduleProps {
   hideEditButton?: boolean;
   hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
+  hasAllOption?: boolean;
   hideAddButton?: boolean;
   reordable?: boolean;
   onDeleteSuccess?: (data: unknown) => void;
@@ -230,7 +231,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             flexDirection: { xs: 'column', lg: 'row' },
             alignItems: 'flex-start',
             justifyContent: 'space-between',
-            mb: 2,
+            my: 4,
           }}
         >
           {filters && <FilterSubmodule />}
@@ -244,7 +245,9 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
               width: { xs: '100%', lg: 'auto' },
             }}
           >
-            {props.reordable !== false && <Table.ColumnOrderable />}
+            {props.reordable !== false && (
+              <Table.ColumnOrderable hasAllOption={props.hasAllOption} />
+            )}
             {!props.hideAddButton && (
               <Button
                 variant="contained"

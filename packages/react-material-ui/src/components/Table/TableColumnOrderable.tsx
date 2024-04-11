@@ -6,11 +6,13 @@ import { useTableRoot } from './hooks/useTableRoot';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 
 type TableColumnOrderableProps = {
+  hasAllOption?: boolean;
   text?: string;
   icon?: ReactNode;
 };
 
 export const TableColumnOrderable = ({
+  hasAllOption,
   text,
   icon,
 }: TableColumnOrderableProps) => {
@@ -30,6 +32,7 @@ export const TableColumnOrderable = ({
 
   return (
     <OrderableDropDown
+      hasAllOption={hasAllOption}
       list={headerOrder}
       setList={setHeaderOrder}
       icon={icon}

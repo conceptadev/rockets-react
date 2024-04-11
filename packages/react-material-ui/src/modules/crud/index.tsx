@@ -26,6 +26,7 @@ interface TableProps {
   tableSchema: TableSubmoduleProps['tableSchema'];
   tableProps?: InnerTableProps;
   tableTheme?: StyleDefinition;
+  hasAllOption?: boolean;
   hideActionsColumn?: boolean;
   reordable?: boolean;
   filters?: FilterDetails[];

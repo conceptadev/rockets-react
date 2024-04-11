@@ -44,15 +44,57 @@ describe('OrderableDropDown Component', () => {
   it('fires the “setList” function on checkbox click', () => {
     const setList = jest.fn();
 
-    const { getByTestId, getByRole } = render(
+    const { getByTestId, getByRole, queryByRole } = render(
       <OrderableDropDown list={list} setList={setList} />,
     );
 
     const dropDownButton = getByTestId('SettingsSuggestIcon');
-    dropDownButton && fireEvent.click(dropDownButton);
+    fireEvent.click(dropDownButton);
 
     const checkbox = getByRole('checkbox', { name: 'Test 0' });
-    checkbox && fireEvent.click(checkbox);
+    fireEvent.click(checkbox);
+
+    expect(
+      queryByRole('checkbox', { name: 'Deselect all' }),
+    ).not.toBeInTheDocument();
+    expect(setList).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render "Deselect all" option', () => {
+    const setList = jest.fn();
+
+    const { getByTestId, getByRole } = render(
+      <OrderableDropDown hasAllOption list={list} setList={setList} />,
+    );
+
+    const dropDownButton = getByTestId('SettingsSuggestIcon');
+    fireEvent.click(dropDownButton);
+
+    const checkbox = getByRole('checkbox', { name: 'Deselect all' });
+    fireEvent.click(checkbox);
+
+    expect(setList).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render "Select all" option', () => {
+    const setList = jest.fn();
+
+    const { getByTestId, getByRole } = render(
+      <OrderableDropDown
+        hasAllOption
+        list={list.map((item) => ({
+          ...item,
+          hide: true,
+        }))}
+        setList={setList}
+      />,
+    );
+
+    const dropDownButton = getByTestId('SettingsSuggestIcon');
+    fireEvent.click(dropDownButton);
+
+    const checkbox = getByRole('checkbox', { name: 'Select all' });
+    fireEvent.click(checkbox);
 
     expect(setList).toHaveBeenCalledTimes(1);
   });
