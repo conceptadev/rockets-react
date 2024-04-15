@@ -27,7 +27,7 @@ export type ComposedTableProps = {
   isPending?: boolean;
   tableTheme?: StyleDefinition;
 } & TableRootProps &
-  FilterProps;
+  Partial<FilterProps>;
 
 const ComposedTable = (props: ComposedTableProps) => {
   const theme = useTheme();
@@ -35,6 +35,7 @@ const ComposedTable = (props: ComposedTableProps) => {
 
   const auth = useAuth();
   const pathname = usePathname();
+
   const [settings, setSettings] = useSettingsStorage({
     key: 'tableSettings',
     user: (auth?.user as { id: string })?.id ?? '',
@@ -85,6 +86,7 @@ const ComposedTable = (props: ComposedTableProps) => {
         <Box my={3}>
           <Filter
             {...props}
+            filters={props.filters || []}
             complementaryActions={
               <Box display="flex" gap={2}>
                 <OrderableDropDown

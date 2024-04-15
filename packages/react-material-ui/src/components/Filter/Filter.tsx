@@ -169,6 +169,7 @@ const Filter = (props: FilterProps) => {
   const { filters, hasAllOption, ...rest } = props;
   const auth = useAuth();
   const pathname = usePathname();
+
   const [settings, setSettings] = useSettingsStorage({
     key: 'filterSettings',
     user: (auth?.user as { id: string })?.id ?? '',
@@ -204,6 +205,10 @@ const Filter = (props: FilterProps) => {
       setFilterOrder(
         settings.map((item: ListItem) => {
           const filterItem = filters.find((filter) => filter.id === item.id);
+
+          if (!filterItem) {
+            return {};
+          }
 
           return {
             ...item,
