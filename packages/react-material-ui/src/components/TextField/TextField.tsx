@@ -57,9 +57,7 @@ interface Props {
   passwordStrengthConfig?: PasswordStrengthConfig;
 }
 
-type ComponentProps = Omit<TextFieldProps & Props, 'margin' | 'color'>;
-
-const TextField = (props: ComponentProps) => {
+const TextField = (props: TextFieldProps & Props) => {
   const {
     label,
     required,
