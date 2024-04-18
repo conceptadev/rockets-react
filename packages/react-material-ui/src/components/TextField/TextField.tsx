@@ -2,8 +2,10 @@ import React, { ReactNode, useState } from 'react';
 import {
   Box,
   BoxProps,
+  FormControl,
   InputAdornment,
-  TextField as MuiTextField,
+  InputProps,
+  OutlinedInput as MuiOutlinedInput,
   TextFieldProps,
   TypographyProps,
 } from '@mui/material';
@@ -55,7 +57,9 @@ interface Props {
   passwordStrengthConfig?: PasswordStrengthConfig;
 }
 
-const TextField = (props: TextFieldProps & Props) => {
+type ComponentProps = Omit<TextFieldProps & Props, 'margin' | 'color'>;
+
+const TextField = (props: ComponentProps) => {
   const {
     label,
     required,
@@ -67,6 +71,8 @@ const TextField = (props: TextFieldProps & Props) => {
     options,
     containerProps,
     labelProps,
+    InputProps,
+    InputLabelProps,
     name,
     passwordStrengthConfig,
     ...rest
@@ -109,37 +115,36 @@ const TextField = (props: TextFieldProps & Props) => {
 
   return (
     <Box {...containerProps}>
-      {!ishiddenLabel && !!label && typeof label === 'string' && (
-        <FormLabel
+      <FormControl hiddenLabel={label ? true : ishiddenLabel} fullWidth>
+        {!ishiddenLabel && !!label && typeof label === 'string' && (
+          <FormLabel
+            name={name}
+            label={label}
+            required={required}
+            labelProps={labelProps}
+            {...InputLabelProps}
+          />
+        )}
+
+        {!ishiddenLabel && !!label && typeof label !== 'string' && label}
+
+        <MuiOutlinedInput
+          {...(rest as InputProps)}
+          sx={[
+            {
+              marginTop: 0.5,
+              mb: 0,
+              input: { color: 'text.primary' },
+            },
+            ...(Array.isArray(sx) ? sx : [sx]),
+          ]}
+          id={name}
           name={name}
-          label={label}
-          required={required}
-          labelProps={labelProps}
-        />
-      )}
-
-      {!ishiddenLabel && !!label && typeof label !== 'string' && label}
-
-      <MuiTextField
-        {...rest}
-        sx={[
-          {
-            marginTop: 0.5,
-            mb: 0,
-            input: { color: 'text.primary' },
-          },
-          ...(Array.isArray(sx) ? sx : [sx]),
-        ]}
-        id={name}
-        name={name}
-        size={size || 'small'}
-        value={value || value === 0 ? value : ''}
-        hiddenLabel={label ? true : ishiddenLabel}
-        label={null}
-        type={isPassword ? (showPassword ? 'text' : 'password') : type}
-        InputProps={{
-          ...(isPassword && {
-            endAdornment: (
+          size={size || 'small'}
+          value={value || value === 0 ? value : ''}
+          type={isPassword ? (showPassword ? 'text' : 'password') : type}
+          endAdornment={
+            isPassword && (
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
@@ -150,13 +155,13 @@ const TextField = (props: TextFieldProps & Props) => {
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
-            ),
-          }),
-          ...props.InputProps,
-        }}
-        data-testid="text-field"
-        fullWidth
-      />
+            )
+          }
+          data-testid="text-field"
+          fullWidth
+          {...InputProps}
+        />
+      </FormControl>
 
       {isPassword && (
         <>

@@ -21,15 +21,7 @@ const FormLabel = (props: Props) => {
   const { id, name, labelProps, label, required } = props;
 
   return (
-    <MuiFormLabel
-      id={id}
-      htmlFor={name}
-      sx={{
-        '.MuiFormLabel-asterisk': {
-          display: 'none',
-        },
-      }}
-    >
+    <MuiFormLabel id={id} htmlFor={name}>
       <Text textAlign="left" {...TEXT_INITIAL_PROPS} {...labelProps}>
         {label && `${label}${required ? ' *' : ''}`}
       </Text>
