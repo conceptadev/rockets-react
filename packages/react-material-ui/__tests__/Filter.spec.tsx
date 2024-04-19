@@ -7,6 +7,8 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import Filter, { FilterType } from '../src/components/Filter/Filter';
 
+const SETTINGS_TABLE_ID = 'testing';
+
 describe('Filter Component', () => {
   const allFilters: FilterType[] = [
     {
@@ -46,7 +48,7 @@ describe('Filter Component', () => {
 
   it('renders textfield component if type is "Text"', () => {
     const { getByPlaceholderText } = render(
-      <Filter filters={[allFilters[0]]} tableId="testing" />,
+      <Filter filters={[allFilters[0]]} tableId={SETTINGS_TABLE_ID} />,
     );
 
     const input = getByPlaceholderText('Text Test Placeholder');
@@ -55,7 +57,7 @@ describe('Filter Component', () => {
 
   it('renders autocomplete component if type is "Autocomplete"', () => {
     const { getByRole } = render(
-      <Filter filters={[allFilters[1]]} tableId="testing" />,
+      <Filter filters={[allFilters[1]]} tableId={SETTINGS_TABLE_ID} />,
     );
 
     const input = getByRole('combobox');
@@ -64,7 +66,7 @@ describe('Filter Component', () => {
 
   it('renders select component if type is "Select"', () => {
     const { getByLabelText } = render(
-      <Filter filters={[allFilters[2]]} tableId="testing" />,
+      <Filter filters={[allFilters[2]]} tableId={SETTINGS_TABLE_ID} />,
     );
 
     const input = getByLabelText('Select Test Label');
@@ -73,7 +75,7 @@ describe('Filter Component', () => {
 
   it('renders array of filters correctly', () => {
     const { container } = render(
-      <Filter filters={allFilters} tableId="testing" />,
+      <Filter filters={allFilters} tableId={SETTINGS_TABLE_ID} />,
     );
 
     const inputs = container.querySelectorAll('input');
@@ -93,7 +95,7 @@ describe('Filter Component', () => {
 
   it('renders dropdown button', () => {
     const { queryByTestId } = render(
-      <Filter filters={allFilters} tableId="testing" />,
+      <Filter filters={allFilters} tableId={SETTINGS_TABLE_ID} />,
     );
 
     const dropdownButton = queryByTestId('FilterAltIcon');
@@ -102,7 +104,7 @@ describe('Filter Component', () => {
 
   it('opens dropdown button on click', () => {
     const { queryByTestId, queryAllByTestId } = render(
-      <Filter filters={allFilters} tableId="testing" />,
+      <Filter filters={allFilters} tableId={SETTINGS_TABLE_ID} />,
     );
 
     const dropdownButton = queryByTestId('FilterAltIcon');
@@ -122,7 +124,9 @@ describe('Filter Component', () => {
       getByPlaceholderText,
       getByRole,
       queryByPlaceholderText,
-    } = render(<Filter filters={[allFilters[0]]} tableId="testing" />);
+    } = render(
+      <Filter filters={[allFilters[0]]} tableId={SETTINGS_TABLE_ID} />,
+    );
 
     const textInput = getByPlaceholderText('Text Test Placeholder');
     expect(textInput).toBeInTheDocument();
