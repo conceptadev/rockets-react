@@ -212,13 +212,6 @@ const Filter = (props: FilterProps) => {
 
       return;
     }
-
-    setSettings(
-      filters.map((filter) => ({
-        id: filter.id,
-        hide: Boolean(filter.hide),
-      })),
-    );
   }, []);
 
   return (

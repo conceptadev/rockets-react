@@ -46,7 +46,7 @@ describe('Filter Component', () => {
 
   it('renders textfield component if type is "Text"', () => {
     const { getByPlaceholderText } = render(
-      <Filter filters={[allFilters[0]]} />,
+      <Filter filters={[allFilters[0]]} tableId="testing" />,
     );
 
     const input = getByPlaceholderText('Text Test Placeholder');
@@ -54,21 +54,27 @@ describe('Filter Component', () => {
   });
 
   it('renders autocomplete component if type is "Autocomplete"', () => {
-    const { getByRole } = render(<Filter filters={[allFilters[1]]} />);
+    const { getByRole } = render(
+      <Filter filters={[allFilters[1]]} tableId="testing" />,
+    );
 
     const input = getByRole('combobox');
     expect(input).toHaveClass('MuiAutocomplete-input');
   });
 
   it('renders select component if type is "Select"', () => {
-    const { getByLabelText } = render(<Filter filters={[allFilters[2]]} />);
+    const { getByLabelText } = render(
+      <Filter filters={[allFilters[2]]} tableId="testing" />,
+    );
 
     const input = getByLabelText('Select Test Label');
     expect(input).toHaveClass('MuiSelect-select');
   });
 
   it('renders array of filters correctly', () => {
-    const { container } = render(<Filter filters={allFilters} />);
+    const { container } = render(
+      <Filter filters={allFilters} tableId="testing" />,
+    );
 
     const inputs = container.querySelectorAll('input');
 
@@ -86,7 +92,9 @@ describe('Filter Component', () => {
   });
 
   it('renders dropdown button', () => {
-    const { queryByTestId } = render(<Filter filters={allFilters} />);
+    const { queryByTestId } = render(
+      <Filter filters={allFilters} tableId="testing" />,
+    );
 
     const dropdownButton = queryByTestId('FilterAltIcon');
     expect(dropdownButton).toBeInTheDocument();
@@ -94,7 +102,7 @@ describe('Filter Component', () => {
 
   it('opens dropdown button on click', () => {
     const { queryByTestId, queryAllByTestId } = render(
-      <Filter filters={allFilters} />,
+      <Filter filters={allFilters} tableId="testing" />,
     );
 
     const dropdownButton = queryByTestId('FilterAltIcon');
@@ -114,7 +122,7 @@ describe('Filter Component', () => {
       getByPlaceholderText,
       getByRole,
       queryByPlaceholderText,
-    } = render(<Filter filters={[allFilters[0]]} />);
+    } = render(<Filter filters={[allFilters[0]]} tableId="testing" />);
 
     const textInput = getByPlaceholderText('Text Test Placeholder');
     expect(textInput).toBeInTheDocument();
