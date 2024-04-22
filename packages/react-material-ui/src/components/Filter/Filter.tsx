@@ -206,10 +206,6 @@ const Filter = (props: FilterProps) => {
         settings.map((item: ListItem) => {
           const filterItem = filters.find((filter) => filter.id === item.id);
 
-          if (!filterItem) {
-            return {};
-          }
-
           return {
             ...item,
             label: filterItem.label,

@@ -66,13 +66,6 @@ const ComposedTable = (props: ComposedTableProps) => {
 
       return;
     }
-
-    setSettings(
-      props.headers.map((header) => ({
-        id: header.id,
-        hide: Boolean(header.hide),
-      })),
-    );
   }, []);
 
   return (
