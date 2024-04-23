@@ -104,11 +104,11 @@ const SortableItem = (props: SortableItemProps) => {
       >
         <ListItemButton
           sx={{
-            pointerEvents: !isHeader ? 'none' : undefined,
+            pointerEvents: isHeader ? 'none' : undefined,
             columnGap: 2,
           }}
         >
-          {isHeader && (
+          {!isHeader && (
             <ListItemAvatar
               sx={{
                 display: 'flex',
@@ -117,9 +117,9 @@ const SortableItem = (props: SortableItemProps) => {
             >
               <DragIndicator
                 sx={{
-                  opacity: !isHeader ? 0.4 : undefined,
+                  opacity: isHeader ? 0.4 : undefined,
                 }}
-                {...(isHeader ? listeners : {})}
+                {...(!isHeader ? listeners : {})}
               />
             </ListItemAvatar>
           )}
