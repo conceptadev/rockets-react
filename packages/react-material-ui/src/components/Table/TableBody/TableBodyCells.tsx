@@ -1,41 +1,37 @@
 'use client';
 
-import React from 'react';
+import React, { ReactNode } from 'react';
 import Text from '../../Text';
 import { TableCell, TableCellProps, Tooltip } from '@mui/material';
 import { CustomTableCell, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
 
-const getCellData = (cell: CustomTableCell | string | number | undefined) => {
-  if (
-    typeof cell === 'number' ||
-    typeof cell === 'string' ||
-    typeof cell === 'undefined'
-  ) {
-    return (
-      <Text fontSize={14} fontWeight={400} color="text.primary">
-        {cell ?? ''}
-      </Text>
-    );
+const renderTextCell = (value: string | number | null) => (
+  <Text fontSize={14} fontWeight={400} color="text.primary">
+    {value ?? ''}
+  </Text>
+);
+
+const renderCell = (
+  cell: CustomTableCell | string | number | undefined | null,
+): ReactNode => {
+  if (cell === null) return null;
+
+  if (typeof cell === 'object') {
+    if ('component' in cell) {
+      return cell.component;
+    }
+    if (cell.title) {
+      return (
+        <Tooltip title={cell.title}>
+          <span>{cell.value ?? ''}</span>
+        </Tooltip>
+      );
+    }
+    return renderTextCell(cell.value ?? '');
   }
 
-  if ('component' in cell) {
-    return cell.component;
-  }
-
-  if ('title' in cell) {
-    return (
-      <Tooltip title={cell.title}>
-        <span>{cell.value ?? ''}</span>
-      </Tooltip>
-    );
-  }
-
-  return (
-    <Text fontSize={14} fontWeight={400} color="text.primary">
-      {cell.value ?? ''}
-    </Text>
-  );
+  return renderTextCell(cell);
 };
 
 type TableBodyCellsProps = {
@@ -58,7 +54,7 @@ export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
 
         return (
           <TableCell key={header.id} {...rest}>
-            {getCellData(row[header.source || header.id])}
+            {renderCell(row[header.source || header.id])}
           </TableCell>
         );
       })}
