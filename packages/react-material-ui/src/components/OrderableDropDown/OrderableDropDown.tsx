@@ -49,11 +49,11 @@ interface Props {
 interface SortableItemProps {
   id: string;
   checked: boolean;
-  indeterminate?: boolean;
-  isSortable?: boolean;
   label: string;
-  handleToggle: (value: string) => void;
   labelId: string;
+  indeterminate?: boolean;
+  isHeader?: boolean;
+  handleToggle: (value: string) => void;
 }
 
 const SortableItem = (props: SortableItemProps) => {
@@ -61,10 +61,10 @@ const SortableItem = (props: SortableItemProps) => {
     id,
     checked,
     label,
-    indeterminate,
-    isSortable = true,
-    handleToggle,
     labelId,
+    indeterminate,
+    isHeader = false,
+    handleToggle,
   } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -84,6 +84,12 @@ const SortableItem = (props: SortableItemProps) => {
       data-testid="orderable-item"
     >
       <ListItem
+        sx={{
+          borderBottom: isHeader ? '1px solid' : undefined,
+          borderColor: (theme) =>
+            isHeader ? theme.palette.divider : undefined,
+          paddingLeft: isHeader ? undefined : 5,
+        }}
         key={id}
         secondaryAction={
           <Checkbox
@@ -98,23 +104,25 @@ const SortableItem = (props: SortableItemProps) => {
       >
         <ListItemButton
           sx={{
-            pointerEvents: !isSortable ? 'none' : undefined,
-            columnGap: (theme) => theme.spacing(2),
+            pointerEvents: !isHeader ? 'none' : undefined,
+            columnGap: 2,
           }}
         >
-          <ListItemAvatar
-            sx={{
-              display: 'flex',
-              minWidth: 'auto',
-            }}
-          >
-            <DragIndicator
+          {isHeader && (
+            <ListItemAvatar
               sx={{
-                opacity: !isSortable ? 0.4 : undefined,
+                display: 'flex',
+                minWidth: 'auto',
               }}
-              {...(isSortable ? listeners : {})}
-            />
-          </ListItemAvatar>
+            >
+              <DragIndicator
+                sx={{
+                  opacity: !isHeader ? 0.4 : undefined,
+                }}
+                {...(isHeader ? listeners : {})}
+              />
+            </ListItemAvatar>
+          )}
           <ListItemText id={labelId} primary={label} />
         </ListItemButton>
       </ListItem>
@@ -273,10 +281,8 @@ const OrderableDropDown = ({
                 id="all"
                 checked={list.length === checked.length}
                 indeterminate={checked.length && list.length !== checked.length}
-                label={
-                  list.length === checked.length ? 'Deselect all' : 'Select all'
-                }
-                isSortable={false}
+                label="Select all"
+                isHeader
                 handleToggle={handleToggleAll}
                 labelId="all"
               />
