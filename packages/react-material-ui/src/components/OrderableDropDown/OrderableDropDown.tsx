@@ -88,7 +88,7 @@ const SortableItem = (props: SortableItemProps) => {
           borderBottom: isHeader ? '1px solid' : undefined,
           borderColor: (theme) =>
             isHeader ? theme.palette.divider : undefined,
-          paddingLeft: isHeader ? undefined : 5,
+          paddingLeft: !isHeader ? undefined : 5,
         }}
         key={id}
         secondaryAction={
