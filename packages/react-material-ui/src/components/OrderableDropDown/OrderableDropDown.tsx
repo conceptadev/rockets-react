@@ -115,12 +115,7 @@ const SortableItem = (props: SortableItemProps) => {
                 minWidth: 'auto',
               }}
             >
-              <DragIndicator
-                sx={{
-                  opacity: isHeader ? 0.4 : undefined,
-                }}
-                {...(!isHeader ? listeners : {})}
-              />
+              <DragIndicator {...listeners} />
             </ListItemAvatar>
           )}
           <ListItemText id={labelId} primary={label} />
