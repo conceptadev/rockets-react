@@ -276,12 +276,14 @@ const Filter = (props: FilterProps) => {
           gap: { xs: 4, md: 2 },
         }}
       >
-        <OrderableDropDown
-          hasAllOption={hasAllOption}
-          icon={<FilterAlt />}
-          list={filterOrder}
-          setList={handleFilterOrderChange}
-        />
+        {filters.length ? (
+          <OrderableDropDown
+            hasAllOption={hasAllOption}
+            icon={<FilterAlt />}
+            list={filterOrder}
+            setList={handleFilterOrderChange}
+          />
+        ) : null}
         {props.complementaryActions}
       </Box>
     </Box>
