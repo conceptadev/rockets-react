@@ -37,7 +37,7 @@ const PasswordStrengthRules = ({
           id={name}
           sx={(theme) => ({
             color:
-              value && (value as string).match(rule.pattern)
+              value && (value as string)?.match(rule.pattern)
                 ? theme.palette.success.main
                 : theme.palette.common.black,
           })}

@@ -43,20 +43,31 @@ export interface ListItem {
 interface Props {
   list: ListItem[];
   icon?: ReactNode;
+  hasAllOption?: boolean;
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
   text?: string;
 }
 
 interface SortableItemProps {
   id: string;
-  checked: string[];
+  checked: boolean;
   label: string;
-  handleToggle: (value: string) => () => void;
   labelId: string;
+  indeterminate?: boolean;
+  isHeader?: boolean;
+  handleToggle: (value: string) => void;
 }
 
 const SortableItem = (props: SortableItemProps) => {
-  const { id, checked, label, handleToggle, labelId } = props;
+  const {
+    id,
+    checked,
+    label,
+    labelId,
+    indeterminate,
+    isHeader = false,
+    handleToggle,
+  } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
@@ -75,30 +86,40 @@ const SortableItem = (props: SortableItemProps) => {
       data-testid="orderable-item"
     >
       <ListItem
+        sx={{
+          borderBottom: isHeader ? '1px solid' : undefined,
+          borderColor: (theme) =>
+            isHeader ? theme.palette.divider : undefined,
+          paddingLeft: !isHeader ? undefined : 5,
+        }}
         key={id}
         secondaryAction={
           <Checkbox
             edge="end"
-            onChange={handleToggle(id)}
-            checked={checked.indexOf(id) !== -1}
+            onChange={() => handleToggle(id)}
+            checked={checked}
             inputProps={{ 'aria-labelledby': labelId }}
+            indeterminate={indeterminate}
           />
         }
         disablePadding
       >
         <ListItemButton
           sx={{
-            columnGap: (theme) => theme.spacing(2),
+            pointerEvents: isHeader ? 'none' : undefined,
+            columnGap: 2,
           }}
         >
-          <ListItemAvatar
-            sx={{
-              display: 'flex',
-              minWidth: 'auto',
-            }}
-          >
-            <DragIndicator {...listeners} />
-          </ListItemAvatar>
+          {!isHeader && (
+            <ListItemAvatar
+              sx={{
+                display: 'flex',
+                minWidth: 'auto',
+              }}
+            >
+              <DragIndicator {...listeners} />
+            </ListItemAvatar>
+          )}
           <ListItemText id={labelId} primary={label} />
         </ListItemButton>
       </ListItem>
@@ -109,6 +130,7 @@ const SortableItem = (props: SortableItemProps) => {
 const OrderableDropDown = ({
   list,
   setList,
+  hasAllOption = false,
   icon = <SettingsSuggest />,
   text,
 }: Props) => {
@@ -130,7 +152,53 @@ const OrderableDropDown = ({
     list.filter((listItem) => !listItem.hide).map((li) => li.id),
   );
 
-  const handleToggle = (value: string) => () => {
+  const handleToggleAll = (value: string) => {
+    if (value !== 'all') return;
+
+    // No options selected
+    if (!checked.length) {
+      setChecked(list.map((item) => item.id));
+      setList((prevState) =>
+        prevState.map((item) => ({
+          ...item,
+          hide: false,
+        })),
+      );
+      return;
+    }
+
+    // All options selected
+    if (checked.length === list.length) {
+      setList((prevState) =>
+        prevState.map((item) => ({
+          ...item,
+          hide: true,
+        })),
+      );
+      setChecked([]);
+    } else {
+      // Some options selected
+      setChecked((prevState) => {
+        const newState = [...prevState];
+
+        list.forEach((item) => {
+          if (!prevState.includes(item.id)) {
+            newState.push(item.id);
+          }
+        });
+
+        return newState;
+      });
+      setList((prevState) =>
+        prevState.map((item) => ({
+          ...item,
+          hide: false,
+        })),
+      );
+    }
+  };
+
+  const handleToggle = (value: string) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -209,6 +277,17 @@ const OrderableDropDown = ({
           onDragEnd={handleDragEnd}
         >
           <SortableContext items={list} strategy={verticalListSortingStrategy}>
+            {hasAllOption && (
+              <SortableItem
+                id="all"
+                checked={list.length === checked.length}
+                indeterminate={checked.length && list.length !== checked.length}
+                label="Select all"
+                isHeader
+                handleToggle={handleToggleAll}
+                labelId="all"
+              />
+            )}
             {list?.map((listItem) => {
               if (!listItem.label) return null;
 
@@ -218,7 +297,7 @@ const OrderableDropDown = ({
                 <SortableItem
                   key={listItem.id}
                   id={listItem.id}
-                  checked={checked}
+                  checked={checked.indexOf(listItem.id) !== -1}
                   label={listItem.label}
                   handleToggle={handleToggle}
                   labelId={labelId}

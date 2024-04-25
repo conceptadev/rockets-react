@@ -155,6 +155,7 @@ const renderComponent = (filter: FilterType) => {
 
 export type FilterProps = {
   filters: FilterType[];
+  hasAllOption?: boolean;
   children?: ReactNode;
   additionalGridItems?: {
     component: ReactNode;
@@ -165,7 +166,7 @@ export type FilterProps = {
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
-  const { filters, ...rest } = props;
+  const { filters, hasAllOption, ...rest } = props;
   const auth = useAuth();
   const pathname = usePathname();
   const [settings, setSettings] = useSettingsStorage({
@@ -273,6 +274,7 @@ const Filter = (props: FilterProps) => {
         }}
       >
         <OrderableDropDown
+          hasAllOption={hasAllOption}
           icon={<FilterAlt />}
           list={filterOrder}
           setList={handleFilterOrderChange}
