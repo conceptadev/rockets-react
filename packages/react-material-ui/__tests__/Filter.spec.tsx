@@ -46,6 +46,10 @@ describe('Filter Component', () => {
     },
   ];
 
+  beforeEach(() => {
+    localStorage.removeItem('filterSettings');
+  });
+
   it('renders textfield component if type is "Text"', () => {
     const { getByPlaceholderText } = render(
       <Filter filters={[allFilters[0]]} settingsId={SETTINGS_ID} />,

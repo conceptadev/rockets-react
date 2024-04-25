@@ -12,15 +12,11 @@ type Settings = {
   list: ListItem[];
 };
 
-export const getPageSettings = ({
-  key,
-  user,
-  settingsId,
-}: Omit<Settings, 'list'>) => {
+export const getPageSettings = ({ key, user, settingsId, list }: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(key));
 
   if (!storageItem) {
-    return;
+    return list;
   }
 
   const settingsItem = storageItem.find(
@@ -66,9 +62,10 @@ export const useSettingsStorage = ({
   key,
   user,
   settingsId,
-}: Omit<Settings, 'list'>) => {
+  list,
+}: Settings) => {
   const [settings, setSettings] = useState(() => {
-    return getPageSettings({ key, user, settingsId });
+    return getPageSettings({ key, user, settingsId, list });
   });
 
   useEffect(() => {

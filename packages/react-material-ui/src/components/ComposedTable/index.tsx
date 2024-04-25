@@ -40,6 +40,10 @@ const ComposedTable = (props: ComposedTableProps) => {
     key: 'tableSettings',
     user: (auth?.user as { id: string })?.id ?? '',
     settingsId: props.settingsId || pathname,
+    list: props.headers.map((header) => ({
+      id: header.id,
+      hide: Boolean(header.hide),
+    })),
   });
 
   const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
@@ -50,7 +54,7 @@ const ComposedTable = (props: ComposedTableProps) => {
   };
 
   useEffect(() => {
-    if (settings?.length) {
+    if (settings.length) {
       setOrderableHeaders(
         settings.map((item: ListItem) => {
           const headerItem = props.headers.find(
@@ -63,8 +67,6 @@ const ComposedTable = (props: ComposedTableProps) => {
           };
         }),
       );
-
-      return;
     }
   }, []);
 

@@ -174,6 +174,10 @@ const Filter = (props: FilterProps) => {
     key: 'filterSettings',
     user: (auth?.user as { id: string })?.id ?? '',
     settingsId: props.settingsId || pathname,
+    list: filters.map((header) => ({
+      id: header.id,
+      hide: Boolean(header.hide),
+    })),
   });
 
   const resetFilters = (item) => () => {
@@ -201,20 +205,18 @@ const Filter = (props: FilterProps) => {
   };
 
   useEffect(() => {
-    if (settings?.length) {
+    if (settings.length) {
       setFilterOrder(
         settings.map((item: ListItem) => {
           const filterItem = filters.find((filter) => filter.id === item.id);
 
           return {
             ...item,
-            label: filterItem.label,
+            ...filterItem,
             resetFilters: resetFilters(filterItem),
           };
         }),
       );
-
-      return;
     }
   }, []);
 
