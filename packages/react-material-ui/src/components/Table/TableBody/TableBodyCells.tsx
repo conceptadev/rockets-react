@@ -5,6 +5,7 @@ import Text from '../../Text';
 import { TableCell, TableCellProps, Tooltip } from '@mui/material';
 import { CustomTableCell, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
+import get from 'lodash/get';
 
 const renderTextCell = (value: string | number | null) => (
   <Text fontSize={14} fontWeight={400} color="text.primary">
@@ -12,10 +13,13 @@ const renderTextCell = (value: string | number | null) => (
   </Text>
 );
 
-const renderCell = (
-  cell: CustomTableCell | string | number | undefined | null,
-): ReactNode => {
-  if (cell === null) return null;
+const renderCell = (row: RowProps, dataOrigin: string): ReactNode => {
+  const cell: CustomTableCell | string | number | undefined = get(
+    row,
+    dataOrigin,
+  );
+
+  if (!cell) return null;
 
   if (typeof cell === 'object') {
     if ('component' in cell) {
@@ -46,7 +50,6 @@ type TableBodyCellsProps = {
  */
 export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
   const { headers } = useTableRoot();
-
   return (
     <>
       {headers.map((header) => {
@@ -54,7 +57,7 @@ export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
 
         return (
           <TableCell key={header.id} {...rest}>
-            {renderCell(row[header.source || header.id])}
+            {renderCell(row, header.source || header.id)}
           </TableCell>
         );
       })}

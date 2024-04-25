@@ -44,6 +44,7 @@ const SelectField = ({
   onChange,
   fullWidth,
   size,
+  variant = 'outlined',
   ...rest
 }: SelectFieldProps) => {
   const handleChange = (event: SelectChangeEvent<string>) => {
@@ -65,6 +66,7 @@ const SelectField = ({
             label={label}
             fullWidth={fullWidth}
             size={size}
+            variant={variant}
             {...rest}
           >
             {finalOptions?.map((role) => (

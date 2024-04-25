@@ -1,8 +1,10 @@
 'use client';
 
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useState, useEffect } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
+import { useAuth } from '@concepta/react-auth-provider';
+import { usePathname } from 'next/navigation';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
@@ -16,6 +18,7 @@ import { SearchFieldProps } from '../../components/SearchField/SearchField';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
+import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
 export type FilterVariant = 'text' | 'autocomplete' | 'select' | 'date';
 
@@ -29,7 +32,7 @@ export type FilterCommon = {
   hide?: boolean;
 };
 
-type TextFilter = {
+export type TextFilter = {
   type: 'text';
   helperText?: string;
   placeholder?: string;
@@ -37,6 +40,7 @@ type TextFilter = {
   onChange?: (value: string) => void;
   onDebouncedSearchChange?: (value: string) => void;
   value?: string;
+  searchIconPlacement?: SearchFieldProps['searchIconPlacement'];
 } & FilterCommon;
 
 type DateFilter = {
@@ -140,6 +144,7 @@ const renderComponent = (filter: FilterType) => {
               ? (value) => filter.onDebouncedSearchChange?.(value)
               : undefined
           }
+          searchIconPlacement={filter.searchIconPlacement}
         />
       );
 
@@ -156,10 +161,18 @@ export type FilterProps = {
     columns?: number;
   }[];
   complementaryActions?: ReactNode;
+  settingsId?: string;
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
   const { filters, ...rest } = props;
+  const auth = useAuth();
+  const pathname = usePathname();
+  const [settings, setSettings] = useSettingsStorage({
+    key: 'filterSettings',
+    user: (auth?.user as { id: string })?.id ?? '',
+    settingsId: props.settingsId || pathname,
+  });
 
   const resetFilters = (item) => () => {
     if (item && item?.onDebouncedSearchChange) {
@@ -179,6 +192,29 @@ const Filter = (props: FilterProps) => {
       resetFilters: resetFilters(filter),
     })),
   );
+
+  const handleFilterOrderChange = (list: ListItem[]) => {
+    setFilterOrder(list);
+    setSettings(list);
+  };
+
+  useEffect(() => {
+    if (settings?.length) {
+      setFilterOrder(
+        settings.map((item: ListItem) => {
+          const filterItem = filters.find((filter) => filter.id === item.id);
+
+          return {
+            ...item,
+            label: filterItem.label,
+            resetFilters: resetFilters(filterItem),
+          };
+        }),
+      );
+
+      return;
+    }
+  }, []);
 
   return (
     <Box
@@ -239,7 +275,7 @@ const Filter = (props: FilterProps) => {
         <OrderableDropDown
           icon={<FilterAlt />}
           list={filterOrder}
-          setList={setFilterOrder}
+          setList={handleFilterOrderChange}
         />
         {props.complementaryActions}
       </Box>
