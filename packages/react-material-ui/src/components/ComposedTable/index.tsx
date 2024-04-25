@@ -39,7 +39,7 @@ const ComposedTable = (props: ComposedTableProps) => {
   const [settings, setSettings] = useSettingsStorage({
     key: 'tableSettings',
     user: (auth?.user as { id: string })?.id ?? '',
-    tableId: props.tableId || pathname,
+    settingsId: props.settingsId || pathname,
   });
 
   const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
