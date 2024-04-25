@@ -1,4 +1,6 @@
-import React, { useState, ReactNode } from 'react';
+'use client';
+
+import React, { useEffect, useState, ReactNode } from 'react';
 import ListItem from '@mui/material/ListItem';
 
 import {
@@ -236,6 +238,10 @@ const OrderableDropDown = ({
       });
     }
   };
+
+  useEffect(() => {
+    setChecked(list.filter((listItem) => !listItem.hide).map((li) => li.id));
+  }, [list]);
 
   return (
     <Box>

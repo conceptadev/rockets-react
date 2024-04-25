@@ -117,7 +117,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
 
   return (
     <Dialog open={viewMode !== null} maxWidth="md" fullWidth onClose={onClose}>
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle>{formSchema?.title || title}</DialogTitle>
       <IconButton
         aria-label="close"
         onClick={onClose}
@@ -136,6 +136,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
             ...formSchema,
             required: formSchema?.required || [],
             properties: formSchema?.properties || {},
+            title: '',
           }}
           uiSchema={formUiSchema}
           validator={validator}

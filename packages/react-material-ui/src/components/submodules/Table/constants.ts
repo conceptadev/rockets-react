@@ -31,7 +31,6 @@ export const generateTableTheme = (
     },
     tableHeaderRow: {
       backgroundColor: '#F9FAFB',
-      textTransform: 'uppercase',
       ...customTableTheme?.tableHeaderRow,
     },
     ...customTableTheme,

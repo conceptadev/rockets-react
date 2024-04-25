@@ -2,7 +2,7 @@
 
 import React, { PropsWithChildren } from 'react';
 import { TableProps as MuiTableProps } from '@mui/material';
-import { Table as MuiTable, TableProps as TableStylesProps } from './styles';
+import { Table as MuiTable, TableProps as TableStylesProps } from './Styles';
 
 export type TableProps = {
   variant?: TableStylesProps['variant'];

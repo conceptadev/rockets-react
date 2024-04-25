@@ -4,7 +4,7 @@ import { CrudContext, CrudContextProps, FilterValues } from './useCrudRoot';
 import { getSearchParams } from '../../utils/http';
 
 type Props = Omit<CrudContextProps, 'filterValues' | 'setFilterValues'> & {
-  filterCallback: (filter: FilterValues) => void;
+  filterCallback?: (filter: FilterValues) => void;
 };
 
 const CrudRoot = (props: PropsWithChildren<Props>) => {
@@ -29,7 +29,7 @@ const CrudRoot = (props: PropsWithChildren<Props>) => {
   );
 
   useEffect(() => {
-    filterCallback && filterCallback(filterValues);
+    filterCallback?.(filterValues);
     const newFilterValues = getSearchParams(searchParams, {
       filterValues: JSON.stringify(filterValues),
     });
