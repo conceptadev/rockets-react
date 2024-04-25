@@ -9,7 +9,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Box from '@mui/material/Box';
 
-import { IconContainer } from './styles';
+import { IconContainer } from './Styles';
 import MenuItem from '@mui/material/MenuItem';
 import { CustomRowOptionsProps, RowProps, SimpleOptionButton } from './types';
 

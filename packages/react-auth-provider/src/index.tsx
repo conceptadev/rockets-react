@@ -67,6 +67,8 @@ const AuthProvider = ({
   const doLogout = async () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('filterSettings');
+    localStorage.removeItem('tableSettings');
   };
 
   return (
