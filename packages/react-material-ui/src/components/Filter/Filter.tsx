@@ -159,7 +159,7 @@ export type FilterProps = {
     columns?: number;
   }[];
   complementaryActions?: ReactNode;
-  tableId?: string;
+  settingsId?: string;
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
@@ -169,7 +169,7 @@ const Filter = (props: FilterProps) => {
   const [settings, setSettings] = useSettingsStorage({
     key: 'filterSettings',
     user: (auth?.user as { id: string })?.id ?? '',
-    tableId: props.tableId || pathname,
+    settingsId: props.settingsId || pathname,
   });
 
   const resetFilters = (item) => () => {

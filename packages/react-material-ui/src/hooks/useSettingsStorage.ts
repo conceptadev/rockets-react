@@ -8,14 +8,14 @@ type ListItem = {
 type Settings = {
   key: string;
   user: string;
-  tableId: string;
+  settingsId: string;
   list: ListItem[];
 };
 
 export const getPageSettings = ({
   key,
   user,
-  tableId,
+  settingsId,
 }: Omit<Settings, 'list'>) => {
   const storageItem = JSON.parse(localStorage.getItem(key));
 
@@ -24,7 +24,7 @@ export const getPageSettings = ({
   }
 
   const settingsItem = storageItem.find(
-    (item: Settings) => item.user === user && item.tableId === tableId,
+    (item: Settings) => item.user === user && item.settingsId === settingsId,
   );
 
   return settingsItem?.list || [];
@@ -33,14 +33,14 @@ export const getPageSettings = ({
 export const handlePageSettingsUpdate = ({
   key,
   user,
-  tableId,
+  settingsId,
   list,
 }: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(key));
 
   const newSettings = {
     user,
-    tableId,
+    settingsId,
     list,
   };
 
@@ -50,7 +50,7 @@ export const handlePageSettingsUpdate = ({
   }
 
   const settingsItemIndex = storageItem.findIndex(
-    (item: Settings) => item.user === user && item.tableId === tableId,
+    (item: Settings) => item.user === user && item.settingsId === settingsId,
   );
 
   if (settingsItemIndex > -1) {
@@ -65,17 +65,17 @@ export const handlePageSettingsUpdate = ({
 export const useSettingsStorage = ({
   key,
   user,
-  tableId,
+  settingsId,
 }: Omit<Settings, 'list'>) => {
   const [settings, setSettings] = useState(() => {
-    return getPageSettings({ key, user, tableId });
+    return getPageSettings({ key, user, settingsId });
   });
 
   useEffect(() => {
     handlePageSettingsUpdate({
       key,
       user,
-      tableId,
+      settingsId,
       list: settings,
     });
   }, [key, settings]);
