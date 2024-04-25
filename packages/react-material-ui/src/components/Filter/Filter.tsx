@@ -29,7 +29,7 @@ export type FilterCommon = {
   hide?: boolean;
 };
 
-type TextFilter = {
+export type TextFilter = {
   type: 'text';
   helperText?: string;
   placeholder?: string;
@@ -37,6 +37,7 @@ type TextFilter = {
   onChange?: (value: string) => void;
   onDebouncedSearchChange?: (value: string) => void;
   value?: string;
+  searchIconPlacement?: SearchFieldProps['searchIconPlacement'];
 } & FilterCommon;
 
 type DateFilter = {
@@ -140,6 +141,7 @@ const renderComponent = (filter: FilterType) => {
               ? (value) => filter.onDebouncedSearchChange?.(value)
               : undefined
           }
+          searchIconPlacement={filter.searchIconPlacement}
         />
       );
 

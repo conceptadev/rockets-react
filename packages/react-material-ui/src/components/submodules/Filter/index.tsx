@@ -3,6 +3,7 @@ import Filter, {
   FilterVariant,
   FilterCommon,
   FilterType,
+  TextFilter,
 } from '../../../components/Filter';
 import { SelectOption } from '../../../components/SelectField/SelectField';
 import { useCrudRoot, FilterValues } from '../../../modules/crud/useCrudRoot';
@@ -32,6 +33,7 @@ export type FilterDetails = {
   resourceValue?: string;
   operator?: Operator;
   options?: SelectOption[];
+  searchIconPlacement?: TextFilter['searchIconPlacement'];
 } & Omit<FilterCommon, 'showOnMount' | 'hide'>;
 
 export type FilterCallback = (filter: FilterValues) => void;
