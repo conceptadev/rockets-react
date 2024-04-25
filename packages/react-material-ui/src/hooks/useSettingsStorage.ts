@@ -23,7 +23,7 @@ export const getPageSettings = ({ key, user, settingsId, list }: Settings) => {
     (item: Settings) => item.user === user && item.settingsId === settingsId,
   );
 
-  return settingsItem?.list || [];
+  return settingsItem?.list || list;
 };
 
 export const handlePageSettingsUpdate = ({
