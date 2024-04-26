@@ -4,6 +4,7 @@ import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
 
 import { Box, Drawer, Button, CircularProgress } from '@mui/material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
@@ -131,6 +132,21 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
         >
           <>
             {children}
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mt={4}
+              mb={4}
+            >
+              <Button>
+                <ArrowBack />
+              </Button>
+              <Button>
+                <ArrowForward />
+              </Button>
+            </Box>
             <Box
               display="flex"
               flexDirection="row"
