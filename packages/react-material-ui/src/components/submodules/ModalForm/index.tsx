@@ -11,7 +11,11 @@ import {
   DialogContent,
   IconButton,
 } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
+import {
+  Close as CloseIcon,
+  ArrowBack,
+  ArrowForward,
+} from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
@@ -151,6 +155,21 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
         >
           <>
             {children}
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mt={4}
+              mb={4}
+            >
+              <Button>
+                <ArrowForward />
+              </Button>
+              <Button>
+                <ArrowBack />
+              </Button>
+            </Box>
             <Box
               display="flex"
               flexDirection="row"
