@@ -41,6 +41,8 @@ type DrawerFormSubmoduleProps = PropsWithChildren<
   widgets?: FormProps['widgets'];
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
+  onPrevious?: (data: unknown) => void;
+  onNext?: (data: unknown) => void;
 };
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
@@ -58,6 +60,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     children,
     onSuccess,
     onError,
+    onPrevious,
+    onNext,
     ...otherProps
   } = props;
   const { post, patch } = useDataProvider();
@@ -140,10 +144,10 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
               mt={4}
               mb={4}
             >
-              <Button>
+              <Button onClick={() => onPrevious(formData)}>
                 <ArrowBack />
               </Button>
-              <Button>
+              <Button onClick={() => onNext(formData)}>
                 <ArrowForward />
               </Button>
             </Box>
