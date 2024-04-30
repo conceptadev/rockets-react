@@ -83,6 +83,35 @@ const CrudModule = (props: ModuleProps) => {
     },
   });
 
+  const changeCurrentFormData = (
+    direction: 'previous' | 'next',
+    data: SelectedRow,
+  ) => {
+    const { data: tableData } = useTableReturn;
+    const currentItemIndex = tableData.findIndex(
+      (item: SelectedRow) => item.id === data.id,
+    );
+
+    let newItemIndex = 0;
+
+    if (
+      (direction === 'previous' && currentItemIndex === 0) ||
+      (direction === 'next' && currentItemIndex === tableData.length - 1)
+    ) {
+      return;
+    }
+
+    if (direction === 'previous') {
+      newItemIndex = currentItemIndex - 1;
+    }
+
+    if (direction === 'next') {
+      newItemIndex = currentItemIndex + 1;
+    }
+
+    setSelectedRow(tableData[newItemIndex] as Record<string, unknown>);
+  };
+
   const FormComponent = useMemo(() => {
     switch (props.formContainerVariation) {
       case 'drawer':
@@ -189,6 +218,8 @@ const CrudModule = (props: ModuleProps) => {
               setSelectedRow(null);
               setDrawerViewMode(null);
             }}
+            onPrevious={(data) => changeCurrentFormData('previous', data)}
+            onNext={(data) => changeCurrentFormData('next', data)}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}

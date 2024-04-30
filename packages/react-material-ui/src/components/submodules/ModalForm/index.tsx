@@ -51,6 +51,8 @@ type ModalFormSubmoduleProps = PropsWithChildren<
   widgets?: FormProps['widgets'];
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
+  onPrevious?: (data: unknown) => void;
+  onNext?: (data: unknown) => void;
 };
 
 const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
@@ -69,6 +71,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     children,
     onSuccess,
     onError,
+    onPrevious,
+    onNext,
     ...otherProps
   } = props;
 
@@ -163,11 +167,11 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
               mt={4}
               mb={4}
             >
-              <Button>
-                <ArrowForward />
-              </Button>
-              <Button>
+              <Button onClick={() => onPrevious(formData)}>
                 <ArrowBack />
+              </Button>
+              <Button onClick={() => onNext(formData)}>
+                <ArrowForward />
               </Button>
             </Box>
             <Box
