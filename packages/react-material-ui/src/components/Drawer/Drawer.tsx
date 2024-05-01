@@ -138,31 +138,30 @@ const Drawer = (props: DrawerProps) => {
               px: [1],
             }}
           >
-            <Text color={collapsibleIconColor || 'primary.contrastText'}>
-              <IconButton
-                className="Rockets-CollapsibleButton"
-                onClick={toggleDrawer}
-                sx={{
-                  backgroundColor: collapsibleIconBgColor || 'transparent',
-                  ...(collapsibleIconBgColor && {
-                    '&:hover': {
-                      backgroundColor: darken(collapsibleIconBgColor, 0.1),
-                    },
-                  }),
-                }}
-              >
-                {collapsibleIcon &&
-                  typeof collapsibleIcon === 'function' &&
-                  collapsibleIcon(_collapsed)}
+            <IconButton
+              className="Rockets-CollapsibleButton"
+              onClick={toggleDrawer}
+              sx={{
+                color: collapsibleIconColor || 'primary.contrastText',
+                backgroundColor: collapsibleIconBgColor || 'transparent',
+                ...(collapsibleIconBgColor && {
+                  '&:hover': {
+                    backgroundColor: darken(collapsibleIconBgColor, 0.1),
+                  },
+                }),
+              }}
+            >
+              {collapsibleIcon &&
+                typeof collapsibleIcon === 'function' &&
+                collapsibleIcon(_collapsed)}
 
-                {collapsibleIcon &&
-                  typeof collapsibleIcon != 'function' &&
-                  collapsibleIcon}
+              {collapsibleIcon &&
+                typeof collapsibleIcon != 'function' &&
+                collapsibleIcon}
 
-                {!collapsibleIcon &&
-                  (_collapsed ? <ChevronRight /> : <ChevronLeft />)}
-              </IconButton>
-            </Text>
+              {!collapsibleIcon &&
+                (_collapsed ? <ChevronRight /> : <ChevronLeft />)}
+            </IconButton>
           </Toolbar>
         )}
       </Box>
