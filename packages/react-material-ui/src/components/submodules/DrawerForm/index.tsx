@@ -3,8 +3,18 @@ import React, { PropsWithChildren } from 'react';
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
 
-import { Box, Drawer, Button, CircularProgress } from '@mui/material';
-import { ArrowBack, ArrowForward } from '@mui/icons-material';
+import {
+  Box,
+  Drawer,
+  Button,
+  CircularProgress,
+  IconButton,
+} from '@mui/material';
+import {
+  ArrowBack,
+  ArrowForward,
+  Close as CloseIcon,
+} from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
@@ -113,6 +123,36 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
 
   return (
     <Drawer open={viewMode !== null} anchor="right">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={2}
+        mt={2}
+        ml={1}
+      >
+        <Box>
+          <Button onClick={() => onPrevious(formData)}>
+            <ArrowBack />
+          </Button>
+          {(formData as Record<string, string>)?.username || formSchema?.title}
+          <Button onClick={() => onNext(formData)}>
+            <ArrowForward />
+          </Button>
+        </Box>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: (theme) => theme.spacing(1),
+            top: (theme) => theme.spacing(1),
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </Box>
       <Box padding={4} mb={2}>
         <SchemaForm.Form
           schema={{
@@ -136,21 +176,6 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
         >
           <>
             {children}
-            <Box
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mt={4}
-              mb={4}
-            >
-              <Button onClick={() => onPrevious(formData)}>
-                <ArrowBack />
-              </Button>
-              <Button onClick={() => onNext(formData)}>
-                <ArrowForward />
-              </Button>
-            </Box>
             <Box
               display="flex"
               flexDirection="row"

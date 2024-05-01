@@ -218,8 +218,12 @@ const CrudModule = (props: ModuleProps) => {
               setSelectedRow(null);
               setDrawerViewMode(null);
             }}
-            onPrevious={(data) => changeCurrentFormData('previous', data)}
-            onNext={(data) => changeCurrentFormData('next', data)}
+            onPrevious={(data) =>
+              changeCurrentFormData('previous', data as SelectedRow)
+            }
+            onNext={(data) =>
+              changeCurrentFormData('next', data as SelectedRow)
+            }
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}
