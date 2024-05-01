@@ -125,7 +125,19 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
 
   return (
     <Dialog open={viewMode !== null} maxWidth="md" fullWidth onClose={onClose}>
-      <DialogTitle>{formSchema?.title || title}</DialogTitle>
+      <DialogTitle>
+        <Box display="flex" alignItems="center" gap={2}>
+          <Button onClick={() => onPrevious(formData)}>
+            <ArrowBack />
+          </Button>
+          {(formData as Record<string, string>)?.username ||
+            formSchema?.title ||
+            title}
+          <Button onClick={() => onNext(formData)}>
+            <ArrowForward />
+          </Button>
+        </Box>
+      </DialogTitle>
       <IconButton
         aria-label="close"
         onClick={onClose}
@@ -159,21 +171,6 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
         >
           <>
             {children}
-            <Box
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mt={4}
-              mb={4}
-            >
-              <Button onClick={() => onPrevious(formData)}>
-                <ArrowBack />
-              </Button>
-              <Button onClick={() => onNext(formData)}>
-                <ArrowForward />
-              </Button>
-            </Box>
             <Box
               display="flex"
               flexDirection="row"
