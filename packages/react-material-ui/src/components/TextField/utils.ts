@@ -18,7 +18,7 @@ export const getPasswordScore = (
   password: string | null,
   rules: PasswordRule[],
 ) => {
-  return rules.filter((rule) => password?.match(rule.pattern)).length;
+  return rules.filter((rule) => password?.match?.(rule.pattern)).length;
 };
 
 export const getPasswordMatchInfo = (
