@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { useCallback, PropsWithChildren } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
@@ -83,11 +83,24 @@ const CrudModule = (props: ModuleProps) => {
     },
   });
 
+  const updateSelectedRow = useCallback(
+    (index: number) => {
+      const { data } = useTableReturn;
+      setSelectedRow(data[index] as Record<string, unknown>);
+    },
+    [useTableReturn],
+  );
+
   const changeCurrentFormData = (
     direction: 'previous' | 'next',
     data: SelectedRow,
   ) => {
-    const { data: tableData } = useTableReturn;
+    const {
+      data: tableData,
+      tableQueryState,
+      setTableQueryState,
+      pageCount,
+    } = useTableReturn;
     const currentItemIndex = tableData.findIndex(
       (item: SelectedRow) => item.id === data.id,
     );
@@ -95,21 +108,39 @@ const CrudModule = (props: ModuleProps) => {
     let newItemIndex = 0;
 
     if (
-      (direction === 'previous' && currentItemIndex === 0) ||
-      (direction === 'next' && currentItemIndex === tableData.length - 1)
+      (direction === 'previous' &&
+        currentItemIndex === 0 &&
+        tableQueryState.page === 1) ||
+      (direction === 'next' &&
+        currentItemIndex === tableData.length - 1 &&
+        tableQueryState.page === pageCount)
     ) {
       return;
     }
 
     if (direction === 'previous') {
       newItemIndex = currentItemIndex - 1;
+      if (currentItemIndex === 0) {
+        newItemIndex = 0;
+        setTableQueryState({
+          ...tableQueryState,
+          page: tableQueryState.page - 1,
+        });
+      }
     }
 
     if (direction === 'next') {
       newItemIndex = currentItemIndex + 1;
+      if (currentItemIndex === tableData.length - 1) {
+        newItemIndex = 0;
+        setTableQueryState({
+          ...tableQueryState,
+          page: tableQueryState.page + 1,
+        });
+      }
     }
 
-    setSelectedRow(tableData[newItemIndex] as Record<string, unknown>);
+    updateSelectedRow(newItemIndex);
   };
 
   const FormComponent = useMemo(() => {
