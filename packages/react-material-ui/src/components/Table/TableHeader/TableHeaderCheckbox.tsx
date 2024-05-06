@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Checkbox, TableCell } from '@mui/material';
+import { Checkbox, TableCell, TableCellProps } from '@mui/material';
 import { useTableRoot } from '../hooks/useTableRoot';
 
 /**
@@ -9,14 +9,14 @@ import { useTableRoot } from '../hooks/useTableRoot';
  *
  * @returns  A React element representing the table header cell with a checkbox input.
  */
-export const TableHeaderCheckbox = () => {
+export const TableHeaderCheckbox = (props: TableCellProps) => {
   const { rows, selected, handleSelectAllCheckboxes } = useTableRoot();
 
   const numSelected = selected.length;
   const rowCount = rows.length;
 
   return (
-    <TableCell padding="checkbox">
+    <TableCell padding="checkbox" {...props}>
       <Checkbox
         color="primary"
         indeterminate={numSelected > 0 && numSelected < rowCount}
