@@ -1,8 +1,8 @@
-import React, { useCallback, PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 
 import useTable from '../../components/Table/useTable';
@@ -83,64 +83,41 @@ const CrudModule = (props: ModuleProps) => {
     },
   });
 
-  const updateSelectedRow = useCallback(
-    (index: number) => {
-      const { data } = useTableReturn;
-      setSelectedRow(data[index] as Record<string, unknown>);
-    },
-    [useTableReturn],
-  );
+  const changeCurrentFormData = (direction: 'previous' | 'next') => {
+    const { data, tableQueryState, setTableQueryState, pageCount } =
+      useTableReturn;
 
-  const changeCurrentFormData = (
-    direction: 'previous' | 'next',
-    data: SelectedRow,
-  ) => {
-    const {
-      data: tableData,
-      tableQueryState,
-      setTableQueryState,
-      pageCount,
-    } = useTableReturn;
-    const currentItemIndex = tableData.findIndex(
-      (item: SelectedRow) => item.id === data.id,
-    );
-
-    let newItemIndex = 0;
-
-    if (
-      (direction === 'previous' &&
-        currentItemIndex === 0 &&
-        tableQueryState.page === 1) ||
-      (direction === 'next' &&
-        currentItemIndex === tableData.length - 1 &&
-        tableQueryState.page === pageCount)
-    ) {
-      return;
-    }
+    const currentViewIndex = tableQueryState.viewIndex || 0;
+    const isFirstItem = currentViewIndex === 0;
+    const isLastItem = currentViewIndex === data.length - 1;
 
     if (direction === 'previous') {
-      newItemIndex = currentItemIndex - 1;
-      if (currentItemIndex === 0) {
-        newItemIndex = 0;
-        setTableQueryState({
-          ...tableQueryState,
-          page: tableQueryState.page - 1,
-        });
-      }
+      setTableQueryState({
+        ...tableQueryState,
+        page:
+          isFirstItem && tableQueryState.page > 1
+            ? tableQueryState.page - 1
+            : tableQueryState.page,
+        viewIndex:
+          isFirstItem && tableQueryState.page > 1
+            ? data.length - 1
+            : currentViewIndex - 1,
+      });
     }
 
     if (direction === 'next') {
-      newItemIndex = currentItemIndex + 1;
-      if (currentItemIndex === tableData.length - 1) {
-        newItemIndex = 0;
-        setTableQueryState({
-          ...tableQueryState,
-          page: tableQueryState.page + 1,
-        });
-      }
+      setTableQueryState({
+        ...tableQueryState,
+        page:
+          isLastItem && tableQueryState.page < pageCount
+            ? tableQueryState.page + 1
+            : tableQueryState.page,
+        viewIndex:
+          isLastItem && tableQueryState.page < pageCount
+            ? 0
+            : currentViewIndex + 1,
+      });
     }
-
-    updateSelectedRow(newItemIndex);
   };
 
   const FormComponent = useMemo(() => {
@@ -171,6 +148,16 @@ const CrudModule = (props: ModuleProps) => {
     props.detailsFormProps,
     props.editFormProps,
   ]);
+
+  useEffect(() => {
+    const { data, tableQueryState } = useTableReturn;
+
+    if (!data || !data.length) {
+      return;
+    }
+
+    setSelectedRow(data[tableQueryState.viewIndex] as SelectedRow);
+  }, [useTableReturn]);
 
   // To prevent accidental overriding of the `onSuccess` callback
   // during props destructuring in the `FormComponent`,
@@ -249,12 +236,8 @@ const CrudModule = (props: ModuleProps) => {
               setSelectedRow(null);
               setDrawerViewMode(null);
             }}
-            onPrevious={(data) =>
-              changeCurrentFormData('previous', data as SelectedRow)
-            }
-            onNext={(data) =>
-              changeCurrentFormData('next', data as SelectedRow)
-            }
+            onPrevious={() => changeCurrentFormData('previous')}
+            onNext={() => changeCurrentFormData('next')}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}
