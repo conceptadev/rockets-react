@@ -145,9 +145,11 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             </Button>
           </Box>
         ) : (
-          (formData as Record<string, string>)?.username ||
-          formSchema?.title ||
-          title
+          <Box ml={3}>
+            {(formData as Record<string, string>)?.username ||
+              formSchema?.title ||
+              title}
+          </Box>
         )}
         <IconButton
           aria-label="close"
