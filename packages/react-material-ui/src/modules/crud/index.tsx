@@ -161,6 +161,8 @@ const CrudModule = (props: ModuleProps) => {
 
   const { filters, ...tableSubmoduleProps } = props.tableProps;
 
+  const { isPending } = useTableReturn;
+
   return (
     <CrudRoot
       filters={filters}
@@ -224,6 +226,7 @@ const CrudModule = (props: ModuleProps) => {
             }}
             onPrevious={() => changeCurrentFormData('previous')}
             onNext={() => changeCurrentFormData('next')}
+            isLoading={isPending}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}
