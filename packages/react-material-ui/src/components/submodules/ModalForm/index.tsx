@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { useEffect, PropsWithChildren } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
@@ -126,17 +126,23 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
   return (
     <Dialog open={viewMode !== null} maxWidth="md" fullWidth onClose={onClose}>
       <DialogTitle>
-        <Box display="flex" alignItems="center" gap={2}>
-          <Button onClick={() => onPrevious(formData)}>
-            <ArrowBack />
-          </Button>
-          {(formData as Record<string, string>)?.username ||
-            formSchema?.title ||
-            title}
-          <Button onClick={() => onNext(formData)}>
-            <ArrowForward />
-          </Button>
-        </Box>
+        {viewMode !== 'creation' ? (
+          <Box display="flex" alignItems="center" gap={2}>
+            <Button onClick={() => onPrevious(formData)}>
+              <ArrowBack />
+            </Button>
+            {(formData as Record<string, string>)?.username ||
+              formSchema?.title ||
+              title}
+            <Button onClick={() => onNext(formData)}>
+              <ArrowForward />
+            </Button>
+          </Box>
+        ) : (
+          (formData as Record<string, string>)?.username ||
+          formSchema?.title ||
+          title
+        )}
       </DialogTitle>
       <IconButton
         aria-label="close"
