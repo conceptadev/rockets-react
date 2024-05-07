@@ -53,6 +53,7 @@ type ModalFormSubmoduleProps = PropsWithChildren<
   onError?: (error: unknown) => void;
   onPrevious?: (data: unknown) => void;
   onNext?: (data: unknown) => void;
+  isLoading?: boolean;
 };
 
 const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
@@ -73,6 +74,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     onError,
     onPrevious,
     onNext,
+    isLoading,
     ...otherProps
   } = props;
 
@@ -128,13 +130,15 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
       <DialogTitle>
         {viewMode !== 'creation' ? (
           <Box display="flex" alignItems="center" gap={2}>
-            <Button onClick={() => onPrevious(formData)}>
+            <Button onClick={() => onPrevious(formData)} disabled={isLoading}>
               <ArrowBack />
             </Button>
-            {(formData as Record<string, string>)?.username ||
-              formSchema?.title ||
-              title}
-            <Button onClick={() => onNext(formData)}>
+            {isLoading
+              ? ''
+              : (formData as Record<string, string>)?.username ||
+                formSchema?.title ||
+                title}
+            <Button onClick={() => onNext(formData)} disabled={isLoading}>
               <ArrowForward />
             </Button>
           </Box>
@@ -169,7 +173,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
           onSubmit={handleFormSubmit}
           noHtml5Validate={true}
           showErrorList={false}
-          formData={formData}
+          formData={isLoading ? null : formData}
           readonly={viewMode === 'details'}
           widgets={_widgets}
           customValidate={customValidate}

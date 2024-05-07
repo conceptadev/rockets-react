@@ -53,6 +53,7 @@ type DrawerFormSubmoduleProps = PropsWithChildren<
   onError?: (error: unknown) => void;
   onPrevious?: (data: unknown) => void;
   onNext?: (data: unknown) => void;
+  isLoading?: boolean;
 };
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
@@ -73,6 +74,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     onPrevious,
     onNext,
     title,
+    isLoading,
     ...otherProps
   } = props;
   const { post, patch } = useDataProvider();
@@ -134,13 +136,15 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
       >
         {viewMode !== 'creation' ? (
           <Box display="flex" alignItems="center" gap={2}>
-            <Button onClick={() => onPrevious(formData)}>
+            <Button onClick={() => onPrevious(formData)} disabled={isLoading}>
               <ArrowBack />
             </Button>
-            {(formData as Record<string, string>)?.username ||
-              formSchema?.title ||
-              title}
-            <Button onClick={() => onNext(formData)}>
+            {isLoading
+              ? ''
+              : (formData as Record<string, string>)?.username ||
+                formSchema?.title ||
+                title}
+            <Button onClick={() => onNext(formData)} disabled={isLoading}>
               <ArrowForward />
             </Button>
           </Box>
