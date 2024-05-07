@@ -76,6 +76,7 @@ export interface ModuleProps {
 const CrudModule = (props: ModuleProps) => {
   const [drawerViewMode, setDrawerViewMode] = useState<Action>(null);
   const [selectedRow, setSelectedRow] = useState<SelectedRow>(null);
+  const [currentViewIndex, setCurrentViewIndex] = useState<number>(0);
 
   const useTableReturn = useTable(props.resource, {
     callbacks: {
@@ -87,36 +88,39 @@ const CrudModule = (props: ModuleProps) => {
     const { data, tableQueryState, setTableQueryState, pageCount } =
       useTableReturn;
 
-    const currentViewIndex = tableQueryState.viewIndex || 0;
+    const isPrevious = direction === 'previous';
+    const isNext = direction === 'next';
+
     const isFirstItem = currentViewIndex === 0;
     const isLastItem = currentViewIndex === data.length - 1;
 
+    if (
+      (isPrevious && isFirstItem && tableQueryState.page === 1) ||
+      (isNext && isLastItem && tableQueryState.page === pageCount)
+    ) {
+      return;
+    }
+
     if (direction === 'previous') {
-      setTableQueryState({
-        ...tableQueryState,
-        page:
-          isFirstItem && tableQueryState.page > 1
-            ? tableQueryState.page - 1
-            : tableQueryState.page,
-        viewIndex:
-          isFirstItem && tableQueryState.page > 1
-            ? data.length - 1
-            : currentViewIndex - 1,
-      });
+      if (isFirstItem && tableQueryState.page > 1) {
+        setTableQueryState({
+          ...tableQueryState,
+          page: tableQueryState.page - 1,
+        });
+      }
+
+      setCurrentViewIndex(isFirstItem ? data.length - 1 : currentViewIndex - 1);
     }
 
     if (direction === 'next') {
-      setTableQueryState({
-        ...tableQueryState,
-        page:
-          isLastItem && tableQueryState.page < pageCount
-            ? tableQueryState.page + 1
-            : tableQueryState.page,
-        viewIndex:
-          isLastItem && tableQueryState.page < pageCount
-            ? 0
-            : currentViewIndex + 1,
-      });
+      if (isLastItem && tableQueryState.page < pageCount) {
+        setTableQueryState({
+          ...tableQueryState,
+          page: tableQueryState.page + 1,
+        });
+      }
+
+      setCurrentViewIndex(isLastItem ? 0 : currentViewIndex + 1);
     }
   };
 
@@ -150,14 +154,14 @@ const CrudModule = (props: ModuleProps) => {
   ]);
 
   useEffect(() => {
-    const { data, tableQueryState } = useTableReturn;
+    const { data } = useTableReturn;
 
     if (!data || !data.length) {
       return;
     }
 
-    setSelectedRow(data[tableQueryState.viewIndex] as SelectedRow);
-  }, [useTableReturn]);
+    setSelectedRow(data[currentViewIndex] as SelectedRow);
+  }, [useTableReturn.data, currentViewIndex]);
 
   // To prevent accidental overriding of the `onSuccess` callback
   // during props destructuring in the `FormComponent`,
@@ -199,10 +203,12 @@ const CrudModule = (props: ModuleProps) => {
           onAction={(payload) => {
             setSelectedRow(payload.row);
             setDrawerViewMode(payload.action);
+            setCurrentViewIndex(payload.index);
           }}
           onAddNew={() => {
             setSelectedRow(null);
             setDrawerViewMode('creation');
+            setCurrentViewIndex(0);
           }}
           hideAddButton={!props.createFormProps}
           hideEditButton={!props.editFormProps}
@@ -225,8 +231,10 @@ const CrudModule = (props: ModuleProps) => {
             formData={selectedRow}
             onSuccess={(data) => {
               useTableReturn.refresh();
+
               setSelectedRow(null);
               setDrawerViewMode(null);
+              setCurrentViewIndex(0);
 
               if (formOnSuccess) {
                 formOnSuccess(data);
@@ -235,6 +243,7 @@ const CrudModule = (props: ModuleProps) => {
             onClose={() => {
               setSelectedRow(null);
               setDrawerViewMode(null);
+              setCurrentViewIndex(0);
             }}
             onPrevious={() => changeCurrentFormData('previous')}
             onNext={() => changeCurrentFormData('next')}

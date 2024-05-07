@@ -48,6 +48,7 @@ type SimpleFilter = Record<string, BasicType | BasicType[] | null>;
 type ActionCallbackPayload = {
   action: Action;
   row: Record<string, unknown>;
+  index: number;
 };
 
 export type PaginationStyle = 'default' | 'numeric';
@@ -75,7 +76,7 @@ export interface TableSubmoduleProps {
   tableTheme?: StyleDefinition;
   queryResource: string;
   tableSchema: TableSchemaItem[];
-  onAction?: ({ action, row }: ActionCallbackPayload) => void;
+  onAction?: ({ action, row, index }: ActionCallbackPayload) => void;
   onAddNew?: () => void;
   refresh: () => void;
   data: unknown[];
@@ -157,7 +158,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
   const tableRows: RowProps[] = useMemo(() => {
     const data = props.data || [];
 
-    return data.map((row) => {
+    return data.map((row, index) => {
       const rowData = row as Record<string, unknown>;
       const newData = { ...rowData, id: String(rowData.id) };
 
@@ -197,7 +198,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (props.onAction) {
-                      props.onAction({ action: 'edit', row: rowData });
+                      props.onAction({ action: 'edit', row: rowData, index });
                     }
                   }}
                   data-testid="edit-button"
@@ -223,7 +224,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                   onClick={(e) => {
                     e.stopPropagation();
                     if (props.onAction) {
-                      props.onAction({ action: 'details', row: rowData });
+                      props.onAction({
+                        action: 'details',
+                        row: rowData,
+                        index,
+                      });
                     }
                   }}
                   data-testid="details-button"
