@@ -7,7 +7,6 @@ export const TABLE_QUERY_STATE_DEFAULT_VALUE: TableQueryStateProps = {
   orderBy: 'id',
   rowsPerPage: 5,
   page: 1,
-  viewIndex: 0,
 };
 
 export const getTableQueryState = (
@@ -39,7 +38,6 @@ export const getTableQueryState = (
     (searchParams?.get('search') && JSON.parse(searchParams.get('search'))) ||
     tableQuery?.search ||
     undefined,
-  viewIndex: tableQuery?.viewIndex || TABLE_QUERY_STATE_DEFAULT_VALUE.viewIndex,
 });
 
 export const useTableQueryState = (tableQuery?: TableQueryStateProps) => {
