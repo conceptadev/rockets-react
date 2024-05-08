@@ -82,16 +82,18 @@ const ComposedTable = (props: ComposedTableProps) => {
           <Filter
             {...props}
             filters={props.filters || []}
-            complementaryActions={
+            complementaryActions={(filters) => (
               <Box display="flex" gap={2}>
                 <OrderableDropDown
                   icon={<Settings />}
                   list={orderableHeaders}
                   setList={handleHeadersOrderChange}
                 />
-                {props.complementaryActions}
+                {typeof props.complementaryActions === 'function'
+                  ? props.complementaryActions(filters)
+                  : props.complementaryActions}
               </Box>
-            }
+            )}
           />
         </Box>
         <TableContainer sx={tableTheme.tableContainer}>
