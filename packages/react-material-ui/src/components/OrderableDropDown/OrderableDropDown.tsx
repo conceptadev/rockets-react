@@ -54,6 +54,9 @@ interface SortableItemProps {
   checked: boolean;
   label: string;
   labelId: string;
+  indeterminate?: boolean;
+  isHeader?: boolean;
+  handleToggle: (value: string) => void;
   disabled?: boolean;
 }
 
@@ -66,7 +69,7 @@ const SortableItem = (props: SortableItemProps) => {
     indeterminate,
     isHeader = false,
     handleToggle,
-    disabled = false
+    disabled = false,
   } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
