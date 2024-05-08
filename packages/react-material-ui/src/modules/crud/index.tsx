@@ -27,6 +27,7 @@ interface TableProps {
   tableSchema: TableSchemaItem[];
   tableProps?: InnerTableProps;
   tableTheme?: StyleDefinition;
+  hasAllOption?: boolean;
   hideActionsColumn?: boolean;
   reordable?: boolean;
   filters?: FilterDetails[];

@@ -156,7 +156,7 @@ const FilterSubmodule = () => {
           resource,
           resourceLabel,
           resourceValue,
-          onChange: (val: string | null) => onFilterChange(id, val, false),
+          onChange: (val: string | null) => onFilterChange(id, val, true),
         };
 
       case 'select':

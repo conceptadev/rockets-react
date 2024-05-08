@@ -156,6 +156,7 @@ const renderComponent = (filter: FilterType) => {
 export type FilterProps = {
   filters: FilterType[];
   minimumFilters?: number;
+  hasAllOption?: boolean;
   children?: ReactNode;
   additionalGridItems?: {
     component: ReactNode | ((filters: ListItem[]) => ReactNode);
@@ -166,13 +167,18 @@ export type FilterProps = {
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
-  const { filters, minimumFilters = 1, ...rest } = props;
+  const { filters,  minimumFilters = 1, hasAllOption, ...rest } = props;
   const auth = useAuth();
   const pathname = usePathname();
+
   const [settings, setSettings] = useSettingsStorage({
     key: 'filterSettings',
     user: (auth?.user as { id: string })?.id ?? '',
     settingsId: props.settingsId || pathname,
+    list: filters.map((header) => ({
+      id: header.id,
+      hide: Boolean(header.hide),
+    })),
   });
 
   const resetFilters = (item) => () => {
@@ -200,20 +206,18 @@ const Filter = (props: FilterProps) => {
   };
 
   useEffect(() => {
-    if (settings?.length) {
+    if (settings.length) {
       setFilterOrder(
         settings.map((item: ListItem) => {
           const filterItem = filters.find((filter) => filter.id === item.id);
 
           return {
             ...item,
-            label: filterItem.label,
+            ...filterItem,
             resetFilters: resetFilters(filterItem),
           };
         }),
       );
-
-      return;
     }
   }, []);
 
@@ -275,12 +279,15 @@ const Filter = (props: FilterProps) => {
           gap: { xs: 4, md: 2 },
         }}
       >
-        <OrderableDropDown
-          icon={<FilterAlt />}
-          minimumItems={minimumFilters}
-          list={filterOrder}
-          setList={handleFilterOrderChange}
-        />
+        {filters.length ? (
+          <OrderableDropDown
+            hasAllOption={hasAllOption}
+            minimumItems={minimumFilters}
+            icon={<FilterAlt />}
+            list={filterOrder}
+            setList={handleFilterOrderChange}
+          />
+        ) : null}
         {typeof props.complementaryActions === 'function'
           ? props.complementaryActions(filterOrder)
           : props.complementaryActions}
