@@ -167,7 +167,7 @@ export type FilterProps = {
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
-  const { filters,  minimumFilters = 1, hasAllOption, ...rest } = props;
+  const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
   const auth = useAuth();
   const pathname = usePathname();
 

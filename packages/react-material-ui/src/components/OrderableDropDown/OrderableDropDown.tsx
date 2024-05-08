@@ -135,7 +135,7 @@ const SortableItem = (props: SortableItemProps) => {
 const OrderableDropDown = ({
   list,
   setList,
-  minimumItems = 1,
+  minimumItems = 0,
   hasAllOption = false,
   icon = <SettingsSuggest />,
   text,
