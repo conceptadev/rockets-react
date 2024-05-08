@@ -4,6 +4,12 @@ import { DrawerButton, DrawerButtonProps } from './Styles';
 import Text from '../Text';
 import { TextProps } from 'interfaces';
 
+export const DEFAULT_DRAWER_TEXT_PROPS = {
+  fontSize: 12,
+  fontWeight: 400,
+  color: 'common.white',
+};
+
 export type DrawerItemProps = {
   id?: string;
   component?:
@@ -24,11 +30,7 @@ const DrawerItem = (props: DrawerItemProps) => {
     active,
     collapsed,
     onClick,
-    textProps = {
-      fontSize: 12,
-      fontWeight: 400,
-      color: 'common.white',
-    },
+    textProps = DEFAULT_DRAWER_TEXT_PROPS,
     sx,
     horizontal,
     iconColor,
@@ -55,17 +57,17 @@ const DrawerItem = (props: DrawerItemProps) => {
       {typeof icon === 'function' ? icon(!!active) : icon}
       {text && horizontal && (
         <Box display="flex" alignItems="center">
-          <Text {...textProps} position="absolute">
+          <Text position="absolute" {...textProps}>
             {text}
           </Text>
         </Box>
       )}
       {text && !horizontal && (
         <Text
-          {...textProps}
           sx={{
             position: 'absolute',
             bottom: 0,
+            ...textProps,
           }}
         >
           {text}
