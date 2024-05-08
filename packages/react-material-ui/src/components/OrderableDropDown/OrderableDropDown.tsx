@@ -43,6 +43,7 @@ export interface ListItem {
 interface Props {
   list: ListItem[];
   icon?: ReactNode;
+  minimumItems?: number;
   hasAllOption?: boolean;
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
   text?: string;
@@ -56,6 +57,7 @@ interface SortableItemProps {
   indeterminate?: boolean;
   isHeader?: boolean;
   handleToggle: (value: string) => void;
+  disabled?: boolean;
 }
 
 const SortableItem = (props: SortableItemProps) => {
@@ -67,6 +69,7 @@ const SortableItem = (props: SortableItemProps) => {
     indeterminate,
     isHeader = false,
     handleToggle,
+    disabled = false,
   } = props;
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -97,6 +100,7 @@ const SortableItem = (props: SortableItemProps) => {
           <Checkbox
             edge="end"
             onChange={() => handleToggle(id)}
+            disabled={disabled}
             checked={checked}
             inputProps={{ 'aria-labelledby': labelId }}
             indeterminate={indeterminate}
@@ -105,6 +109,7 @@ const SortableItem = (props: SortableItemProps) => {
         disablePadding
       >
         <ListItemButton
+          disabled={disabled}
           sx={{
             pointerEvents: isHeader ? 'none' : undefined,
             columnGap: 2,
@@ -130,6 +135,7 @@ const SortableItem = (props: SortableItemProps) => {
 const OrderableDropDown = ({
   list,
   setList,
+  minimumItems = 0,
   hasAllOption = false,
   icon = <SettingsSuggest />,
   text,
@@ -295,6 +301,10 @@ const OrderableDropDown = ({
 
               return (
                 <SortableItem
+                  disabled={
+                    minimumItems === list.filter((item) => !item.hide).length &&
+                    !listItem.hide
+                  }
                   key={listItem.id}
                   id={listItem.id}
                   checked={checked.indexOf(listItem.id) !== -1}

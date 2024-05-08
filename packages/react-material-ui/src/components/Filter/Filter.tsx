@@ -155,18 +155,19 @@ const renderComponent = (filter: FilterType) => {
 
 export type FilterProps = {
   filters: FilterType[];
+  minimumFilters?: number;
   hasAllOption?: boolean;
   children?: ReactNode;
   additionalGridItems?: {
-    component: ReactNode;
+    component: ReactNode | ((filters: ListItem[]) => ReactNode);
     columns?: number;
   }[];
-  complementaryActions?: ReactNode;
+  complementaryActions?: ReactNode | ((filters: ListItem[]) => ReactNode);
   settingsId?: string;
 } & GridProps;
 
 const Filter = (props: FilterProps) => {
-  const { filters, hasAllOption, ...rest } = props;
+  const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
   const auth = useAuth();
   const pathname = usePathname();
 
@@ -194,7 +195,7 @@ const Filter = (props: FilterProps) => {
     filters.map((filter) => ({
       id: filter.id,
       label: filter.label,
-      hide: filter.hide,
+      hide: filter.hide ?? false,
       resetFilters: resetFilters(filter),
     })),
   );
@@ -262,7 +263,9 @@ const Filter = (props: FilterProps) => {
                 xs={12}
                 md={node.columns || 12}
               >
-                {node.component}
+                {typeof node.component === 'function'
+                  ? node.component(filterOrder)
+                  : node.component}
               </Grid>
             ))
           : null}
@@ -279,12 +282,15 @@ const Filter = (props: FilterProps) => {
         {filters.length ? (
           <OrderableDropDown
             hasAllOption={hasAllOption}
+            minimumItems={minimumFilters}
             icon={<FilterAlt />}
             list={filterOrder}
             setList={handleFilterOrderChange}
           />
         ) : null}
-        {props.complementaryActions}
+        {typeof props.complementaryActions === 'function'
+          ? props.complementaryActions(filterOrder)
+          : props.complementaryActions}
       </Box>
     </Box>
   );
