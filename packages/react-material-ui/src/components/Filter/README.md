@@ -16,6 +16,8 @@ external nodes that can be displayed in the same grid of the inputs
 
 nodes that can be displayed together with the inputs, often containing actions such as Clear or Search buttons
 
+> The Filter props extend from the `Grid` component props, so every prop is interchangeable between those two.
+
 ## Example
 
 The following example describes the full composition that mounts the Filter component:

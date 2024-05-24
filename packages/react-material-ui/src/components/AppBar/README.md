@@ -38,6 +38,8 @@ boolean value that tells if the drawer should have a fixed width or the possibil
 
 array containing information about the pages listed on the drawer
 
+> The AppBar.Drawer props extend from the `Drawer` component props, so every prop is interchangeable between those two.
+
 ## AppBar.Main
 
 The Main component serves as a wrapper for the navigation bar and page content.
@@ -51,6 +53,8 @@ object or array containing custom styles
 #### children
 
 content rendered by the page
+
+> The AppBar.Main props extend from the `Box` component props, so every prop is interchangeable between those two.
 
 ## AppBar.Nav
 
@@ -69,6 +73,8 @@ source of the user profile picture
 #### headerMenuOptions
 
 list of menu actions
+
+> The AppBar.Nav props extend from the `Navbar` component props, so every prop is interchangeable between those two.
 
 ## Example
 
