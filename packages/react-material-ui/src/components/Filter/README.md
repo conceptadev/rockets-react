@@ -1,5 +1,17 @@
 # Filter
 
+The Filter component is often displayed together with a Table, and renders a list of inputs which values can compose an url query accessed by the table or just change any state inside the page.
+
+### Props
+
+`filters`: list of information and handlers that compose the table search \
+`additionalGridItems`: external nodes that can be displayed in the same grid of the inputs \
+`complementaryActions`: nodes that can be displayed together with the inputs, often containing actions such as Clear or Search buttons \
+
+## Example
+
+The following example describes the full composition that mounts the Filter component:
+
 ```tsx
 <Filter
   filters={[
