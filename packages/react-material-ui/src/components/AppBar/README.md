@@ -8,8 +8,13 @@ The Root component acts as a wrapper for the context shared by the other parts o
 
 ### Props
 
-`key`: identifier used to force re-render on reconciliation \
-`children`: child nodes rendered by the component
+#### key
+
+identifier used to force re-render on reconciliation
+
+#### children
+
+child nodes rendered by the component
 
 ## AppBar.Drawer
 
@@ -17,10 +22,21 @@ The list of routes of the app is rendered as a vertical list on the Drawer compo
 
 ### Props
 
-`currentId`: identifier for the current path, changing the menu item to active when the page selected corresponds to the path name \
-`logo`: source for an image logo file \
-`collapsable`: boolean value that tells if the drawer should have a fixed width or the possibility to expand \
-`items`: array containing information about the pages listed on the drawer
+#### currentId
+
+identifier for the current path, changing the menu item to active when the page selected corresponds to the path name
+
+#### logo
+
+source for an image logo file
+
+#### collapsible
+
+boolean value that tells if the drawer should have a fixed width or the possibility to expand
+
+#### items
+
+array containing information about the pages listed on the drawer
 
 ## AppBar.Main
 
@@ -28,8 +44,13 @@ The Main component serves as a wrapper for the navigation bar and page content.
 
 ### Props
 
-`sx`: object or array containing custom styles \
-`children`: content rendered by the page
+#### sx
+
+object or array containing custom styles
+
+#### children
+
+content rendered by the page
 
 ## AppBar.Nav
 
@@ -37,9 +58,17 @@ Lorem ipsum dolor sit amet
 
 ### Props
 
-`text`: string that can contain the current user name or username \
-`avatar`: source of the user profile picture \
-`headerMenuOptions`: list of menu actions
+#### text
+
+string that can contain the current user name or username
+
+#### avatar
+
+source of the user profile picture
+
+#### headerMenuOptions
+
+list of menu actions
 
 ## Example
 
