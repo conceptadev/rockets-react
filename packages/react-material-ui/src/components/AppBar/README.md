@@ -53,53 +53,153 @@ import { AppBar } from '@concepta/react-material-ui';
 
 ## AppBar.Root
 
-The Root component acts as a wrapper for the context shared by the other parts of the AppBar.
+The Root component acts as a wrapper for the context API shared with the other parts of the AppBar composition.
 
 ### Props
 
 #### key
 
-Identifier used to force re-render on reconciliation
+Identifier used to enforce re-render and internal state change upon [reconciliation](https://legacy.reactjs.org/docs/reconciliation.html).
 
 **Type**: `string`
 
 #### children
 
-child nodes rendered by the component
+Child nodes rendered inside the Main component.
 
 **Type**: `node`
 
 ## AppBar.Drawer
 
-The list of routes of the app is rendered as a vertical list on the Drawer component.
+The list of the app routes rendered as a vertical navigation list on the Drawer component.
 
 ### Props
 
+#### items
+
+Array containing information about the pages listed on the drawer.
+
+**Type**: `object[]`
+
 #### currentId
 
-identifier for the current path, changing the menu item to active when the page selected corresponds to the path name
+Identifier for the current path, changing the menu item to active when the page selected corresponds to the path name.
+
+**Type**: `string`
+
+#### customToggle
+
+Custom node that can be rendered on the bottom of the Drawer, serving as toggle for expanded/collapsed state.
+
+**Type**: `string`
+
+#### mobileIsOpen
+
+Identifier for open state on mobile.
+
+**Type**: `string`
+
+#### onMobileClose
+
+Handler for Drawer closing action on mobile.
 
 **Type**: `string`
 
 #### logo
 
-source for an image logo file
+Source for an image logo file.
 
 **Type**: `string`
 
-#### collapsible
+#### textProps
 
-boolean value that tells if the drawer should have a fixed width or the possibility to expand
+Style props for the text rendered by Drawer items.
+
+**Type**: `string`
+
+#### sx
+
+Object or array containing custom styles, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) pattern.
+
+**Type**: `object` or `object[]`
+
+#### buttonSx
+
+Object or array containing custom styles for each item button, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) pattern.
+
+**Type**: `object` or `object[]`
+
+#### horizontal
+
+Flag for rendering Drawer each item with text on the bottom or on the side.
 
 **Type**: `boolean`
 
-#### items
+#### collapsible
 
-array containing information about the pages listed on the drawer
+Boolean value that tells if the drawer should have a fixed width or the possibility to expand.
 
-> The AppBar.Drawer props extend from the `Drawer` component props, so every prop is interchangeable between those two.
+**Type**: `boolean`
 
-**Type**: `object[]`
+#### collapsibleIcon
+
+Custom icon to display on collapsed/expanded toggle button.
+
+**Type**: `node`
+
+#### collapsibleIconColor
+
+Custom color for the collapsed toggle icon.
+
+**Type**: `string`
+
+#### collapsibleIconBgColor
+
+Custom background color for the collapsed toggle icon.
+
+**Type**: `string`
+
+#### collapsed
+
+Boolean value that tells if the drawer is collapsed.
+
+**Type**: `boolean`
+
+#### onCollapsedChange
+
+Handler for collapse/expand action.
+
+**Type**: `function`
+
+#### backgroundColor
+
+Custom background color for the Drawer component.
+
+**Type**: `string`
+
+#### iconColor
+
+Custom color for the Drawer items.
+
+**Type**: `string`
+
+#### activeIconColor
+
+Custom color for the Drawer items when it is in active state.
+
+**Type**: `boolean`
+
+#### collapsedWidth
+
+Custom witdh of the Drawer when it is on collapsed state.
+
+**Type**: `string` or `number`
+
+#### expandedWidth
+
+Custom witdh of the Drawer when it is on expanded state.
+
+**Type**: `string` or `number`
 
 ## AppBar.Main
 
@@ -109,40 +209,74 @@ The Main component serves as a wrapper for the navigation bar and page content.
 
 #### sx
 
-object or array containing custom styles
+Object or array containing custom styles, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) pattern.
 
 **Type**: `object` or `object[]`
 
 #### children
 
-content rendered by the page
+Content rendered by the page.
 
-> The AppBar.Main props extend from the `Box` component props, so every prop is interchangeable between those two.
+> The AppBar.Main props extend from [Material UI's `Box`](https://mui.com/material-ui/api/box/#props) component props, so every prop is interchangeable between those two.
 
 **Type**: `node`
 
 ## AppBar.Nav
 
-Lorem ipsum dolor sit amet
+The Nav component renders the user info (Avatar and Name) and a list of actions related to user and auth, such as Logout.
 
 ### Props
 
-#### text
+#### drawerToggle
 
-string that can contain the current user name or username
+Handler for click events on the Menu button.
 
-**Type**: `string`
+**Type**: `function`
+
+#### showNotifications
+
+Flag for showing or hiding the notifications inficator.
+
+**Type**: `boolean`
+
+#### notificationsNumber
+
+Indicator for notifications counter.
+
+**Type**: `number`
+
+#### notificationsOnClick
+
+Handler for click events on the notifications indicator.
+
+**Type**: `function`
 
 #### avatar
 
-source of the user profile picture
+Source of the user profile picture.
+
+**Type**: `string`
+
+#### text
+
+String that can contain the current user name or username.
+
+**Type**: `string`
+
+#### subText
+
+String rendered below the _text_ content.
 
 **Type**: `string`
 
 #### headerMenuOptions
 
-list of menu actions
-
-> The AppBar.Nav props extend from the `Navbar` component props, so every prop is interchangeable between those two.
+List of menu actions.
 
 **Type**: `object[]`
+
+#### sx
+
+Object or array containing custom styles, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) pattern.
+
+**Type**: `object` or `object[]`
