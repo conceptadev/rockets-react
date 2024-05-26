@@ -64,7 +64,7 @@ import { Filter } from '@concepta/react-material-ui';
 ></Filter>;
 ```
 
-### Props
+## Props
 
 #### filters
 
