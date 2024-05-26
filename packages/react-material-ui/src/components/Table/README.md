@@ -5,6 +5,9 @@ The Table component is a composition of parts that render the table itself, cust
 ## Example
 
 ```tsx
+import { TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+import Table from '@concepta/react-material-ui';
+
 const tableTheme = createTableStyles({
   table: {
     height: '100%',

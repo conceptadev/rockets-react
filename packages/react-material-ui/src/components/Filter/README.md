@@ -12,32 +12,41 @@ import { Filter } from '@concepta/react-material-ui';
 <Filter
   filters={[
     {
-      id: 'dealer',
-      label: 'Dealer or Representative Name',
+      id: 'name',
+      label: 'Name',
       type: 'text',
       columns: 5,
       defaultValue: defaultSearchTerm,
-      value: dealerFieldValue,
-      onChange: (value) => setDealerFieldValue(value),
-      onDebouncedSearchChange: (search) => onSearchChange(search),
+      value: nameFieldValue,
+      onChange: (value) => setNameFieldValue(value),
+      onDebouncedSearchChange: (search) => onDebouncedSearchChange(search),
+    },
+    {
+      id: 'birthDate',
+      label: 'Birth Date',
+      type: 'date',
+      columns: 5,
+      value: dateFieldValue,
+      onChange: (value) => setDateFieldValue(value),
+      onDebouncedSearchChange: (search) => onDebouncedSearchChange(search),
+    },
+    {
+      id: 'organization',
+      label: 'Organization',
+      type: 'autocomplete',
+      options: orgOptions,
+      defaultValue: 'all',
+      columns: 2.5,
+      onChange: (value) => onOrgChange(value),
     },
     {
       id: 'status',
       label: 'Status',
       type: 'select',
       options: statusOptions,
-      defaultValue: getStatusFromFilter(defaultStatus) ?? 'all',
+      defaultValue: 'active',
       columns: 2.5,
-      onChange: (value) => onStatusChange(getStatusValue(value)),
-    },
-    {
-      id: 'products',
-      label: 'Products',
-      type: 'select',
-      options: PRODUCT_SOLD_OPTIONS,
-      defaultValue: defaultProduct ?? 'all',
-      columns: 2.5,
-      onChange: (value) => onProductChange(value as ProductCategoryEnum | null),
+      onChange: (value) => onStatusChange(value),
     },
   ]}
   complementaryActions={
@@ -52,12 +61,12 @@ import { Filter } from '@concepta/react-material-ui';
       <Button
         variant="contained"
         startIcon={<PersonAddAlt />}
-        onClick={onNewDealerClick}
+        onClick={onNewPersonClick}
         sx={{
           textWrap: 'nowrap',
         }}
       >
-        New Dealer
+        New Person
       </Button>
     </Box>
   }
@@ -68,20 +77,44 @@ import { Filter } from '@concepta/react-material-ui';
 
 #### filters
 
-list of information and handlers that compose the table search
+List of information and handlers that compose the filters grid.
 
 **Type**: `object[]`
 
+#### minimumFilters
+
+Minimum quantity of items managed by the filter settings orderable list.
+
+**Type**: `number`
+
+#### hasAllOption
+
+Flag that identifies if dropdown filters should display an _All_ option.
+
+**Type**: `boolean`
+
+#### children
+
+Child nodes rendered inside the filter component.
+
+**Type**: `node`
+
 #### additionalGridItems
 
-external nodes that can be displayed in the same grid of the inputs
+External nodes that can be displayed in the same grid of the inputs.
 
 **Type**: `object[]`
 
 #### complementaryActions
 
-nodes that can be displayed together with the inputs, often containing actions such as Clear or Search buttons
-
-> The Filter props extend from the `Grid` component props, so every prop is interchangeable between those two.
+Nodes that can be displayed together with the inputs, often containing actions such as Clear or Search buttons.
 
 **Type**: `node`
+
+#### settingsId
+
+String that identifies which item saved on localStorage corresponds to the current filter.
+
+**Type**: `string`
+
+The rest of the Filter props extend from [Material UI's `Grid`](https://mui.com/material-ui/api/grid/).
