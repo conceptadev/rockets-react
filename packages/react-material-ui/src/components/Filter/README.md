@@ -117,4 +117,4 @@ String that identifies which item saved on localStorage corresponds to the curre
 
 **Type**: `string`
 
-The rest of the Filter props extend from [Material UI's `Grid`](https://mui.com/material-ui/api/grid/).
+> The rest of the Filter props extend from [Material UI's `Grid`](https://mui.com/material-ui/api/grid/).

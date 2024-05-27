@@ -104,7 +104,7 @@ The TableContainer is a div that serves as a wrapper for the Table component.
 
 ### Props
 
-All TableContainer props extend from [Material UI's `TableContainer`](https://mui.com/material-ui/api/table-container/).
+> All TableContainer props extend from [Material UI's `TableContainer`](https://mui.com/material-ui/api/table-container/).
 
 ## Table.Table
 
@@ -118,7 +118,7 @@ Identifier for the variant of the table, being one of _clean_, _contained_ or _o
 
 **Type**: `string`
 
-The rest of the Table props extend from [Material UI's `Table`](https://mui.com/material-ui/api/table/).
+> The rest of the Table props extend from [Material UI's `Table`](https://mui.com/material-ui/api/table/).
 
 ## TableHead
 
@@ -126,7 +126,7 @@ The TableHead component serves as a wrapper for the column headers of the table.
 
 ### Props
 
-All TableHead props extend from [Material UI's `TableHead`](https://mui.com/material-ui/api/table-head/).
+> All TableHead props extend from [Material UI's `TableHead`](https://mui.com/material-ui/api/table-head/).
 
 ## TableRow
 
@@ -134,7 +134,7 @@ The TableRow component serves as a wrapper for each _cell_ displayed on a table 
 
 ### Props
 
-All TableRow props extend from [Material UI's `TableRow`](https://mui.com/material-ui/api/table-row/).
+> All TableRow props extend from [Material UI's `TableRow`](https://mui.com/material-ui/api/table-row/).
 
 ## Table.HeaderCells
 
@@ -154,7 +154,7 @@ The TableBody component serves as a wrapper for the rows of the table.
 
 ### Props
 
-All TableBody props extend from [Material UI's `TableBody`](https://mui.com/material-ui/api/table-body/).
+> All TableBody props extend from [Material UI's `TableBody`](https://mui.com/material-ui/api/table-body/).
 
 ## Table.BodyRows
 
@@ -192,7 +192,7 @@ Flag to identify if the table rows can be selected for bulk actions.
 
 **Type**: `boolean`
 
-The rest of the TableBodyRow props extend from [Material UI's `TableRow`](https://mui.com/material-ui/api/table-row/).
+> The rest of the TableBodyRow props extend from [Material UI's `TableRow`](https://mui.com/material-ui/api/table-row/).
 
 ## Table.BodyCell
 
@@ -206,7 +206,7 @@ Handler for the custom node displayed on each table header cell.
 
 **Type**: `object`
 
-The rest of the TableBodyCell props extend from [Material UI's `TableCell`](https://mui.com/material-ui/api/table-cell/).
+> The rest of the TableBodyCell props extend from [Material UI's `TableCell`](https://mui.com/material-ui/api/table-cell/).
 
 ## TablePagination
 
@@ -220,7 +220,7 @@ Identifier for the variant of the pagination wrapper, being one of _clean_, _con
 
 **Type**: `string`
 
-The rest of the TablePagination props extend from [Material UI's `TablePagination`](https://mui.com/material-ui/api/table-pagination/).
+> The rest of the TablePagination props extend from [Material UI's `TablePagination`](https://mui.com/material-ui/api/table-pagination/).
 
 ## Hooks
 
