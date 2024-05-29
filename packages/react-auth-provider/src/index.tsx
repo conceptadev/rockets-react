@@ -10,6 +10,7 @@ import React, {
 
 import {
   LoginParams,
+  DoLogin,
   AuthProviderProps,
   AuthProviderTypes,
   AuthReponse,
@@ -59,7 +60,7 @@ const AuthProvider = ({
     },
   });
 
-  const doLogin = async (loginData: LoginParams) => {
+  const doLogin: DoLogin = async (loginData) => {
     execute(loginData);
   };
 
