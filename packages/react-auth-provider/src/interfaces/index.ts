@@ -2,7 +2,7 @@ export interface LoginParams {
   loginPath?: string;
   username?: string;
   password?: string;
-  [key: string]: string | number;
+  [key: string]: string | number | boolean;
 }
 
 export type AuthProviderProps = {
@@ -10,10 +10,14 @@ export type AuthProviderProps = {
   onError?: (error?: Error) => void;
 };
 
+export type DoLogin = <TLoginParams>(
+  loginData: LoginParams | TLoginParams,
+) => void;
+
 export type AuthProviderTypes = {
   user: unknown;
   setUser: React.Dispatch<unknown>;
-  doLogin: (loginData: LoginParams) => void;
+  doLogin: DoLogin;
   doLogout: () => void;
   isPending: unknown;
   accessToken: string;
