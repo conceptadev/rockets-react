@@ -1,7 +1,8 @@
 export interface LoginParams {
-  username: string;
-  password: string;
   loginPath?: string;
+  username?: string;
+  password?: string;
+  [key: string]: string | number;
 }
 
 export type AuthProviderProps = {

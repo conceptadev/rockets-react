@@ -35,14 +35,13 @@ const AuthProvider = ({
     setAccessToken(_accessToken);
   }, []);
 
-  const authLogin = (loginData: LoginParams) =>
-    post({
-      uri: loginData.loginPath || '/auth/signin',
-      body: {
-        username: loginData.username,
-        password: loginData.password,
-      },
+  const authLogin = (loginData: LoginParams) => {
+    const { loginPath, ...bodyData } = loginData;
+    return post({
+      uri: loginPath || '/auth/signin',
+      body: bodyData,
     });
+  };
 
   const { execute, isPending } = useQuery<AuthReponse>(authLogin, false, {
     onSuccess: (data) => {
