@@ -104,11 +104,78 @@ Besides the shared parameters, they also accept:
 
 The `useQuery` hook is designed to handle asynchronous operations and manage the corresponding state, including loading, success, and error states. This section details how to use the `useQuery` hook, its parameters, and it's return.
 
+`useQuery` accepts two generic types: `TQueryData` and `TError`.
+
+### TQueryData & TError
+
+- **`TQueryData`** is a generic type parameter that specifies the expected shape of the data returned by the asynchronous function.
+- **`TError`** is a generic type parameter that specifies the expected shape of the error object returned by the asynchronous function.
+
+#### Example Usage
+
+```typescript
+import React, { useEffect } from 'react';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+
+// Define the type for the user data
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// Define the type for the error object
+interface FetchError {
+  message: string;
+  code: number;
+}
+
+const UsersComponent = () => {
+  const { get } = useDataProvider();
+
+  // Define the async function using the "get" function from "useDataProvider"
+  const fetchUsers = get({ uri: '/users' }); // AsyncFunction
+
+  // Use useQuery hook with TQueryData specified as User[] and TError specified as FetchError
+  const { execute, status, isPending, data, error, refresh } = useQuery<
+    User[],
+    FetchError
+  >(fetchUsers, true, {
+    onError: (error) => console.error('Error fetching users:', error),
+    onSuccess: (data) => console.log('Fetched users:', data),
+    onFinish: (status) => console.log('Fetch finished with status:', status),
+  });
+
+  useEffect(() => {
+    execute();
+  }, [execute]);
+
+  return (
+    <div>
+      {isPending && <p>Loading...</p>}
+      {status === AsyncStatus.error && <p>Error: {error?.message}</p>}
+      {status === AsyncStatus.success && (
+        <ul>
+          {data?.map((user) => (
+            <li key={user.id}>
+              {user.name} - {user.email}
+            </li>
+          ))}
+        </ul>
+      )}
+      <button onClick={refresh}>Refresh</button>
+    </div>
+  );
+};
+
+export default UsersComponent;
+```
+
 ### Parameters
 
 The `useQuery` hook accepts four parameters
 
-- **asyncFn** (AsyncFunction): An asynchronous function that performs the desired operation. This function should return a promise.
+- **asyncFn** (AsyncFunction): An asynchronous function that the `useQuery` hook will execute. This function returns a promise that resolves to the expected data type.
 - **immediate** (boolean): A boolean indicating whether the function should be executed immediately when the hook is called. Defaults to `false`.
 - **options** (object): An object containing various callback functions and data formatting options (more details below).
 - **args** (boolean): Optional arguments to be passed to the asynchronous function when it is executed.
