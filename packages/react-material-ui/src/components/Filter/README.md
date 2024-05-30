@@ -75,46 +75,14 @@ import { Filter } from '@concepta/react-material-ui';
 
 ## Props
 
-#### filters
-
-List of information and handlers that compose the filters grid.
-
-**Type**: `object[]`
-
-#### minimumFilters
-
-Minimum quantity of items managed by the filter settings orderable list.
-
-**Type**: `number`
-
-#### hasAllOption
-
-Flag that identifies if dropdown filters should display an _All_ option.
-
-**Type**: `boolean`
-
-#### children
-
-Child nodes rendered inside the filter component.
-
-**Type**: `node`
-
-#### additionalGridItems
-
-External nodes that can be displayed in the same grid of the inputs.
-
-**Type**: `object[]`
-
-#### complementaryActions
-
-Nodes that can be displayed together with the inputs, often containing actions such as Clear or Search buttons.
-
-**Type**: `node`
-
-#### settingsId
-
-String that identifies which item saved on localStorage corresponds to the current filter.
-
-**Type**: `string`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| filters | `object[]` | List of information and handlers that compose the filters grid. | No
+| minimumFilters | `number` | Minimum quantity of items managed by the filter settings orderable list. | Yes
+| hasAllOption | `boolean` | Flag that identifies if dropdown filters should display an _All_ option. | Yes
+| children | `node` | Child nodes rendered inside the filter component. | Yes
+| additionalGridItems | `object[]` | External nodes that can be displayed in the same grid of the inputs. | Yes
+| complementaryActions | `node` | Nodes that can be displayed together with the inputs, often containing actions such as Clear or Search buttons. | Yes
+| settinsId | `string` | String that identifies which item saved on localStorage corresponds to the current filter. | Yes
 
 > The rest of the Filter props extend from [Material UI's `Grid`](https://mui.com/material-ui/api/grid/).
