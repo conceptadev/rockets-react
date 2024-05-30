@@ -1,6 +1,6 @@
 # SchemaForm
 
-The SchemaForm component allows forms to be created based on schemas passed via props.
+The SchemaForm component allows forms to be created based on schemas passed via props. Internally, it implements the [react-jsonschema-form](https://rjsf-team.github.io/react-jsonschema-form/docs/) pattern.
 
 ## Example
 
@@ -9,6 +9,7 @@ The following example describes the full composition that mounts the SchemaForm 
 ```tsx
 import SchemaForm from '@concepta/material-ui';
 import { Button } from '@mui/material';
+import validator from '@rjsf/validator-ajv6';
 
 <SchemaForm.Form
   schema={{
@@ -44,6 +45,7 @@ import { Button } from '@mui/material';
       'ui:widget': 'password',
     },
   }}
+  validator={validator}
 >
   <Button
     type="submit"
@@ -66,7 +68,7 @@ Object that defines the structure of the form, containing information about fiel
 
 #### validator
 
-Validation helper for the form structure. _@rjsf/validator-ajvx_ is generally used for this purpose, implemented on the form via the [HTML5 Validation](https://rjsf-team.github.io/react-jsonschema-form/docs/usage/validation#html5-validation).
+Validation helper for the form structure. _@rjsf/validator-ajvx_, provided by [ajv](https://github.com/ajv-validator/ajv), is generally used for this purpose. It is implemented on the form via the [HTML5 Validation](https://rjsf-team.github.io/react-jsonschema-form/docs/usage/validation#html5-validation).
 
 **Type**: `object`
 
