@@ -39,7 +39,7 @@ The `ClientProvider` component is essential for setting up the context that the 
 
 ### Wrap Your App with `ClientProvider`:
 
-To use the `ClientProvider`, wrap it around your application's root component. This is typically done in your `index.tsx` or `App.tsx` file. Provide the `baseUrl` and `onRefreshTokenError` props.
+To use the `ClientProvider`, wrap it around your application's root component. This is typically done in your `index.tsx` or `App.tsx` file. Provide the `baseUrl` and `onRefreshTokenError` props if needed.
 
 ```typescript
 import React from 'react';
@@ -62,7 +62,7 @@ ReactDOM.render(
 ```
 
 - `baseUrl` (optional): The base URL for all HTTP requests. This can be an environment variable instead.
-- `onRefreshTokenError` (required): A callback function that handles errors occurring during the token refresh process.
+- `onRefreshTokenError` (optional): A callback function that handles errors occurring during the token refresh process.
 
 ### BaseUrl in the .env file
 
@@ -215,9 +215,14 @@ interface User {
 const MyComponent = () => {
   const { get } = useDataProvider();
 
+  const fetchUsers = () =>
+    get({
+      uri: `/user-list`,
+    });
+
   const { execute, status, isPending, data, error, refresh } = useQuery<User[]>(
     fetchUsers,
-    true,
+    false, // immediate = false
     {
       onError: (error) => console.error('Error fetching users:', error),
       onSuccess: (data) => console.log('Fetched users:', data),
