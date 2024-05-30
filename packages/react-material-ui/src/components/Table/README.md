@@ -62,41 +62,14 @@ The Root is the highest component of the tree and holds the context to share sta
 
 ### Props
 
-#### rows
-
-List of objects containing information related to the table rows.
-
-**Type**: `object[]`
-
-#### headers
-
-List of objects containing information related to the table column headers.
-
-**Type**: `object[]`
-
-#### total
-
-Quantity of rows displayed by the table, non related to pagination.
-
-**Type**: `number`
-
-#### pageCount
-
-Quantity of pages rendered on the table.
-
-**Type**: `number`
-
-#### tableQueryState
-
-Information related to the current state of the table.
-
-**Type**: `object`
-
-#### updateTableQueryState
-
-Handler for updating the current state of the table.
-
-**Type**: `function`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| rows | `object[]` | List of objects containing information related to the table rows. | No
+| headers | `object[]` | List of objects containing information related to the table column headers. | No
+| total | `number` | Quantity of rows displayed by the table, non related to pagination. | Yes
+| pageCount | `number` | Quantity of pages rendered on the table. | Yes
+| tableQueryState | `object` | Information related to the current state of the table. | Yes
+| updateTableQueryState | `function` | Handler for updating the current state of the table. | Yes
 
 ## TableContainer
 
@@ -112,11 +85,9 @@ Table is the component that renders the _table_ tag per se.
 
 ### Props
 
-#### variant
-
-Identifier for the variant of the table, being one of _clean_, _contained_ or _outlined_.
-
-**Type**: `string`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| variant | `string` | Identifier for the variant of the table, being one of _clean_, _contained_ or _outlined_. | Yes
 
 > The rest of the Table props extend from [Material UI's `Table`](https://mui.com/material-ui/api/table/).
 
@@ -142,11 +113,9 @@ Custom wrapper for the table header cells.
 
 ### Props
 
-#### renderCell
-
-Handler for the custom node displayed on each table header cell.
-
-**Type**: `function`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| renderCell | `function` | Handler for the custom node displayed on each table header cell. | Yes
 
 ## TableBody
 
@@ -162,17 +131,10 @@ Lorem ipsum dolor sit amet
 
 ### Props
 
-#### renderRow
-
-Handler for the custom node displayed on each table row.
-
-**Type**: `function`
-
-#### isLoading
-
-Flag for a loading state on the table rows.
-
-**Type**: `boolean`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| renderRow | `function` | Handler for the custom node displayed on each table row. | Yes
+| isLoading | `boolean` | Flag for a loading state on the table rows. | Yes
 
 ## Table.BodyRow
 
@@ -180,17 +142,10 @@ Lorem ipsum dolor sit amet
 
 ### Props
 
-#### row
-
-Information from the data displayed on the table row.
-
-**Type**: `object`
-
-#### hasCheckboxes
-
-Flag to identify if the table rows can be selected for bulk actions.
-
-**Type**: `boolean`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| row | `object` | Information from the data displayed on the table row. | Yes
+| hasCheckboxes | `boolean` | Flag to identify if the table rows can be selected for bulk actions. | Yes
 
 > The rest of the TableBodyRow props extend from [Material UI's `TableRow`](https://mui.com/material-ui/api/table-row/).
 
@@ -200,11 +155,9 @@ Custom wrapper for the table body cells.
 
 ### Props
 
-#### row
-
-Handler for the custom node displayed on each table header cell.
-
-**Type**: `object`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| row | `object` | Object containing information related to the table row. | No
 
 > The rest of the TableBodyCell props extend from [Material UI's `TableCell`](https://mui.com/material-ui/api/table-cell/).
 
@@ -214,11 +167,9 @@ The TablePagination component serves as a wrapper for the page actions of the ta
 
 ### Props
 
-#### variant
-
-Identifier for the variant of the pagination wrapper, being one of _clean_, _contained_ or _outlined_.
-
-**Type**: `string`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| variant | `string` | Identifier for the variant of the pagination wrapper, being one of _clean_, _contained_ or _outlined_. | Yes
 
 > The rest of the TablePagination props extend from [Material UI's `TablePagination`](https://mui.com/material-ui/api/table-pagination/).
 
