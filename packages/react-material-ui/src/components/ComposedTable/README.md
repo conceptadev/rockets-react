@@ -85,22 +85,10 @@ const {
 
 ## Props
 
-#### data
-
-The list of objects to be rendered via table rows. Usually this prop is returned by the `useTable` hook.
-
-**Type**: `object[]`
-
-#### isPending
-
-Identifier for the loading state of the component. Usually this prop is returned by the `useTable` hook.
-
-**Type**: `boolean`
-
-#### tableTheme
-
-Custom styling for each table part, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) pattern. The default styling for the table is the _outline_ variant.
-
-**Type**: `object`
+| Name | Type | Description | Optional |
+| --- | --- | --- | --- |
+| data | `object[]` | The list of objects to be rendered via table rows. Usually this prop is returned by the `useTable` hook. | No
+| isPending | `boolean` | Identifier for the loading state of the component. Usually this prop is returned by the *useTable* hook. | Yes
+| tableTheme | `object` | Custom styling for each table part, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) pattern. The default styling for the table is the _outline_ variant. | Yes
 
 > The rest of the ComposedTable props extend from `Filter` and `Table`, so every prop from both of these is interchangeable with ComposedTable and can be passed to it.
