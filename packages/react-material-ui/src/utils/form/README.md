@@ -51,26 +51,8 @@ import Button from '@mui/material/Button';
 
 ## Parameters
 
-#### formData
-
-The form data to be validated. This object contains the value of every field of the form, with every attribute of the object corresponding to the _property_ item name present on the schema.
-
-**Type**: `object`
-
-#### errors
-
-Object containing the errors returned by the form validation when there's invalid fields.
-
-**Type**: `object`
-
-#### validationRules
-
-Custom rules for field validations, with each object containing _field_, _test_ and _message_.
-
-The _field_ attribute defines the name of the field validated by the rule.
-
-The _test_ function forwards two parameters: the value of the current field and the current state of the form fields. If the return value of the test expresion is true, the tested field is considered invalid.
-
-The _message_ parameter defines the message displayed when the value of the tested field is invalid.
-
-**Type**: `object[]`
+| Name | Type | Description |
+| --- | --- | --- |
+| formData | `object` | The form data to be validated. This object contains the value of every field of the form, with every attribute of the object corresponding to the _property_ item name present on the schema. |
+| errors | `object` | Object containing the errors returned by the form validation when there's invalid fields. |
+| validationRules | `object[]` | Custom rules for field validations, with each object containing _field_, _test_ and _message_. The _field_ attribute defines the name of the field validated by the rule. The _test_ function forwards two parameters: the value of the current field and the current state of the form fields. If the return value of the test expression is true, the tested field is considered invalid. The _message_ parameter defines the message displayed when the value of the tested field is invalid. |
