@@ -55,7 +55,7 @@ const useDataProvider = () => {
       } catch (error) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        onRefreshTokenError(error);
+        onRefreshTokenError?.(error);
         return Promise.reject(error);
       }
     },

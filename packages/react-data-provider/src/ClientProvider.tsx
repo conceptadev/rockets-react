@@ -21,7 +21,7 @@ export const useClient = () => useContext<ClientContextType>(ClientContext);
 
 type Props = {
   baseUrl?: string;
-  onRefreshTokenError: (error?: HttpError) => void;
+  onRefreshTokenError?: (error?: HttpError) => void;
   children: ReactNode;
 };
 
