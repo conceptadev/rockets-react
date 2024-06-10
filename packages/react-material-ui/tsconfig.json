@@ -5,11 +5,27 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "baseUrl": "src",
-    "typeRoots": ["./node_modules/@types", "../../node_modules/@types"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "../../node_modules/@types"
+    ],
     "paths": {
-      "styles": ["./dist/styles"],
-      "@rjsf/material-ui/*": ["../../../node_modules/@rjsf/material-ui/dist/*"]
+      "styles": [
+        "./dist/styles"
+      ],
+      "@rjsf/material-ui/*": [
+        "../../../node_modules/@rjsf/material-ui/dist/*"
+      ],
+      "i18next/*": [
+        "../../../node_modules/i18next/dist/*"
+      ],
+      "react-i18next/*": [
+        "../../../node_modules/react-i18next/dist/*"
+      ]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+  ]
 }
