@@ -39,6 +39,8 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
+import i18n from '../../../utils/intl/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type BasicType = string | number | boolean;
@@ -292,7 +294,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                   marginLeft: 2,
                 }}
               >
-                Add new
+                {i18n.t('crud:addNew')}
               </Button>
             )}
           </Box>
@@ -327,7 +329,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       textAlign: 'center',
                     }}
                   >
-                    No records found.
+                    {i18n.t('crud:emptyTable')}
                   </TableCell>
                 </TableRow>
               )}

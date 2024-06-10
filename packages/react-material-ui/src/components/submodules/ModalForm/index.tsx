@@ -18,6 +18,8 @@ import validator from '@rjsf/validator-ajv6';
 import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
+import i18n from '../../../utils/intl/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type ModalFormSubmoduleProps = PropsWithChildren<
@@ -168,12 +170,12 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                   {isLoadingCreation || isLoadingEdit ? (
                     <CircularProgress sx={{ color: 'white' }} size={24} />
                   ) : (
-                    submitButtonTitle || 'Save'
+                    submitButtonTitle || i18n.t('actions:save')
                   )}
                 </Button>
               )}
               <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                {cancelButtonTitle || 'Close'}
+                {cancelButtonTitle || i18n.t('actions:close')}
               </Button>
             </Box>
           </>
