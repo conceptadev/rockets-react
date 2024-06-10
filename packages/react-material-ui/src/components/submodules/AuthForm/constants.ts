@@ -5,6 +5,8 @@ import {
   CustomPasswordFieldWidget,
 } from '../../../styles/CustomWidgets';
 
+import i18n from '../../../utils/intl/i18n';
+
 export const defaultAuthUiSchema: UiSchema = {
   email: {
     'ui:widget': CustomTextFieldWidget,
@@ -27,8 +29,8 @@ export const signInFormSchema: RJSFSchema = {
   type: 'object',
   required: ['username', 'password'],
   properties: {
-    username: { type: 'string', title: 'Username', minLength: 3 },
-    password: { type: 'string', title: 'Password' },
+    username: { type: 'string', title: i18n.t('auth:username'), minLength: 3 },
+    password: { type: 'string', title: i18n.t('auth:password') },
   },
 };
 

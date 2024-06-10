@@ -39,6 +39,8 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
+import i18n from '../../../utils/intl/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type BasicType = string | number | boolean;
@@ -298,6 +300,20 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                 cacheApiPath={props.cacheApiPath}
               />
             )}
+            {!props.hideAddButton && (
+              <Button
+                variant="contained"
+                onClick={props.onAddNew}
+                startIcon={<AddIcon />}
+                sx={{
+                  textTransform: 'capitalize',
+                  textWrap: 'nowrap',
+                  marginLeft: 2,
+                }}
+              >
+                {i18n.t('crud:addNew')}
+              </Button>
+            )}
             <Box display="flex" alignItems="center" justifyContent="flex-end">
               {props.additionalFilterRowContent}
               {!props.hideAddButton && (
@@ -349,7 +365,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       textAlign: 'center',
                     }}
                   >
-                    No records found.
+                    {i18n.t('crud:emptyTable')}
                   </TableCell>
                 </TableRow>
               )}

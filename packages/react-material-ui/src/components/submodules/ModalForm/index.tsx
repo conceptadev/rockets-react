@@ -21,6 +21,8 @@ import validator from '@rjsf/validator-ajv6';
 import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
+import i18n from '../../../utils/intl/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type ModalFormSubmoduleProps = PropsWithChildren<

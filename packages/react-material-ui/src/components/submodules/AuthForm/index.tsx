@@ -22,6 +22,8 @@ import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
 import { validateForm } from '../../../utils/form/validation';
 
+import i18n from '../../../utils/intl/i18n';
+
 import {
   defaultAuthUiSchema,
   signInFormSchema,
@@ -128,10 +130,10 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const isLoading = isLoadingSignIn || isLoadingRequest;
 
   const defaultRouteTitle = {
-    signIn: 'Sign in',
-    signUp: 'Sign up',
-    forgotPassword: 'Recover password',
-    resetPassword: 'Reset password',
+    signIn: i18n.t('auth:signIn'),
+    signUp: i18n.t('auth:signUp'),
+    forgotPassword: i18n.t('auth:forgotPassword'),
+    resetPassword: i18n.t('auth:resetPassword'),
   }[props.route];
 
   const defaultFormSchema =
@@ -186,7 +188,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
           {props.forgotPasswordPath ? (
             <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 2 }}>
               <Link href={props.forgotPasswordPath} color="primary.dark">
-                Forgot your password?
+                {i18n.t('auth:forgotPasswordCTA')}
               </Link>
             </Text>
           ) : null}
@@ -207,7 +209,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
               {isLoading ? (
                 <CircularProgress sx={{ color: 'white' }} size={24} />
               ) : (
-                props.submitButtonTitle || 'Send'
+                props.submitButtonTitle || i18n.t('auth:submit')
               )}
             </Button>
           </Box>
@@ -216,7 +218,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
         {props.signInPath ? (
           <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
             <Link href={props.signInPath} color="primary.dark">
-              Already have an account? Sign in
+              {i18n.t('auth:signInCTA')}
             </Link>
           </Text>
         ) : null}
@@ -224,10 +226,19 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
         {props.signUpPath ? (
           <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
             <Link href={props.signUpPath} color="primary.dark">
-              No account? Sign up
+              {i18n.t('auth:signUpCTA')}
             </Link>
           </Text>
         ) : null}
+
+        <Button
+          onClick={() =>
+            i18n.changeLanguage(i18n.language === 'en' ? 'pt' : 'en')
+          }
+          sx={{ mt: 2 }}
+        >
+          {i18n.language === 'en' ? 'Change to pt' : 'Change to en'}
+        </Button>
       </Card>
     </Container>
   );

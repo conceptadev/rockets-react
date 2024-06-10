@@ -21,6 +21,8 @@ import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
+import i18n from '../../../utils/intl/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type DrawerFormSubmoduleProps = PropsWithChildren<
@@ -264,7 +266,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             )}
             {viewMode === 'details' && !props.hideCancelButton && (
               <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                {cancelButtonTitle || 'Close'}
+                {cancelButtonTitle || i18n.t('actions:close')}
               </Button>
             )}
             {viewMode !== 'details' && (
