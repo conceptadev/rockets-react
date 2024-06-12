@@ -39,7 +39,7 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
-import i18n from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/intl/i18n';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -122,6 +122,9 @@ export interface TableSubmoduleProps {
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
   const theme = useTheme();
+
+  const { t } = useTranslation();
+
   const { filters } = useCrudRoot();
   const [mobileCurrentRow, setMobileCurrentRow] = useState<RowProps | null>(
     null,
@@ -311,7 +314,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                   marginLeft: 2,
                 }}
               >
-                {i18n.t('crud:addNew')}
+                {t('crud:addNew')}
               </Button>
             )}
             <Box display="flex" alignItems="center" justifyContent="flex-end">
@@ -365,7 +368,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       textAlign: 'center',
                     }}
                   >
-                    {i18n.t('crud:emptyTable')}
+                    {t('crud:emptyTable')}
                   </TableCell>
                 </TableRow>
               )}

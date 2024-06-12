@@ -22,14 +22,14 @@ import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
 import { validateForm } from '../../../utils/form/validation';
 
-import i18n from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/intl/i18n';
 
 import {
   defaultAuthUiSchema,
-  signInFormSchema,
-  signUpFormSchema,
-  forgotPasswordFormSchema,
-  resetPasswordFormSchema,
+  getSignInFormSchema,
+  getSignUpFormSchema,
+  getForgotPasswordFormSchema,
+  getResetPasswordFormSchema,
 } from './constants';
 
 const widgets = {
@@ -82,6 +82,8 @@ const renderTitle = (title: string | ReactNode) => {
 const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
+  const { t, i18n } = useTranslation();
+
   const searchParams = useSearchParams();
   const passcode = searchParams.get('token');
 
@@ -130,18 +132,18 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const isLoading = isLoadingSignIn || isLoadingRequest;
 
   const defaultRouteTitle = {
-    signIn: i18n.t('auth:signIn'),
-    signUp: i18n.t('auth:signUp'),
-    forgotPassword: i18n.t('auth:forgotPassword'),
-    resetPassword: i18n.t('auth:resetPassword'),
+    signIn: t('auth:signIn'),
+    signUp: t('auth:signUp'),
+    forgotPassword: t('auth:forgotPassword'),
+    resetPassword: t('auth:resetPassword'),
   }[props.route];
 
   const defaultFormSchema =
     {
-      signIn: signInFormSchema,
-      signUp: signUpFormSchema,
-      forgotPassword: forgotPasswordFormSchema,
-      resetPassword: resetPasswordFormSchema,
+      signIn: getSignInFormSchema(),
+      signUp: getSignUpFormSchema(),
+      forgotPassword: getForgotPasswordFormSchema(),
+      resetPassword: getResetPasswordFormSchema(),
     }[props.route] || {};
 
   return (
@@ -188,7 +190,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
           {props.forgotPasswordPath ? (
             <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 2 }}>
               <Link href={props.forgotPasswordPath} color="primary.dark">
-                {i18n.t('auth:forgotPasswordCTA')}
+                {t('auth:forgotPasswordCTA')}
               </Link>
             </Text>
           ) : null}
@@ -209,7 +211,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
               {isLoading ? (
                 <CircularProgress sx={{ color: 'white' }} size={24} />
               ) : (
-                props.submitButtonTitle || i18n.t('auth:submit')
+                props.submitButtonTitle || t('auth:submit')
               )}
             </Button>
           </Box>
@@ -218,7 +220,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
         {props.signInPath ? (
           <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
             <Link href={props.signInPath} color="primary.dark">
-              {i18n.t('auth:signInCTA')}
+              {t('auth:signInCTA')}
             </Link>
           </Text>
         ) : null}
@@ -226,7 +228,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
         {props.signUpPath ? (
           <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
             <Link href={props.signUpPath} color="primary.dark">
-              {i18n.t('auth:signUpCTA')}
+              {t('auth:signUpCTA')}
             </Link>
           </Text>
         ) : null}
