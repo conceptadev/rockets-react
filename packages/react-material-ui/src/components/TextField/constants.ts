@@ -1,4 +1,4 @@
-import { useTranslation } from '../../utils/intl/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 export const LENGTH_REGEX = new RegExp(/.{8,}$/);
 export const UPPERCASE_REGEX = new RegExp(/.*[A-Z]/);

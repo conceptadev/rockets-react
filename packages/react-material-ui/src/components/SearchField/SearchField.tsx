@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import Clear from '@mui/icons-material/Clear';
 
-import { useTranslation } from '../../utils/intl/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 const SearchIcon = () => (
   <MuiSearchIcon
