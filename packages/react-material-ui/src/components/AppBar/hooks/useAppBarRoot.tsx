@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react';
 
-import { useTranslation } from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 export type AppBarContextProps = {
   /**

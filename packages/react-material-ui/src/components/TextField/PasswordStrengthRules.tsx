@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { Box, FormHelperText } from '@mui/material';
 import { PasswordRule } from './constants';
 
-import { useTranslation } from '../../utils/intl/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 type PasswordStrengthRulesProps = {
   name: string;

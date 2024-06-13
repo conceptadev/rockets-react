@@ -3,7 +3,7 @@
 import React, { createContext, useContext } from 'react';
 import { HeaderProps, RowProps, TableQueryStateProps } from '../types';
 
-import { useTranslation } from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 export type TableContextProps = {
   /**

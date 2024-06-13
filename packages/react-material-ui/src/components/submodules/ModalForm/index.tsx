@@ -21,7 +21,7 @@ import validator from '@rjsf/validator-ajv6';
 import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
-import { useTranslation } from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 

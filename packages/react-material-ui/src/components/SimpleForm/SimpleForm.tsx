@@ -24,7 +24,7 @@ import {
   ArrayFieldTemplate,
 } from '../../styles/CustomWidgets';
 
-import { useTranslation } from '../../utils/intl/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 type FieldTypeTypes =
   | 'string'

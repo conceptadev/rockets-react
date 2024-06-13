@@ -5,7 +5,7 @@ import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-import { useTranslation } from '../../utils/intl/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 interface TableToolbarProps {
   numSelected: number;

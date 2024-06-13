@@ -39,7 +39,7 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
-import { useTranslation } from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
