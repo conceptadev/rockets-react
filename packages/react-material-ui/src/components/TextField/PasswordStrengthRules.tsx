@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import { Box, FormHelperText } from '@mui/material';
 import { PasswordRule } from './constants';
 
+import { useTranslation } from '../../utils/intl/i18n';
+
 type PasswordStrengthRulesProps = {
   name: string;
   value: unknown;
@@ -19,6 +21,8 @@ const PasswordStrengthRules = ({
   rules,
   renderRulesText,
 }: PasswordStrengthRulesProps) => {
+  const { t } = useTranslation();
+
   if (renderRulesText) {
     return <>{renderRulesText(name, value as string, rules)}</>;
   }
@@ -30,7 +34,7 @@ const PasswordStrengthRules = ({
           color: theme.palette.common.black,
         })}
       >
-        Password should contain at least:
+        {t('passwordStrength:rulesDescription')}:
       </FormHelperText>
       {rules?.map((rule) => (
         <FormHelperText
