@@ -1,4 +1,4 @@
-const en = {
+const en_US = {
   auth: {
     signIn: 'Sign in',
     username: 'Username',
@@ -48,4 +48,4 @@ const en = {
   },
 };
 
-export default en;
+export default en_US;

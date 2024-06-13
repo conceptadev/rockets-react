@@ -235,11 +235,11 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
 
         <Button
           onClick={() =>
-            i18n.changeLanguage(i18n.language === 'en' ? 'pt' : 'en')
+            i18n.changeLanguage(i18n.language === 'en-US' ? 'pt-BR' : 'en-US')
           }
           sx={{ mt: 2 }}
         >
-          {i18n.language === 'en' ? 'Change to pt' : 'Change to en'}
+          {i18n.language === 'en-US' ? 'Change to pt-BR' : 'Change to en-US'}
         </Button>
       </Card>
     </Container>

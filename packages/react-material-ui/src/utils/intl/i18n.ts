@@ -8,11 +8,11 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: 'en-US',
     debug: true,
     resources: {
-      en: locales.en,
-      pt: locales.pt,
+      en: locales.en_US,
+      pt: locales.pt_BR,
     },
   });
 
