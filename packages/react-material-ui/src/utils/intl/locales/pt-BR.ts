@@ -1,4 +1,4 @@
-const pt = {
+const pt_BR = {
   auth: {
     signIn: 'Entrar',
     username: 'Usuário',
@@ -49,4 +49,4 @@ const pt = {
   },
 };
 
-export default pt;
+export default pt_BR;
