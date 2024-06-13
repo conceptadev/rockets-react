@@ -5,6 +5,8 @@ import { alpha } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
+import { useTranslation } from '../../utils/intl/i18n';
+
 interface TableToolbarProps {
   numSelected: number;
 }
@@ -19,6 +21,8 @@ const TableToolbar = ({
   numSelected,
   children,
 }: PropsWithChildren<TableToolbarProps>) => {
+  const { t } = useTranslation();
+
   return (
     <Toolbar
       sx={{
@@ -42,6 +46,7 @@ const TableToolbar = ({
             component="div"
           >
             {numSelected} selected
+            {t('table:toolbarSelectedCount', { count: numSelected })}
           </Typography>
 
           {children}
