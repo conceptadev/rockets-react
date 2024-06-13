@@ -21,6 +21,31 @@ const pt = {
   actions: {
     save: 'Salvar',
     close: 'Fechar',
+    search: 'Pesquisar',
+    submit: 'Enviar',
+  },
+  appBar: {
+    noContext: 'Deve ser usado abaixo de AppBarContext',
+  },
+  jsonSchema: {
+    invalidTitle: 'Título inválido',
+  },
+  table: {
+    noContext: 'Deve ser usado abaixo de TableRootContext',
+    toolbarSelectedCount_one: '{{ count }} selecionado',
+    toolbarSelectedCount_other: '{{ count }} selecionados',
+  },
+  passwordStrength: {
+    rulesDescription: 'Senha deve conter pelo menos',
+    veryWeak: 'Muito fraca',
+    weak: 'Fraca',
+    medium: 'Média',
+    great: 'Ótima',
+    lengthRegex: '8 caracteres',
+    uppercaseRegex: '1 caractere maiúsculo',
+    lowercaseRegex: '1 caractere minúsculo',
+    numberRegex: '1 caractere numérico',
+    specialCharsRegex: '1 caractere especial (Exemplo: "@", "#", "*")',
   },
 };
 

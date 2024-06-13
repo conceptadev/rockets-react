@@ -21,6 +21,30 @@ const en = {
   actions: {
     save: 'Save',
     close: 'Close',
+    search: 'Search',
+    submit: 'Submit',
+  },
+  appBar: {
+    noContext: 'You must use table root under AppBarContext',
+  },
+  jsonSchema: {
+    invalidTitle: 'Invalid title',
+  },
+  table: {
+    noContext: 'You must use table root under TableRootContext',
+    toolbarSelectedCount: '{{ count }} selected',
+  },
+  passwordStrength: {
+    rulesDescription: 'Password should contain at least',
+    veryWeak: 'Very weak',
+    weak: 'Weak',
+    medium: 'Medium',
+    great: 'Great',
+    lengthRegex: '8 characters',
+    uppercaseRegex: '1 Alpha Upper character',
+    lowercaseRegex: '1 Alpha Lower character',
+    numberRegex: '1 Numeric character',
+    specialCharsRegex: '1 Special character (Example: "@", "#", "*")',
   },
 };
 
