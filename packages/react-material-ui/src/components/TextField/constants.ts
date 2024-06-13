@@ -10,7 +10,7 @@ export const SPECIAL_CHARS_REGEX = new RegExp(
 
 export const PASSWORD_MATCH_SCORE = [0, 2, 3, 5];
 
-const getTranslatedMatchText = () => {
+export const getTranslatedMatchText = () => {
   const { t } = useTranslation();
 
   return [
@@ -21,11 +21,11 @@ const getTranslatedMatchText = () => {
   ];
 };
 
-export const PASSWORD_MATCH_TEXT = getTranslatedMatchText();
-
-export const PASSWORD_MATCH_RULES = {
-  text: PASSWORD_MATCH_TEXT,
-  score: PASSWORD_MATCH_SCORE,
+export const getPasswordMatchRules = () => {
+  return {
+    text: getTranslatedMatchText(),
+    score: PASSWORD_MATCH_SCORE,
+  };
 };
 
 export type PasswordRule = {
@@ -33,7 +33,7 @@ export type PasswordRule = {
   pattern: RegExp;
 };
 
-const getTranslatedDefaultRules = () => {
+export const getTranslatedDefaultRules = () => {
   const { t } = useTranslation();
 
   return [
@@ -57,8 +57,5 @@ const getTranslatedDefaultRules = () => {
       label: t('passwordStrength:specialCharsRegex'),
       pattern: SPECIAL_CHARS_REGEX,
     },
-  ];
+  ] as PasswordRule[];
 };
-
-export const PASSWORD_DEFAULT_RULES: PasswordRule[] =
-  getTranslatedDefaultRules();
