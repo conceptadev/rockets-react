@@ -22,7 +22,7 @@ import Filter from '../Filter';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
-import { useTranslation } from '../../utils/intl/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 export type ComposedTableProps = {
   data: unknown[];

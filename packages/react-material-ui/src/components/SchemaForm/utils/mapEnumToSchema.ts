@@ -1,7 +1,7 @@
 import { JSONSchema7, JSONSchema7Type, JSONSchema7TypeName } from 'json-schema';
 import { AdvancedProperty } from '../types';
 
-import { useTranslation } from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 export const mapEnumToSchema = (
   type: JSONSchema7TypeName,

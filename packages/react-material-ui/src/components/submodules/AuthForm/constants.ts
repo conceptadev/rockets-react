@@ -5,7 +5,7 @@ import {
   CustomPasswordFieldWidget,
 } from '../../../styles/CustomWidgets';
 
-import { useTranslation } from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 export const defaultAuthUiSchema: UiSchema = {
   email: {

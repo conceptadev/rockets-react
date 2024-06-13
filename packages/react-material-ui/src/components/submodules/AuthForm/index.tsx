@@ -22,7 +22,7 @@ import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
 import { validateForm } from '../../../utils/form/validation';
 
-import { useTranslation } from '../../../utils/intl/i18n';
+import { useTranslation } from '../../../utils/i18n';
 
 import {
   defaultAuthUiSchema,
