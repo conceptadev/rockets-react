@@ -34,6 +34,8 @@ const pt_BR = {
     noContext: 'Deve ser usado abaixo de TableRootContext',
     toolbarSelectedCount_one: '{{ count }} selecionado',
     toolbarSelectedCount_other: '{{ count }} selecionados',
+    rowsPerPage: 'Linhas por página',
+    displayedRows: '{{ from }}-{{ to }} de {{ count }}',
   },
   passwordStrength: {
     rulesDescription: 'Senha deve conter pelo menos',

@@ -8,6 +8,8 @@ import {
 } from '@mui/material';
 import { useTableRoot } from './hooks/useTableRoot';
 
+import { useTranslation } from '../../utils/i18n';
+
 type TablePaginationProps = {
   variant: 'clean' | 'contained' | 'outlined';
 } & Omit<
@@ -28,10 +30,13 @@ export const TablePagination = ({
   ...rest
 }: TablePaginationProps) => {
   const theme = useTheme();
+
   const { rows, tableQuery, total, handleChangePage, handleChangeRowsPerPage } =
     useTableRoot();
 
   const { rowsPerPage, page } = tableQuery;
+
+  const { t } = useTranslation();
 
   return (
     <MuiTablePagination
@@ -63,6 +68,10 @@ export const TablePagination = ({
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
       data-testid="table-pagination"
+      labelRowsPerPage={`${t('table:rowsPerPage')}:`}
+      labelDisplayedRows={({ from, to, count }) =>
+        t('table:displayedRows', { from, to, count })
+      }
     />
   );
 };
