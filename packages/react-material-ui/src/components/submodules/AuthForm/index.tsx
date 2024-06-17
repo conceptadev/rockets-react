@@ -82,7 +82,7 @@ const renderTitle = (title: string | ReactNode) => {
 const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const searchParams = useSearchParams();
   const passcode = searchParams.get('token');
@@ -232,15 +232,6 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
             </Link>
           </Text>
         ) : null}
-
-        <Button
-          onClick={() =>
-            i18n.changeLanguage(i18n.language === 'en-US' ? 'pt-BR' : 'en-US')
-          }
-          sx={{ mt: 2 }}
-        >
-          {i18n.language === 'en-US' ? 'Change to pt-BR' : 'Change to en-US'}
-        </Button>
       </Card>
     </Container>
   );
