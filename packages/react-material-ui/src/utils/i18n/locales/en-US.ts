@@ -18,6 +18,9 @@ const en_US = {
     addNew: 'Add new',
     emptyTable: 'No records found',
   },
+  users: {
+    title: 'Users',
+  },
   actions: {
     save: 'Save',
     close: 'Close',

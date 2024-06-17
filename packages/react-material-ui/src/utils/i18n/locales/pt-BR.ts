@@ -18,6 +18,9 @@ const pt_BR = {
     addNew: 'Adicionar',
     emptyTable: 'Dados não encontrados',
   },
+  users: {
+    title: 'Usuários',
+  },
   actions: {
     save: 'Salvar',
     close: 'Fechar',
