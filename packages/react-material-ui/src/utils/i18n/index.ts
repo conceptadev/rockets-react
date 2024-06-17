@@ -4,16 +4,17 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 
 import locales from './locales';
 
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    fallbackLng: 'en-US',
-    debug: true,
-    resources: {
-      en: locales.en_US,
-      pt: locales.pt_BR,
-    },
-  });
+const resources = {
+  'en-US': locales.en_US,
+  'pt-BR': locales.pt_BR,
+};
 
-export { useTranslation };
+const languages: string[] = Object.keys(resources);
+
+i18n.use(LanguageDetector).use(initReactI18next).init({
+  fallbackLng: 'en-US',
+  debug: true,
+  resources,
+});
+
+export { i18n, useTranslation, languages };
