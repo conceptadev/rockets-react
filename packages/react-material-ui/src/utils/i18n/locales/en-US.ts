@@ -33,6 +33,8 @@ const en_US = {
   table: {
     noContext: 'You must use table root under TableRootContext',
     toolbarSelectedCount: '{{ count }} selected',
+    rowsPerPage: 'Rows per page',
+    displayedRows: '{{ from }}-{{ to }} of {{ count }}',
   },
   passwordStrength: {
     rulesDescription: 'Password should contain at least',
