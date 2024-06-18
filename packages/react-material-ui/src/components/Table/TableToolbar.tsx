@@ -45,7 +45,6 @@ const TableToolbar = ({
             variant="subtitle1"
             component="div"
           >
-            {numSelected} selected
             {t('table:toolbarSelectedCount', { count: numSelected })}
           </Typography>
 
