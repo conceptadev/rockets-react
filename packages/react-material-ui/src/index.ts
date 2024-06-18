@@ -58,3 +58,6 @@ export { default as OtpInput } from './components/OtpInput';
 
 import { i18n, useTranslation, languages } from './utils/i18n';
 export { i18n, useTranslation, languages };
+
+import LanguageSwitcher from './components/LanguageSwitcher';
+export { LanguageSwitcher };
