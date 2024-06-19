@@ -1,15 +1,11 @@
 import { JSONSchema7, JSONSchema7Type, JSONSchema7TypeName } from 'json-schema';
 import { AdvancedProperty } from '../types';
 
-import { useTranslation } from '../../../utils/i18n';
-
 export const mapEnumToSchema = (
   type: JSONSchema7TypeName,
   enumList: JSONSchema7Type[],
   advancedProperty?: AdvancedProperty,
 ): JSONSchema7['oneOf'] => {
-  const { t } = useTranslation();
-
   return enumList.map((enumListItem) => {
     const option = advancedProperty?.options?.find((option) => {
       if (typeof option === 'object') {
@@ -26,7 +22,7 @@ export const mapEnumToSchema = (
         ? option
         : typeof enumListItem === 'string'
         ? enumListItem
-        : t('jsonSchema:invalidTitle');
+        : 'Invalid title';
 
     const value = typeof option === 'object' ? option.value : enumListItem;
 
