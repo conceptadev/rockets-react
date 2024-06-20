@@ -3,9 +3,9 @@ import { Select, SelectProps, MenuItem } from '@mui/material';
 
 import { useTranslation, languages } from '../../utils/i18n';
 
-interface Props extends SelectProps {
+type Props = {
   languages?: string[];
-}
+} & SelectProps;
 
 const LanguageSwitcher = (props: Props) => {
   const { i18n } = useTranslation();
@@ -17,10 +17,11 @@ const LanguageSwitcher = (props: Props) => {
       {...props}
       value={i18n.language}
       onChange={(event) => i18n.changeLanguage(event.target.value as string)}
-      data-testid="language-switcher"
     >
       {options.map((language) => (
-        <MenuItem value={language}>{language}</MenuItem>
+        <MenuItem key={language} value={language}>
+          {language}
+        </MenuItem>
       ))}
     </Select>
   );
