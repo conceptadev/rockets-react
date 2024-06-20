@@ -18,45 +18,52 @@ describe('LanguageSwitcher component', () => {
   });
 
   it('renders default options correctly', () => {
-    const { getByTestId, getByText } = render(<LanguageSwitcher />);
+    const { getByRole, getAllByRole } = render(<LanguageSwitcher />);
 
-    const select = getByTestId('language-switcher');
-    const selectComboBox = select.querySelector('[role="combobox"]');
-    selectComboBox && fireEvent.mouseDown(selectComboBox);
+    const select = getByRole('combobox');
+    select && fireEvent.mouseDown(select);
 
-    languages.forEach((option) => {
-      const optionElement = getByText(option);
-      expect(optionElement).toBeInTheDocument();
+    const dropdownOptions = getAllByRole('option');
+
+    expect(dropdownOptions).toHaveLength(languages.length);
+
+    dropdownOptions.forEach((option, index) => {
+      expect(option.textContent).toBe(languages[index]);
     });
   });
 
   it('renders options passed by props correctly', () => {
-    const { getByTestId, getByText } = render(
+    const { getByRole, getAllByRole } = render(
       <LanguageSwitcher languages={options} />,
     );
 
-    const select = getByTestId('language-switcher');
-    const selectComboBox = select.querySelector('[role="combobox"]');
-    selectComboBox && fireEvent.mouseDown(selectComboBox);
+    const select = getByRole('combobox');
+    select && fireEvent.mouseDown(select);
 
-    languages.forEach((option) => {
-      const optionElement = getByText(option);
-      expect(optionElement).toBeInTheDocument();
+    const dropdownOptions = getAllByRole('option');
+
+    expect(dropdownOptions).toHaveLength(options.length);
+
+    dropdownOptions.forEach((option, index) => {
+      expect(option.textContent).toBe(options[index]);
     });
   });
 
   it('calls the onChange callback when an option is selected', () => {
-    const { getByTestId, getByText } = render(<LanguageSwitcher />);
+    const { getByRole, getAllByRole } = render(
+      <LanguageSwitcher languages={options} />,
+    );
 
-    const select = getByTestId('language-switcher');
-    const selectComboBox = select.querySelector('[role="combobox"]');
-    selectComboBox && fireEvent.mouseDown(selectComboBox);
+    const select = getByRole('combobox');
+    select && fireEvent.mouseDown(select);
 
-    const option2 = getByText(languages[1]);
+    const dropdownOptions = getAllByRole('option');
+
+    const option2 = dropdownOptions[1];
     expect(option2).toBeInTheDocument();
 
     fireEvent.click(option2);
 
-    expect(i18n.language).toBe(languages[1]);
+    expect(i18n.language).toBe(options[1]);
   });
 });
