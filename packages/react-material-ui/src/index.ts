@@ -84,8 +84,8 @@ export { default as Breadcrumbs } from './components/Breadcrumbs';
 
 export { FormLabel, FormLabelProps } from './components/FormLabel';
 
-import { i18n, useTranslation, languages } from './utils/i18n';
-export { i18n, useTranslation, languages };
+import { i18n, useTranslation, setI18n } from './utils/i18n';
+export { i18n, useTranslation, setI18n };
 
 import LanguageSwitcher from './components/LanguageSwitcher';
 export { LanguageSwitcher };

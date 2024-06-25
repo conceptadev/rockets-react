@@ -8,10 +8,12 @@ import { render, fireEvent } from '@testing-library/react';
 
 import LanguageSwitcher from '../src/components/LanguageSwitcher';
 
-import { i18n, languages } from '../src/utils/i18n';
+import { i18n } from '../src/utils/i18n';
 
 describe('LanguageSwitcher component', () => {
-  const options: string[] = ['pt-BR', 'en-US'];
+  const languages = Object.keys(i18n.store.data);
+
+  const options: string[] = ['en-US', 'pt-BR'];
 
   it('should render correctly', () => {
     render(<LanguageSwitcher />);
