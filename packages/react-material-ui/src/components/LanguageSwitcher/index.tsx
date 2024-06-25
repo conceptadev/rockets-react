@@ -1,7 +1,7 @@
 import React from 'react';
 import { Select, SelectProps, MenuItem } from '@mui/material';
 
-import { useTranslation, languages } from '../../utils/i18n';
+import { useTranslation } from '../../utils/i18n';
 
 type Props = {
   languages?: string[];
@@ -10,7 +10,7 @@ type Props = {
 const LanguageSwitcher = (props: Props) => {
   const { i18n } = useTranslation();
 
-  const options = props.languages || languages;
+  const options = props.languages || Object.keys(i18n.store.data);
 
   return (
     <Select
