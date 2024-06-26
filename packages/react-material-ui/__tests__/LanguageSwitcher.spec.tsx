@@ -8,10 +8,10 @@ import { render, fireEvent } from '@testing-library/react';
 
 import LanguageSwitcher from '../src/components/LanguageSwitcher';
 
-import { i18n } from '../src/utils/i18n';
+import { i18nInstance } from '../src/utils/i18n';
 
 describe('LanguageSwitcher component', () => {
-  const languages = Object.keys(i18n.store.data);
+  const languages = Object.keys(i18nInstance.store.data);
 
   const options: string[] = ['en-US', 'pt-BR'];
 
@@ -66,6 +66,6 @@ describe('LanguageSwitcher component', () => {
 
     fireEvent.click(option2);
 
-    expect(i18n.language).toBe(options[1]);
+    expect(i18nInstance.language).toBe(options[1]);
   });
 });

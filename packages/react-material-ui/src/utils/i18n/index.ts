@@ -1,17 +1,17 @@
-import type { i18n as I18n } from 'i18next';
-
-import i18n from 'i18next';
+import i18next from 'i18next';
 import {
   initReactI18next,
   useTranslation,
-  setI18n,
   getI18n,
+  setI18n,
 } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import locales from './locales';
 
-i18n
+// const DEFAULT_NAMESPACE = 'translation';
+
+i18next
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
@@ -26,18 +26,16 @@ i18n
     },
   });
 
-const addResource = getI18n().addResource;
-
-const addResources = getI18n().addResources;
-
-const addResourceBundle = getI18n().addResourceBundle;
+const i18nInstance = getI18n();
+const addResource = i18nInstance.addResource;
+const addResources = i18nInstance.addResources;
+const addResourceBundle = i18nInstance.addResourceBundle;
 
 export {
-  type I18n,
-  i18n,
   useTranslation,
   addResource,
   addResources,
   addResourceBundle,
   setI18n,
+  i18nInstance,
 };
