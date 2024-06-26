@@ -22,6 +22,7 @@ export type HeaderProps = {
   sortable?: boolean;
   key?: number | string;
   hide?: boolean;
+  hideOnMobile?: boolean;
 };
 
 export type CustomTableCell = {

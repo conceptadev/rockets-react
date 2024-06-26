@@ -34,6 +34,7 @@ interface TableProps {
   paginationStyle?: PaginationStyle;
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
+  mobileModalTitleSrc?: string;
 }
 
 interface FormProps {
