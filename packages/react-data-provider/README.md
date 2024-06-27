@@ -1,4 +1,4 @@
-# @rockets-react/data-provider
+# @concepta/react-data-provider
 
 Rockets Data Access package to handle all requests needed by your application.
 

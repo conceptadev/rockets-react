@@ -1,6 +1,4 @@
-<p align="center">
-  <img width="150" src="https://raw.githubusercontent.com/conceptadev/rockets/main/assets/rockets-icon.svg">
-</p>
+![Rockets Logo](https://raw.githubusercontent.com/conceptadev/rockets/main/assets/rockets-icon.svg)
 
 # Rockets React
 

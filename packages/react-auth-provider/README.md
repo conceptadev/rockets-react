@@ -1,4 +1,4 @@
-# @rockets-react/auth-provider
+# @concepta/react-auth-provider
 
 Rockets Auth package to handle all authentication needs of your application.
 
