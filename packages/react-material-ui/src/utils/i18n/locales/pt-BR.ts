@@ -30,9 +30,6 @@ const pt_BR = {
   appBar: {
     noContext: 'Deve ser usado abaixo de AppBarContext',
   },
-  jsonSchema: {
-    invalidTitle: 'Título inválido',
-  },
   table: {
     noContext: 'Deve ser usado abaixo de TableRootContext',
     toolbarSelectedCount_one: '{{ count }} selecionado',

@@ -30,9 +30,6 @@ const en_US = {
   appBar: {
     noContext: 'You must use table root under AppBarContext',
   },
-  jsonSchema: {
-    invalidTitle: 'Invalid title',
-  },
   table: {
     noContext: 'You must use table root under TableRootContext',
     toolbarSelectedCount: '{{ count }} selected',
