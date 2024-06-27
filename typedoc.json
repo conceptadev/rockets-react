@@ -1,0 +1,12 @@
+{
+  "entryPoints": ["packages/*"],
+  "plugin": ["typedoc-plugin-coverage"],
+  "exclude": [
+    "packages/react-common",
+    "packages/react-notification-provider",
+    "packages/react-samples"
+  ],
+  "name": "Rockets React Documentation",
+  "entryPointStrategy": "packages",
+  "includeVersion": false
+}
