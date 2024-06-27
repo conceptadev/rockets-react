@@ -63,34 +63,122 @@ export const TablePagination = ({
 
 In this case, the `labelRowsPerPage` and `labelDisplayedRows` are translated strings, so the `t` function is used, as well as the namespace where the string is inserted (using `table:` indicates that the string belongs to the `table` namespace).
 
-## languages
+Further reference in the [documentation pages](https://react.i18next.com/latest/usetranslation-hook).
 
-An array of strings containing the languages present in the `resources` object passed to the `i18n` instance. Further documentation on resources available in the [documentation pages](https://www.i18next.com/overview/configuration-options#languages-namespaces-resources).
+## reactI18n
+
+The current i18n instance. Contains the same attributes and methods from the `i18n` object returned from the `useTranslation` hook, but accessible from outside of react components.
+
+## isInitialized
+
+Boolean that indicates if the i18n instance was initialized and the language resources loaded.
+
+## appendStrings
+
+Appends a new set of strings to a language resource.
+
+### Parameters
+
+| Name | Type | Description |
+| --- | --- | --- |
+| lng | `string` | The name of the language that will have the strings appended. |
+| ns | `string` | Namespace to which the strings will belong. |
+| resources | `object` | The object containing string and their correspondent values. |
+
+> The `ns` parameter should receive `translation` when no specific namespace is needed, since it's the default namespace of i18n instances.
 
 ```tsx
-import locales from './locales';
+"use client";
 
-const resources = {
-  'en-US': locales.en_US,
-  'pt-BR': locales.pt_BR,
+import { useEffect } from "react";
+import { AuthModule, i18n } from "@concepta/react-material-ui";
+import Box from "@mui/material/Box";
+
+const LoginPage = () => {
+  const { t } = i18n.useTranslation();
+
+  useEffect(() => {
+    i18n.appendStrings("en-US", "translation", { appended: "Appended String" });
+  }, []);
+
+  return (
+    <Box>
+      <AuthModule route="signIn" />
+      <Box sx={{ marginLeft: "16px" }}>
+        <p>{t("appended")}</p>
+      </Box>
+    </Box>
+  );
 };
+
+export default LoginPage;
 ```
 
-In this case, the languages array will contain `pt-BR` and `en-US`. If another member is added to the resources object, it will be exported as well, without the need to change the `languages` definition.
+## addLanguage
 
-The `locales` object refers to another file in the same directory, structured as, for example:
+Adds a new language to the i18n resource list.
 
-```json
-{
-  "en-US": {
-    "translation": {
-      "Welcome to React": "Welcome to React and react-i18next"
-    }
+### Parameters
+
+| Name | Type | Description |
+| --- | --- | --- |
+| lng | `string` | The name of the language that will have the strings appended. |
+| ns | `string` | Namespace to which the strings will belong. |
+| resources | `object` | The object containing string and their correspondent values. |
+| deep | `boolean` | Indicates if the language bundle should be appended to an existing one of the same name. Default to false. |
+| overwrite | `boolean` | Indicates if the language bundle should overwrite an existing one with the same name. Default to false. |
+
+```tsx
+"use client";
+
+import { useEffect } from "react";
+import {
+  AuthModule,
+  LanguageSwitcher,
+  i18n,
+} from "@concepta/react-material-ui";
+import Box from "@mui/material/Box";
+
+const fr_FR = {
+  auth: {
+    signIn: "Se connecter",
+    username: "Nom d'utilisateur",
+    password: "Mot de passe",
+    email: "E-mail",
+    newPassword: "Nouveau mot de passe",
+    confirmNewPassword: "Confirmer le nouveau mot de passe",
+    signUp: "S'inscrire",
+    forgotPassword: "Récupérer mot de passe",
+    resetPassword: "Réinitialiser le mot de passe",
+    forgotPasswordCTA: "Mot de passe oublié?",
+    submit: "Envoyer",
+    signInCTA: "Vous avez déjà un compte? Se connecter",
+    signUpCTA: "Pas de compte? S'inscrire",
   },
-  "pt-BR": {
-    "translation": {
-      "Welcome to React": "Bem vindo ao React e react-i18next"
-    }
-  }
-}
+  actions: {
+    save: "Sauver",
+    close: "Conclure",
+    search: "Recherche",
+    submit: "Soumettre",
+  },
+};
+
+const LoginPage = () => {
+  const { t } = i18n.useTranslation();
+
+  useEffect(() => {
+    i18n.addLanguage("fr-FR", "translation", fr_FR);
+  }, []);
+
+  return (
+    <Box>
+      <AuthModule route="signIn" />
+      <LanguageSwitcher sx={{ marginLeft: "16px", marginRight: "16px" }} />
+    </Box>
+  );
+};
+
+export default LoginPage;
 ```
+
+Further reference in the [`addResourceBundle` documentation pages](https://www.i18next.com/overview/api#addresourcebundle).

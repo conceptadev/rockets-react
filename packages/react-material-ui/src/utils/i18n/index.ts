@@ -1,15 +1,8 @@
 import i18next from 'i18next';
-import {
-  initReactI18next,
-  useTranslation,
-  getI18n,
-  setI18n,
-} from 'react-i18next';
+import { initReactI18next, useTranslation, getI18n } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
 import locales from './locales';
-
-// const DEFAULT_NAMESPACE = 'translation';
 
 i18next
   .use(LanguageDetector)
@@ -22,20 +15,15 @@ i18next
       'pt-BR': locales.pt_BR,
     },
     react: {
-      bindI18nStore: 'added',
+      bindI18nStore: 'added removed',
     },
   });
 
-const i18nInstance = getI18n();
-const addResource = i18nInstance.addResource;
-const addResources = i18nInstance.addResources;
-const addResourceBundle = i18nInstance.addResourceBundle;
+const reactI18n = getI18n();
 
-export {
-  useTranslation,
-  addResource,
-  addResources,
-  addResourceBundle,
-  setI18n,
-  i18nInstance,
-};
+const isInitialized = reactI18n['isInitialized'];
+
+const appendStrings = reactI18n['addResources'];
+const addLanguage = reactI18n['addResourceBundle'];
+
+export { useTranslation, reactI18n, isInitialized, appendStrings, addLanguage };
