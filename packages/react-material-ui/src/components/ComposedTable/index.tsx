@@ -22,6 +22,8 @@ import Filter from '../Filter';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
+import { useTranslation } from '../../utils/i18n';
+
 export type ComposedTableProps = {
   data: unknown[];
   isPending?: boolean;
@@ -30,6 +32,8 @@ export type ComposedTableProps = {
   Partial<FilterProps>;
 
 const ComposedTable = (props: ComposedTableProps) => {
+  const { t } = useTranslation();
+
   const theme = useTheme();
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
@@ -116,7 +120,7 @@ const ComposedTable = (props: ComposedTableProps) => {
                       textAlign: 'center',
                     }}
                   >
-                    No records found.
+                    {t('crud:emptyTable')}
                   </TableCell>
                 </TableRow>
               )}

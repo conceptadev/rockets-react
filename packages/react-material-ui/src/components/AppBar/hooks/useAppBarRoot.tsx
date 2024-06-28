@@ -2,6 +2,8 @@
 
 import { createContext, useContext } from 'react';
 
+import { useTranslation } from '../../../utils/i18n';
+
 type AppBarContextProps = {
   isMobileOpen: boolean;
   toggleMobileOpen: () => void;
@@ -13,9 +15,10 @@ export const AppBarContext = createContext<AppBarContextProps>(
 
 export const useAppBarRoot = () => {
   const appBarContext = useContext(AppBarContext);
+  const { t } = useTranslation();
 
   if (!appBarContext) {
-    throw new Error('You must use table root under AppBarContext');
+    throw new Error(t('appBar:noContext'));
   }
 
   return appBarContext;

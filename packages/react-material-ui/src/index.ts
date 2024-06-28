@@ -55,3 +55,9 @@ export { default as CrudModule } from './modules/crud';
 export { default as UsersModule } from './modules/users';
 
 export { default as OtpInput } from './components/OtpInput';
+
+import * as i18n from './utils/i18n';
+export { i18n };
+
+import LanguageSwitcher from './components/LanguageSwitcher';
+export { LanguageSwitcher };

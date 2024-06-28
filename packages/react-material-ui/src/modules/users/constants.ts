@@ -1,33 +1,49 @@
 import { RJSFSchema, UiSchema } from '@rjsf/utils';
+
 import { CustomTextFieldWidget } from '../../styles/CustomWidgets';
 import { FilterDetails } from 'components/submodules/Filter';
 import { TableSchemaItem } from 'components/submodules/Table';
 
-export const headers: TableSchemaItem[] = [
-  {
-    id: 'id',
-    label: 'ID',
-  },
-  {
-    id: 'username',
-    label: 'Username',
-  },
-  {
-    id: 'email',
-    label: 'Email',
-  },
-];
+import { useTranslation } from '../../utils/i18n';
 
-const schema: RJSFSchema = {
-  type: 'object',
-  required: ['email', 'username'],
-  properties: {
-    email: { type: 'string', title: 'Email', minLength: 3, format: 'email' },
-    username: { type: 'string', title: 'Username', minLength: 3 },
-  },
+export const getTableHeaders = () => {
+  const { t } = useTranslation();
+
+  return [
+    {
+      id: 'id',
+      label: 'ID',
+    },
+    {
+      id: 'username',
+      label: t('auth:username'),
+    },
+    {
+      id: 'email',
+      label: t('auth:email'),
+    },
+  ] as TableSchemaItem[];
 };
 
-const uiSchema: UiSchema = {
+export const getFormSchema = () => {
+  const { t } = useTranslation();
+
+  return {
+    type: 'object',
+    required: ['email', 'username'],
+    properties: {
+      email: {
+        type: 'string',
+        title: t('auth:email'),
+        minLength: 3,
+        format: 'email',
+      },
+      username: { type: 'string', title: t('auth:username'), minLength: 3 },
+    },
+  } as RJSFSchema;
+};
+
+export const uiSchema: UiSchema = {
   email: {
     'ui:widget': CustomTextFieldWidget,
   },
@@ -36,31 +52,30 @@ const uiSchema: UiSchema = {
   },
 };
 
-export const CREATE_EDIT_FORM = {
-  formSchema: schema,
-  formUiSchema: uiSchema,
-};
+export const getDefaultFilters = () => {
+  const { t } = useTranslation();
 
-export const DEFAULT_FILTERS: FilterDetails[] = [
-  {
-    id: 'id',
-    label: 'ID',
-    operator: 'eq',
-    type: 'text',
-    columns: 3,
-  },
-  {
-    id: 'username',
-    label: 'Username',
-    operator: 'contL',
-    type: 'text',
-    columns: 3,
-  },
-  {
-    id: 'email',
-    label: 'Email',
-    operator: 'contL',
-    type: 'text',
-    columns: 3,
-  },
-];
+  return [
+    {
+      id: 'id',
+      label: 'ID',
+      operator: 'eq',
+      type: 'text',
+      columns: 3,
+    },
+    {
+      id: 'username',
+      label: t('auth:username'),
+      operator: 'contL',
+      type: 'text',
+      columns: 3,
+    },
+    {
+      id: 'email',
+      label: t('auth:email'),
+      operator: 'contL',
+      type: 'text',
+      columns: 3,
+    },
+  ] as FilterDetails[];
+};
