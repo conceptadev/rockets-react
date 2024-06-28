@@ -3,6 +3,7 @@
 import React, { PropsWithChildren } from 'react';
 import { TableProps as MuiTableProps } from '@mui/material';
 import { Table as MuiTable, TableProps as TableStylesProps } from './Styles';
+import { isMobile } from '../../utils/isMobile';
 
 export type TableProps = {
   variant?: TableStylesProps['variant'];
@@ -25,7 +26,7 @@ export const Table = ({
     {...rest}
     sx={[
       {
-        minWidth: 750,
+        minWidth: isMobile ? 'auto' : 750,
       },
       ...(Array.isArray(sx) ? sx : [sx]),
     ]}

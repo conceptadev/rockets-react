@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import type {
   CustomTableCell,
@@ -38,6 +38,8 @@ import FilterSubmodule from '../../../components/submodules/Filter';
 import { Search } from '../../../components/Table/types';
 import { UpdateSearch } from '../../../components/Table/useTable';
 import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
+import { isMobile } from '../../../utils/isMobile';
+import MobileRowModal from './MobileRowModal';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -105,12 +107,16 @@ export interface TableSubmoduleProps {
   search?: Search;
   updateSearch?: UpdateSearch;
   paginationStyle?: PaginationStyle;
+  allowModalPreview?: boolean;
+  mobileModalTitleSrc?: string;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
   const theme = useTheme();
   const { filters } = useCrudRoot();
-
+  const [mobileCurrentRow, setMobileCurrentRow] = useState<RowProps | null>(
+    null,
+  );
   const { del } = useDataProvider();
 
   const { execute: deleteItem } = useQuery(
@@ -184,10 +190,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         ...newData,
         actions: {
           component: (
-            <Box>
+            <Box display="flex">
               {!props.hideEditButton && (
                 <IconButton
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     if (props.onAction) {
                       props.onAction({ action: 'edit', row: rowData });
                     }
@@ -198,14 +205,20 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
               )}
 
               {!props.hideDeleteButton && (
-                <IconButton onClick={() => deleteItem(rowData.id)}>
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteItem(rowData.id);
+                  }}
+                >
                   <DeleteIcon />
                 </IconButton>
               )}
 
               {!props.hideDetailsButton && (
                 <IconButton
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     if (props.onAction) {
                       props.onAction({ action: 'details', row: rowData });
                     }
@@ -220,6 +233,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
       };
     });
   }, [props, tableHeaders, deleteItem]);
+
+  const closeModal = () => {
+    setMobileCurrentRow(null);
+  };
 
   return (
     <Box>
@@ -313,6 +330,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                     hasCheckboxes={false}
                     hover={false}
                     sx={tableTheme.tableBodyRow}
+                    {...(isMobile &&
+                      props.allowModalPreview && {
+                        onClick: () => setMobileCurrentRow(row),
+                      })}
                   >
                     <Table.BodyCell row={row} sx={tableTheme.tableBodyCell} />
                   </Table.BodyRow>
@@ -326,7 +347,39 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             <Table.PaginationNumbers />
           </Box>
         ) : (
-          <Table.Pagination variant="outlined" />
+          <Table.Pagination
+            variant="outlined"
+            {...(isMobile && {
+              labelRowsPerPage: 'per page:',
+              sx: {
+                display: 'flex',
+                justifyContent: 'center',
+                '& .MuiTablePagination-selectLabel': {
+                  paddingLeft: '10px',
+                },
+                '& .MuiToolbar-root': {
+                  padding: 0,
+                },
+                '& .MuiTablePagination-spacer': {
+                  display: 'none',
+                },
+                '& .MuiTablePagination-input': {
+                  marginRight: 0,
+                  marginLeft: 0,
+                },
+                '& .MuiTablePagination-actions': {
+                  marginLeft: '0 !important',
+                },
+              },
+            })}
+          />
+        )}
+        {props.allowModalPreview && isMobile && (
+          <MobileRowModal
+            currentRow={mobileCurrentRow}
+            onClose={closeModal}
+            titleSrc={props.mobileModalTitleSrc}
+          />
         )}
       </Table.Root>
     </Box>

@@ -142,6 +142,11 @@ const AutocompleteField = ({
           </li>
         );
       }}
+      sx={{
+        '& .MuiInputLabel-root': {
+          pr: '16px',
+        },
+      }}
       {...rest}
     />
   );
