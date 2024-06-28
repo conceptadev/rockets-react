@@ -123,10 +123,7 @@ Adds a new language to the i18n resource list.
 | Name | Type | Description |
 | --- | --- | --- |
 | lng | `string` | The name of the language that will have the strings appended. |
-| ns | `string` | Namespace to which the strings will belong. |
 | resources | `object` | The object containing string and their correspondent values. |
-| deep | `boolean` | Indicates if the language bundle should be appended to an existing one of the same name. Default to false. |
-| overwrite | `boolean` | Indicates if the language bundle should overwrite an existing one with the same name. Default to false. |
 
 ```tsx
 "use client";
