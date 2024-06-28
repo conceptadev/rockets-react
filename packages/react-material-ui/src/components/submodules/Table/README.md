@@ -18,12 +18,12 @@ Important to mention that `format` represents a custom format for the column dat
 ```js
 [
   {
-    id: "fullName", // required
-    label: "Full Name", // required
+    id: 'fullName', // required
+    label: 'Full Name', // required
     disablePadding: false,
     width: 100,
     numeric: false,
-    textAlign: "left" | "center" | "right",
+    textAlign: 'left' | 'center' | 'right',
     sortable: true,
     format: (value: string | number) => new Date(value).toString(),
   },
@@ -148,3 +148,111 @@ Can be passed via the `useTable` hook or independently.
 
 **type**: `React.Dispatch<React.SetStateAction<TableQueryStateProps>>`\
 **required**: `true`
+
+## Mobile Props
+
+### **allowModalPreview**
+
+Enables a modal preview for table rows when viewed on mobile devices.
+
+**type**: `boolean`\
+**required**: `false`
+
+### **mobileModalTitleSrc**
+
+Specifies the source for the modal's title when the modal preview is enabled on mobile devices.
+
+**type**: `string`\
+**required**: `false`
+
+### `hideOnMobile` (inside tableSchema)
+
+Allows you to hide specific columns when the table is viewed on a mobile device.
+
+**type**: `boolean`\
+**required**: `false`
+
+## Usage Guide for Mobile Row Preview
+
+This guide explains how to use the `allowModalPreview`, `mobileModalTitleSrc`, and `hideOnMobile` properties in your TableSubmodule component.
+
+### `allowModalPreview`
+
+Set `allowModalPreview` to `true` to allow a modal to be displayed when a table row is clicked on a mobile device.
+
+```jsx
+<TableSubmodule
+  allowModalPreview={true}
+  // other props
+/>
+```
+
+### `mobileModalTitleSrc`
+
+Provide the key of the data field you want to use as the title in the modal preview.
+
+```jsx
+<TableSubmodule
+  allowModalPreview={true}
+  mobileModalTitleSrc="name"
+  // other props
+/>
+```
+
+### `hideOnMobile`
+
+Set `hideOnMobile` to `true` in the column definition within the `tableSchema` to hide the column on mobile devices.
+
+```jsx
+const tableSchema = [
+  {
+    id: 'name',
+    label: 'Name',
+    hideOnMobile: false,
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    hideOnMobile: true,
+  },
+  // other columns
+];
+
+<TableSubmodule
+  tableSchema={tableSchema}
+  // other props
+/>;
+```
+
+### Example
+
+Below is a complete example of using these properties in the `TableSubmodule` component.
+
+```jsx
+const tableSchema = [
+  {
+    id: 'name',
+    label: 'Name',
+    hideOnMobile: false,
+  },
+  {
+    id: 'email',
+    label: 'Email',
+    hideOnMobile: true,
+  },
+  // other columns
+];
+
+<TableSubmodule
+  allowModalPreview={true}
+  mobileModalTitleSrc="name"
+  tableSchema={tableSchema}
+  // other props
+/>;
+```
+
+In this example:
+
+- The modal preview is enabled on mobile devices.
+- The modal title will use the `name` field.
+- The `email` column will be hidden on mobile devices.

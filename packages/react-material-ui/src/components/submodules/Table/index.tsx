@@ -107,6 +107,7 @@ export interface TableSubmoduleProps {
   search?: Search;
   updateSearch?: UpdateSearch;
   paginationStyle?: PaginationStyle;
+  allowModalPreview?: boolean;
   mobileModalTitleSrc?: string;
 }
 
@@ -329,9 +330,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                     hasCheckboxes={false}
                     hover={false}
                     sx={tableTheme.tableBodyRow}
-                    {...(isMobile && {
-                      onClick: () => setMobileCurrentRow(row),
-                    })}
+                    {...(isMobile &&
+                      props.allowModalPreview && {
+                        onClick: () => setMobileCurrentRow(row),
+                      })}
                   >
                     <Table.BodyCell row={row} sx={tableTheme.tableBodyCell} />
                   </Table.BodyRow>
@@ -372,7 +374,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             })}
           />
         )}
-        {isMobile && (
+        {props.allowModalPreview && isMobile && (
           <MobileRowModal
             currentRow={mobileCurrentRow}
             onClose={closeModal}

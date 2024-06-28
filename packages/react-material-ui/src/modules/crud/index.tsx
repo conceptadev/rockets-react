@@ -35,6 +35,7 @@ interface TableProps {
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
   mobileModalTitleSrc?: string;
+  allowModalPreview?: boolean;
 }
 
 interface FormProps {
