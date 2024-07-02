@@ -9,6 +9,8 @@ type UsersModuleProps = {
   onEditError: (data?: unknown) => void;
   onCreateSuccess: (data?: unknown) => void;
   onCreateError: (data?: unknown) => void;
+  onDeleteSuccess: (data?: unknown) => void;
+  onDeleteError: (data?: unknown) => void;
 } & Partial<ModuleProps>;
 
 const UsersModule = ({
@@ -16,6 +18,8 @@ const UsersModule = ({
   onEditSuccess,
   onCreateSuccess,
   onCreateError,
+  onDeleteSuccess,
+  onDeleteError,
   ...props
 }: UsersModuleProps) => {
   return (
@@ -37,8 +41,9 @@ const UsersModule = ({
         ...CREATE_EDIT_FORM,
         onError: onEditError,
         onSuccess: onEditSuccess,
+        onDeleteSuccess: onDeleteSuccess,
+        onDeleteError: onDeleteError,
       }}
-      detailsFormProps={CREATE_EDIT_FORM}
       {...props}
     />
   );
