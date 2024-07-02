@@ -20,7 +20,7 @@ import CrudRoot from './CrudRoot';
 import { FilterDetails } from '../../components/submodules/Filter';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 
-type Action = 'creation' | 'edit' | 'details' | null;
+type Action = 'creation' | 'edit' | null;
 
 type SelectedRow = Record<string, unknown> | null;
 
@@ -47,6 +47,8 @@ interface FormProps {
   customValidate?: CustomValidator;
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
 }
 
 export interface ModuleProps {
@@ -54,10 +56,10 @@ export interface ModuleProps {
   resource: string;
   tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
-  detailsFormProps?: PropsWithChildren<FormProps>;
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
   hideDeleteButton?: boolean;
+  hideDetailsButton?: boolean;
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
@@ -133,17 +135,10 @@ const CrudModule = (props: ModuleProps) => {
         return props.createFormProps;
       case 'edit':
         return props.editFormProps;
-      case 'details':
-        return props.detailsFormProps;
       default:
         return props.createFormProps;
     }
-  }, [
-    drawerViewMode,
-    props.createFormProps,
-    props.detailsFormProps,
-    props.editFormProps,
-  ]);
+  }, [drawerViewMode, props.createFormProps, props.editFormProps]);
 
   useEffect(() => {
     const { data } = useTableReturn;
@@ -159,12 +154,14 @@ const CrudModule = (props: ModuleProps) => {
   // during props destructuring in the `FormComponent`,
   // we remove it from `formProps` and store it separately.
   const formOnSuccess = formProps?.onSuccess;
+  const formOnDeleteSuccess = formProps?.onDeleteSuccess;
   const enhancedFormProps = { ...formProps };
   delete enhancedFormProps.onSuccess;
+  delete enhancedFormProps.onDeleteSuccess;
 
   const { filters, ...tableSubmoduleProps } = props.tableProps;
 
-  const { isPending } = useTableReturn;
+  const { isPending, tableQueryState } = useTableReturn;
 
   return (
     <CrudRoot
@@ -205,9 +202,7 @@ const CrudModule = (props: ModuleProps) => {
             setCurrentViewIndex(0);
           }}
           hideAddButton={!props.createFormProps}
-          hideEditButton={!props.editFormProps}
-          hideDeleteButton={props.hideDeleteButton}
-          hideDetailsButton={!props.detailsFormProps}
+          hideDetailsButton={props.hideDetailsButton}
           filterCallback={props.filterCallback}
           externalSearch={props.externalSearch}
           filterSettingsId={props.filterSettingsId}
@@ -233,6 +228,17 @@ const CrudModule = (props: ModuleProps) => {
                 formOnSuccess(data);
               }
             }}
+            onDeleteSuccess={(data) => {
+              useTableReturn.refresh();
+
+              setSelectedRow(null);
+              setDrawerViewMode(null);
+              setCurrentViewIndex(0);
+
+              if (formOnDeleteSuccess) {
+                formOnDeleteSuccess(data);
+              }
+            }}
             onClose={() => {
               setSelectedRow(null);
               setDrawerViewMode(null);
@@ -241,6 +247,8 @@ const CrudModule = (props: ModuleProps) => {
             onPrevious={() => changeCurrentFormData('previous')}
             onNext={() => changeCurrentFormData('next')}
             isLoading={isPending}
+            viewIndex={currentViewIndex + 1}
+            rowsPerPage={tableQueryState.rowsPerPage}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}
