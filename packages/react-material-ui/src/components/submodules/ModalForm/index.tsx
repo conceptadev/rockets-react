@@ -10,15 +10,20 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
+  Typography,
 } from '@mui/material';
-import { Close as CloseIcon } from '@mui/icons-material';
+import {
+  Close as CloseIcon,
+  ChevronLeft,
+  ChevronRight,
+} from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
 import SchemaForm, { SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
-type Action = 'creation' | 'edit' | 'details' | null;
+type Action = 'creation' | 'edit' | null;
 
 type ModalFormSubmoduleProps = PropsWithChildren<
   Omit<
@@ -47,6 +52,13 @@ type ModalFormSubmoduleProps = PropsWithChildren<
   widgets?: FormProps['widgets'];
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
+  onPrevious?: (data: unknown) => void;
+  onNext?: (data: unknown) => void;
+  isLoading?: boolean;
+  viewIndex?: number;
+  rowsPerPage?: number;
 };
 
 const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
@@ -55,7 +67,6 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     viewMode,
     widgets,
     onClose,
-    title,
     formSchema,
     formUiSchema,
     formData,
@@ -65,10 +76,17 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     children,
     onSuccess,
     onError,
+    onDeleteSuccess,
+    onDeleteError,
+    onPrevious,
+    onNext,
+    isLoading,
+    viewIndex,
+    rowsPerPage,
     ...otherProps
   } = props;
 
-  const { post, patch } = useDataProvider();
+  const { post, patch, del } = useDataProvider();
 
   const { execute: createItem, isPending: isLoadingCreation } = useQuery(
     (data: Record<string, unknown>) =>
@@ -96,6 +114,18 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     },
   );
 
+  const { execute: deleteItem, isPending: isLoadingDelete } = useQuery(
+    (data: Record<string, unknown>) =>
+      del({
+        uri: `/${queryResource}/${data.id}`,
+      }),
+    false,
+    {
+      onSuccess: onDeleteSuccess,
+      onError: onDeleteError,
+    },
+  );
+
   const handleFormSubmit = async (
     values: IChangeEvent<Record<string, unknown>>,
   ) => {
@@ -117,7 +147,9 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
 
   return (
     <Dialog open={viewMode !== null} maxWidth="md" fullWidth onClose={onClose}>
-      <DialogTitle>{formSchema?.title || title}</DialogTitle>
+      <DialogTitle>
+        {viewMode === 'creation' ? 'Add Data' : 'Edit Data'}
+      </DialogTitle>
       <IconButton
         aria-label="close"
         onClick={onClose}
@@ -143,8 +175,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
           onSubmit={handleFormSubmit}
           noHtml5Validate={true}
           showErrorList={false}
-          formData={formData}
-          readonly={viewMode === 'details'}
+          formData={isLoading ? null : formData}
           widgets={_widgets}
           customValidate={customValidate}
           {...otherProps}
@@ -155,15 +186,59 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
               display="flex"
               flexDirection="row"
               alignItems="center"
-              justifyContent="flex-end"
+              justifyContent={
+                viewMode === 'creation' ? 'flex-end' : 'space-between'
+              }
               mt={4}
             >
-              {viewMode !== 'details' && (
+              {viewMode !== 'creation' && (
+                <Box display="flex" alignItems="center" gap={2}>
+                  <Button
+                    onClick={() => onPrevious(formData)}
+                    disabled={isLoading}
+                  >
+                    <ChevronLeft sx={{ color: '#333' }} />
+                  </Button>
+                  <Typography>
+                    {isLoading ? '' : `Row ${viewIndex}/${rowsPerPage}`}
+                  </Typography>
+                  <Button onClick={() => onNext(formData)} disabled={isLoading}>
+                    <ChevronRight sx={{ color: '#333' }} />
+                  </Button>
+                </Box>
+              )}
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                mt={2}
+                gap={2}
+              >
+                {viewMode !== 'creation' ? (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => deleteItem(formData)}
+                    sx={{ flex: 1 }}
+                  >
+                    {isLoadingDelete ? (
+                      <CircularProgress sx={{ color: 'white' }} size={24} />
+                    ) : (
+                      cancelButtonTitle || 'Delete'
+                    )}
+                  </Button>
+                ) : (
+                  <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                    {cancelButtonTitle || 'Close'}
+                  </Button>
+                )}
                 <Button
                   type="submit"
                   variant="contained"
-                  disabled={isLoadingCreation || isLoadingEdit}
-                  sx={{ flex: 1, mr: 2 }}
+                  disabled={
+                    isLoadingCreation || isLoadingEdit || isLoadingDelete
+                  }
+                  sx={{ flex: 1 }}
                 >
                   {isLoadingCreation || isLoadingEdit ? (
                     <CircularProgress sx={{ color: 'white' }} size={24} />
@@ -171,10 +246,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                     submitButtonTitle || 'Save'
                   )}
                 </Button>
-              )}
-              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                {cancelButtonTitle || 'Close'}
-              </Button>
+              </Box>
             </Box>
           </>
         </SchemaForm.Form>

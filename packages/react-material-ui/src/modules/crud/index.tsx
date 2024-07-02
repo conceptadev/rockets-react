@@ -2,7 +2,7 @@ import React, { PropsWithChildren } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 
 import useTable from '../../components/Table/useTable';
@@ -19,7 +19,7 @@ import { Search } from '../../components/Table/types';
 import CrudRoot from './CrudRoot';
 import { FilterDetails } from '../../components/submodules/Filter';
 
-type Action = 'creation' | 'edit' | 'details' | null;
+type Action = 'creation' | 'edit' | null;
 
 type SelectedRow = Record<string, unknown> | null;
 
@@ -46,6 +46,8 @@ interface FormProps {
   customValidate?: CustomValidator;
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
 }
 
 export interface ModuleProps {
@@ -53,10 +55,10 @@ export interface ModuleProps {
   resource: string;
   tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
-  detailsFormProps?: PropsWithChildren<FormProps>;
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
   hideDeleteButton?: boolean;
+  hideDetailsButton?: boolean;
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
@@ -65,12 +67,53 @@ export interface ModuleProps {
 const CrudModule = (props: ModuleProps) => {
   const [drawerViewMode, setDrawerViewMode] = useState<Action>(null);
   const [selectedRow, setSelectedRow] = useState<SelectedRow>(null);
+  const [currentViewIndex, setCurrentViewIndex] = useState<number>(0);
 
   const useTableReturn = useTable(props.resource, {
     callbacks: {
       onError: props.onFetchError,
     },
   });
+
+  const changeCurrentFormData = (direction: 'previous' | 'next') => {
+    const { data, tableQueryState, setTableQueryState, pageCount } =
+      useTableReturn;
+
+    const isPrevious = direction === 'previous';
+    const isNext = direction === 'next';
+
+    const isFirstItem = currentViewIndex === 0;
+    const isLastItem = currentViewIndex === data.length - 1;
+
+    if (
+      (isPrevious && isFirstItem && tableQueryState.page === 1) ||
+      (isNext && isLastItem && tableQueryState.page === pageCount)
+    ) {
+      return;
+    }
+
+    if (direction === 'previous') {
+      if (isFirstItem && tableQueryState.page > 1) {
+        setTableQueryState({
+          ...tableQueryState,
+          page: tableQueryState.page - 1,
+        });
+      }
+
+      setCurrentViewIndex(isFirstItem ? data.length - 1 : currentViewIndex - 1);
+    }
+
+    if (direction === 'next') {
+      if (isLastItem && tableQueryState.page < pageCount) {
+        setTableQueryState({
+          ...tableQueryState,
+          page: tableQueryState.page + 1,
+        });
+      }
+
+      setCurrentViewIndex(isLastItem ? 0 : currentViewIndex + 1);
+    }
+  };
 
   const FormComponent = useMemo(() => {
     switch (props.formContainerVariation) {
@@ -89,26 +132,33 @@ const CrudModule = (props: ModuleProps) => {
         return props.createFormProps;
       case 'edit':
         return props.editFormProps;
-      case 'details':
-        return props.detailsFormProps;
       default:
         return props.createFormProps;
     }
-  }, [
-    drawerViewMode,
-    props.createFormProps,
-    props.detailsFormProps,
-    props.editFormProps,
-  ]);
+  }, [drawerViewMode, props.createFormProps, props.editFormProps]);
+
+  useEffect(() => {
+    const { data } = useTableReturn;
+
+    if (!data || !data.length) {
+      return;
+    }
+
+    setSelectedRow(data[currentViewIndex] as SelectedRow);
+  }, [useTableReturn.data, currentViewIndex]);
 
   // To prevent accidental overriding of the `onSuccess` callback
   // during props destructuring in the `FormComponent`,
   // we remove it from `formProps` and store it separately.
   const formOnSuccess = formProps?.onSuccess;
+  const formOnDeleteSuccess = formProps?.onDeleteSuccess;
   const enhancedFormProps = { ...formProps };
   delete enhancedFormProps.onSuccess;
+  delete enhancedFormProps.onDeleteSuccess;
 
   const { filters, ...tableSubmoduleProps } = props.tableProps;
+
+  const { isPending, tableQueryState } = useTableReturn;
 
   return (
     <CrudRoot
@@ -132,15 +182,15 @@ const CrudModule = (props: ModuleProps) => {
           onAction={(payload) => {
             setSelectedRow(payload.row);
             setDrawerViewMode(payload.action);
+            setCurrentViewIndex(payload.index);
           }}
           onAddNew={() => {
             setSelectedRow(null);
             setDrawerViewMode('creation');
+            setCurrentViewIndex(0);
           }}
           hideAddButton={!props.createFormProps}
-          hideEditButton={!props.editFormProps}
-          hideDeleteButton={props.hideDeleteButton}
-          hideDetailsButton={!props.detailsFormProps}
+          hideDetailsButton={props.hideDetailsButton}
           filterCallback={props.filterCallback}
           externalSearch={props.externalSearch}
           {...useTableReturn}
@@ -155,17 +205,36 @@ const CrudModule = (props: ModuleProps) => {
             formData={selectedRow}
             onSuccess={(data) => {
               useTableReturn.refresh();
+
               setSelectedRow(null);
               setDrawerViewMode(null);
+              setCurrentViewIndex(0);
 
               if (formOnSuccess) {
                 formOnSuccess(data);
               }
             }}
+            onDeleteSuccess={(data) => {
+              useTableReturn.refresh();
+
+              setSelectedRow(null);
+              setDrawerViewMode(null);
+              setCurrentViewIndex(0);
+
+              if (formOnDeleteSuccess) {
+                formOnDeleteSuccess(data);
+              }
+            }}
             onClose={() => {
               setSelectedRow(null);
               setDrawerViewMode(null);
+              setCurrentViewIndex(0);
             }}
+            onPrevious={() => changeCurrentFormData('previous')}
+            onNext={() => changeCurrentFormData('next')}
+            isLoading={isPending}
+            viewIndex={currentViewIndex + 1}
+            rowsPerPage={tableQueryState.rowsPerPage}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}
