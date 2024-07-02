@@ -39,7 +39,7 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
-type Action = 'creation' | 'edit' | 'details' | null;
+type Action = 'creation' | 'edit' | null;
 
 type BasicType = string | number | boolean;
 
@@ -93,14 +93,10 @@ export interface TableSubmoduleProps {
     React.SetStateAction<TableQueryStateProps>
   >;
   hideActionsColumn?: boolean;
-  hideEditButton?: boolean;
-  hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   hasAllOption?: boolean;
   hideAddButton?: boolean;
   reordable?: boolean;
-  onDeleteSuccess?: (data: unknown) => void;
-  onDeleteError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
   search?: Search;
@@ -119,32 +115,10 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
   const [mobileCurrentRow, setMobileCurrentRow] = useState<RowProps | null>(
     null,
   );
-  const { del } = useDataProvider();
-
-  const { execute: deleteItem } = useQuery(
-    (id: string | number) =>
-      del({
-        uri: `/${props.queryResource}/${id}`,
-      }),
-    false,
-    {
-      onSuccess: (data: unknown) => {
-        if (props.refresh) {
-          props.refresh();
-        }
-
-        if (props.onDeleteSuccess) {
-          props.onDeleteSuccess(data);
-        }
-      },
-      onError: props.onDeleteError,
-    },
-  );
 
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
-  const noActions =
-    props.hideEditButton && props.hideDeleteButton && props.hideDetailsButton;
+  const noActions = props.hideDetailsButton;
 
   const tableHeaders: TableSchemaItem[] = useMemo(() => {
     return [
@@ -225,7 +199,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                     e.stopPropagation();
                     if (props.onAction) {
                       props.onAction({
-                        action: 'details',
+                        action: 'edit',
                         row: rowData,
                         index,
                       });
@@ -241,7 +215,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         },
       };
     });
-  }, [props, tableHeaders, deleteItem]);
+  }, [props, tableHeaders]);
 
   const closeModal = () => {
     setMobileCurrentRow(null);

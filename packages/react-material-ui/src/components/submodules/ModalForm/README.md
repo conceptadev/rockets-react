@@ -25,7 +25,7 @@ Schema for the title, name and data of the modal form fields, imported from `@rj
 
 ### **viewMode**
 
-Defines how the form fields and submit function will behave. Can be `creation`, `edit` or `details`.
+Defines how the form fields and submit function will behave. Can be `creation` or `edit`.
 
 **type**: `string`\
 **required**: `false`
