@@ -17,10 +17,11 @@ import {
   closestCenter,
   DndContext,
   KeyboardSensor,
-  PointerSensor,
   useSensor,
   useSensors,
   DragEndEvent,
+  MouseSensor,
+  TouchSensor,
 } from '@dnd-kit/core';
 import {
   arrayMove,
@@ -76,7 +77,6 @@ const SortableItem = (props: SortableItemProps) => {
     useSortable({ id });
 
   const style = {
-    touchAction: 'none',
     transform: CSS.Transform.toString(transform),
     transition,
   };
@@ -141,7 +141,13 @@ const OrderableDropDown = ({
   text,
 }: Props) => {
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
+      activationConstraint: {
+        delay: 0,
+        tolerance: 5,
+      },
+    }),
+    useSensor(TouchSensor, {
       activationConstraint: {
         delay: 0,
         tolerance: 5,
