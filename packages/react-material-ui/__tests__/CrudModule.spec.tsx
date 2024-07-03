@@ -92,9 +92,6 @@ describe('CrudModule Component', () => {
     createFormProps: {
       formSchema: schema,
     },
-    detailsFormProps: {
-      formSchema: schema,
-    },
     editFormProps: {
       formSchema: schema,
     },
@@ -294,6 +291,7 @@ describe('CrudModule Component', () => {
     const { container, queryAllByTestId, findByRole, getByText } = render(
       <CrudModule {...props} />,
     );
+
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
@@ -304,7 +302,7 @@ describe('CrudModule Component', () => {
     await findByRole('presentation');
 
     const saveButton = getByText('Save');
-    const closeButton = getByText('Close');
+    const closeButton = getByText('Delete');
 
     expect(saveButton).toBeInTheDocument();
     expect(closeButton).toBeInTheDocument();
