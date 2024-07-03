@@ -171,7 +171,15 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
           <CloseIcon />
         </IconButton>
       </Box>
-      <Box padding={4} mb={2}>
+      <Box
+        padding={4}
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <SchemaForm.Form
           schema={{
             ...formSchema,
@@ -181,6 +189,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
           }}
           uiSchema={{
             ...formUiSchema,
+            'ui:submitButtonOptions': { norender: true },
           }}
           validator={validator}
           onSubmit={handleFormSubmit}
@@ -191,76 +200,65 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
           customValidate={customValidate}
           {...otherProps}
         >
-          <>
-            {children}
-            <Box
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent={
-                viewMode === 'creation' ? 'flex-end' : 'space-between'
-              }
-              mt={4}
-            >
-              {viewMode !== 'creation' && (
-                <Box display="flex" alignItems="center" gap={2}>
-                  <IconButton
-                    onClick={() => onPrevious(formData)}
-                    disabled={isLoading}
-                  >
-                    <ChevronLeft sx={{ color: '#333' }} />
-                  </IconButton>
-                  <Typography>
-                    {isLoading ? '' : `Row ${viewIndex}/${rowsPerPage}`}
-                  </Typography>
-                  <IconButton
-                    onClick={() => onNext(formData)}
-                    disabled={isLoading}
-                  >
-                    <ChevronRight sx={{ color: '#333' }} />
-                  </IconButton>
-                </Box>
-              )}
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gap={2}
-              >
-                {viewMode !== 'creation' ? (
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => deleteItem(formData)}
-                    sx={{ flex: 1 }}
-                  >
-                    {isLoadingDelete ? (
-                      <CircularProgress sx={{ color: 'white' }} size={24} />
-                    ) : (
-                      cancelButtonTitle || 'Delete'
-                    )}
-                  </Button>
-                ) : (
-                  <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                    {cancelButtonTitle || 'Close'}
-                  </Button>
-                )}
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={isLoadingCreation || isLoadingEdit}
-                  sx={{ flex: 1 }}
-                >
-                  {isLoadingCreation || isLoadingEdit ? (
-                    <CircularProgress sx={{ color: 'white' }} size={24} />
-                  ) : (
-                    submitButtonTitle || 'Save'
-                  )}
-                </Button>
-              </Box>
-            </Box>
-          </>
+          {children}
         </SchemaForm.Form>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent={
+            viewMode === 'creation' ? 'flex-end' : 'space-between'
+          }
+        >
+          {viewMode !== 'creation' && (
+            <Box display="flex" alignItems="center" gap={2}>
+              <IconButton
+                onClick={() => onPrevious(formData)}
+                disabled={isLoading}
+              >
+                <ChevronLeft sx={{ color: '#333' }} />
+              </IconButton>
+              <Typography>
+                {isLoading ? '' : `Row ${viewIndex}/${rowsPerPage}`}
+              </Typography>
+              <IconButton onClick={() => onNext(formData)} disabled={isLoading}>
+                <ChevronRight sx={{ color: '#333' }} />
+              </IconButton>
+            </Box>
+          )}
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
+            {viewMode !== 'creation' ? (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => deleteItem(formData)}
+                sx={{ flex: 1 }}
+              >
+                {isLoadingDelete ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  cancelButtonTitle || 'Delete'
+                )}
+              </Button>
+            ) : (
+              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                {cancelButtonTitle || 'Cancel'}
+              </Button>
+            )}
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isLoadingCreation || isLoadingEdit}
+              sx={{ flex: 1 }}
+            >
+              {isLoadingCreation || isLoadingEdit ? (
+                <CircularProgress sx={{ color: 'white' }} size={24} />
+              ) : (
+                submitButtonTitle || 'Save'
+              )}
+            </Button>
+          </Box>
+        </Box>
       </Box>
     </Drawer>
   );
