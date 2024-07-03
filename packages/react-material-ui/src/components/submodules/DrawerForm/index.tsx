@@ -204,18 +204,21 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             >
               {viewMode !== 'creation' && (
                 <Box display="flex" alignItems="center" gap={2}>
-                  <Button
+                  <IconButton
                     onClick={() => onPrevious(formData)}
                     disabled={isLoading}
                   >
                     <ChevronLeft sx={{ color: '#333' }} />
-                  </Button>
+                  </IconButton>
                   <Typography>
                     {isLoading ? '' : `Row ${viewIndex}/${rowsPerPage}`}
                   </Typography>
-                  <Button onClick={() => onNext(formData)} disabled={isLoading}>
+                  <IconButton
+                    onClick={() => onNext(formData)}
+                    disabled={isLoading}
+                  >
                     <ChevronRight sx={{ color: '#333' }} />
-                  </Button>
+                  </IconButton>
                 </Box>
               )}
               <Box
