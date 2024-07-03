@@ -40,8 +40,6 @@ interface TableProps {
   reordable?: boolean;
   filters?: FilterDetails[];
   paginationStyle?: PaginationStyle;
-  onDeleteSuccess?: (data: unknown) => void;
-  onDeleteError?: (error: unknown) => void;
   mobileModalTitleSrc?: string;
   allowModalPreview?: boolean;
 }
@@ -65,7 +63,6 @@ export interface ModuleProps {
   formContainerVariation?: 'drawer' | 'modal';
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
-  hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;

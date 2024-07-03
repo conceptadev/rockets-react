@@ -26,7 +26,6 @@ const UsersModule = ({
     <CrudModule
       title="Users"
       resource="user"
-      hideDeleteButton
       tableProps={{
         tableSchema: headers,
         reordable: true,
