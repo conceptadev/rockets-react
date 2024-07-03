@@ -202,7 +202,7 @@ const CrudModule = (props: ModuleProps) => {
             setCurrentViewIndex(0);
           }}
           hideAddButton={!props.createFormProps}
-          hideDetailsButton={props.hideDetailsButton}
+          hideDetailsButton={props.hideDetailsButton || !props.editFormProps}
           filterCallback={props.filterCallback}
           externalSearch={props.externalSearch}
           filterSettingsId={props.filterSettingsId}
