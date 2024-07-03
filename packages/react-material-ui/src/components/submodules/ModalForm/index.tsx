@@ -232,7 +232,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                   </Button>
                 ) : (
                   <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                    {cancelButtonTitle || 'Close'}
+                    {cancelButtonTitle || 'Cancel'}
                   </Button>
                 )}
                 <Button
