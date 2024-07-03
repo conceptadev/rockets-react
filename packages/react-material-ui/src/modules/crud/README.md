@@ -77,28 +77,6 @@ By default, displaying valid data on the table is the success feedback for the f
 
 If needed, the `error` argument can be passed to the function as a way to access the specific network error provided by the query.
 
-## Delete action feedback
-
-By default, only the `delete` button is visible, appearing as a trash can icon. By clicking on the delete button of an item, a request is performed to the `API_URL/{resource}/{id}` endpoint, but no feedback is displayed by default. To add custom handlers for success and error of this request, the `onDeleteSuccess` and `onDeleteError` function props can be passed to the `tableProps` object, as follows:
-
-```jsx
-<CrudModule
-  resource="users"
-  title="Users"
-  tableProps={{
-    tableSchema: [
-      { id: 'id', label: 'ID' },
-      { id: 'email', label: 'Email' },
-      { id: 'active', label: 'Status' },
-    ],
-    onDeleteSuccess: () => window.alert('Item successfully deleted!'),
-    onDeleteError: () => window.alert('Error deleting item!'),
-  }}
-/>
-```
-
-To overwrite this default and hide the delete button, the `hideDeleteButton` boolean prop can be passed to the `tableProps` object.
-
 ## Styling the table
 
 To modify the theme/style of the module table, a `tableTheme` prop can be passed inside the `tableProps` object. Based on this prop, a set of table parts can be stylized:
@@ -341,6 +319,38 @@ The input structure and layout of each form is composed by a set of values passe
     cancelButtonTitle: 'Cancel',
     onSuccess: (data) => window.alert(`${data.email} created successfully!`),
     onError: (error) => window.alert(error?.data?.message),
+  }}
+  editFormProps={{
+    formSchema: {
+      type: 'object',
+      required: ['fullName', 'email', 'username'],
+      properties: {
+        fullName: { type: 'string', title: 'Full Name' },
+        email: {
+          type: 'string',
+          title: 'Email',
+          minLength: 3,
+          format: 'email',
+        },
+        username: { type: 'string', title: 'Username', minLength: 3 },
+      },
+    },
+    formUiSchema: {
+      email: {
+        'ui:widget': CustomTextFieldWidget,
+        'ui:disabled': true,
+      },
+      username: {
+        'ui:widget': CustomTextFieldWidget,
+        'ui:disabled': true,
+      },
+    },
+    submitButtonTitle: 'Submit',
+    cancelButtonTitle: 'Delete',
+    onSuccess: (data) => window.alert(`${data.email} updated successfully!`),
+    onError: (error) => window.alert(error?.data?.message),
+    onDeleteSuccess: () => window.alert('Data deleted successfully!'),
+    onDeleteError: (error) => window.alert(error?.data?.message),
   }}
 />
 ```
