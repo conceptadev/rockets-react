@@ -18,7 +18,7 @@ Schema for the title, name and data of the drawer form fields, imported from `@r
 
 ### **viewMode**
 
-Defines how the form fields and submit function will behave. Can be `creation` or `edit`.
+Defines how the form fields and submit function will behave. Can be `creation`, `edit` or `details`.
 
 **type**: `string`\
 **required**: `false`
