@@ -26,6 +26,7 @@ const UsersModule = ({
     <CrudModule
       title="Users"
       resource="user"
+      hideDeleteButton
       tableProps={{
         tableSchema: headers,
         reordable: true,
@@ -43,6 +44,7 @@ const UsersModule = ({
         onDeleteSuccess: onDeleteSuccess,
         onDeleteError: onDeleteError,
       }}
+      detailsFormProps={CREATE_EDIT_FORM}
       {...props}
     />
   );
