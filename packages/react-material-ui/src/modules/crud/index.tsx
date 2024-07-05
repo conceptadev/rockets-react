@@ -27,7 +27,7 @@ import {
   FilterValues,
 } from './useCrudRoot';
 
-type Action = 'creation' | 'edit' | null;
+type Action = 'creation' | 'edit' | 'details' | null;
 
 type SelectedRow = Record<string, unknown> | null;
 
@@ -40,6 +40,8 @@ interface TableProps {
   reordable?: boolean;
   filters?: FilterDetails[];
   paginationStyle?: PaginationStyle;
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
   mobileModalTitleSrc?: string;
   allowModalPreview?: boolean;
 }
@@ -61,8 +63,10 @@ export interface ModuleProps {
   resource: string;
   tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
+  detailsFormProps?: PropsWithChildren<FormProps>;
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
+  hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
@@ -140,10 +144,17 @@ const CrudModule = (props: ModuleProps) => {
         return props.createFormProps;
       case 'edit':
         return props.editFormProps;
+      case 'details':
+        return props.detailsFormProps;
       default:
         return props.createFormProps;
     }
-  }, [drawerViewMode, props.createFormProps, props.editFormProps]);
+  }, [
+    drawerViewMode,
+    props.createFormProps,
+    props.detailsFormProps,
+    props.editFormProps,
+  ]);
 
   useEffect(() => {
     const { data } = useTableReturn;
@@ -207,7 +218,9 @@ const CrudModule = (props: ModuleProps) => {
             setCurrentViewIndex(0);
           }}
           hideAddButton={!props.createFormProps}
-          hideDetailsButton={props.hideDetailsButton || !props.editFormProps}
+          hideEditButton={!props.editFormProps}
+          hideDeleteButton={props.hideDeleteButton}
+          hideDetailsButton={!props.detailsFormProps}
           filterCallback={props.filterCallback}
           externalSearch={props.externalSearch}
           filterCacheKey={props.filterCacheKey}

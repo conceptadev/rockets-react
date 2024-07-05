@@ -39,7 +39,7 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
-type Action = 'creation' | 'edit' | null;
+type Action = 'creation' | 'edit' | 'details' | null;
 
 type BasicType = string | number | boolean;
 
@@ -48,7 +48,7 @@ type SimpleFilter = Record<string, BasicType | BasicType[] | null>;
 type ActionCallbackPayload = {
   action: Action;
   row: Record<string, unknown>;
-  index: number;
+  index?: number;
 };
 
 export type PaginationStyle = 'default' | 'numeric';
@@ -93,10 +93,14 @@ export interface TableSubmoduleProps {
     React.SetStateAction<TableQueryStateProps>
   >;
   hideActionsColumn?: boolean;
+  hideEditButton?: boolean;
+  hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   hasAllOption?: boolean;
   hideAddButton?: boolean;
   reordable?: boolean;
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
   search?: Search;
@@ -116,9 +120,32 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
     null,
   );
 
+  const { del } = useDataProvider();
+
+  const { execute: deleteItem } = useQuery(
+    (id: string | number) =>
+      del({
+        uri: `/${props.queryResource}/${id}`,
+      }),
+    false,
+    {
+      onSuccess: (data: unknown) => {
+        if (props.refresh) {
+          props.refresh();
+        }
+
+        if (props.onDeleteSuccess) {
+          props.onDeleteSuccess(data);
+        }
+      },
+      onError: props.onDeleteError,
+    },
+  );
+
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
-  const noActions = props.hideDetailsButton;
+  const noActions =
+    props.hideEditButton && props.hideDeleteButton && props.hideDetailsButton;
 
   const tableHeaders: TableSchemaItem[] = useMemo(() => {
     return [
