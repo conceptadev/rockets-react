@@ -59,6 +59,8 @@ type DrawerFormSubmoduleProps = PropsWithChildren<
   isLoading?: boolean;
   viewIndex?: number;
   rowsPerPage?: number;
+  currentPage?: number;
+  pageCount?: number;
 };
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
@@ -83,6 +85,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     isLoading,
     viewIndex,
     rowsPerPage,
+    currentPage,
+    pageCount,
     ...otherProps
   } = props;
 
@@ -214,20 +218,31 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             <Box display="flex" alignItems="center" gap={2}>
               <IconButton
                 onClick={() => onPrevious(formData)}
-                disabled={isLoading}
+                disabled={isLoading || (currentPage === 1 && viewIndex === 1)}
               >
                 <ChevronLeft sx={{ color: '#333' }} />
               </IconButton>
               <Typography>
                 {isLoading ? '' : `Row ${viewIndex}/${rowsPerPage}`}
               </Typography>
-              <IconButton onClick={() => onNext(formData)} disabled={isLoading}>
+              <IconButton
+                onClick={() => onNext(formData)}
+                disabled={
+                  isLoading ||
+                  (currentPage === pageCount && viewIndex === rowsPerPage)
+                }
+              >
                 <ChevronRight sx={{ color: '#333' }} />
               </IconButton>
             </Box>
           )}
           <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-            {viewMode !== 'creation' ? (
+            {viewMode === 'creation' && (
+              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                {cancelButtonTitle || 'Cancel'}
+              </Button>
+            )}
+            {viewMode === 'edit' && (
               <Button
                 variant="contained"
                 color="error"
@@ -240,23 +255,26 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
                   cancelButtonTitle || 'Delete'
                 )}
               </Button>
-            ) : (
+            )}
+            {viewMode === 'details' && (
               <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                {cancelButtonTitle || 'Cancel'}
+                {cancelButtonTitle || 'Close'}
               </Button>
             )}
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={isLoadingCreation || isLoadingEdit}
-              sx={{ flex: 1 }}
-            >
-              {isLoadingCreation || isLoadingEdit ? (
-                <CircularProgress sx={{ color: 'white' }} size={24} />
-              ) : (
-                submitButtonTitle || 'Save'
-              )}
-            </Button>
+            {viewMode !== 'details' && (
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={isLoadingCreation || isLoadingEdit || isLoadingDelete}
+                sx={{ flex: 1 }}
+              >
+                {isLoadingCreation || isLoadingEdit ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  submitButtonTitle || 'Save'
+                )}
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>
