@@ -59,6 +59,7 @@ export interface ModuleProps {
   detailsFormProps?: PropsWithChildren<FormProps>;
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
+  hideEditButton?: boolean;
   hideDeleteButton?: boolean;
   hideDetailsButton?: boolean;
   onFetchError?: (error: unknown) => void;
@@ -210,9 +211,9 @@ const CrudModule = (props: ModuleProps) => {
             setCurrentViewIndex(0);
           }}
           hideAddButton={!props.createFormProps}
-          hideEditButton={!props.editFormProps}
+          hideEditButton={!props.editFormProps || props.hideEditButton}
           hideDeleteButton={props.hideDeleteButton}
-          hideDetailsButton={!props.detailsFormProps}
+          hideDetailsButton={!props.detailsFormProps || props.hideDetailsButton}
           filterCallback={props.filterCallback}
           externalSearch={props.externalSearch}
           filterSettingsId={props.filterSettingsId}
@@ -259,6 +260,8 @@ const CrudModule = (props: ModuleProps) => {
             isLoading={isPending}
             viewIndex={currentViewIndex + 1}
             rowsPerPage={tableQueryState.rowsPerPage}
+            currentPage={tableQueryState.page}
+            pageCount={useTableReturn.pageCount}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}

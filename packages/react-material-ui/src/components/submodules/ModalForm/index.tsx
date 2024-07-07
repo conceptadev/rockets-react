@@ -59,6 +59,8 @@ type ModalFormSubmoduleProps = PropsWithChildren<
   isLoading?: boolean;
   viewIndex?: number;
   rowsPerPage?: number;
+  currentPage?: number;
+  pageCount?: number;
 };
 
 const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
@@ -83,6 +85,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     isLoading,
     viewIndex,
     rowsPerPage,
+    currentPage,
+    pageCount,
     ...otherProps
   } = props;
 
@@ -195,7 +199,9 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                 <Box display="flex" alignItems="center" gap={2}>
                   <IconButton
                     onClick={() => onPrevious(formData)}
-                    disabled={isLoading}
+                    disabled={
+                      isLoading || (currentPage === 1 && viewIndex === 1)
+                    }
                   >
                     <ChevronLeft sx={{ color: '#333' }} />
                   </IconButton>
@@ -204,7 +210,10 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                   </Typography>
                   <IconButton
                     onClick={() => onNext(formData)}
-                    disabled={isLoading}
+                    disabled={
+                      isLoading ||
+                      (currentPage === pageCount && viewIndex === rowsPerPage)
+                    }
                   >
                     <ChevronRight sx={{ color: '#333' }} />
                   </IconButton>
@@ -217,7 +226,12 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                 mt={2}
                 gap={2}
               >
-                {viewMode !== 'creation' ? (
+                {viewMode === 'creation' && (
+                  <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                    {cancelButtonTitle || 'Cancel'}
+                  </Button>
+                )}
+                {viewMode === 'edit' && (
                   <Button
                     variant="contained"
                     color="error"
@@ -230,25 +244,28 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                       cancelButtonTitle || 'Delete'
                     )}
                   </Button>
-                ) : (
+                )}
+                {viewMode === 'details' && (
                   <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                    {cancelButtonTitle || 'Cancel'}
+                    {cancelButtonTitle || 'Close'}
                   </Button>
                 )}
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={
-                    isLoadingCreation || isLoadingEdit || isLoadingDelete
-                  }
-                  sx={{ flex: 1 }}
-                >
-                  {isLoadingCreation || isLoadingEdit ? (
-                    <CircularProgress sx={{ color: 'white' }} size={24} />
-                  ) : (
-                    submitButtonTitle || 'Save'
-                  )}
-                </Button>
+                {viewMode !== 'details' && (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={
+                      isLoadingCreation || isLoadingEdit || isLoadingDelete
+                    }
+                    sx={{ flex: 1 }}
+                  >
+                    {isLoadingCreation || isLoadingEdit ? (
+                      <CircularProgress sx={{ color: 'white' }} size={24} />
+                    ) : (
+                      submitButtonTitle || 'Save'
+                    )}
+                  </Button>
+                )}
               </Box>
             </Box>
           </>
