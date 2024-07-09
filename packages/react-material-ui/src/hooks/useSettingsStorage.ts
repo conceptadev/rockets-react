@@ -35,21 +35,14 @@ type Settings = {
 //   data: ListItem[];
 // } & CommonCacheInfo;
 
-export const getPageSettings = ({ key, type, assignee, data }: Settings) => {
+export const getPageSettings = ({ type, data }: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(type));
 
   if (!storageItem) {
     return data;
   }
 
-  const settingsItem = storageItem.find(
-    (item: Settings) =>
-      item.key === key &&
-      item.type === type &&
-      item.assignee.id === assignee.id,
-  );
-
-  return settingsItem?.data || data;
+  return storageItem.data;
 };
 
 export const handlePageSettingsUpdate = ({
