@@ -208,7 +208,7 @@ export const Filter = (props: FilterProps) => {
   const auth = useAuth();
   const pathname = usePathname();
 
-  const { cachedSettings, changeSettings } = useSettingsStorage({
+  const { settings, setSettings } = useSettingsStorage({
     key: props.settingsId || pathname,
     type: 'filter',
     assignee: {
@@ -240,15 +240,15 @@ export const Filter = (props: FilterProps) => {
 
   const handleFilterOrderChange = (list: ListItem[]) => {
     setFilterOrder(list);
-    changeSettings(list);
+    setSettings(list);
   };
 
   useEffect(() => {
-    if (cachedSettings.length) {
+    if (settings.length) {
       const originalFilters = [...filters];
       const newFiltersOrder = [];
 
-      cachedSettings.forEach((item: ListItem) => {
+      settings.forEach((item: ListItem) => {
         const filterItemIndex = originalFilters.findIndex(
           (filter) => filter?.id === item.id,
         );
