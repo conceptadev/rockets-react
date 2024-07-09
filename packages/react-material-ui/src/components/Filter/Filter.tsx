@@ -208,7 +208,7 @@ export const Filter = (props: FilterProps) => {
   const auth = useAuth();
   const pathname = usePathname();
 
-  const { settings, setSettings } = useSettingsStorage({
+  const [settings, setSettings] = useSettingsStorage({
     key: props.settingsId || pathname,
     type: 'filter',
     assignee: {
