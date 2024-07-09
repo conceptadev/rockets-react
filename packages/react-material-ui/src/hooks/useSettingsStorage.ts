@@ -44,11 +44,7 @@ const getPageSettings = ({
 }: Omit<Settings, 'data'> & { cacheList: CacheResponse[] }) => {
   console.log('cache list: ', cacheList);
 
-  const source = cacheList.length
-    ? cacheList
-    : JSON.parse(localStorage.getItem(type));
-
-  const settingsItem = source.find(
+  const settingsItem = cacheList.find(
     (item) =>
       item.key === key &&
       item.type === type &&
@@ -63,35 +59,8 @@ const getPageSettings = ({
   };
 };
 
-const handlePageSettingsUpdate = ({ key, type, assignee, data }: Settings) => {
-  const storageItem = JSON.parse(localStorage.getItem(type));
-
-  const newSettings = {
-    key,
-    type,
-    assignee,
-    data,
-  };
-
-  if (!storageItem) {
-    localStorage.setItem(key, JSON.stringify([newSettings]));
-    return;
-  }
-
-  const settingsItemIndex = storageItem.findIndex(
-    (item: Settings) =>
-      item.assignee.id === assignee.id &&
-      item.key === key &&
-      item.type === type,
-  );
-
-  if (settingsItemIndex > -1) {
-    storageItem[settingsItemIndex] = newSettings;
-  } else {
-    storageItem.push(newSettings);
-  }
-
-  localStorage.setItem(key, JSON.stringify(storageItem));
+const handlePageSettingsUpdate = (data: CacheResponse) => {
+  localStorage.setItem(data.type, JSON.stringify(data));
 };
 
 export const useSettingsStorage = ({ key, assignee, type, data }: Settings) => {
@@ -109,12 +78,15 @@ export const useSettingsStorage = ({ key, assignee, type, data }: Settings) => {
         },
       }),
     false,
+    {
+      onSuccess: (data: CacheResponse) => handlePageSettingsUpdate(data),
+    },
   );
 
   const { execute: updateCache } = useQuery(
     (cache: string) =>
       patch({
-        uri: `/cache/user/${settingsCache.id}`,
+        uri: `/cache/user/${settingsState.id}`,
         body: {
           key,
           type,
@@ -123,6 +95,9 @@ export const useSettingsStorage = ({ key, assignee, type, data }: Settings) => {
         },
       }),
     false,
+    {
+      onSuccess: (data: CacheResponse) => handlePageSettingsUpdate(data),
+    },
   );
 
   const { data: cachedData } = useQuery(
@@ -137,39 +112,34 @@ export const useSettingsStorage = ({ key, assignee, type, data }: Settings) => {
     },
   );
 
-  // const [settingsCache, setSettingsCache] = useState<CacheState>({
-  //   id: '',
-  //   dateCreated: '',
-  //   dateUpdated: '',
-  //   dateDeleted: '',
-  //   version: 1,
-  //   key: key,
-  //   data: [],
-  //   type: type,
-  //   assignee: assignee,
-  // });
-
-  const [settingsCache, setSettingsCache] = useState<CacheState>(() => {
-    return getPageSettings({
-      key,
-      type,
-      assignee,
-      cacheList: cachedData as CacheResponse[],
-    });
+  const [settingsState, setSettingsState] = useState<CacheState>({
+    id: '',
+    dateCreated: '',
+    dateUpdated: '',
+    dateDeleted: '',
+    version: 1,
+    key: key,
+    data,
+    type: type,
+    assignee: assignee,
   });
 
   const setSettings = (list: ListItem[]) => {
-    setSettingsCache({
-      ...settingsCache,
+    setSettingsState({
+      ...settingsState,
       data: list,
     });
 
     updateCache(JSON.stringify(list));
-
-    handlePageSettingsUpdate({ key, type, assignee, data: list });
   };
 
-  console.log('SETTINGS: ', settingsCache);
+  useEffect(() => {
+    setSettingsState(
+      getPageSettings({ key, type, assignee, cacheList: cachedData || [] }),
+    );
+  }, [cachedData]);
 
-  return { settings: settingsCache.data, setSettings };
+  console.log('SETTINGS: ', settingsState);
+
+  return { settings: settingsState.data, setSettings };
 };
