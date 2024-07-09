@@ -1,81 +1,158 @@
 import { useState, useEffect } from 'react';
+import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+
+type Assignee = {
+  id: string;
+};
 
 type ListItem = {
   id: string;
-  hide: boolean;
+  hide?: boolean;
 };
 
 type Settings = {
   key: string;
-  user: string;
-  settingsId: string;
-  list: ListItem[];
+  assignee: Assignee;
+
+  type: string;
+  data: ListItem[];
 };
 
-export const getPageSettings = ({ key, user, settingsId, list }: Settings) => {
-  const storageItem = JSON.parse(localStorage.getItem(key));
+type CacheResponse = {
+  id: string;
+  dateCreated: string;
+  dateUpdated: string;
+  dateDeleted?: string;
+  version: number;
+  key: string;
+  data: string;
+  type: string;
+  assignee: Assignee;
+};
 
-  if (!storageItem) {
-    return list;
-  }
+type CacheState = {
+  id: string;
+  dateCreated: string;
+  dateUpdated: string;
+  dateDeleted?: string;
+  version: number;
+  key: string;
+  data: ListItem[];
+  type: string;
+  assignee: Assignee;
+};
 
-  const settingsItem = storageItem.find(
-    (item: Settings) => item.user === user && item.settingsId === settingsId,
+export const getPageSettings = ({
+  key,
+  assignee,
+  type,
+  cacheList,
+}: Omit<Settings, 'data'> & { cacheList: CacheResponse[] }) => {
+  console.log('cache list: ', cacheList);
+
+  const settingsItem = cacheList.find(
+    (item) =>
+      item.key === key &&
+      item.type === type &&
+      item.assignee.id === assignee.id,
   );
 
-  return settingsItem?.list || list;
-};
+  console.log('settings item: ', settingsItem);
 
-export const handlePageSettingsUpdate = ({
-  key,
-  user,
-  settingsId,
-  list,
-}: Settings) => {
-  const storageItem = JSON.parse(localStorage.getItem(key));
-
-  const newSettings = {
-    user,
-    settingsId,
-    list,
+  return {
+    ...settingsItem,
+    data: JSON.parse(settingsItem.data),
   };
-
-  if (!storageItem) {
-    localStorage.setItem(key, JSON.stringify([newSettings]));
-    return;
-  }
-
-  const settingsItemIndex = storageItem.findIndex(
-    (item: Settings) => item.user === user && item.settingsId === settingsId,
-  );
-
-  if (settingsItemIndex > -1) {
-    storageItem[settingsItemIndex] = newSettings;
-  } else {
-    storageItem.push(newSettings);
-  }
-
-  localStorage.setItem(key, JSON.stringify(storageItem));
 };
 
-export const useSettingsStorage = ({
-  key,
-  user,
-  settingsId,
-  list,
-}: Settings) => {
-  const [settings, setSettings] = useState(() => {
-    return getPageSettings({ key, user, settingsId, list });
+export const useSettingsStorage = ({ key, assignee, type, data }: Settings) => {
+  const [settings, setSettings] = useState<CacheState>({
+    id: '',
+    dateCreated: '',
+    dateUpdated: '',
+    dateDeleted: '',
+    version: 1,
+    key: key,
+    data: [],
+    type: type,
+    assignee: assignee,
   });
 
-  useEffect(() => {
-    handlePageSettingsUpdate({
-      key,
-      user,
-      settingsId,
-      list: settings,
-    });
-  }, [key, settings]);
+  const { get, post, patch } = useDataProvider();
 
-  return [settings, setSettings];
+  const { data: cachedData } = useQuery(
+    () => get({ uri: '/cache/user' }),
+    true,
+    {
+      onSuccess: (fetchedData) =>
+        setSettings(
+          getPageSettings({
+            key,
+            type,
+            assignee,
+            cacheList: fetchedData as CacheResponse[],
+          }),
+        ),
+    },
+  );
+
+  const { execute: createCache } = useQuery(
+    (cache: Record<string, unknown>) =>
+      post({
+        uri: `/cache/user`,
+        body: {
+          key,
+          type,
+          assignee,
+          data: cache,
+        },
+      }),
+    false,
+    {
+      onSuccess: (creationData: CacheResponse) =>
+        setSettings({
+          ...creationData,
+          data: JSON.parse(creationData.data),
+        }),
+    },
+  );
+
+  const { execute: updateCache } = useQuery(
+    (cache: Record<string, unknown>) =>
+      patch({
+        uri: `/cache/user/${settings.id}`,
+        body: {
+          key,
+          type,
+          assignee,
+          data: cache,
+        },
+      }),
+    false,
+    {
+      onSuccess: (updateData: CacheResponse) =>
+        setSettings({
+          ...updateData,
+          data: JSON.parse(updateData.data),
+        }),
+    },
+  );
+
+  const changeSettings = (list: ListItem[]) =>
+    setSettings({
+      ...settings,
+      data: list,
+    });
+
+  useEffect(() => {
+    const cached = (cachedData || []) as CacheResponse[];
+
+    if (!cached.length && !settings.data.length && data.length) {
+      createCache(JSON.stringify(data));
+    }
+  }, [cachedData, data]);
+
+  console.log('SETTINGS: ', settings);
+
+  return { cachedSettings: settings.data, changeSettings };
 };

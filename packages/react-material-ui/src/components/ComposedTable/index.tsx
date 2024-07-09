@@ -36,11 +36,13 @@ const ComposedTable = (props: ComposedTableProps) => {
   const auth = useAuth();
   const pathname = usePathname();
 
-  const [settings, setSettings] = useSettingsStorage({
-    key: 'tableSettings',
-    user: (auth?.user as { id: string })?.id ?? '',
-    settingsId: props.settingsId || pathname,
-    list: props.headers.map((header) => ({
+  const { cachedSettings, changeSettings } = useSettingsStorage({
+    key: props.settingsId || pathname,
+    type: 'table',
+    assignee: {
+      id: (auth?.user as { id: string })?.id ?? '',
+    },
+    data: props.headers.map((header) => ({
       id: header.id,
       hide: Boolean(header.hide),
     })),
@@ -50,13 +52,13 @@ const ComposedTable = (props: ComposedTableProps) => {
 
   const handleHeadersOrderChange = (list: ListItem[]) => {
     setOrderableHeaders(list);
-    setSettings(list);
+    changeSettings(list);
   };
 
   useEffect(() => {
-    if (settings.length) {
+    if (cachedSettings.length) {
       setOrderableHeaders(
-        settings.map((item: ListItem) => {
+        cachedSettings.map((item: ListItem) => {
           const headerItem = props.headers.find(
             (header) => header.id === item.id,
           );

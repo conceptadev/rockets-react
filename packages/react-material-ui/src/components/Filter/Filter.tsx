@@ -208,11 +208,13 @@ export const Filter = (props: FilterProps) => {
   const auth = useAuth();
   const pathname = usePathname();
 
-  const [settings, setSettings] = useSettingsStorage({
-    key: 'filterSettings',
-    user: (auth?.user as { id: string })?.id ?? '',
-    settingsId: props.settingsId || pathname,
-    list: filters.map((header) => ({
+  const { cachedSettings, changeSettings } = useSettingsStorage({
+    key: props.settingsId || pathname,
+    type: 'filter',
+    assignee: {
+      id: (auth?.user as { id: string })?.id ?? '',
+    },
+    data: filters.map((header) => ({
       id: header.id,
       hide: Boolean(header.hide),
     })),
@@ -222,7 +224,6 @@ export const Filter = (props: FilterProps) => {
     if (item && item?.onDebouncedSearchChange) {
       item.onDebouncedSearchChange(null);
     }
-
     if (item && item?.onChange) {
       item.onChange(null);
     }
@@ -239,15 +240,15 @@ export const Filter = (props: FilterProps) => {
 
   const handleFilterOrderChange = (list: ListItem[]) => {
     setFilterOrder(list);
-    setSettings(list);
+    changeSettings(list);
   };
 
   useEffect(() => {
-    if (settings.length) {
+    if (cachedSettings.length) {
       const originalFilters = [...filters];
       const newFiltersOrder = [];
 
-      settings.forEach((item: ListItem) => {
+      cachedSettings.forEach((item: ListItem) => {
         const filterItemIndex = originalFilters.findIndex(
           (filter) => filter?.id === item.id,
         );
