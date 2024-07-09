@@ -40,8 +40,9 @@ const getPageSettings = ({
   key,
   assignee,
   type,
+  data,
   cacheList,
-}: Omit<Settings, 'data'> & { cacheList: CacheResponse[] }) => {
+}: Settings & { cacheList: CacheResponse[] }) => {
   console.log('cache list: ', cacheList);
 
   const settingsItem = cacheList.find(
@@ -55,7 +56,7 @@ const getPageSettings = ({
 
   return {
     ...settingsItem,
-    data: JSON.parse(settingsItem.data),
+    data: settingsItem ? JSON.parse(settingsItem.data) : data,
   };
 };
 
@@ -135,7 +136,13 @@ export const useSettingsStorage = ({ key, assignee, type, data }: Settings) => {
 
   useEffect(() => {
     setSettingsState(
-      getPageSettings({ key, type, assignee, cacheList: cachedData || [] }),
+      getPageSettings({
+        key,
+        type,
+        assignee,
+        data,
+        cacheList: cachedData || [],
+      }),
     );
   }, [cachedData]);
 
