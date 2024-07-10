@@ -38,7 +38,7 @@ const ComposedTable = (props: ComposedTableProps) => {
 
   const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
 
-  const { setSettings, updateCache } = useSettingsStorage({
+  const { setSettings, updateSettingsCache } = useSettingsStorage({
     key: props.settingsId || pathname,
     type: 'table',
     assignee: {
@@ -66,7 +66,7 @@ const ComposedTable = (props: ComposedTableProps) => {
   const handleHeadersOrderChange = (list: ListItem[]) => {
     setOrderableHeaders(list);
     setSettings(list);
-    updateCache();
+    updateSettingsCache();
   };
 
   return (

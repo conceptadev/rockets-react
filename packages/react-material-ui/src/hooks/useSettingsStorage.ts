@@ -1,7 +1,6 @@
-import type { Dispatch, SetStateAction } from 'react';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+import debounce from 'lodash/debounce';
 
 type Assignee = {
   id: string;
@@ -61,7 +60,7 @@ const parseDataStringToSettings = (data: string) => {
 };
 
 const parseSettingsToDataString = (data: string) => {
-  return data.replace(/\"/g, "'");
+  return data.replace(/"/g, "'");
 };
 
 const getSettingsFromStorage = ({ key, type, assignee, data }: Settings) => {
@@ -227,5 +226,10 @@ export const useSettingsStorage = ({
     }
   }, [settingsCache]);
 
-  return { settings, setSettings, updateCache };
+  const updateSettingsCache = useMemo(
+    () => debounce(updateCache, 2000),
+    [updateCache],
+  );
+
+  return { settings, setSettings, updateSettingsCache };
 };
