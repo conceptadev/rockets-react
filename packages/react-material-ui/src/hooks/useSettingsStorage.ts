@@ -71,21 +71,21 @@ const getSettingsFromCacheList = ({
     return null;
   }
 
+  const regex = /'/g;
+  const char = '"';
+  const data = JSON.parse(settingsItem.data.replace(regex, char));
+
   return {
     ...settingsItem,
-    data: JSON.parse(settingsItem.data),
+    data,
   };
 };
 
-const updateStorageSettings = ({ key, type, assignee, data }: Settings) => {
-  const newSettings = {
-    key,
-    type,
-    assignee,
-    data,
-  };
-
-  localStorage.setItem(type, JSON.stringify(newSettings));
+const updateStorageSettings = (
+  type: CommonCacheInfo['type'],
+  cacheState: CacheState,
+) => {
+  localStorage.setItem(type, JSON.stringify(cacheState));
 };
 
 export const useSettingsStorage = (
@@ -141,6 +141,11 @@ export const useSettingsStorage = (
       ...settings,
       data,
     });
+
+    updateStorageSettings(props.type, {
+      ...settings,
+      data,
+    });
   };
 
   useEffect(() => {
@@ -150,19 +155,19 @@ export const useSettingsStorage = (
   }, []);
 
   useEffect(() => {
-    if (!isLoadingCachedData && cachedData.length && !settings.data.length) {
+    if (!isLoadingCachedData && cachedData?.length && !settings?.data?.length) {
       const cachedSettings = getSettingsFromCacheList({
         ...settings,
         cacheList: cachedData,
       });
 
       console.log('cached settings: ', cachedSettings);
+
+      setSettings(cachedSettings);
     }
   }, [isLoadingCachedData, cachedData, settings.data]);
 
-  useEffect(() => {
-    updateStorageSettings(settings);
-  }, [settings]);
+  console.log('SETTINGS: ', settings);
 
   return [settings.data, handleSettingsChange];
 };
