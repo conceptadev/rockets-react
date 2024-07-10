@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import type { TableRootProps } from '../Table/TableRoot';
 import type { FilterProps } from '../Filter/Filter';
@@ -48,17 +48,9 @@ const ComposedTable = (props: ComposedTableProps) => {
       id: header.id,
       hide: Boolean(header.hide),
     })),
-  });
-
-  const handleHeadersOrderChange = (list: ListItem[]) => {
-    setOrderableHeaders(list);
-    setSettings(list);
-  };
-
-  useEffect(() => {
-    if (settings.length) {
+    setListCallback: (callbackData) =>
       setOrderableHeaders(
-        settings.map((item: ListItem) => {
+        callbackData.map((item: ListItem) => {
           const headerItem = props.headers.find(
             (header) => header.id === item.id,
           );
@@ -68,9 +60,13 @@ const ComposedTable = (props: ComposedTableProps) => {
             ...headerItem,
           };
         }),
-      );
-    }
-  }, []);
+      ),
+  });
+
+  const handleHeadersOrderChange = (list: ListItem[]) => {
+    setOrderableHeaders(list);
+    setSettings(list);
+  };
 
   return (
     <Box>

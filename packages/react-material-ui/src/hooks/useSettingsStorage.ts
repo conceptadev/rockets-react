@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from 'react';
+
 import { useState, useEffect } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 
@@ -37,7 +39,7 @@ type CacheState = {
 } & CommonCacheInfo;
 
 type Props = {
-  callback?: () => void;
+  setListCallback?: (list?: CacheState['data']) => void;
 } & Settings;
 
 const baseUri = '/cache/user';
@@ -83,7 +85,7 @@ export const handlePageSettingsUpdate = ({
   };
 
   if (!storageItem) {
-    localStorage.setItem(key, JSON.stringify([newSettings]));
+    localStorage.setItem(type, JSON.stringify([newSettings]));
     return;
   }
 
@@ -97,11 +99,17 @@ export const handlePageSettingsUpdate = ({
     storageItem.push(newSettings);
   }
 
-  localStorage.setItem(key, JSON.stringify(storageItem));
+  localStorage.setItem(type, JSON.stringify(storageItem));
 };
 
-export const useSettingsStorage = ({ key, type, assignee, data }: Props) => {
-  const [settings, setSettings] = useState(() => {
+export const useSettingsStorage = ({
+  key,
+  type,
+  assignee,
+  data,
+  setListCallback,
+}: Props): [CacheState['data'], Dispatch<SetStateAction<ListItem[]>>] => {
+  const [settings, setSettings] = useState<CacheState['data']>(() => {
     return getPageSettings({ key, type, assignee, data });
   });
 
@@ -113,6 +121,12 @@ export const useSettingsStorage = ({ key, type, assignee, data }: Props) => {
       data: settings,
     });
   }, [key, settings]);
+
+  useEffect(() => {
+    if (settings.length) {
+      setListCallback(settings);
+    }
+  }, []);
 
   return [settings, setSettings];
 };

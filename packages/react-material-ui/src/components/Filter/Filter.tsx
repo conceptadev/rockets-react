@@ -237,6 +237,18 @@ export const Filter = (props: FilterProps) => {
       id: header.id,
       hide: Boolean(header.hide),
     })),
+    setListCallback: (callbackData) =>
+      setFilterOrder(
+        callbackData.map((item: ListItem) => {
+          const filterItem = filters.find((filter) => filter.id === item.id);
+
+          return {
+            ...item,
+            ...filterItem,
+            resetFilters: resetFilters(filterItem),
+          };
+        }),
+      ),
   });
 
   console.log('SETTINGS: ', settings);
