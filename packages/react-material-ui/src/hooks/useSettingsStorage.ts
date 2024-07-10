@@ -56,7 +56,16 @@ const initialSettingsState = {
   assignee: { id: '' },
 };
 
-export const getPageSettings = ({ key, type, assignee, data }: Settings) => {
+const parseDataString = (data: string) => {
+  return JSON.parse(data.replace(/'/g, '"'));
+};
+
+export const getSettingsFromStorage = ({
+  key,
+  type,
+  assignee,
+  data,
+}: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(type));
 
   if (!storageItem) {
@@ -68,6 +77,31 @@ export const getPageSettings = ({ key, type, assignee, data }: Settings) => {
   );
 
   return settingsItem?.data || data;
+};
+
+const getSettingsFromCacheList = ({
+  key,
+  type,
+  assignee,
+  cacheList,
+}: Omit<Settings, 'data'> & { cacheList: CacheResponse[] }) => {
+  const settingsItem = cacheList.find(
+    (item) =>
+      item.key === key &&
+      item.type === type &&
+      item.assignee.id === assignee.id,
+  );
+
+  console.log('settings item: ', settingsItem);
+
+  if (!settingsItem) {
+    return null;
+  }
+
+  return {
+    ...settingsItem,
+    data: parseDataString(settingsItem.data),
+  };
 };
 
 export const handlePageSettingsUpdate = ({
@@ -108,10 +142,79 @@ export const useSettingsStorage = ({
   assignee,
   data,
   setListCallback,
-}: Props): [CacheState['data'], Dispatch<SetStateAction<ListItem[]>>] => {
+}: Props) => {
+  const [settingsCache, setSettingsCache] =
+    useState<CacheState>(initialSettingsState);
   const [settings, setSettings] = useState<CacheState['data']>(() => {
-    return getPageSettings({ key, type, assignee, data });
+    return getSettingsFromStorage({ key, type, assignee, data });
   });
+
+  const { get, post, patch } = useDataProvider();
+
+  const { execute: createCache } = useQuery(
+    (cache: Record<string, unknown>) =>
+      post({
+        uri: baseUri,
+        body: {
+          key,
+          type,
+          assignee,
+          data: cache,
+        },
+      }),
+    false,
+    {
+      onSuccess: (creationData: CacheResponse) =>
+        setSettingsCache({
+          ...creationData,
+          data: parseDataString(creationData.data),
+        }),
+    },
+  );
+
+  const { execute: updateCache } = useQuery(
+    (cache: CacheState) =>
+      patch({
+        uri: `${baseUri}/${settingsCache.id}`,
+        body: {
+          ...cache,
+          data: JSON.stringify(cache.data),
+        },
+      }),
+    false,
+    {
+      onSuccess: (updateData: CacheResponse) =>
+        setSettingsCache({
+          ...updateData,
+          data: parseDataString(updateData.data),
+        }),
+    },
+  );
+
+  useQuery(() => get({ uri: baseUri }), true, {
+    onSuccess: (fetchedData: CacheResponse[]) => {
+      if (!fetchedData.length) {
+        createCache(JSON.stringify(data));
+      } else {
+        setSettingsCache(
+          getSettingsFromCacheList({
+            key,
+            type,
+            assignee,
+            cacheList: fetchedData,
+          }),
+        );
+      }
+    },
+  });
+
+  const updateSettings = (list: ListItem[]) => {
+    setSettings(list);
+    updateCache({
+      ...settingsCache,
+      data: list,
+    });
+  };
 
   useEffect(() => {
     handlePageSettingsUpdate({
@@ -128,5 +231,17 @@ export const useSettingsStorage = ({
     }
   }, []);
 
-  return [settings, setSettings];
+  useEffect(() => {
+    if (!settings.length && settingsCache.data.length) {
+      setListCallback(settingsCache.data);
+      handlePageSettingsUpdate({
+        key,
+        type,
+        assignee,
+        data: settingsCache.data,
+      });
+    }
+  }, [settingsCache]);
+
+  return { settings, setSettings, updateSettings };
 };

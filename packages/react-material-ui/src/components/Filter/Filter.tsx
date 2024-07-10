@@ -227,7 +227,7 @@ export const Filter = (props: FilterProps) => {
     })),
   );
 
-  const [settings, setSettings] = useSettingsStorage({
+  const { setSettings } = useSettingsStorage({
     key: props.settingsId || pathname,
     type: 'filter',
     assignee: {
@@ -251,9 +251,8 @@ export const Filter = (props: FilterProps) => {
       ),
   });
 
-  console.log('SETTINGS: ', settings);
-
   const handleFilterOrderChange = (list: ListItem[]) => {
+    console.log('list: ', list);
     setFilterOrder(list);
     setSettings(list);
   };
