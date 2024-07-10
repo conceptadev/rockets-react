@@ -40,6 +40,8 @@ type Props = {
   callback?: () => void;
 } & Settings;
 
+const baseUri = '/cache/user';
+
 const initialSettingsState = {
   id: '',
   dateCreated: '',
@@ -102,7 +104,7 @@ export const useSettingsStorage = (
   const { execute: createCache } = useQuery(
     (cache: Record<string, unknown>) =>
       post({
-        uri: `/cache/user`,
+        uri: baseUri,
         body: {
           ...props,
           data: cache,
@@ -114,7 +116,7 @@ export const useSettingsStorage = (
   const { execute: updateCache } = useQuery(
     (cache: CacheState) =>
       patch({
-        uri: `/cache/user/${settings.id}`,
+        uri: `${baseUri}/${settings.id}`,
         body: {
           ...cache,
           data: JSON.stringify(cache.data),
@@ -123,30 +125,10 @@ export const useSettingsStorage = (
     false,
   );
 
-  const { data: cachedData } = useQuery(
-    () => get({ uri: '/cache/user' }),
-    true,
-    {
-      onSuccess: (fetchedData: CacheResponse[]) => {
-        if (!fetchedData.length) {
-          createCache(JSON.stringify(props.data));
-        }
-      },
-    },
-  );
+  const { data: cachedData } = useQuery(() => get({ uri: baseUri }), true);
 
   const handleSettingsChange = (data: ListItem[]) => {
     setSettings({
-      ...settings,
-      data,
-    });
-
-    updateCache({
-      ...settings,
-      data,
-    });
-
-    updateStorageSettings(props.type, {
       ...settings,
       data,
     });
@@ -156,27 +138,14 @@ export const useSettingsStorage = (
     const storageState = getSettingsFromStorage(props.type);
     console.log('storage state: ', storageState);
     setSettings(storageState);
-  }, []);
 
-  useEffect(() => {
-    if (cachedData?.length) {
-      const cachedSettings = getSettingsFromCacheList({
-        ...settings,
-        cacheList: cachedData,
-      });
-
-      console.log('cached settings: ', cachedSettings);
-
-      if (cachedSettings) {
-        setSettings(cachedSettings);
-      }
-    }
-  }, [cachedData]);
-
-  useEffect(() => {
     if (props.callback) {
       props.callback();
     }
+  }, [props.callback]);
+
+  useEffect(() => {
+    updateStorageSettings(props.type, settings);
   }, [settings]);
 
   console.log('SETTINGS: ', settings);
