@@ -56,16 +56,15 @@ const initialSettingsState = {
   assignee: { id: '' },
 };
 
-const parseDataString = (data: string) => {
+const parseDataStringToSettings = (data: string) => {
   return JSON.parse(data.replace(/'/g, '"'));
 };
 
-export const getSettingsFromStorage = ({
-  key,
-  type,
-  assignee,
-  data,
-}: Settings) => {
+const parseSettingsToDataString = (data: string) => {
+  return data.replace(/\"/g, "'");
+};
+
+const getSettingsFromStorage = ({ key, type, assignee, data }: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(type));
 
   if (!storageItem) {
@@ -92,24 +91,17 @@ const getSettingsFromCacheList = ({
       item.assignee.id === assignee.id,
   );
 
-  console.log('settings item: ', settingsItem);
-
   if (!settingsItem) {
     return null;
   }
 
   return {
     ...settingsItem,
-    data: parseDataString(settingsItem.data),
+    data: parseDataStringToSettings(settingsItem.data),
   };
 };
 
-export const handlePageSettingsUpdate = ({
-  key,
-  type,
-  assignee,
-  data,
-}: Settings) => {
+const updateSettingsStorage = ({ key, type, assignee, data }: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(type));
 
   const newSettings = {
@@ -167,18 +159,18 @@ export const useSettingsStorage = ({
       onSuccess: (creationData: CacheResponse) =>
         setSettingsCache({
           ...creationData,
-          data: parseDataString(creationData.data),
+          data: parseDataStringToSettings(creationData.data),
         }),
     },
   );
 
   const { execute: updateCache } = useQuery(
-    (cache: CacheState) =>
+    () =>
       patch({
         uri: `${baseUri}/${settingsCache.id}`,
         body: {
-          ...cache,
-          data: JSON.stringify(cache.data),
+          ...settingsCache,
+          data: parseSettingsToDataString(JSON.stringify(settings)),
         },
       }),
     false,
@@ -186,7 +178,7 @@ export const useSettingsStorage = ({
       onSuccess: (updateData: CacheResponse) =>
         setSettingsCache({
           ...updateData,
-          data: parseDataString(updateData.data),
+          data: parseDataStringToSettings(updateData.data),
         }),
     },
   );
@@ -194,7 +186,7 @@ export const useSettingsStorage = ({
   useQuery(() => get({ uri: baseUri }), true, {
     onSuccess: (fetchedData: CacheResponse[]) => {
       if (!fetchedData.length) {
-        createCache(JSON.stringify(data));
+        createCache(parseSettingsToDataString(JSON.stringify(data)));
       } else {
         setSettingsCache(
           getSettingsFromCacheList({
@@ -208,16 +200,8 @@ export const useSettingsStorage = ({
     },
   });
 
-  const updateSettings = (list: ListItem[]) => {
-    setSettings(list);
-    updateCache({
-      ...settingsCache,
-      data: list,
-    });
-  };
-
   useEffect(() => {
-    handlePageSettingsUpdate({
+    updateSettingsStorage({
       key,
       type,
       assignee,
@@ -234,7 +218,7 @@ export const useSettingsStorage = ({
   useEffect(() => {
     if (!settings.length && settingsCache.data.length) {
       setListCallback(settingsCache.data);
-      handlePageSettingsUpdate({
+      updateSettingsStorage({
         key,
         type,
         assignee,
@@ -243,5 +227,5 @@ export const useSettingsStorage = ({
     }
   }, [settingsCache]);
 
-  return { settings, setSettings, updateSettings };
+  return { settings, setSettings, updateCache };
 };
