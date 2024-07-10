@@ -205,16 +205,15 @@ export type FilterProps = {
 
 export const Filter = (props: FilterProps) => {
   const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
+
   const auth = useAuth();
   const pathname = usePathname();
 
   const [settings, setSettings] = useSettingsStorage({
-    key: props.settingsId || pathname,
-    type: 'filter',
-    assignee: {
-      id: (auth?.user as { id: string })?.id ?? '',
-    },
-    data: filters.map((header) => ({
+    key: 'filterSettings',
+    user: (auth?.user as { id: string })?.id ?? '',
+    settingsId: props.settingsId || pathname,
+    list: filters.map((header) => ({
       id: header.id,
       hide: Boolean(header.hide),
     })),

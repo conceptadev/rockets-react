@@ -36,6 +36,8 @@ const ComposedTable = (props: ComposedTableProps) => {
   const auth = useAuth();
   const pathname = usePathname();
 
+  const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
+
   const [settings, setSettings] = useSettingsStorage({
     key: props.settingsId || pathname,
     type: 'table',
@@ -47,8 +49,6 @@ const ComposedTable = (props: ComposedTableProps) => {
       hide: Boolean(header.hide),
     })),
   });
-
-  const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
 
   const handleHeadersOrderChange = (list: ListItem[]) => {
     setOrderableHeaders(list);

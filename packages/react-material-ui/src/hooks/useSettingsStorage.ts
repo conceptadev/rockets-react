@@ -36,6 +36,10 @@ type CacheState = {
   data: ListItem[];
 } & CommonCacheInfo;
 
+type Props = {
+  callback?: () => void;
+} & Settings;
+
 const initialSettingsState = {
   id: '',
   dateCreated: '',
@@ -89,7 +93,7 @@ const updateStorageSettings = (
 };
 
 export const useSettingsStorage = (
-  props: Settings,
+  props: Props,
 ): [CacheState['data'], (list: ListItem[]) => void] => {
   const [settings, setSettings] = useState<CacheState>(initialSettingsState);
 
@@ -119,7 +123,7 @@ export const useSettingsStorage = (
     false,
   );
 
-  const { data: cachedData, isPending: isLoadingCachedData } = useQuery(
+  const { data: cachedData } = useQuery(
     () => get({ uri: '/cache/user' }),
     true,
     {
@@ -155,7 +159,7 @@ export const useSettingsStorage = (
   }, []);
 
   useEffect(() => {
-    if (!isLoadingCachedData && cachedData?.length && !settings?.data?.length) {
+    if (cachedData?.length) {
       const cachedSettings = getSettingsFromCacheList({
         ...settings,
         cacheList: cachedData,
@@ -163,9 +167,17 @@ export const useSettingsStorage = (
 
       console.log('cached settings: ', cachedSettings);
 
-      setSettings(cachedSettings);
+      if (cachedSettings) {
+        setSettings(cachedSettings);
+      }
     }
-  }, [isLoadingCachedData, cachedData, settings.data]);
+  }, [cachedData]);
+
+  useEffect(() => {
+    if (props.callback) {
+      props.callback();
+    }
+  }, [settings]);
 
   console.log('SETTINGS: ', settings);
 
