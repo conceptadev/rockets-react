@@ -227,7 +227,7 @@ export const Filter = (props: FilterProps) => {
     })),
   );
 
-  const { setSettings, updateSettingsCache } = useSettingsStorage({
+  const { setSettings } = useSettingsStorage({
     key: props.settingsId || pathname,
     type: 'filter',
     assignee: {
@@ -254,7 +254,6 @@ export const Filter = (props: FilterProps) => {
   const handleFilterOrderChange = (list: ListItem[]) => {
     setFilterOrder(list);
     setSettings(list);
-    updateSettingsCache();
   };
 
   useEffect(() => {

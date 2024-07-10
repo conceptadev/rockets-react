@@ -1,6 +1,5 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import debounce from 'lodash/debounce';
 
 type Assignee = {
   id: string;
@@ -134,8 +133,10 @@ export const useSettingsStorage = ({
   data,
   setListCallback,
 }: Props) => {
-  const [settingsCache, setSettingsCache] =
-    useState<CacheState>(initialSettingsState);
+  const [settingsCache, setSettingsCache] = useState<CacheState>({
+    ...initialSettingsState,
+    data: getSettingsFromStorage({ key, type, assignee, data }),
+  });
   const [settings, setSettings] = useState<CacheState['data']>(() => {
     return getSettingsFromStorage({ key, type, assignee, data });
   });
@@ -164,12 +165,12 @@ export const useSettingsStorage = ({
   );
 
   const { execute: updateCache } = useQuery(
-    () =>
+    (list: CacheState['data']) =>
       patch({
         uri: `${baseUri}/${settingsCache.id}`,
         body: {
           ...settingsCache,
-          data: parseSettingsToDataString(JSON.stringify(settings)),
+          data: parseSettingsToDataString(JSON.stringify(list)),
         },
       }),
     false,
@@ -187,14 +188,14 @@ export const useSettingsStorage = ({
       if (!fetchedData.length) {
         createCache(parseSettingsToDataString(JSON.stringify(data)));
       } else {
-        setSettingsCache(
-          getSettingsFromCacheList({
-            key,
-            type,
-            assignee,
-            cacheList: fetchedData,
-          }),
-        );
+        const cachedSettings = getSettingsFromCacheList({
+          key,
+          type,
+          assignee,
+          cacheList: fetchedData,
+        });
+        setSettingsCache(cachedSettings);
+        setSettings(cachedSettings.data);
       }
     },
   });
@@ -206,30 +207,12 @@ export const useSettingsStorage = ({
       assignee,
       data: settings,
     });
+    updateCache(settings);
   }, [key, settings]);
 
   useEffect(() => {
-    if (settings.length) {
-      setListCallback(settings);
-    }
-  }, []);
+    setListCallback(settings);
+  }, [settings]);
 
-  useEffect(() => {
-    if (!settings.length && settingsCache.data.length) {
-      setListCallback(settingsCache.data);
-      updateSettingsStorage({
-        key,
-        type,
-        assignee,
-        data: settingsCache.data,
-      });
-    }
-  }, [settingsCache]);
-
-  const updateSettingsCache = useMemo(
-    () => debounce(updateCache, 2000),
-    [updateCache],
-  );
-
-  return { settings, setSettings, updateSettingsCache };
+  return { settings, setSettings };
 };
