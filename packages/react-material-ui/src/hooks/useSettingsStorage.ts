@@ -38,9 +38,8 @@ type CacheState = {
 
 type Props = {
   setListCallback?: (list?: CacheState['data']) => void;
+  cacheApiUri?: string;
 } & Settings;
-
-const baseUri = '/cache/user';
 
 const initialSettingsState = {
   id: '',
@@ -126,12 +125,37 @@ const updateSettingsStorage = ({ key, type, assignee, data }: Settings) => {
   localStorage.setItem(type, JSON.stringify(storageItem));
 };
 
+const deleteSettingsStorage = ({
+  key,
+  type,
+  assignee,
+}: Omit<Settings, 'data'>) => {
+  const storageItem = JSON.parse(localStorage.getItem(type));
+
+  if (!storageItem || !storageItem?.length) {
+    return;
+  }
+
+  let updatedStorageItem = [...storageItem];
+
+  const settingsItemIndex = storageItem.findIndex(
+    (item: Settings) => item.assignee.id === assignee.id && item.key === key,
+  );
+
+  if (settingsItemIndex > -1) {
+    updatedStorageItem = storageItem.splice(settingsItemIndex, 1);
+  }
+
+  localStorage.setItem(type, JSON.stringify(updatedStorageItem));
+};
+
 export const useSettingsStorage = ({
   key,
   type,
   assignee,
   data,
   setListCallback,
+  cacheApiUri,
 }: Props) => {
   const [settingsCache, setSettingsCache] = useState<CacheState>({
     ...initialSettingsState,
@@ -141,12 +165,12 @@ export const useSettingsStorage = ({
     return getSettingsFromStorage({ key, type, assignee, data });
   });
 
-  const { get, post, patch } = useDataProvider();
+  const { get, post, patch, del } = useDataProvider();
 
   const { execute: createCache } = useQuery(
     (cache: Record<string, unknown>) =>
       post({
-        uri: baseUri,
+        uri: cacheApiUri,
         body: {
           key,
           type,
@@ -156,10 +180,10 @@ export const useSettingsStorage = ({
       }),
     false,
     {
-      onSuccess: (creationData: CacheResponse) =>
+      onSuccess: (res: CacheResponse) =>
         setSettingsCache({
-          ...creationData,
-          data: parseDataStringToSettings(creationData.data),
+          ...res,
+          data: parseDataStringToSettings(res.data),
         }),
     },
   );
@@ -167,7 +191,7 @@ export const useSettingsStorage = ({
   const { execute: updateCache } = useQuery(
     (list: CacheState['data']) =>
       patch({
-        uri: `${baseUri}/${settingsCache.id}`,
+        uri: `${cacheApiUri}/${settingsCache.id}`,
         body: {
           ...settingsCache,
           data: parseSettingsToDataString(JSON.stringify(list)),
@@ -175,15 +199,21 @@ export const useSettingsStorage = ({
       }),
     false,
     {
-      onSuccess: (updateData: CacheResponse) =>
+      onSuccess: (res: CacheResponse) =>
         setSettingsCache({
-          ...updateData,
-          data: parseDataStringToSettings(updateData.data),
+          ...res,
+          data: parseDataStringToSettings(res.data),
         }),
     },
   );
 
-  useQuery(() => get({ uri: baseUri }), true, {
+  const { execute: deleteCache } = useQuery(
+    () => del({ uri: `${cacheApiUri}/${settingsCache.id}` }),
+    false,
+    { onSuccess: () => setSettingsCache(initialSettingsState) },
+  );
+
+  useQuery(() => get({ uri: cacheApiUri }), Boolean(cacheApiUri), {
     onSuccess: (fetchedData: CacheResponse[]) => {
       if (!fetchedData.length) {
         createCache(parseSettingsToDataString(JSON.stringify(data)));
@@ -200,6 +230,11 @@ export const useSettingsStorage = ({
     },
   });
 
+  const clearSettings = () => {
+    deleteSettingsStorage({ key, type, assignee });
+    deleteCache();
+  };
+
   useEffect(() => {
     updateSettingsStorage({
       key,
@@ -207,12 +242,15 @@ export const useSettingsStorage = ({
       assignee,
       data: settings,
     });
-    updateCache(settings);
-  }, [key, settings]);
+
+    if (cacheApiUri) {
+      updateCache(settings);
+    }
+  }, [key, settings, cacheApiUri]);
 
   useEffect(() => {
     setListCallback(settings);
   }, [settings]);
 
-  return { settings, setSettings };
+  return { settings, setSettings, clearSettings };
 };
