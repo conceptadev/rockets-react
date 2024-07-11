@@ -48,6 +48,7 @@ const ComposedTable = (props: ComposedTableProps) => {
       id: header.id,
       hide: Boolean(header.hide),
     })),
+    cacheApiUri: props.settingsCacheUri,
     setListCallback: (callbackData) =>
       setOrderableHeaders(
         callbackData.map((item: ListItem) => {

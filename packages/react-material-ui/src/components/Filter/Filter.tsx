@@ -201,6 +201,7 @@ export type FilterProps = {
   complementaryActions?: ReactNode | ((filters: ListItem[]) => ReactNode);
   /** Settings identifier */
   settingsId?: string;
+  settingsCacheUri?: string;
 } & GridProps;
 
 export const Filter = (props: FilterProps) => {
@@ -237,6 +238,7 @@ export const Filter = (props: FilterProps) => {
       id: header.id,
       hide: Boolean(header.hide),
     })),
+    cacheApiUri: props.settingsCacheUri,
     setListCallback: (callbackData) =>
       setFilterOrder(
         callbackData.map((item: ListItem) => {
