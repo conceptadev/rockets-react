@@ -111,6 +111,6 @@ dist
 .idea
 
 # generated docs
-./docs
+/docs
 *storybook.log
-storybook-static
+/storybook-static

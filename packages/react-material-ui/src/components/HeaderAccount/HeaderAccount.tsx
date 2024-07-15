@@ -1,7 +1,7 @@
 import React, { useState, ReactNode } from 'react';
 import Box from '@mui/material/Box';
 import Text from '../Text';
-import Avatar from '../Avatar';
+import { Avatar } from '../Avatar';
 import { TextProps } from 'interfaces';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';

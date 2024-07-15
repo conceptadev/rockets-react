@@ -1,4 +1,4 @@
-export { default as Avatar } from './components/Avatar';
+export { Avatar, AvatarProps } from './components/Avatar';
 export { default as Checkbox } from './components/Checkbox';
 
 import AppBar from './components/AppBar';
