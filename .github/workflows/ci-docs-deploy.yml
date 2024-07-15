@@ -2,14 +2,14 @@ name: Docs Deploy
 
 on:
   push:
-    branches: ["feature/storybook"]
+    branches: ['feature/storybook']
   workflow_dispatch:
-    branches: ["feature/storybook"]
+    branches: ['feature/storybook']
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v2
 
@@ -19,8 +19,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: "18.x"
-          cache: "yarn"
+          node-version: '18.x'
+          cache: 'yarn'
 
       - uses: actions/cache@v2
         with:
@@ -35,7 +35,7 @@ jobs:
 
       - name: Build
         working-directory: ./
-        run: yarn && yarn build-storybook
+        run: yarn && yarn build && yarn build-storybook
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
