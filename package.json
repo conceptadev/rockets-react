@@ -39,6 +39,8 @@
     "jest-junit": "^12.2.0",
     "jest-mock-extended": "^1.0.18",
     "lerna": "^3.22.1",
+    "msw": "^2.3.1",
+    "msw-storybook-addon": "^2.0.2",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
     "standard-version": "^9.3.2",
@@ -75,6 +77,11 @@
   "resolutions": {
     "@types/react": "18.2.0",
     "@types/react-dom": "18.2.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   },
   "packageManager": "yarn@4.3.1"
 }
