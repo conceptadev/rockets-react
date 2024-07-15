@@ -84,11 +84,11 @@ The `useDataProvider` hook provides an easy way to make HTTP requests using vari
 
 All of the requests accepts these shared parameters:
 
-- **uri** (string): The endpoint URI.
-- **headers** (Record<string, string>, optional): Additional headers to include in the request.
-- **queryParams** (Record<string, string | string[] | number | undefined>, optional): Query parameters to append to the URL.
-- **body** (TRequestBody, optional): The request payload.
-- **signal** (AbortSignal, optional): Signal to abort the request.
+- **uri** `(string)`: The endpoint URI.
+- **headers** `(Record<string, string>, optional)`: Additional headers to include in the request.
+- **queryParams** `(Record<string, string | string[] | number | undefined>, optional)`: Query parameters to append to the URL.
+- **body** `(TRequestBody, optional)`: The request payload.
+- **signal** `(AbortSignal, optional)`: Signal to abort the request.
 
 ### POST | PUT | PATCH Methods
 
