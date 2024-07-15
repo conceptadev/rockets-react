@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
+.yarn/install-state.gz
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -110,4 +111,6 @@ dist
 .idea
 
 # generated docs
-./docs
+/docs
+*storybook.log
+/storybook-static
