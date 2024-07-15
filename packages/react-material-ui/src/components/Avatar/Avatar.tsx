@@ -44,7 +44,10 @@ export const Avatar = (props: Props) => {
         size={size}
         onClick={onClick}
         onError={handleImageError}
-        style={{ display: showInitials ? 'none' : 'block' }}
+        style={{
+          display: showInitials ? 'none' : 'block',
+          cursor: onClick ? 'pointer' : 'default',
+        }}
       />
       {showInitials && (
         <Text fontSize={size * 0.44} fontWeight={600}>
