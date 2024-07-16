@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
 import { Avatar } from '@concepta/react-material-ui';
+import rockets from './assets/rockets.svg';
 
 const meta = {
   component: Avatar,
@@ -46,8 +47,13 @@ export const CustomSize: Story = {
   },
 };
 
+/**
+ * Background color will only be visible for images with transparency.
+ */
+
 export const CustomBackgroundColor: Story = {
   args: {
+    src: rockets,
     backgroundColor: '#00bbff',
   },
 };
