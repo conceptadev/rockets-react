@@ -3,16 +3,14 @@ import React from 'react';
 
 import { AppBar } from '@concepta/react-material-ui';
 import { Box, MenuItem } from '@mui/material';
-import RocketIcon from '@mui/icons-material/RocketOutlined';
 import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HomeIcon from '@mui/icons-material/HomeOutlined';
+import rockets from './assets/rockets.svg';
 
 const Component = (args) => (
   <AppBar.Root {...args}>
     <AppBar.Drawer
-      logo={
-        <RocketIcon sx={{ color: 'rgba(255,255,255,0.3)', fontSize: 80 }} />
-      }
+      logo={rockets}
       items={[
         {
           icon: <HomeIcon />,
