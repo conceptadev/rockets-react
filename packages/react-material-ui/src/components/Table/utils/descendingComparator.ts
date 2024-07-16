@@ -1,7 +1,7 @@
 /**
- * @param a
- * @param b
- * @param orderBy
+ * @param a - Comparator A
+ * @param b - Comparator B
+ * @param orderBy - Order By
  */
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {

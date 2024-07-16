@@ -1,6 +1,6 @@
 /**
- * @param array
- * @param comparator
+ * @param array - The Array being sorted
+ * @param comparator - Comparator callback
  */
 function stableSort<T>(
   array: readonly T[],
