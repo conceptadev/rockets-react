@@ -10,7 +10,7 @@ import rockets from './assets/rockets.svg';
 const Component = (args) => (
   <AppBar.Root {...args}>
     <AppBar.Drawer
-      logo={rockets}
+      logo={<img src={rockets} alt="rockets" width={60} height={60} />}
       items={[
         {
           icon: <HomeIcon />,
