@@ -6,8 +6,7 @@ export { AppBar };
 
 export { default as Dialog } from './components/Dialog';
 
-import Drawer, { DrawerProps, DrawerItemProps } from './components/Drawer';
-export { Drawer, DrawerProps, DrawerItemProps };
+export { Drawer, DrawerProps, DrawerItemProps } from './components/Drawer';
 
 import Dropdown, { DropdownItem } from './components/Dropdown';
 export { Dropdown, DropdownItem };

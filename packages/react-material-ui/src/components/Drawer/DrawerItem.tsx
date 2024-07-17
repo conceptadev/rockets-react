@@ -22,7 +22,7 @@ export type DrawerItemProps = {
   temporary?: boolean;
 } & DrawerButtonProps;
 
-const DrawerItem = (props: DrawerItemProps) => {
+export const DrawerItem = (props: DrawerItemProps) => {
   const {
     id,
     icon,
@@ -76,5 +76,3 @@ const DrawerItem = (props: DrawerItemProps) => {
     </DrawerButton>
   );
 };
-
-export default DrawerItem;

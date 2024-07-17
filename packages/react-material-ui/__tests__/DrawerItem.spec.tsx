@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import DrawerItem from '../src/components/Drawer/DrawerItem';
+import { DrawerItem } from '../src/components/Drawer/DrawerItem';
 
 describe('DrawerItem Component', () => {
   it('should render correctly', () => {
