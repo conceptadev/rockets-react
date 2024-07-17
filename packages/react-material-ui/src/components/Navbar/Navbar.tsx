@@ -7,15 +7,45 @@ import Text from '../Text';
 import HeaderAccount, { HeaderAccountProps } from '../HeaderAccount';
 import { SxProps, Theme } from '@mui/material/styles';
 
+/**
+ * Properties for the Navbar component.
+ */
 export type NavbarProps = {
+  /**
+   * Handler for click events on the Menu button.
+   */
   drawerToggle?: () => void;
+  /**
+   * Flag for showing or hiding the notifications indicator.
+   */
   showNotifications?: boolean;
+  /**
+   * Indicator for notifications counter.
+   */
   notificationsNumber?: number;
+  /**
+   * Handler for click events on the notifications indicator.
+   */
   notificationsOnClick?: () => void;
+  /**
+   * Source of the user profile picture.
+   */
   avatar?: string;
+  /**
+   * String that can contain the current user name or username.
+   */
   text?: string;
+  /**
+   * String rendered below the text content.
+   */
   subText?: string;
+  /**
+   * List of menu actions.
+   */
   headerMenuOptions?: HeaderAccountProps['menuOptions'];
+  /**
+   * Object or array containing custom styles, following the sx pattern. @see {@link https://mui.com/system/getting-started/the-sx-prop/}
+   */
   sx?: SxProps<Theme>;
 };
 

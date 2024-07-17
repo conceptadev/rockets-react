@@ -1,7 +1,19 @@
 import React from 'react';
 import { Box, BoxProps } from '@mui/material';
 
-const AppBarMain = ({ sx, children, ...props }: BoxProps) => {
+/**
+ * The AppBarMain component serves as a wrapper for the navigation bar and page content.
+ * 
+ * The AppBar.Main props extend from [Material UI's Box](https://mui.com/material-ui/api/box/#props)
+ * component props, so every prop is interchangeable between those two.
+ * 
+ * @see {@link AppBar}
+ * @see {@link [MUI Box Component](https://mui.com/material-ui/react-box/)}
+ * @param boxProps - MUI {@link [BoxProps](https://mui.com/material-ui/api/box/#props)}
+ */
+export const AppBarMain = (boxProps: BoxProps) => {
+  const { sx, children, ...props } = boxProps;
+
   return (
     <Box
       component="main"
@@ -20,5 +32,3 @@ const AppBarMain = ({ sx, children, ...props }: BoxProps) => {
     </Box>
   );
 };
-
-export default AppBarMain;

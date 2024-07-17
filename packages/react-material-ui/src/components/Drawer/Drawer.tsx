@@ -17,9 +17,9 @@ import { SxProps, Theme } from '@mui/material/styles';
 export type DrawerProps = {
   /** Array of items to display in the drawer */
   items: DrawerItemProps[];
-  /** ID of the currently active item */
+  /** ID of the currently active item, changing the menu item to active when the page selected corresponds to the path name. */
   currentId?: string;
-  /** Custom toggle component for the drawer */
+  /** Custom node that can be rendered on the bottom of the Drawer, serving as toggle for expanded/collapsed state. */
   customToggle?: (toggleDrawer: () => void, collapsed?: boolean) => ReactNode;
   /** Whether the drawer is open on mobile devices */
   mobileIsOpen?: boolean;
@@ -29,9 +29,9 @@ export type DrawerProps = {
   logo?: string | ReactNode | ((collapsed?: boolean) => ReactNode);
   /** Props for text elements inside the drawer */
   textProps?: TextProps;
-  /** Custom styles for the drawer */
+  /** Custom styles for the drawer, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) */
   sx?: StyledDrawerProps['sx'];
-  /** Custom styles for drawer buttons */
+  /** Custom styles for drawer buttons, following the [sx](https://mui.com/system/getting-started/the-sx-prop/) pattern. */
   buttonSx?: SxProps<Theme>;
   /** Whether the drawer items should be displayed horizontally */
   horizontal?: boolean;

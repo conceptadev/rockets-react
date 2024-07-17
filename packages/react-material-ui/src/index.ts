@@ -1,8 +1,11 @@
 export { Avatar, AvatarProps } from './components/Avatar';
 export { default as Checkbox } from './components/Checkbox';
 
-import AppBar from './components/AppBar';
-export { AppBar };
+export { AppBar } from './components/AppBar';
+export { AppBarRoot, AppBarRootProps } from './components/AppBar/AppBarRoot';
+export { AppBarDrawer } from './components/AppBar/AppBarDrawer';
+export { AppBarMain } from './components/AppBar/AppBarMain';
+export { AppBarNav } from './components/AppBar/AppBarNav';
 
 export { default as Dialog } from './components/Dialog';
 

@@ -2,7 +2,14 @@ import React from 'react';
 import { Drawer, DrawerProps } from '../Drawer';
 import { useAppBarRoot } from './hooks/useAppBarRoot';
 
-const AppBarDrawer = (props: DrawerProps) => {
+/**
+ * The list of the app routes rendered as a vertical navigation list on the Drawer component.
+ * 
+ * @see {@link AppBar}
+ * @see {@link Drawer}
+ * @param props - {@link DrawerProps}
+ */
+export const AppBarDrawer = (props: DrawerProps) => {
   const { isMobileOpen, toggleMobileOpen } = useAppBarRoot();
 
   return (
@@ -13,5 +20,3 @@ const AppBarDrawer = (props: DrawerProps) => {
     />
   );
 };
-
-export default AppBarDrawer;
