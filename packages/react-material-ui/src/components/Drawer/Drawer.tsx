@@ -5,38 +5,82 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
-import DrawerItem, { DrawerItemProps } from './DrawerItem';
+import { DrawerItem, DrawerItemProps } from './DrawerItem';
 import Image from '../Image';
-import Text from '../Text';
 import Box from '@mui/material/Box';
 import { TextProps } from 'interfaces';
 import { SxProps, Theme } from '@mui/material/styles';
 
+/**
+ * Drawer component props.
+ */
 export type DrawerProps = {
+  /** Array of items to display in the drawer */
   items: DrawerItemProps[];
+  /** ID of the currently active item */
   currentId?: string;
+  /** Custom toggle component for the drawer */
   customToggle?: (toggleDrawer: () => void, collapsed?: boolean) => ReactNode;
+  /** Whether the drawer is open on mobile devices */
   mobileIsOpen?: boolean;
+  /** Callback function to handle closing the drawer on mobile devices */
   onMobileClose?: () => void;
+  /** Logo to display in the drawer header */
   logo?: string | ReactNode | ((collapsed?: boolean) => ReactNode);
+  /** Props for text elements inside the drawer */
   textProps?: TextProps;
+  /** Custom styles for the drawer */
   sx?: StyledDrawerProps['sx'];
+  /** Custom styles for drawer buttons */
   buttonSx?: SxProps<Theme>;
+  /** Whether the drawer items should be displayed horizontally */
   horizontal?: boolean;
+  /** Whether the drawer is collapsible */
   collapsible?: boolean;
+  /** Icon to use for the collapsible button */
   collapsibleIcon?: ReactNode | ((collapsed?: boolean) => ReactNode);
+  /** Color of the collapsible icon */
   collapsibleIconColor?: string;
+  /** Background color of the collapsible icon */
   collapsibleIconBgColor?: string;
+  /** Whether the drawer is collapsed */
   collapsed?: boolean;
+  /** Callback function to handle changes to the collapsed state */
   onCollapsedChange?: (collapsed: boolean) => void;
+  /** Background color of the drawer */
   backgroundColor?: StyledDrawerProps['backgroundColor'];
+  /** Color of the drawer item icons */
   iconColor?: DrawerItemProps['iconColor'];
+  /** Color of the active drawer item icons */
   activeIconColor?: DrawerItemProps['activeIconColor'];
+  /** Width of the drawer when collapsed */
   collapsedWidth?: StyledDrawerProps['collapsedWidth'];
+  /** Width of the drawer when expanded */
   expandedWidth?: StyledDrawerProps['expandedWidth'];
 };
 
-const Drawer = (props: DrawerProps) => {
+/**
+ * The Drawer component is a sidebar with navigation items.
+ * It supports various features such as collapsible sections,
+ * custom toggles, and responsive design for mobile devices.
+ *
+ * @see [Storybook - Drawer](https://storybook.rockets.tools/?path=/docs/drawer)
+ *
+ * @example
+ * ```tsx
+ * <Drawer
+ *   items={[
+ *     { id: 'item1', label: 'Item 1', onClick: () => console.log('Item 1 clicked') },
+ *     { id: 'item2', label: 'Item 2', onClick: () => console.log('Item 2 clicked') },
+ *   ]}
+ *   currentId="item1"
+ *   logo="logo.png"
+ * />
+ * ```
+ *
+ * @param props - Drawer component props
+ */
+export const Drawer = (props: DrawerProps) => {
   const {
     items,
     currentId,
@@ -212,5 +256,3 @@ const Drawer = (props: DrawerProps) => {
     </>
   );
 };
-
-export default Drawer;

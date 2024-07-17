@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Drawer from '../src/components/Drawer/Drawer';
+import { Drawer } from '../src/components/Drawer/Drawer';
 
 describe('Drawer Component', () => {
   const mockItems = [

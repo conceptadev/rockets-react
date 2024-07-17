@@ -1,5 +1,5 @@
 import React from 'react';
-import Drawer, { DrawerProps } from '../Drawer';
+import { Drawer, DrawerProps } from '../Drawer';
 import { useAppBarRoot } from './hooks/useAppBarRoot';
 
 const AppBarDrawer = (props: DrawerProps) => {
