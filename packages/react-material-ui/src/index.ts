@@ -57,3 +57,5 @@ export { default as CrudModule } from './modules/crud';
 export { default as UsersModule } from './modules/users';
 
 export { default as OtpInput } from './components/OtpInput';
+
+export { default as Breadcrumbs } from './components/Breadcrumbs';

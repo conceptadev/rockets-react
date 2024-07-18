@@ -18,6 +18,7 @@ import ModalFormSubmodule from '../../components/submodules/ModalForm';
 import { Search } from '../../components/Table/types';
 import CrudRoot from './CrudRoot';
 import { FilterDetails } from '../../components/submodules/Filter';
+import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -121,6 +122,15 @@ const CrudModule = (props: ModuleProps) => {
       externalSearch={props.externalSearch}
     >
       <Box>
+        <Box mt={4}>
+          <Breadcrumbs
+            routes={[
+              { href: '/', label: 'Home' },
+              { href: '#', label: props.title || 'Table' },
+            ]}
+          />
+        </Box>
+
         {props.title ? (
           <Text fontFamily="Inter" fontSize={20} fontWeight={800} mt={4} mb={4}>
             {props.title}
