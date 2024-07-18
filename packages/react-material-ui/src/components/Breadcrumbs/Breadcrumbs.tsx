@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import {
   Breadcrumbs as MuiBreadcrumbs,
   Typography,
@@ -6,40 +6,41 @@ import {
   Stack,
 } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { usePathname } from 'next/navigation';
 
-import { transformRouteIntoLabel } from './utils';
-
-type Props = {
-  customPathname?: string;
+type RouteItem = {
+  href: string;
+  label: string;
 };
 
-export default function Breadcrumbs({ customPathname }: Props) {
-  const pathname = usePathname();
+type Props = {
+  routes: RouteItem[];
+};
 
-  const transformedPath = React.useMemo(() => {
-    return (customPathname || pathname).slice(1).split('/');
-  }, [pathname, customPathname]);
+export default function Breadcrumbs({ routes }: Props) {
+  const breadcrumbs = useMemo(() => {
+    return routes.slice(0, -1).map((routeItem, index) => {
+      return (
+        <Link
+          underline="hover"
+          key={index + 1}
+          color="inherit"
+          href={routeItem.href}
+        >
+          {routeItem.label}
+        </Link>
+      );
+    });
+  }, [routes]);
 
-  const routeObjects = React.useMemo(() => {
-    return transformedPath.map((item) => ({
-      route: `/${item}`,
-      label: transformRouteIntoLabel(item),
-    }));
-  }, [transformedPath]);
+  const lastItem = useMemo(() => {
+    const data = routes.at(-1);
 
-  const breadcrumbs = routeObjects.slice(0, -1).map((route, index) => {
-    return (
-      <Link
-        underline="hover"
-        key={index + 1}
-        color="inherit"
-        href={route.route}
-      >
-        {route.label}
-      </Link>
-    );
-  });
+    if (!data) {
+      return null;
+    }
+
+    return <Typography color="text.primary">{data.label}</Typography>;
+  }, []);
 
   return (
     <Stack spacing={2}>
@@ -48,9 +49,7 @@ export default function Breadcrumbs({ customPathname }: Props) {
         aria-label="breadcrumbs"
       >
         {breadcrumbs}
-        <Typography key={transformedPath.length} color="text.primary">
-          {transformRouteIntoLabel(transformedPath.slice(-1)[0])}
-        </Typography>
+        {lastItem}
       </MuiBreadcrumbs>
     </Stack>
   );

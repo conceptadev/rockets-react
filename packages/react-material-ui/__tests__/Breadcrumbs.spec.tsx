@@ -8,52 +8,28 @@ import { render } from '@testing-library/react';
 
 import Breadcrumbs from '../src/components/Breadcrumbs';
 
-jest.mock('next/navigation', () => ({
-  usePathname: () => '/route-1/route-2',
-}));
-
 describe('Dialog Component', () => {
-  const customPathname = '/test1/test2';
+  const routes = [
+    { href: '/', label: 'Home' },
+    { href: '/users', label: 'Users' },
+  ];
 
-  it('should render correctly without props', () => {
-    render(<Breadcrumbs />);
+  it('should render correctly', () => {
+    render(<Breadcrumbs routes={routes} />);
   });
 
-  it('should render correctly with props', () => {
-    render(<Breadcrumbs customPathname={customPathname} />);
-  });
-
-  it('should render correctly without props', () => {
-    const { queryAllByRole } = render(<Breadcrumbs />);
+  it('should render correct number of list items', () => {
+    const { queryAllByRole } = render(<Breadcrumbs routes={routes} />);
 
     const listItems = queryAllByRole('listitem');
 
     expect(listItems).toHaveLength(2);
   });
 
-  it('should render correctly with props', () => {
-    const { queryAllByRole } = render(
-      <Breadcrumbs customPathname={customPathname} />,
-    );
+  it('should render correct text items', () => {
+    const { getByText } = render(<Breadcrumbs routes={routes} />);
 
-    const listItems = queryAllByRole('listitem');
-
-    expect(listItems).toHaveLength(2);
-  });
-
-  it('should render correct tags without props', () => {
-    const { getByText } = render(<Breadcrumbs />);
-
-    expect(getByText('Route 1')).toBeInTheDocument();
-    expect(getByText('Route 2')).toBeInTheDocument();
-  });
-
-  it('should render correct tags with props', () => {
-    const { getByText } = render(
-      <Breadcrumbs customPathname={customPathname} />,
-    );
-
-    expect(getByText('Test1')).toBeInTheDocument();
-    expect(getByText('Test2')).toBeInTheDocument();
+    expect(getByText('Home')).toBeInTheDocument();
+    expect(getByText('Users')).toBeInTheDocument();
   });
 });
