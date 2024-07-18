@@ -8,7 +8,7 @@ import { render } from '@testing-library/react';
 
 import Breadcrumbs from '../src/components/Breadcrumbs';
 
-describe('Dialog Component', () => {
+describe('Breadcrumbs Component', () => {
   const routes = [
     { href: '/', label: 'Home' },
     { href: '/users', label: 'Users' },
@@ -16,6 +16,14 @@ describe('Dialog Component', () => {
 
   it('should render correctly', () => {
     render(<Breadcrumbs routes={routes} />);
+  });
+
+  it('should render null when routes array is empty', () => {
+    const { queryAllByRole } = render(<Breadcrumbs routes={[]} />);
+
+    const listItems = queryAllByRole('listitem');
+
+    expect(listItems).toHaveLength(0);
   });
 
   it('should render correct number of list items', () => {

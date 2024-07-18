@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   Breadcrumbs as MuiBreadcrumbs,
   Typography,
@@ -17,30 +17,23 @@ type Props = {
 };
 
 export default function Breadcrumbs({ routes }: Props) {
-  const breadcrumbs = useMemo(() => {
-    return routes.slice(0, -1).map((routeItem, index) => {
-      return (
-        <Link
-          underline="hover"
-          key={index + 1}
-          color="inherit"
-          href={routeItem.href}
-        >
-          {routeItem.label}
-        </Link>
-      );
-    });
-  }, [routes]);
+  const breadcrumbs = routes.slice(0, -1).map((routeItem, index) => {
+    return (
+      <Link
+        underline="hover"
+        key={index + 1}
+        color="inherit"
+        href={routeItem.href}
+      >
+        {routeItem.label}
+      </Link>
+    );
+  });
+  const lastItem = routes.at(-1);
 
-  const lastItem = useMemo(() => {
-    const data = routes.at(-1);
-
-    if (!data) {
-      return null;
-    }
-
-    return <Typography color="text.primary">{data.label}</Typography>;
-  }, []);
+  if (!routes.length) {
+    return null;
+  }
 
   return (
     <Stack spacing={2}>
@@ -49,7 +42,9 @@ export default function Breadcrumbs({ routes }: Props) {
         aria-label="breadcrumbs"
       >
         {breadcrumbs}
-        {lastItem}
+        {lastItem ? (
+          <Typography color="text.primary">{lastItem.label}</Typography>
+        ) : null}
       </MuiBreadcrumbs>
     </Stack>
   );
