@@ -122,12 +122,14 @@ const CrudModule = (props: ModuleProps) => {
       externalSearch={props.externalSearch}
     >
       <Box>
-        <Breadcrumbs
-          routes={[
-            { href: '/', label: 'Home' },
-            { href: '#', label: props.title || 'Table' },
-          ]}
-        />
+        <Box mt={4}>
+          <Breadcrumbs
+            routes={[
+              { href: '/', label: 'Home' },
+              { href: '#', label: props.title || 'Table' },
+            ]}
+          />
+        </Box>
 
         {props.title ? (
           <Text fontFamily="Inter" fontSize={20} fontWeight={800} mt={4} mb={4}>
