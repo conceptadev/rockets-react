@@ -49,7 +49,26 @@ export type NavbarProps = {
   sx?: SxProps<Theme>;
 };
 
-const Navbar = ({
+/**
+ * The Navbar component is a UI element used to display a navigation bar
+ * that includes a menu icon for drawer toggling, notification icon, and
+ * user account information.
+ *
+ * @example
+ * ```tsx
+ * <Navbar
+ *   showNotifications={true}
+ *   notificationsNumber={5}
+ *   notificationsOnClick={handleNotificationsClick}
+ *   avatar="https://example.com/avatar.jpg"
+ *   text="John Doe"
+ *   subText="Administrator"
+ * />
+ * ```
+ *
+ * @param props - Navbar component props
+ */
+export const Navbar = ({
   drawerToggle,
   showNotifications,
   notificationsNumber,
@@ -116,5 +135,3 @@ const Navbar = ({
     </Box>
   );
 };
-
-export default Navbar;

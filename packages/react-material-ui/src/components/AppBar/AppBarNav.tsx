@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar, { NavbarProps } from '../Navbar';
+import { Navbar, NavbarProps } from '../Navbar';
 import { useAppBarRoot } from './hooks/useAppBarRoot';
 
 /**

@@ -61,7 +61,7 @@ const HeaderAccount = ({
       >
         {avatar && <Avatar src={avatar} alt="Avatar" size={avatarSize} />}
 
-        <Box display="flex" flexDirection="column">
+        <Box display="flex" flexDirection="column" ml={avatar ? 1 : 0}>
           <Box display="flex">
             <Text {...textProps}>{text}</Text>{' '}
             <ExpandMore sx={{ display: 'inline', color: iconColor }} />
