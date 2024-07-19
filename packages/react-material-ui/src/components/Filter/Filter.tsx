@@ -20,8 +20,14 @@ import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
 import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
+/**
+ * Type of filter variants available.
+ */
 export type FilterVariant = 'text' | 'autocomplete' | 'select' | 'date';
 
+/**
+ * Common properties for all filters.
+ */
 export type FilterCommon = {
   id: string;
   label: string;
@@ -32,6 +38,9 @@ export type FilterCommon = {
   hide?: boolean;
 };
 
+/**
+ * Properties for the text filter.
+ */
 export type TextFilter = {
   type: 'text';
   helperText?: string;
@@ -43,6 +52,9 @@ export type TextFilter = {
   searchIconPlacement?: SearchFieldProps['searchIconPlacement'];
 } & FilterCommon;
 
+/**
+ * Properties for the date filter.
+ */
 type DateFilter = {
   type: 'date';
   onChange: (value: Date | null) => void;
@@ -50,6 +62,9 @@ type DateFilter = {
 } & FilterCommon &
   DatePickerProps<Date>;
 
+/**
+ * Properties for the autocomplete filter.
+ */
 type AutocompleteFilter = {
   type: 'autocomplete';
   value?: string | null;
@@ -61,6 +76,9 @@ type AutocompleteFilter = {
   onChange: (value: string | null) => void;
 } & FilterCommon;
 
+/**
+ * Properties for the select filter.
+ */
 type SelectFilter = {
   type: 'select';
   options: SelectOption[];
@@ -71,12 +89,21 @@ type SelectFilter = {
   value?: string | string[] | null;
 } & FilterCommon;
 
+/**
+ * Type for filter properties that can be text, date, autocomplete, or select.
+ */
 export type FilterType =
   | TextFilter
   | DateFilter
   | AutocompleteFilter
   | SelectFilter;
 
+/**
+ * Renders the appropriate component based on the filter type.
+ *
+ * @param filter - The filter object containing type and properties
+ * @returns The corresponding React component for the filter type
+ */
 const renderComponent = (filter: FilterType) => {
   switch (filter.type) {
     case 'autocomplete': {
@@ -153,20 +180,30 @@ const renderComponent = (filter: FilterType) => {
   }
 };
 
+/**
+ * Properties for the Filter component.
+ */
 export type FilterProps = {
+  /** Array of filter objects */
   filters: FilterType[];
+  /** Minimum number of filters to enable sortable item in the orderable dropdown */
   minimumFilters?: number;
+  /** Include an "all" option in the filter dropdown */
   hasAllOption?: boolean;
+  /** Children elements */
   children?: ReactNode;
+  /** Additional items to render in the grid */
   additionalGridItems?: {
     component: ReactNode | ((filters: ListItem[]) => ReactNode);
     columns?: number;
   }[];
+  /** Additional actions to render */
   complementaryActions?: ReactNode | ((filters: ListItem[]) => ReactNode);
+  /** Settings identifier */
   settingsId?: string;
 } & GridProps;
 
-const Filter = (props: FilterProps) => {
+export const Filter = (props: FilterProps) => {
   const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
   const auth = useAuth();
   const pathname = usePathname();
@@ -207,17 +244,36 @@ const Filter = (props: FilterProps) => {
 
   useEffect(() => {
     if (settings.length) {
-      setFilterOrder(
-        settings.map((item: ListItem) => {
-          const filterItem = filters.find((filter) => filter.id === item.id);
+      const originalFilters = [...filters];
+      const newFiltersOrder = [];
 
-          return {
+      settings.forEach((item: ListItem) => {
+        const filterItemIndex = originalFilters.findIndex(
+          (filter) => filter?.id === item.id,
+        );
+        const filterItem = originalFilters[filterItemIndex];
+        if (filterItem) {
+          newFiltersOrder.push({
             ...item,
             ...filterItem,
             resetFilters: resetFilters(filterItem),
-          };
-        }),
-      );
+          });
+          originalFilters[filterItemIndex] = null;
+        }
+      });
+
+      originalFilters.forEach((filter) => {
+        if (filter) {
+          newFiltersOrder.push({
+            id: filter.id,
+            label: filter.label,
+            hide: filter.hide ?? false,
+            resetFilters: resetFilters(filter),
+          });
+        }
+      });
+
+      setFilterOrder(newFiltersOrder);
     }
   }, []);
 
@@ -295,5 +351,3 @@ const Filter = (props: FilterProps) => {
     </Box>
   );
 };
-
-export default Filter;

@@ -242,12 +242,10 @@ const OrderableDropDown = ({
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      setList((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over?.id);
+      const oldIndex = list.findIndex((item) => item.id === active.id);
+      const newIndex = list.findIndex((item) => item.id === over?.id);
 
-        return arrayMove(items, oldIndex, newIndex);
-      });
+      setList(arrayMove(list, oldIndex, newIndex));
     }
   };
 

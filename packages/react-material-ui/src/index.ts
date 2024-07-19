@@ -43,7 +43,13 @@ export { default as SearchField } from './components/SearchField';
 export { default as AutocompleteField } from './components/AutocompleteField';
 export { default as SelectField } from './components/SelectField';
 export { default as SimpleForm } from './components/SimpleForm';
-export { default as Filter } from './components/Filter';
+export {
+  Filter,
+  FilterVariant,
+  FilterCommon,
+  FilterType,
+  TextFilter,
+} from './components/Filter';
 export { default as SchemaForm } from './components/SchemaForm';
 
 import FormFieldSkeleton from './components/FormFieldSkeleton';
