@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import Filter, {
+import {
+  Filter,
   FilterVariant,
   FilterCommon,
   FilterType,

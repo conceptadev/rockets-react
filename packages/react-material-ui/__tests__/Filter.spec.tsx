@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import Filter, { FilterType } from '../src/components/Filter/Filter';
+import { Filter, FilterType } from '../src/components/Filter/Filter';
 
 const SETTINGS_ID = 'testing';
 

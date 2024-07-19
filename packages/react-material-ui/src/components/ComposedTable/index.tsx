@@ -18,7 +18,7 @@ import { usePathname } from 'next/navigation';
 
 import Table from '../Table';
 import { StyleDefinition, generateTableTheme } from './constants';
-import Filter from '../Filter';
+import { Filter } from '../Filter';
 import OrderableDropDown, { ListItem } from '../OrderableDropDown';
 import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
