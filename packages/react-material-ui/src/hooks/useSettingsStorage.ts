@@ -49,18 +49,22 @@ const parseSettingsToDataString = (data: string) => {
   return data.replace(/"/g, "'");
 };
 
-const getSettingsFromStorage = ({ key, type, assignee, data }: Settings) => {
+const getSettingsFromStorage = ({
+  key,
+  type,
+  assignee,
+}: Omit<Settings, 'data'>) => {
   const storageItem = JSON.parse(localStorage.getItem(type));
 
   if (!storageItem) {
-    return data;
+    return [];
   }
 
   const settingsItem = storageItem.find(
     (item: Settings) => item.assignee.id === assignee.id && item.key === key,
   );
 
-  return settingsItem?.data || data;
+  return settingsItem ? settingsItem.data : [];
 };
 
 const getSettingsFromCacheList = ({
@@ -146,9 +150,7 @@ export const useSettingsStorage = ({
   cacheApiUri,
 }: Props) => {
   const [cacheId, setCacheId] = useState<CacheState['id']>('');
-  const [settings, setSettings] = useState<CacheState['data']>(() => {
-    return getSettingsFromStorage({ key, type, assignee, data });
-  });
+  const [settings, setSettings] = useState<CacheState['data']>([]);
 
   const { get, post, patch, del } = useDataProvider();
 
@@ -192,51 +194,70 @@ export const useSettingsStorage = ({
     { onSuccess: () => setCacheId('') },
   );
 
-  useQuery(() => get({ uri: cacheApiUri }), Boolean(cacheApiUri), {
-    onSuccess: (fetchedData: CacheResponse[]) => {
-      if (!fetchedData.length) {
-        createCache(parseSettingsToDataString(JSON.stringify(data)));
-        return;
-      }
+  const { execute: fetchSettingsCache } = useQuery(
+    () => get({ uri: cacheApiUri }),
+    false,
+    {
+      onSuccess: (fetchedData: CacheResponse[]) => {
+        if (!fetchedData.length) {
+          createCache(parseSettingsToDataString(JSON.stringify(data)));
+          return;
+        }
 
-      const cachedSettings = getSettingsFromCacheList({
-        key,
-        type,
-        assignee,
-        cacheList: fetchedData,
-      });
+        const cachedSettings = getSettingsFromCacheList({
+          key,
+          type,
+          assignee,
+          cacheList: fetchedData,
+        });
 
-      if (cachedSettings) {
-        setCacheId(cachedSettings.id);
-        setSettings(cachedSettings.data);
-      }
+        if (cachedSettings) {
+          setCacheId(cachedSettings.id);
+
+          if (!settings.length) {
+            setSettings(cachedSettings.data);
+            setListCallback(cachedSettings.data);
+          }
+        }
+      },
     },
-  });
+  );
 
   const clearSettings = () => {
     deleteSettingsStorage({ key, type, assignee });
 
-    if (cacheApiUri) {
+    if (cacheApiUri && cacheId) {
       deleteCache();
     }
   };
 
   useEffect(() => {
-    updateSettingsStorage({
-      key,
-      type,
-      assignee,
-      data: settings,
-    });
+    if (settings.length) {
+      updateSettingsStorage({
+        key,
+        type,
+        assignee,
+        data: settings,
+      });
 
-    if (cacheApiUri) {
-      updateCache(settings);
+      if (cacheApiUri && cacheId) {
+        updateCache(settings);
+      }
     }
-  }, [key, settings, cacheApiUri]);
+  }, [settings, cacheApiUri]);
 
   useEffect(() => {
-    setListCallback(settings);
-  }, [settings]);
+    const storageData = getSettingsFromStorage({ key, type, assignee });
+
+    if (storageData.length) {
+      setListCallback(storageData);
+      setSettings(storageData);
+    }
+
+    if (!storageData.length && cacheApiUri) {
+      fetchSettingsCache();
+    }
+  }, []);
 
   return { settings, setSettings, clearSettings };
 };
