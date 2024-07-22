@@ -16,16 +16,44 @@ import Button from './Button';
 import Title from './Title';
 import { ObjectFieldTemplate } from '../../styles/CustomTemplates';
 
+/**
+ * SchemaForm component props.
+ */
 export type SchemaFormProps = Omit<FormProps, 'schema' | 'validator'> & {
+  /** JSON schema for the form */
   schema: RJSFSchema;
+  /** Validator function for the form */
   validator?: FormProps['validator'];
+  /** Advanced properties for custom configurations */
   advancedProperties?: Record<string, AdvancedProperty>;
+  /** Title for the submit button */
   buttonTitle?: string;
+  /** Custom button component */
   buttonComponent?: ReactNode;
+  /** Custom title component */
   title?: ReactNode;
+  /** Mapper function for advanced properties */
   advancedPropertiesMapper?: AdvancedPropertiesMapper;
 };
 
+/**
+ * The Form component is a wrapper around the React JSON Schema Form library,
+ * customized with additional features such as advanced properties mapping,
+ * custom UI schema generation, and form data merging.
+ *
+ * @param props - SchemaForm component props
+ *
+ * @example
+ * ```tsx
+ * <Form
+ *   schema={mySchema}
+ *   formData={myFormData}
+ *   advancedProperties={myAdvancedProperties}
+ * >
+ *   <Button type="submit">Submit</Button>
+ * </Form>
+ * ```
+ */
 const Form = ({
   uiSchema,
   schema,
@@ -65,5 +93,9 @@ const Form = ({
   );
 };
 
+/**
+ * SchemaForm component is a compound component that includes Form, Title, and Button.
+ * It serves as an entry point for using the customized form components.
+ */
 const SchemaForm = { Form, Title, Button };
 export default SchemaForm;
