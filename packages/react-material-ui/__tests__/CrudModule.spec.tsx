@@ -253,13 +253,16 @@ describe('CrudModule Component', () => {
   });
 
   it('should hide edit icon if editFormProps is not passed', () => {
-    const _props = { ...props, editFormProps: undefined };
+    const { editFormProps, ...restProps } = props;
 
-    const { container, queryAllByTestId } = render(<CrudModule {..._props} />);
+    const { container, queryAllByTestId } = render(
+      <CrudModule {...restProps} />,
+    );
+
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
+    const editIcons = queryAllByTestId('edit-button');
     expect(editIcons).toHaveLength(0);
   });
 
@@ -270,7 +273,7 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
+    const editIcons = queryAllByTestId('edit-button');
 
     editIcons[0] && fireEvent.click(editIcons[0]);
 
@@ -294,7 +297,7 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
+    const editIcons = queryAllByTestId('edit-button');
 
     editIcons[0] && fireEvent.click(editIcons[0]);
 
@@ -311,7 +314,7 @@ describe('CrudModule Component', () => {
     const _props = { ...props, detailsFormProps: undefined };
     const { queryAllByTestId } = render(<CrudModule {..._props} />);
 
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const chevronRightIcons = queryAllByTestId('details-button');
     expect(chevronRightIcons).toHaveLength(0);
   });
 
@@ -322,7 +325,7 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     chevronRightIcons[0] && fireEvent.click(chevronRightIcons[0]);
 
@@ -346,7 +349,7 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     chevronRightIcons[0] && fireEvent.click(chevronRightIcons[0]);
 

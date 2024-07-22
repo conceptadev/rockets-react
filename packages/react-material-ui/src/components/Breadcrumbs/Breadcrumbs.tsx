@@ -1,10 +1,8 @@
 import React from 'react';
-import {
-  Breadcrumbs as MuiBreadcrumbs,
-  Typography,
-  Link,
-  Stack,
-} from '@mui/material';
+import MuiBreadcrumbs from '@mui/material/Breadcrumbs';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 
 type RouteItem = {
