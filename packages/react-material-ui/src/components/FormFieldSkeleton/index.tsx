@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from 'react';
-import { Box, Skeleton, useTheme } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 
 type FormFieldSkeletonProps = {
   isLoading?: boolean;

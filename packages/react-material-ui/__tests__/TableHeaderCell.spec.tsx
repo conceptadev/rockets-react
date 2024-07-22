@@ -6,7 +6,10 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Table as RocketsTable } from '../src/';
-import { TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import { TableBodyRows } from '../src/components/Table/TableBody/TableBodyRows';
 
 jest.mock('next/navigation', () => ({

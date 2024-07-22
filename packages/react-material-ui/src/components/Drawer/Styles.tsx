@@ -1,8 +1,7 @@
 import MuiDrawer from '@mui/material/Drawer';
 import MuiButton from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import { SxProps, Theme } from '@mui/material/styles';
-import { alpha } from '@mui/material';
+import { SxProps, Theme, alpha } from '@mui/material/styles';
 
 export type StyledDrawerProps = {
   sx?: SxProps<Theme>;

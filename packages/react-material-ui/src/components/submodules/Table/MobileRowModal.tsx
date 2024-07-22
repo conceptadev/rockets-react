@@ -2,7 +2,11 @@
 
 import React from 'react';
 import get from 'lodash/get';
-import { Tooltip, Box, Dialog, DialogContent, IconButton } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Text from '../../Text';

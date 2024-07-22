@@ -8,7 +8,7 @@ import {
   StrictRJSFSchema,
   WidgetProps,
 } from '@rjsf/utils';
-import { Autocomplete, createFilterOptions } from '@mui/material';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import FormFieldSkeleton from '../../components/FormFieldSkeleton';
 import { allOption } from '../../components/SelectField/SelectField';

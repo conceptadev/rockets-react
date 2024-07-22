@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from 'react';
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
 import { useMemo, useState } from 'react';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 
 import useTable from '../../components/Table/useTable';
 import { TableProps as InnerTableProps } from '../../components/Table/Table';

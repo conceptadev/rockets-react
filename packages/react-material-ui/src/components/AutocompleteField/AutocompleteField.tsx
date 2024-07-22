@@ -1,12 +1,11 @@
 'use client';
 
 import React, { SyntheticEvent, useEffect, useState } from 'react';
-import {
-  Autocomplete,
+import Autocomplete, {
   AutocompleteProps,
   AutocompleteRenderInputParams,
-  TextField,
-} from '@mui/material';
+} from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 import {
   SelectOption,
   allOption,

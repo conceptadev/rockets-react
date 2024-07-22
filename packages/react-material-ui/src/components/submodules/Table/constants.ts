@@ -1,5 +1,5 @@
 import { createTableStyles } from '../../../components/Table/utils';
-import { Theme } from '@mui/material';
+import { Theme } from '@mui/material/styles';
 import { StyleDefinition } from '../../../components/submodules/Table';
 
 export const generateTableTheme = (

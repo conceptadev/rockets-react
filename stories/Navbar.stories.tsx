@@ -3,7 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
 import { Navbar } from '@concepta/react-material-ui';
-import { Box, MenuItem } from '@mui/material';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
 
 const meta = {
   component: Navbar,

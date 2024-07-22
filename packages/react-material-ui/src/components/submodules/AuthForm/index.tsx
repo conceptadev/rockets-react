@@ -11,7 +11,11 @@ import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { useAuth } from '@concepta/react-auth-provider';
 import { useSearchParams } from 'next/navigation';
 import validator from '@rjsf/validator-ajv6';
-import { Box, Button, Container, Card, CircularProgress } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Card from '@mui/material/Card';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import Text from '../../../components/Text';
 import Link from '../../../components/Link';

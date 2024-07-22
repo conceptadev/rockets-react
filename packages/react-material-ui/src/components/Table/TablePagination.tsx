@@ -1,11 +1,10 @@
 'use client';
 
 import React from 'react';
-import {
-  TablePagination as MuiTablePagination,
+import { useTheme } from '@mui/material/styles';
+import MuiTablePagination, {
   TablePaginationProps as MuiTablePaginationProps,
-  useTheme,
-} from '@mui/material';
+} from '@mui/material/TablePagination';
 import { useTableRoot } from './hooks/useTableRoot';
 
 type TablePaginationProps = {

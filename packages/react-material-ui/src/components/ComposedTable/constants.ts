@@ -1,5 +1,5 @@
 import { createTableStyles } from '../Table/utils';
-import { Theme, SxProps } from '@mui/material';
+import { Theme, SxProps } from '@mui/material/styles';
 
 export type StyleDefinition = {
   root?: SxProps<Theme>;

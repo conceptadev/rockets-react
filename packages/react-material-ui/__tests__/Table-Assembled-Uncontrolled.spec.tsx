@@ -8,7 +8,10 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Table as RocketsTable } from '../src';
 import { RowProps, HeaderProps } from '../src/components/Table/types';
 import useTable from '../src/components/Table/useTable';
-import { TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 interface Props {
   headers: HeaderProps[];

@@ -6,7 +6,9 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Table as RocketsTable } from '../src/';
-import { TableBody, TableContainer } from '@mui/material';
+
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
 
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),

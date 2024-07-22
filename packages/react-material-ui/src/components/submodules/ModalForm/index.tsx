@@ -2,15 +2,13 @@ import React, { PropsWithChildren } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  IconButton,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';

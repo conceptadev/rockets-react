@@ -1,7 +1,7 @@
 'use client';
 
 import React, { PropsWithChildren } from 'react';
-import { TableProps as MuiTableProps } from '@mui/material';
+import { TableProps as MuiTableProps } from '@mui/material/Table';
 import { Table as MuiTable, TableProps as TableStylesProps } from './Styles';
 import { isMobile } from '../../utils/isMobile';
 

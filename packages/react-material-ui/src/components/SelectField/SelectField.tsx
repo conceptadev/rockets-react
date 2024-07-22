@@ -1,15 +1,11 @@
 'use client';
 
 import React from 'react';
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  SelectProps,
-} from '@mui/material';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectProps, SelectChangeEvent } from '@mui/material/Select';
 
 import FormFieldSkeleton from '../../components/FormFieldSkeleton';
 

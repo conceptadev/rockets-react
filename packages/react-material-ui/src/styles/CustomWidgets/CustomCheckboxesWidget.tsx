@@ -1,6 +1,10 @@
 import React from 'react';
 import { WidgetProps } from '@rjsf/utils';
-import { Box, Divider, FormControl, Grid, Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import Checkbox from '../../components/Checkbox';
 
 const CustomCheckboxesWidget = (props: WidgetProps) => {

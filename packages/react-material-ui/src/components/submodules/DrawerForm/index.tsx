@@ -3,7 +3,10 @@ import React, { PropsWithChildren } from 'react';
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
 
-import { Box, Drawer, Button, CircularProgress } from '@mui/material';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 

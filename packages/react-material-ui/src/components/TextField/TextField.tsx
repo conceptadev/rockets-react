@@ -1,13 +1,11 @@
 import React, { ReactNode, useState } from 'react';
-import {
-  Box,
-  BoxProps,
-  FormControl,
-  InputAdornment,
-  TextField as MuiTextField,
+import Box, { BoxProps } from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import MuiTextField, {
   TextFieldProps as MuiTextFieldProps,
-  TypographyProps,
-} from '@mui/material';
+} from '@mui/material/TextField';
+import { TypographyProps } from '@mui/material/Typography';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';

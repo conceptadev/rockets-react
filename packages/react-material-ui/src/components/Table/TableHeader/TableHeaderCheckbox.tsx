@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Checkbox, TableCell, TableCellProps } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
+import TableCell, { TableCellProps } from '@mui/material/TableCell';
 import { useTableRoot } from '../hooks/useTableRoot';
 
 /**

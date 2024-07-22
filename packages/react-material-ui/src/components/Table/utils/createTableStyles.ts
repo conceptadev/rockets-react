@@ -1,4 +1,4 @@
-import { SxProps, Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material/styles';
 
 type StyleDefinition = {
   [key: string]: SxProps<Theme>;

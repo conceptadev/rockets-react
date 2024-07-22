@@ -1,14 +1,9 @@
 import React from 'react';
-import {
-  Box,
-  BoxProps,
-  FormControl,
-  FormControlLabel,
-  Radio as MuiRadio,
-  RadioGroup,
-  RadioGroupProps,
-  RadioProps,
-} from '@mui/material';
+import Box, { BoxProps } from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import MuiRadio, { RadioProps } from '@mui/material/Radio';
+import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup';
 import FormLabel from '../FormLabel';
 import { TextProps } from 'interfaces';
 

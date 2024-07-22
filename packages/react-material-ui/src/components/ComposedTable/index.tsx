@@ -3,15 +3,13 @@ import React, { useState } from 'react';
 import type { TableRootProps } from '../Table/TableRoot';
 import type { FilterProps } from '../Filter/Filter';
 
-import {
-  Box,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  useTheme,
-} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import Settings from '@mui/icons-material/Settings';
 import { useAuth } from '@concepta/react-auth-provider';
 import { usePathname } from 'next/navigation';

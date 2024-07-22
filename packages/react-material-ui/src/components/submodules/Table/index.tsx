@@ -8,19 +8,15 @@ import type {
 } from '../../Table/types';
 
 import { useMemo } from 'react';
-import {
-  Box,
-  Button,
-  IconButton,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  useTheme,
-  Theme,
-  SxProps,
-} from '@mui/material';
+import { useTheme, Theme, SxProps } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Edit';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';

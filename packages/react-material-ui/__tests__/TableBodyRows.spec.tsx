@@ -6,7 +6,9 @@ import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
 import { Table as RocketsTable } from '../src/';
-import { TableBody, TableContainer, TableCell } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import TableContainer from '@mui/material/TableContainer';
+import TableCell from '@mui/material/TableCell';
 import { RowProps, Order } from '../src/components/Table/types';
 import { TableBodyRows } from '../src/components/Table/TableBody/TableBodyRows';
 

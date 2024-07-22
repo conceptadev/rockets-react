@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 
 import { AppBar } from '@concepta/react-material-ui';
-import { Box, MenuItem } from '@mui/material';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
 import PersonIcon from '@mui/icons-material/PersonOutlineOutlined';
 import HomeIcon from '@mui/icons-material/HomeOutlined';
 import rockets from './assets/rockets.svg';

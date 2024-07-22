@@ -1,7 +1,7 @@
 'use client';
 
 import React, { PropsWithChildren, useState } from 'react';
-import { Box, BoxProps } from '@mui/material';
+import Box, { BoxProps } from '@mui/material/Box';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { HeaderProps, Order, RowProps, TableQueryStateProps } from './types';
 import { useTableQueryState } from './hooks/useTableQueryState';

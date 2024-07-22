@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, BoxProps } from '@mui/material';
+import Box, { BoxProps } from '@mui/material/Box';
 
 /**
  * The AppBarMain component serves as a wrapper for the navigation bar and page content.
- * 
+ *
  * The AppBar.Main props extend from [Material UI's Box](https://mui.com/material-ui/api/box/#props)
  * component props, so every prop is interchangeable between those two.
- * 
+ *
  * @see {@link AppBar}
  * @see {@link [MUI Box Component](https://mui.com/material-ui/react-box/)}
  * @param boxProps - MUI {@link [BoxProps](https://mui.com/material-ui/api/box/#props)}

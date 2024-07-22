@@ -2,7 +2,7 @@
 
 import React, { ReactNode } from 'react';
 import { CustomRowOptionsProps, RowProps, SimpleOptionButton } from '../types';
-import { TableCell } from '@mui/material';
+import TableCell from '@mui/material/TableCell';
 import TableOptions from '../TableOptions';
 
 type TableBodyOptionProps = {

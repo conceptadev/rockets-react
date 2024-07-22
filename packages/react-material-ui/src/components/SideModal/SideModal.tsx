@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { useTheme } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { SxProps, Theme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import MuiDrawer, { DrawerProps } from '@mui/material/Drawer';

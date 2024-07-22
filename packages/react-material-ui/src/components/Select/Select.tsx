@@ -1,12 +1,8 @@
 import React from 'react';
-import {
-  Box,
-  BoxProps,
-  FormControl,
-  MenuItem,
-  TextField,
-  TextFieldProps,
-} from '@mui/material';
+import Box, { BoxProps } from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import FormLabel from '../FormLabel';
 import { TextProps } from 'interfaces';
 

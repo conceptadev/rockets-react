@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { TableCell } from '@mui/material';
+import TableCell from '@mui/material/TableCell';
 
 /**
  * Represents a table header cell for options.

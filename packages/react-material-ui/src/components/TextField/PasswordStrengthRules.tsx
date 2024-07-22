@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Box, FormHelperText } from '@mui/material';
+import Box from '@mui/material/Box';
+import FormHelperText from '@mui/material/FormHelperText';
 import { PasswordRule } from './constants';
 
 type PasswordStrengthRulesProps = {

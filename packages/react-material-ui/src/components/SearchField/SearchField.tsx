@@ -9,12 +9,9 @@ import React, {
 } from 'react';
 import MuiSearchIcon from '@mui/icons-material/Search';
 import debounce from 'lodash/debounce';
-import {
-  IconButton,
-  InputAdornment,
-  TextField,
-  TextFieldProps,
-} from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import Clear from '@mui/icons-material/Clear';
 
 const SearchIcon = () => (

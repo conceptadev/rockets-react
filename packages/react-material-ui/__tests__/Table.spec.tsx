@@ -7,13 +7,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { Table } from '../src/components/Table/Table';
 
-import {
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 describe('Table component', () => {
   it('should render correctly', () => {

@@ -2,7 +2,9 @@
 
 import React, { ReactNode } from 'react';
 import Text from '../../Text';
-import { TableCell, TableCellProps, Tooltip } from '@mui/material';
+import TableCell, { TableCellProps } from '@mui/material/TableCell';
+import Tooltip from '@mui/material/Tooltip';
+
 import get from 'lodash/get';
 
 import { CustomTableCell, RowProps } from '../types';

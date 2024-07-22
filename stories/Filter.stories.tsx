@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Box, Button } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { Filter } from '../packages/react-material-ui/src/components/Filter';
 
 const meta = {

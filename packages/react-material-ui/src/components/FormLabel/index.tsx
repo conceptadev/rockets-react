@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormLabel as MuiFormLabel } from '@mui/material';
+import MuiFormLabel from '@mui/material/FormLabel';
 import Text from '../Text';
 import { TextProps } from 'interfaces';
 
