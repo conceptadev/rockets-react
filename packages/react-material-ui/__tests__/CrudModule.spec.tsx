@@ -181,9 +181,9 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
-    const deleteIcons = queryAllByTestId('DeleteIcon');
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const editIcons = queryAllByTestId('edit-button');
+    const deleteIcons = queryAllByTestId('delete-button');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     expect(editIcons).toHaveLength(0);
     expect(deleteIcons).toHaveLength(0);
@@ -197,9 +197,9 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
-    const deleteIcons = queryAllByTestId('DeleteIcon');
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const editIcons = queryAllByTestId('edit-button');
+    const deleteIcons = queryAllByTestId('delete-button');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     expect(editIcons).toHaveLength(2);
     expect(deleteIcons).toHaveLength(0);

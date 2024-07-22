@@ -199,6 +199,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       props.onAction({ action: 'edit', row: rowData });
                     }
                   }}
+                  data-testid="edit-button"
                 >
                   <EditIcon />
                 </IconButton>
@@ -210,6 +211,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                     e.stopPropagation();
                     deleteItem(rowData.id);
                   }}
+                  data-testid="delete-button"
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -223,6 +225,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       props.onAction({ action: 'details', row: rowData });
                     }
                   }}
+                  data-testid="details-button"
                 >
                   <ChevronRightIcon />
                 </IconButton>
