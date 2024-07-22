@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 import { useAuth } from '@concepta/react-auth-provider';
@@ -239,27 +239,7 @@ export const Filter = (props: FilterProps) => {
       hide: Boolean(header.hide),
     })),
     cacheApiUri: props.settingsCacheUri,
-    setListCallback: (callbackData) =>
-      setFilterOrder(
-        callbackData.map((item: ListItem) => {
-          const filterItem = filters.find((filter) => filter.id === item.id);
-
-          return {
-            ...item,
-            ...filterItem,
-            resetFilters: resetFilters(filterItem),
-          };
-        }),
-      ),
-  });
-
-  const handleFilterOrderChange = (list: ListItem[]) => {
-    setFilterOrder(list);
-    setSettings(list);
-  };
-
-  useEffect(() => {
-    if (settings.length) {
+    setListCallback: (settings) => {
       const originalFilters = [...filters];
       const newFiltersOrder = [];
 
@@ -268,6 +248,7 @@ export const Filter = (props: FilterProps) => {
           (filter) => filter?.id === item.id,
         );
         const filterItem = originalFilters[filterItemIndex];
+
         if (filterItem) {
           newFiltersOrder.push({
             ...item,
@@ -290,8 +271,13 @@ export const Filter = (props: FilterProps) => {
       });
 
       setFilterOrder(newFiltersOrder);
-    }
-  }, []);
+    },
+  });
+
+  const handleFilterOrderChange = (list: ListItem[]) => {
+    setFilterOrder(list);
+    setSettings(list);
+  };
 
   return (
     <Box
