@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import type { TableRootProps } from '../Table/TableRoot';
 import type { FilterProps } from '../Filter/Filter';
@@ -36,27 +36,22 @@ const ComposedTable = (props: ComposedTableProps) => {
   const auth = useAuth();
   const pathname = usePathname();
 
-  const [settings, setSettings] = useSettingsStorage({
-    key: 'tableSettings',
-    user: (auth?.user as { id: string })?.id ?? '',
-    settingsId: props.settingsId || pathname,
-    list: props.headers.map((header) => ({
+  const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
+
+  const { setSettings } = useSettingsStorage({
+    key: props.settingsId || pathname,
+    type: 'table',
+    assignee: {
+      id: (auth?.user as { id: string })?.id ?? '',
+    },
+    data: props.headers.map((header) => ({
       id: header.id,
       hide: Boolean(header.hide),
     })),
-  });
-
-  const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
-
-  const handleHeadersOrderChange = (list: ListItem[]) => {
-    setOrderableHeaders(list);
-    setSettings(list);
-  };
-
-  useEffect(() => {
-    if (settings.length) {
+    cacheApiUri: props.settingsCacheUri,
+    setListCallback: (callbackData) =>
       setOrderableHeaders(
-        settings.map((item: ListItem) => {
+        callbackData.map((item: ListItem) => {
           const headerItem = props.headers.find(
             (header) => header.id === item.id,
           );
@@ -66,9 +61,13 @@ const ComposedTable = (props: ComposedTableProps) => {
             ...headerItem,
           };
         }),
-      );
-    }
-  }, []);
+      ),
+  });
+
+  const handleHeadersOrderChange = (list: ListItem[]) => {
+    setOrderableHeaders(list);
+    setSettings(list);
+  };
 
   return (
     <Box>

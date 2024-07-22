@@ -109,6 +109,8 @@ export interface TableSubmoduleProps {
   paginationStyle?: PaginationStyle;
   allowModalPreview?: boolean;
   mobileModalTitleSrc?: string;
+  filterSettingsId?: string;
+  filterSettingsCacheUri?: string;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -259,7 +261,12 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             my: 4,
           }}
         >
-          {filters && <FilterSubmodule />}
+          {filters && (
+            <FilterSubmodule
+              settingsId={props.filterSettingsId}
+              settingsCacheUri={props.filterSettingsCacheUri}
+            />
+          )}
           <Box
             sx={{
               display: 'flex',

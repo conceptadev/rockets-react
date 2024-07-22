@@ -1,6 +1,6 @@
 'use client';
 
-import React, { ReactNode, useState, useEffect } from 'react';
+import React, { ReactNode, useState } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 import { useAuth } from '@concepta/react-auth-provider';
@@ -201,28 +201,19 @@ export type FilterProps = {
   complementaryActions?: ReactNode | ((filters: ListItem[]) => ReactNode);
   /** Settings identifier */
   settingsId?: string;
+  settingsCacheUri?: string;
 } & GridProps;
 
 export const Filter = (props: FilterProps) => {
   const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
+
   const auth = useAuth();
   const pathname = usePathname();
-
-  const [settings, setSettings] = useSettingsStorage({
-    key: 'filterSettings',
-    user: (auth?.user as { id: string })?.id ?? '',
-    settingsId: props.settingsId || pathname,
-    list: filters.map((header) => ({
-      id: header.id,
-      hide: Boolean(header.hide),
-    })),
-  });
 
   const resetFilters = (item) => () => {
     if (item && item?.onDebouncedSearchChange) {
       item.onDebouncedSearchChange(null);
     }
-
     if (item && item?.onChange) {
       item.onChange(null);
     }
@@ -237,13 +228,18 @@ export const Filter = (props: FilterProps) => {
     })),
   );
 
-  const handleFilterOrderChange = (list: ListItem[]) => {
-    setFilterOrder(list);
-    setSettings(list);
-  };
-
-  useEffect(() => {
-    if (settings.length) {
+  const { setSettings } = useSettingsStorage({
+    key: props.settingsId || pathname,
+    type: 'filter',
+    assignee: {
+      id: (auth?.user as { id: string })?.id ?? '',
+    },
+    data: filters.map((header) => ({
+      id: header.id,
+      hide: Boolean(header.hide),
+    })),
+    cacheApiUri: props.settingsCacheUri,
+    setListCallback: (settings) => {
       const originalFilters = [...filters];
       const newFiltersOrder = [];
 
@@ -252,6 +248,7 @@ export const Filter = (props: FilterProps) => {
           (filter) => filter?.id === item.id,
         );
         const filterItem = originalFilters[filterItemIndex];
+
         if (filterItem) {
           newFiltersOrder.push({
             ...item,
@@ -274,8 +271,13 @@ export const Filter = (props: FilterProps) => {
       });
 
       setFilterOrder(newFiltersOrder);
-    }
-  }, []);
+    },
+  });
+
+  const handleFilterOrderChange = (list: ListItem[]) => {
+    setFilterOrder(list);
+    setSettings(list);
+  };
 
   return (
     <Box

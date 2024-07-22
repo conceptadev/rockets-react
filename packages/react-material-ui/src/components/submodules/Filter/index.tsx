@@ -39,7 +39,12 @@ export type FilterDetails = {
 
 export type FilterCallback = (filter: FilterValues) => void;
 
-const FilterSubmodule = () => {
+type Props = {
+  settingsId?: string;
+  settingsCacheUri?: string;
+};
+
+const FilterSubmodule = (props: Props) => {
   const {
     filters,
     updateSearch,
@@ -186,7 +191,7 @@ const FilterSubmodule = () => {
 
   if (filters.length === 0) return null;
 
-  return <Filter filters={filterObjs} />;
+  return <Filter {...props} filters={filterObjs} />;
 };
 
 export default FilterSubmodule;
