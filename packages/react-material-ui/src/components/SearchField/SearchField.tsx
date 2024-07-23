@@ -46,6 +46,8 @@ export type SearchFieldProps = {
  * for debounced search input and clearable input field. It supports customization
  * of the search icon placement and integrates with Material-UI components.
  *
+ * @see [Storybook - SearchField](https://storybook.rockets.tools/?path=/docs/searchfield)
+ *
  * @example
  * ```tsx
  * <SearchField
