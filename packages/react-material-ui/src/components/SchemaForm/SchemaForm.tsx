@@ -158,33 +158,47 @@ const Form = ({
     properties: advancedPropertiesMapper(schema, advancedProperties),
   };
 
+  const uiSchemaWithButtonTitle = {
+    ...uiSchemaGenerator(finalSchema, advancedProperties),
+    ...uiSchema,
+    'ui:submitButtonOptions': {
+      submitText: props.buttonTitle,
+    },
+  };
+
+  const templatesWithCustomButton = {
+    ArrayFieldTemplate,
+    ObjectFieldTemplate,
+    ButtonTemplates: {
+      SubmitButton: props.buttonComponent,
+    },
+  };
+
   return (
     <Fragment>
       {schema && (
         <Box>
           <RJSFForm
             schema={finalSchema}
-            uiSchema={{
-              ...uiSchemaGenerator(finalSchema, advancedProperties),
-              ...uiSchema,
-              ...(props.buttonTitle && {
-                'ui:submitButtonOptions': {
-                  submitText: props.buttonTitle,
-                },
-              }),
-            }}
+            uiSchema={
+              props.buttonTitle
+                ? uiSchemaWithButtonTitle
+                : {
+                    ...uiSchemaGenerator(finalSchema, advancedProperties),
+                    ...uiSchema,
+                  }
+            }
             formData={mergeFormData(finalSchema, formData)}
             noHtml5Validate
             showErrorList={false}
-            templates={{
-              ArrayFieldTemplate,
-              ObjectFieldTemplate,
-              ...(props.buttonComponent && {
-                ButtonTemplates: {
-                  SubmitButton: props.buttonComponent,
-                },
-              }),
-            }}
+            templates={
+              props.buttonComponent
+                ? templatesWithCustomButton
+                : {
+                    ArrayFieldTemplate,
+                    ObjectFieldTemplate,
+                  }
+            }
             validator={validator}
             {...props}
           >
