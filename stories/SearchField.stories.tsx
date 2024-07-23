@@ -72,8 +72,6 @@ export const CustomPlaceholder: Story = {
 
 export const DebouncedSearch: Story = {
   args: {
-    // onDebouncedSearchChange: (value) =>
-    //   console.log(`Debounced search: ${value}`),
     onDebouncedSearchChange: fn(),
   },
 };
@@ -81,8 +79,6 @@ export const DebouncedSearch: Story = {
 export const CustomWaitTime: Story = {
   args: {
     wait: 1500,
-    // onDebouncedSearchChange: (value) =>
-    //   console.log(`Debounced search: ${value}`),
     onDebouncedSearchChange: fn(),
   },
 };
