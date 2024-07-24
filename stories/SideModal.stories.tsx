@@ -1,33 +1,79 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { useArgs } from '@storybook/preview-api';
 import { fn } from '@storybook/test';
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
+import Button from '@mui/material/Button';
 
-import { SideModal } from '@concepta/react-material-ui';
+import { SideModal as SideModalComponent } from '@concepta/react-material-ui';
+
+// Button.displayName = "Button"
 
 const meta = {
-  component: SideModal,
-  tags: ['autodocs'],
+  component: SideModalComponent,
+  parameters: { viewport: { defaultViewport: 'responsive' } },
   args: {
     open: false,
-    toggleDrawer: fn(),
+    textProps: {
+      fontSize: 18,
+      fontWeight: 500,
+      color: 'common.white',
+      fontFamily: "'Inter', sans-serif",
+    },
+    toggleDrawer: () => {},
   },
   argTypes: {
+    title: { type: 'string' },
+    textProps: {
+      description: 'Text props for the title',
+      control: { type: 'object' },
+    },
+    backgroundColor: { type: 'string', control: { type: 'color' } },
+    headerBackgroundColor: { type: 'string', control: { type: 'color' } },
+    closeIconColor: { type: 'string', control: { type: 'color' } },
+    width: { type: 'number', control: { type: 'range', min: 100, max: 600 } },
     anchor: {
-      control: {
-        type: 'select',
-        options: ['left', 'right', 'top', 'bottom'],
-      },
+      options: ['right', 'left', 'top', 'bottom'],
+      control: { type: 'select' },
+    },
+    sx: {
+      description: 'Custom styles for the drawer',
+      control: { type: 'object' },
     },
   },
-} satisfies Meta<typeof SideModal>;
+  render: function SideModal(args) {
+    const [{ open }, updateArgs] = useArgs();
+
+    const toggleDrawer = () => {
+      updateArgs({ open: !open });
+    };
+
+    return (
+      <>
+        <Button onClick={toggleDrawer} variant="contained">
+          Open Modal
+        </Button>
+        <SideModalComponent {...args} open={open} toggleDrawer={toggleDrawer} />
+      </>
+    );
+  },
+} satisfies Meta<typeof SideModalComponent>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  tags: ['autodocs'],
+  args: {
+    title: 'Side Menu',
+    anchor: 'right',
+    children: (
+      <Box p={2}>
+        <p>SideModal body</p>
+      </Box>
+    ),
+  },
 };
 
 export const CustomHeaderBackgroundColor: Story = {
@@ -40,7 +86,7 @@ export const CustomHeaderBackgroundColor: Story = {
 export const CustomBackgroundColor: Story = {
   args: {
     title: 'Modal with Custom Background Color',
-    backgroundColor: '#00ff00',
+    backgroundColor: '#aaffff',
   },
 };
 
@@ -54,7 +100,7 @@ export const CustomCloseIconColor: Story = {
 export const CustomWidth: Story = {
   args: {
     title: 'Modal with Custom Width',
-    width: '200px',
+    width: 200,
   },
 };
 
@@ -65,16 +111,17 @@ export const AnchorOptions: Story = {
   },
 };
 
+/**
+ * The SideModal width will adjust automatically to 100% on small screens.
+ */
 export const FullWidthOnSmallScreens: Story = {
+  argTypes: {
+    width: { control: { type: 'text' } },
+  },
   args: {
     title: 'Full Width on Small Screens',
-    width: '100%',
   },
-  parameters: {
-    viewport: {
-      defaultViewport: 'iphonex',
-    },
-  },
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
 };
 
 export const Children: Story = {
@@ -88,6 +135,7 @@ export const CustomStylesWithSx: Story = {
   args: {
     title: 'Modal with Custom Styles',
     sx: {
+      opacity: 0.5,
       '& .MuiDrawer-paper': {
         border: '5px solid red',
       },
