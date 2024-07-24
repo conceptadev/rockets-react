@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Avatar from '../src/components/Avatar/Avatar';
+import { Avatar } from '../src/components/Avatar/Avatar';
 
 describe('Avatar Component', () => {
   const props = {
