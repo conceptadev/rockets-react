@@ -110,10 +110,11 @@ describe('CrudModule Component', () => {
   });
 
   it('should render title correctly', () => {
-    const { getByText } = render(<CrudModule {...props} />);
+    const { getAllByText } = render(<CrudModule {...props} />);
 
-    const title = getByText('Test title');
-    expect(title).toBeInTheDocument();
+    // title will be rendered twice as it also appears in the page breadcrumbs
+    const titleElements = getAllByText('Test title');
+    expect(titleElements).toHaveLength(2);
   });
 
   it('formContainerVariation displays the form in a Drawer according to its value', async () => {
