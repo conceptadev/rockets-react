@@ -15,7 +15,7 @@ import { Close as CloseIcon } from '@mui/icons-material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
-import SchemaForm, { SchemaFormProps } from '../../../components/SchemaForm';
+import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
 type Action = 'creation' | 'edit' | 'details' | null;

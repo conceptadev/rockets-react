@@ -50,7 +50,7 @@ export {
   FilterType,
   TextFilter,
 } from './components/Filter';
-export { default as SchemaForm } from './components/SchemaForm';
+export { SchemaForm, SchemaFormProps } from './components/SchemaForm';
 
 import FormFieldSkeleton from './components/FormFieldSkeleton';
 export { FormFieldSkeleton };
