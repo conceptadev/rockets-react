@@ -11,7 +11,7 @@ type AdvancedFieldType =
   | 'radio'
   | 'checkbox'
   | 'checkboxes'
-  | 'switch;';
+  | 'switch';
 
 type SelectOption = {
   value: string;
