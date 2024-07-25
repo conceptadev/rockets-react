@@ -20,40 +20,66 @@ import { ObjectFieldTemplate } from '../../styles/CustomTemplates';
  * SchemaForm component props.
  */
 export type SchemaFormProps = Omit<FormProps, 'schema' | 'validator'> & {
-  /** Object that defines the structure of the form, containing information about field names, properties and formatting. Comprehensive guide available at the [schema docs](https://json-schema.org/learn/getting-started-step-by-step). */
+  /**
+   * Object that defines the structure of the form, containing information
+   * about field names, properties and formatting. Comprehensive guide available
+   * at the [schema docs](https://json-schema.org/learn/getting-started-step-by-step).
+   */
   schema: RJSFSchema;
-  /** Validation helper for the form structure. _@rjsf/validator-ajvx_, provided by [ajv](https://github.com/ajv-validator/ajv), is generally used for this purpose. It is implemented on the form via the [HTML5 Validation](https://rjsf-team.github.io/react-jsonschema-form/docs/usage/validation#html5-validation) */
+  /**
+   * Validation helper for the form structure. `@rjsf/validator-ajvx` provided by
+   * [ajv](https://github.com/ajv-validator/ajv), is generally used for this purpose.
+   * 
+   * It is implemented on the form via the
+   * [HTML5 Validation](https://rjsf-team.github.io/react-jsonschema-form/docs/usage/validation#html5-validation)
+   */
   validator?: FormProps['validator'];
-  /** Additional schema for fields that are out of the default _string_, _number_, _integer_, _object_, _array_, _boolean_ and _null_ set for the form schema. The field set for advanced properties contain the same types as the default one, but add other fields such as _email_, _password_, _select_, _radio_, _checkbox_, _checkboxes_ and _switch_. */
+  /**
+   * Additional schema for fields that are out of the default `string`, `number`,
+   * `integer`, `object`, `array`, `boolean` and `null` set for the form schema.
+   * 
+   * The field set for advanced properties contain the same types as the default
+   * one, but add other fields such as `email`, `password`, `select`, `radio`,
+   * `checkbox`, `checkboxes` and `switch`.
+   */
   advancedProperties?: Record<string, AdvancedProperty>;
-  /** Title for the form submit button */
+  /**
+   * Title for the form submit button
+   */
   buttonTitle?: string;
-  /** Custom component for the form submit button */
+  /**
+   * Custom component for the form submit button
+   */
   buttonComponent?: ReactNode;
-  /** The title of the form, usually displayed on top of the fields */
+  /**
+   * The title of the form, usually displayed on top of the fields
+   */
   title?: ReactNode;
-  /** Custom mapper for the advanced properties. The default mapper for the form component is described below this table */
+  /**
+   * Custom mapper for the advanced properties.
+   * 
+   * The default mapper for the form component is described
+   * in the example below.
+   * 
+   * The rest of the SchemaForm props extend from [react-jsonschema-form](https://rjsf-team.github.io/react-jsonschema-form/docs/).
+   * 
+   * @example
+   * ```json
+   * {
+   *   "string": "string",
+   *   "email": "string",
+   *   "password": "string",
+   *   "array": "array",
+   *   "select": "string",
+   *   "radio": "string",
+   *   "checkbox": "boolean",
+   *   "checkboxes": "array",
+   *   "switch": "boolean"
+   * }
+   * ```
+   */
   advancedPropertiesMapper?: AdvancedPropertiesMapper;
 };
-
-/**
- * Advanced Properties Mapper default structure
- * ```json
- * {
- *   "string": "string",
- *   "email": "string",
- *   "password": "string",
- *   "array": "array",
- *   "select": "string",
- *   "radio": "string",
- *   "checkbox": "boolean",
- *   "checkboxes": "array",
- *   "switch": "boolean"
- * }
- * ```
- *
- * The rest of the SchemaForm props extend from [react-jsonschema-form](https://rjsf-team.github.io/react-jsonschema-form/docs/).
- */
 
 /**
  * The SchemaForm component allows forms to be created based
@@ -161,5 +187,4 @@ const Form = ({
  * SchemaForm component is a compound component that includes Form, Title, and Button.
  * It serves as an entry point for using the customized form components.
  */
-const SchemaForm = { Form, Title, Button };
-export default SchemaForm;
+export const SchemaForm = { Form, Title, Button };
