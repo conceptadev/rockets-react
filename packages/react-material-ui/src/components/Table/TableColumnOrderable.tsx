@@ -37,6 +37,10 @@ export const TableColumnOrderable = ({
       setList={setHeaderOrder}
       icon={icon}
       text={text}
+      storage={{
+        type: 'table',
+        actionCallback: (data) => console.log(data),
+      }}
     />
   );
 };

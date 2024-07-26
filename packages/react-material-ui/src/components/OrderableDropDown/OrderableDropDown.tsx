@@ -34,6 +34,8 @@ import { CSS } from '@dnd-kit/utilities';
 import DragIndicator from '@mui/icons-material/DragIndicator';
 import SettingsSuggest from '@mui/icons-material/SettingsSuggest';
 
+import { useSettingsStorage } from '../../hooks/useSettingsStorage';
+
 export interface ListItem {
   id: string;
   label: string;
@@ -42,6 +44,22 @@ export interface ListItem {
   [key: string]: unknown;
 }
 
+type StorageSettings =
+  | {
+      key?: string;
+      type?: string;
+      cacheApiPath?: string;
+      actionCallback?: (
+        data: Pick<ListItem, 'id' | 'label' | 'hide'>[],
+      ) => void;
+    }
+  | {
+      key?: string;
+      type: string;
+      cacheApiPath?: string;
+      actionCallback: (data: Pick<ListItem, 'id' | 'label' | 'hide'>[]) => void;
+    };
+
 interface Props {
   list: ListItem[];
   icon?: ReactNode;
@@ -49,6 +67,7 @@ interface Props {
   hasAllOption?: boolean;
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
   text?: string;
+  storage?: StorageSettings;
 }
 
 interface SortableItemProps {
@@ -140,7 +159,20 @@ const OrderableDropDown = ({
   hasAllOption = false,
   icon = <SettingsSuggest />,
   text,
+  storage,
 }: Props) => {
+  useSettingsStorage({
+    key: storage.key,
+    type: storage.type,
+    data: list.map((item) => ({
+      id: item.id,
+      label: item.label,
+      hide: Boolean(item.hide),
+    })),
+    cacheApiUri: storage.cacheApiPath,
+    setListCallback: (callbackData) => storage.actionCallback(callbackData),
+  });
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -253,6 +285,8 @@ const OrderableDropDown = ({
   useEffect(() => {
     setChecked(list.filter((listItem) => !listItem.hide).map((li) => li.id));
   }, [list]);
+
+  console.log('orderable dropdown list: ', list);
 
   return (
     <Box>

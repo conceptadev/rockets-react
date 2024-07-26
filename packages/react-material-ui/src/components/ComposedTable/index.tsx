@@ -13,14 +13,11 @@ import {
   useTheme,
 } from '@mui/material';
 import Settings from '@mui/icons-material/Settings';
-import { useAuth } from '@concepta/react-auth-provider';
-import { usePathname } from 'next/navigation';
 
 import Table from '../Table';
 import { StyleDefinition, generateTableTheme } from './constants';
 import { Filter } from '../Filter';
-import OrderableDropDown, { ListItem } from '../OrderableDropDown';
-import { useSettingsStorage } from '../../hooks/useSettingsStorage';
+import OrderableDropDown from '../OrderableDropDown';
 
 export type ComposedTableProps = {
   data: unknown[];
@@ -33,41 +30,7 @@ const ComposedTable = (props: ComposedTableProps) => {
   const theme = useTheme();
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
-  const auth = useAuth();
-  const pathname = usePathname();
-
   const [orderableHeaders, setOrderableHeaders] = useState(props.headers);
-
-  const { setSettings } = useSettingsStorage({
-    key: props.settingsId || pathname,
-    type: 'table',
-    assignee: {
-      id: (auth?.user as { id: string })?.id ?? '',
-    },
-    data: props.headers.map((header) => ({
-      id: header.id,
-      hide: Boolean(header.hide),
-    })),
-    cacheApiUri: props.settingsCacheUri,
-    setListCallback: (callbackData) =>
-      setOrderableHeaders(
-        callbackData.map((item: ListItem) => {
-          const headerItem = props.headers.find(
-            (header) => header.id === item.id,
-          );
-
-          return {
-            ...item,
-            ...headerItem,
-          };
-        }),
-      ),
-  });
-
-  const handleHeadersOrderChange = (list: ListItem[]) => {
-    setOrderableHeaders(list);
-    setSettings(list);
-  };
 
   return (
     <Box>
@@ -86,7 +49,7 @@ const ComposedTable = (props: ComposedTableProps) => {
                 <OrderableDropDown
                   icon={<Settings />}
                   list={orderableHeaders}
-                  setList={handleHeadersOrderChange}
+                  setList={setOrderableHeaders}
                 />
                 {typeof props.complementaryActions === 'function'
                   ? props.complementaryActions(filters)

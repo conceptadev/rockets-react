@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+import { useAuth } from '@concepta/react-auth-provider';
 
 type Assignee = {
   id: string;
@@ -7,6 +9,7 @@ type Assignee = {
 
 type ListItem = {
   id: string;
+  label: string;
   hide?: boolean;
 };
 
@@ -39,7 +42,7 @@ type CacheState = {
 type Props = {
   setListCallback?: (list?: CacheState['data']) => void;
   cacheApiUri?: string;
-} & Settings;
+} & Omit<Settings, 'assignee'>;
 
 const parseDataStringToSettings = (data: string) => {
   return JSON.parse(data.replace(/'/g, '"'));
@@ -144,7 +147,6 @@ const deleteSettingsStorage = ({
 export const useSettingsStorage = ({
   key,
   type,
-  assignee,
   data,
   setListCallback,
   cacheApiUri,
@@ -152,16 +154,34 @@ export const useSettingsStorage = ({
   const [cacheId, setCacheId] = useState<CacheState['id']>('');
   const [settings, setSettings] = useState<CacheState['data']>([]);
 
+  if (!type) {
+    return;
+  }
+
+  const auth = useAuth();
+  const pathname = usePathname();
+
   const { get, post, patch, del } = useDataProvider();
+
+  const settingsKey = key || pathname;
+  const assignee = {
+    id: (auth?.user as { id: string })?.id ?? '',
+  };
+
+  const commonPayload = {
+    key: settingsKey,
+    type,
+    assignee,
+  };
+
+  console.log('common payload: ', commonPayload);
 
   const { execute: createCache } = useQuery(
     (cache: Record<string, unknown>) =>
       post({
         uri: cacheApiUri,
         body: {
-          key,
-          type,
-          assignee,
+          ...commonPayload,
           data: cache,
         },
       }),
@@ -176,9 +196,7 @@ export const useSettingsStorage = ({
       patch({
         uri: `${cacheApiUri}/${cacheId}`,
         body: {
-          key,
-          type,
-          assignee,
+          ...commonPayload,
           data: parseSettingsToDataString(JSON.stringify(list)),
         },
       }),
@@ -205,9 +223,7 @@ export const useSettingsStorage = ({
         }
 
         const cachedSettings = getSettingsFromCacheList({
-          key,
-          type,
-          assignee,
+          ...commonPayload,
           cacheList: fetchedData,
         });
 
@@ -224,7 +240,7 @@ export const useSettingsStorage = ({
   );
 
   const clearSettings = () => {
-    deleteSettingsStorage({ key, type, assignee });
+    deleteSettingsStorage(commonPayload);
 
     if (cacheApiUri && cacheId) {
       deleteCache();
@@ -234,9 +250,7 @@ export const useSettingsStorage = ({
   useEffect(() => {
     if (settings.length) {
       updateSettingsStorage({
-        key,
-        type,
-        assignee,
+        ...commonPayload,
         data: settings,
       });
 
@@ -247,7 +261,7 @@ export const useSettingsStorage = ({
   }, [settings, cacheApiUri]);
 
   useEffect(() => {
-    const storageData = getSettingsFromStorage({ key, type, assignee });
+    const storageData = getSettingsFromStorage(commonPayload);
 
     if (storageData.length) {
       setListCallback(storageData);
