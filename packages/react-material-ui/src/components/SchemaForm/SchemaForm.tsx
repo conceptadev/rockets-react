@@ -1,10 +1,10 @@
 'use client';
 
-import React, { Fragment, ReactNode } from 'react';
+import React, { Fragment, ReactNode, ComponentType } from 'react';
 import validator from '@rjsf/validator-ajv6';
 import RJSFForm from '@rjsf/mui';
 import Box from '@mui/material/Box';
-import { RJSFSchema } from '@rjsf/utils';
+import { RJSFSchema, SubmitButtonProps } from '@rjsf/utils';
 import { FormProps } from '@rjsf/core';
 
 import { mapAdvancedProperties } from './utils/mapAdvancedProperties';
@@ -29,7 +29,7 @@ export type SchemaFormProps = Omit<FormProps, 'schema' | 'validator'> & {
   /**
    * Validation helper for the form structure. `@rjsf/validator-ajvx` provided by
    * [ajv](https://github.com/ajv-validator/ajv), is generally used for this purpose.
-   * 
+   *
    * It is implemented on the form via the
    * [HTML5 Validation](https://rjsf-team.github.io/react-jsonschema-form/docs/usage/validation#html5-validation)
    */
@@ -37,7 +37,7 @@ export type SchemaFormProps = Omit<FormProps, 'schema' | 'validator'> & {
   /**
    * Additional schema for fields that are out of the default `string`, `number`,
    * `integer`, `object`, `array`, `boolean` and `null` set for the form schema.
-   * 
+   *
    * The field set for advanced properties contain the same types as the default
    * one, but add other fields such as `email`, `password`, `select`, `radio`,
    * `checkbox`, `checkboxes` and `switch`.
@@ -50,19 +50,19 @@ export type SchemaFormProps = Omit<FormProps, 'schema' | 'validator'> & {
   /**
    * Custom component for the form submit button
    */
-  buttonComponent?: ReactNode;
+  buttonComponent?: ComponentType<SubmitButtonProps<any, RJSFSchema, any>>;
   /**
    * The title of the form, usually displayed on top of the fields
    */
   title?: ReactNode;
   /**
    * Custom mapper for the advanced properties.
-   * 
+   *
    * The default mapper for the form component is described
    * in the example below.
-   * 
+   *
    * The rest of the SchemaForm props extend from [react-jsonschema-form](https://rjsf-team.github.io/react-jsonschema-form/docs/).
-   * 
+   *
    * @example
    * ```json
    * {
@@ -158,20 +158,47 @@ const Form = ({
     properties: advancedPropertiesMapper(schema, advancedProperties),
   };
 
+  const uiSchemaWithButtonTitle = {
+    ...uiSchemaGenerator(finalSchema, advancedProperties),
+    ...uiSchema,
+    'ui:submitButtonOptions': {
+      submitText: props.buttonTitle,
+    },
+  };
+
+  const templatesWithCustomButton = {
+    ArrayFieldTemplate,
+    ObjectFieldTemplate,
+    ButtonTemplates: {
+      SubmitButton: props.buttonComponent,
+    },
+  };
+
   return (
     <Fragment>
       {schema && (
         <Box>
           <RJSFForm
             schema={finalSchema}
-            uiSchema={{
-              ...uiSchemaGenerator(finalSchema, advancedProperties),
-              ...uiSchema,
-            }}
+            uiSchema={
+              props.buttonTitle
+                ? uiSchemaWithButtonTitle
+                : {
+                    ...uiSchemaGenerator(finalSchema, advancedProperties),
+                    ...uiSchema,
+                  }
+            }
             formData={mergeFormData(finalSchema, formData)}
             noHtml5Validate
             showErrorList={false}
-            templates={{ ArrayFieldTemplate, ObjectFieldTemplate }}
+            templates={
+              props.buttonComponent
+                ? templatesWithCustomButton
+                : {
+                    ArrayFieldTemplate,
+                    ObjectFieldTemplate,
+                  }
+            }
             validator={validator}
             {...props}
           >

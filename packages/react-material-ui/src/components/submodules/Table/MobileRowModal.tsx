@@ -3,7 +3,7 @@
 import React from 'react';
 import get from 'lodash/get';
 import { Tooltip, Box, Dialog, DialogContent, IconButton } from '@mui/material';
-import { Close as CloseIcon } from '@mui/icons-material';
+import CloseIcon from '@mui/icons-material/Close';
 
 import Text from '../../Text';
 import { CustomTableCell, RowProps } from '../../Table/types';

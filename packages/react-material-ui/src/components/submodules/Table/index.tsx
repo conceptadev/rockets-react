@@ -21,12 +21,10 @@ import {
   Theme,
   SxProps,
 } from '@mui/material';
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  ChevronRight as ChevronRightIcon,
-  Add as AddIcon,
-} from '@mui/icons-material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Edit';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import AddIcon from '@mui/icons-material/Add';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import get from 'lodash/get';
 
@@ -201,6 +199,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       props.onAction({ action: 'edit', row: rowData });
                     }
                   }}
+                  data-testid="edit-button"
                 >
                   <EditIcon />
                 </IconButton>
@@ -212,6 +211,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                     e.stopPropagation();
                     deleteItem(rowData.id);
                   }}
+                  data-testid="delete-button"
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -225,6 +225,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       props.onAction({ action: 'details', row: rowData });
                     }
                   }}
+                  data-testid="details-button"
                 >
                   <ChevronRightIcon />
                 </IconButton>

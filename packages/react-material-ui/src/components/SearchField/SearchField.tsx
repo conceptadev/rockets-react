@@ -15,7 +15,7 @@ import {
   TextField,
   TextFieldProps,
 } from '@mui/material';
-import { Clear } from '@mui/icons-material';
+import Clear from '@mui/icons-material/Clear';
 
 const SearchIcon = () => (
   <MuiSearchIcon

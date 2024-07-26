@@ -12,7 +12,7 @@ import {
   TableRow,
   useTheme,
 } from '@mui/material';
-import { Settings } from '@mui/icons-material';
+import Settings from '@mui/icons-material/Settings';
 import { useAuth } from '@concepta/react-auth-provider';
 import { usePathname } from 'next/navigation';
 

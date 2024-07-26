@@ -31,7 +31,8 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { DragIndicator, SettingsSuggest } from '@mui/icons-material';
+import DragIndicator from '@mui/icons-material/DragIndicator';
+import SettingsSuggest from '@mui/icons-material/SettingsSuggest';
 
 export interface ListItem {
   id: string;

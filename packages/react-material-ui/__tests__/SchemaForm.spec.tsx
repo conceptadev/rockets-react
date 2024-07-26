@@ -69,6 +69,40 @@ describe('SchemaForm Component', () => {
     expect(title).toBeInTheDocument();
   });
 
+  it('renders button title prop correctly', () => {
+    const schema: SchemaFormProps['schema'] = {
+      type: 'object',
+      properties: {
+        name: { type: 'string', title: 'Name' },
+      },
+    };
+    const { getByText } = render(
+      <SchemaForm.Form schema={schema} buttonTitle="Testing"></SchemaForm.Form>,
+    );
+    const title = getByText('Testing');
+    expect(title).toBeInTheDocument();
+  });
+
+  it('renders button component prop correctly', () => {
+    const schema: SchemaFormProps['schema'] = {
+      type: 'object',
+      properties: {
+        name: { type: 'string', title: 'Name' },
+      },
+    };
+    const CustomButton = () => {
+      return <button>Testing</button>;
+    };
+    const { getByText } = render(
+      <SchemaForm.Form
+        schema={schema}
+        buttonComponent={CustomButton}
+      ></SchemaForm.Form>,
+    );
+    const title = getByText('Testing');
+    expect(title).toBeInTheDocument();
+  });
+
   it('shows validation errors if required fields are missing after submit', () => {
     const schema: SchemaFormProps['schema'] = {
       type: 'object',
