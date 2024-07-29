@@ -5,7 +5,7 @@ import {
   FormControl,
   InputAdornment,
   TextField as MuiTextField,
-  TextFieldProps,
+  TextFieldProps as MuiTextFieldProps,
   TypographyProps,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
@@ -23,25 +23,43 @@ import PasswordStrengthRules from './PasswordStrengthRules';
 import PasswordStrength from './PasswordStrength';
 import { PasswordStrengthBarVariants } from './PasswordStrengthBar';
 
+/**
+ * TextArea properties for multiline text fields.
+ */
 interface TextAreaProps {
+  /** Indicates if the TextField should be multiline */
   multiline?: boolean;
+  /** Number of rows to display when multiline */
   rows?: number;
+  /** Maximum number of rows to display when multiline */
   maxRows?: number;
+  /** Indicates if the label should be hidden */
   hiddenLabel?: boolean;
 }
 
+/**
+ * Configuration for password strength evaluation.
+ */
 export type PasswordStrengthConfig = {
+  /** Hides the text displaying password rules */
   hideRulesText?: boolean;
+  /** Hides the password strength bar */
   hideStrengthBar?: boolean;
+  /** List of password rules to be applied */
   rules?: PasswordRule[];
+  /** Rules for matching password strength */
   matchRules?: {
+    /** List of match rule texts */
     text: string[];
+    /** Corresponding scores for the match rules */
     score: number[];
   };
+  /** Custom renderer for the strength bar */
   renderStrengthBar?: (
     variant: PasswordStrengthBarVariants,
     text: string,
   ) => ReactNode;
+  /** Custom renderer for the rules text */
   renderRulesText?: (
     name: string,
     value: string,
@@ -49,14 +67,44 @@ export type PasswordStrengthConfig = {
   ) => ReactNode;
 };
 
-interface Props {
+/**
+ * Props for the TextField component.
+ */
+export type TextFieldProps = MuiTextFieldProps & {
+  /** Props for the container Box */
   containerProps?: BoxProps;
+  /** Props for the label Typography */
   labelProps?: TypographyProps;
+  /** Options for the TextArea */
   options?: TextAreaProps;
+  /** Configuration for password strength display */
   passwordStrengthConfig?: PasswordStrengthConfig;
-}
+};
 
-const TextField = (props: TextFieldProps & Props) => {
+/**
+ * TextField component for inputting text with support for password strength
+ * evaluation and visibility toggle. Integrates with MUI TextField and supports
+ * custom rendering for password strength and rules. It's props extend from [Material UI's TextField](https://mui.com/material-ui/api/text-field/#props)
+ * component props, so every prop is interchangeable between those two.
+ *
+ * @see [Storybook - TextField](https://storybook.rockets.tools/?path=/docs/textfield)
+ *
+ * @example
+ * ```tsx
+ * <TextField
+ *   label="Password"
+ *   type="password"
+ *   passwordStrengthConfig={{
+ *     hideStrengthBar: false,
+ *     hideRulesText: false,
+ *   }}
+ * />
+ * ```
+ *
+ * @param props - Properties to customize the TextField component
+ */
+
+export const TextField = (props: TextFieldProps) => {
   const {
     label,
     required,
@@ -184,5 +232,3 @@ const TextField = (props: TextFieldProps & Props) => {
     </Box>
   );
 };
-
-export default TextField;
