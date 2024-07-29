@@ -161,7 +161,7 @@ const OrderableDropDown = ({
   text,
   storage,
 }: Props) => {
-  useSettingsStorage({
+  const { setSettings } = useSettingsStorage({
     key: storage.key,
     type: storage.type,
     data: list.map((item) => ({
@@ -253,8 +253,8 @@ const OrderableDropDown = ({
       newChecked.splice(currentIndex, 1);
     }
 
-    setList((prevState) =>
-      prevState.map((listItem) => {
+    setList((prevState) => {
+      const newItems = prevState.map((listItem) => {
         const isHidden = newChecked.includes(listItem.id) ? false : true;
 
         if (isHidden && listItem.resetFilters) {
@@ -265,8 +265,12 @@ const OrderableDropDown = ({
           ...listItem,
           hide: isHidden,
         };
-      }),
-    );
+      });
+
+      setSettings(newItems);
+
+      return newItems;
+    });
 
     setChecked(newChecked);
   };
@@ -278,15 +282,16 @@ const OrderableDropDown = ({
       const oldIndex = list.findIndex((item) => item.id === active.id);
       const newIndex = list.findIndex((item) => item.id === over?.id);
 
-      setList(arrayMove(list, oldIndex, newIndex));
+      const newItems = arrayMove(list, oldIndex, newIndex);
+
+      setSettings(newItems);
+      setList(newItems);
     }
   };
 
   useEffect(() => {
     setChecked(list.filter((listItem) => !listItem.hide).map((li) => li.id));
   }, [list]);
-
-  console.log('orderable dropdown list: ', list);
 
   return (
     <Box>

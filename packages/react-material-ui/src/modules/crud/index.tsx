@@ -63,6 +63,8 @@ export interface ModuleProps {
   externalSearch?: Search;
   filterSettingsId?: string;
   filterSettingsCacheUri?: string;
+  tableSettingsId?: string;
+  tableSettingsCacheUri?: string;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -157,6 +159,8 @@ const CrudModule = (props: ModuleProps) => {
           externalSearch={props.externalSearch}
           filterSettingsId={props.filterSettingsId}
           filterSettingsCacheUri={props.filterSettingsCacheUri}
+          tableSettingsId={props.tableSettingsId}
+          tableSettingsCacheUri={props.tableSettingsCacheUri}
           {...useTableReturn}
           {...tableSubmoduleProps}
         />

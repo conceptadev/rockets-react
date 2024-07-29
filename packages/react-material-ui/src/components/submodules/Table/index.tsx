@@ -109,6 +109,8 @@ export interface TableSubmoduleProps {
   mobileModalTitleSrc?: string;
   filterSettingsId?: string;
   filterSettingsCacheUri?: string;
+  tableSettingsId?: string;
+  tableSettingsCacheUri?: string;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -279,7 +281,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             }}
           >
             {props.reordable !== false && (
-              <Table.ColumnOrderable hasAllOption={props.hasAllOption} />
+              <Table.ColumnOrderable
+                hasAllOption={props.hasAllOption}
+                settingsId={props.tableSettingsId}
+                settingsCacheUri={props.tableSettingsCacheUri}
+              />
             )}
             {!props.hideAddButton && (
               <Button
