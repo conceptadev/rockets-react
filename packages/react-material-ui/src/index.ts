@@ -55,8 +55,6 @@ export { SchemaForm, SchemaFormProps } from './components/SchemaForm';
 import FormFieldSkeleton from './components/FormFieldSkeleton';
 export { FormFieldSkeleton };
 
-export { default as ComposedTable } from './components/ComposedTable';
-
 export { default as AuthModule } from './modules/auth';
 export { default as CrudModule } from './modules/crud';
 export { default as UsersModule } from './modules/users';
