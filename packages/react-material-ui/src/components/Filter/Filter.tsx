@@ -290,7 +290,39 @@ export const Filter = (props: FilterProps) => {
             setList={setFilterOrder}
             storage={{
               type: 'filter',
-              actionCallback: (data) => console.log(data),
+              actionCallback: (settings) => {
+                const originalFilters = [...filters];
+                const newFiltersOrder = [];
+
+                settings.forEach((item: ListItem) => {
+                  const filterItemIndex = originalFilters.findIndex(
+                    (filter) => filter?.id === item.id,
+                  );
+                  const filterItem = originalFilters[filterItemIndex];
+
+                  if (filterItem) {
+                    newFiltersOrder.push({
+                      ...item,
+                      ...filterItem,
+                      resetFilters: resetFilters(filterItem),
+                    });
+                    originalFilters[filterItemIndex] = null;
+                  }
+                });
+
+                originalFilters.forEach((filter) => {
+                  if (filter) {
+                    newFiltersOrder.push({
+                      id: filter.id,
+                      label: filter.label,
+                      hide: filter.hide ?? false,
+                      resetFilters: resetFilters(filter),
+                    });
+                  }
+                });
+
+                setFilterOrder(newFiltersOrder);
+              },
             }}
           />
         ) : null}

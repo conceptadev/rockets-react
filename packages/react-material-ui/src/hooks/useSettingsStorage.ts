@@ -168,20 +168,18 @@ export const useSettingsStorage = ({
     id: (auth?.user as { id: string })?.id ?? '',
   };
 
-  const commonPayload = {
+  const cacheConfig = {
     key: settingsKey,
     type,
     assignee,
   };
-
-  console.log('common payload: ', commonPayload);
 
   const { execute: createCache } = useQuery(
     (cache: Record<string, unknown>) =>
       post({
         uri: cacheApiUri,
         body: {
-          ...commonPayload,
+          ...cacheConfig,
           data: cache,
         },
       }),
@@ -196,7 +194,7 @@ export const useSettingsStorage = ({
       patch({
         uri: `${cacheApiUri}/${cacheId}`,
         body: {
-          ...commonPayload,
+          ...cacheConfig,
           data: parseSettingsToDataString(JSON.stringify(list)),
         },
       }),
@@ -223,7 +221,7 @@ export const useSettingsStorage = ({
         }
 
         const cachedSettings = getSettingsFromCacheList({
-          ...commonPayload,
+          ...cacheConfig,
           cacheList: fetchedData,
         });
 
@@ -240,7 +238,7 @@ export const useSettingsStorage = ({
   );
 
   const clearSettings = () => {
-    deleteSettingsStorage(commonPayload);
+    deleteSettingsStorage(cacheConfig);
 
     if (cacheApiUri && cacheId) {
       deleteCache();
@@ -250,7 +248,7 @@ export const useSettingsStorage = ({
   useEffect(() => {
     if (settings.length) {
       updateSettingsStorage({
-        ...commonPayload,
+        ...cacheConfig,
         data: settings,
       });
 
@@ -261,7 +259,7 @@ export const useSettingsStorage = ({
   }, [settings, cacheApiUri]);
 
   useEffect(() => {
-    const storageData = getSettingsFromStorage(commonPayload);
+    const storageData = getSettingsFromStorage(cacheConfig);
 
     if (storageData.length) {
       setListCallback(storageData);
