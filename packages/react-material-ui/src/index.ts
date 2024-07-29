@@ -38,7 +38,7 @@ export * from './components/Table/utils';
 export { Table };
 
 export { default as Text } from './components/Text';
-export { default as TextField } from './components/TextField';
+export { TextField, TextFieldProps } from './components/TextField';
 export { default as SearchField } from './components/SearchField';
 export { default as AutocompleteField } from './components/AutocompleteField';
 export { default as SelectField } from './components/SelectField';

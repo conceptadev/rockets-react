@@ -10,7 +10,7 @@ import {
   RJSFSchema,
   StrictRJSFSchema,
 } from '@rjsf/utils';
-import TextField from '../../components/TextField';
+import { TextField } from '../../components/TextField';
 
 const TYPES_THAT_SHRINK_LABEL = ['date', 'datetime-local', 'file', 'time'];
 
