@@ -162,15 +162,15 @@ const OrderableDropDown = ({
   storage,
 }: Props) => {
   const { setSettings } = useSettingsStorage({
-    key: storage.key,
-    type: storage.type,
+    key: storage?.key,
+    type: storage?.type,
     data: list.map((item) => ({
       id: item.id,
       label: item.label,
       hide: Boolean(item.hide),
     })),
-    cacheApiUri: storage.cacheApiPath,
-    setListCallback: (callbackData) => storage.actionCallback(callbackData),
+    cacheApiUri: storage?.cacheApiPath,
+    setListCallback: (callbackData) => storage?.actionCallback(callbackData),
   });
 
   const sensors = useSensors(

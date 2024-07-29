@@ -155,7 +155,11 @@ export const useSettingsStorage = ({
   const [settings, setSettings] = useState<CacheState['data']>([]);
 
   if (!type) {
-    return;
+    return {
+      settings,
+      setSettings,
+      clearSettings: () => null,
+    };
   }
 
   const auth = useAuth();
