@@ -1,7 +1,6 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { useArgs } from '@storybook/preview-api';
-import { fn } from '@storybook/test';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 
