@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import debounce from 'lodash/debounce';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { useAuth } from '@concepta/react-auth-provider';
 
@@ -51,6 +52,8 @@ const parseDataStringToSettings = (data: string) => {
 const parseSettingsToDataString = (data: string) => {
   return data.replace(/"/g, "'");
 };
+
+const DEBOUNCE_TIME_IN_MILLISECONDS = 1500;
 
 const getSettingsFromStorage = ({
   key,
@@ -242,6 +245,11 @@ export const useSettingsStorage = ({
     },
   );
 
+  const debouncedCacheUpdate = debounce(
+    (items: Settings['data']) => updateCache(items),
+    DEBOUNCE_TIME_IN_MILLISECONDS,
+  );
+
   const updateSettings = (items: Settings['data']) => {
     setSettings(items);
     updateSettingsStorage({
@@ -250,7 +258,7 @@ export const useSettingsStorage = ({
     });
 
     if (cacheApiUri && cacheId) {
-      updateCache(items);
+      debouncedCacheUpdate(items);
     }
   };
 
