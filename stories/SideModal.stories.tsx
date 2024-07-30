@@ -3,10 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { useArgs } from '@storybook/preview-api';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
-
 import { SideModal as SideModalComponent } from '@concepta/react-material-ui';
-
-// Button.displayName = "Button"
 
 const meta = {
   component: SideModalComponent,
