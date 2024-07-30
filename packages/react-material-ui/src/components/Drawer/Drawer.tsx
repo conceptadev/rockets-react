@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 import { DrawerItem, DrawerItemProps } from './DrawerItem';
-import Image from '../Image';
+import { Image } from '../Image';
 import Box from '@mui/material/Box';
 import { TextProps } from 'interfaces';
 import { SxProps, Theme } from '@mui/material/styles';
