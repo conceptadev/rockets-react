@@ -27,8 +27,10 @@ export type DialogProps = MuiDialogProps & {
 /**
  * The Dialog component is a customizable modal dialog component. It integrates
  * with Material-UI's Dialog components and provides additional features like
- * responsive full-screen behavior and customizable titles and footers.
+ * responsive full-screen behavior and customizable titles and footers. It's
+ * props extend from [Material UI's Dialog](https://mui.com/material-ui/api/dialog/#props) component props, so every prop is interchangeable between those two.
  *
+ * @see {@link [MUI Dialog Component](https://mui.com/material-ui/react-dialog/)}
  * @see [Storybook - Dialog](https://storybook.rockets.tools/?path=/docs/dialog)
  *
  * @example
