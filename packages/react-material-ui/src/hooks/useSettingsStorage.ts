@@ -165,7 +165,7 @@ export const useSettingsStorage = ({
   const auth = useAuth();
   const pathname = usePathname();
 
-  const { get, post, patch, del } = useDataProvider();
+  const { get, put, del } = useDataProvider();
 
   const settingsKey = key || pathname;
   const assignee = {
@@ -180,8 +180,8 @@ export const useSettingsStorage = ({
 
   const { execute: createCache } = useQuery(
     (cache: Record<string, unknown>) =>
-      post({
-        uri: cacheApiUri,
+      put({
+        uri: `${cacheApiUri}/${crypto.randomUUID()}`,
         body: {
           ...cacheConfig,
           data: cache,
@@ -195,7 +195,7 @@ export const useSettingsStorage = ({
 
   const { execute: updateCache } = useQuery(
     (list: CacheState['data']) =>
-      patch({
+      put({
         uri: `${cacheApiUri}/${cacheId}`,
         body: {
           ...cacheConfig,
@@ -219,20 +219,21 @@ export const useSettingsStorage = ({
     false,
     {
       onSuccess: (fetchedData: CacheResponse[]) => {
-        if (!fetchedData.length) {
-          createCache(parseSettingsToDataString(JSON.stringify(data)));
-          return;
-        }
-
+        const storageData = getSettingsFromStorage(cacheConfig);
         const cachedSettings = getSettingsFromCacheList({
           ...cacheConfig,
           cacheList: fetchedData,
         });
 
+        if (!cachedSettings) {
+          createCache(parseSettingsToDataString(JSON.stringify(data)));
+          return;
+        }
+
         if (cachedSettings) {
           setCacheId(cachedSettings.id);
 
-          if (!settings.length) {
+          if (!storageData.length) {
             setSettings(cachedSettings.data);
             setListCallback(cachedSettings.data);
           }
@@ -240,6 +241,18 @@ export const useSettingsStorage = ({
       },
     },
   );
+
+  const updateSettings = (items: Settings['data']) => {
+    setSettings(items);
+    updateSettingsStorage({
+      ...cacheConfig,
+      data: items,
+    });
+
+    if (cacheApiUri && cacheId) {
+      updateCache(items);
+    }
+  };
 
   const clearSettings = () => {
     deleteSettingsStorage(cacheConfig);
@@ -250,19 +263,6 @@ export const useSettingsStorage = ({
   };
 
   useEffect(() => {
-    if (settings.length) {
-      updateSettingsStorage({
-        ...cacheConfig,
-        data: settings,
-      });
-
-      if (cacheApiUri && cacheId) {
-        updateCache(settings);
-      }
-    }
-  }, [settings, cacheApiUri]);
-
-  useEffect(() => {
     const storageData = getSettingsFromStorage(cacheConfig);
 
     if (storageData.length) {
@@ -270,10 +270,10 @@ export const useSettingsStorage = ({
       setSettings(storageData);
     }
 
-    if (!storageData.length && cacheApiUri) {
+    if (cacheApiUri) {
       fetchSettingsCache();
     }
   }, []);
 
-  return { settings, setSettings, clearSettings };
+  return { settings, updateSettings, clearSettings };
 };

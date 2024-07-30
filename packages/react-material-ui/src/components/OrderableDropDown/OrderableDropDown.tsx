@@ -161,7 +161,7 @@ const OrderableDropDown = ({
   text,
   storage,
 }: Props) => {
-  const { setSettings } = useSettingsStorage({
+  const { updateSettings } = useSettingsStorage({
     key: storage?.key,
     type: storage?.type,
     data: list.map((item) => ({
@@ -267,7 +267,7 @@ const OrderableDropDown = ({
         };
       });
 
-      setSettings(newItems);
+      updateSettings(newItems);
 
       return newItems;
     });
@@ -281,10 +281,9 @@ const OrderableDropDown = ({
     if (active.id !== over?.id) {
       const oldIndex = list.findIndex((item) => item.id === active.id);
       const newIndex = list.findIndex((item) => item.id === over?.id);
-
       const newItems = arrayMove(list, oldIndex, newIndex);
 
-      setSettings(newItems);
+      updateSettings(newItems);
       setList(newItems);
     }
   };
