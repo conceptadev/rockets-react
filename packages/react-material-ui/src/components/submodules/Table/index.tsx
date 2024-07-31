@@ -39,6 +39,8 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
+import { useTranslation } from '../../../utils/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type BasicType = string | number | boolean;
@@ -113,6 +115,9 @@ export interface TableSubmoduleProps {
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
   const theme = useTheme();
+
+  const { t } = useTranslation();
+
   const { filters } = useCrudRoot();
   const [mobileCurrentRow, setMobileCurrentRow] = useState<RowProps | null>(
     null,
@@ -292,7 +297,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                   marginLeft: 2,
                 }}
               >
-                Add new
+                {t('crud:addNew')}
               </Button>
             )}
           </Box>
@@ -327,7 +332,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       textAlign: 'center',
                     }}
                   >
-                    No records found.
+                    {t('crud:emptyTable')}
                   </TableCell>
                 </TableRow>
               )}

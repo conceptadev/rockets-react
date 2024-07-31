@@ -17,6 +17,8 @@ import {
 } from '@mui/material';
 import Clear from '@mui/icons-material/Clear';
 
+import { useTranslation } from '../../utils/i18n';
+
 const SearchIcon = () => (
   <MuiSearchIcon
     sx={{
@@ -68,12 +70,15 @@ const SearchField = ({
   wait = 500,
   onDebouncedSearchChange,
   onClear,
-  placeholder = 'Search',
   onChange,
   ...props
 }: SearchFieldProps) => {
+  const { t } = useTranslation();
+
   const firstRender = useRef(true);
   const [search, setSearch] = useState<string>(defaultValue);
+
+  const placeholder = props.placeholder ?? t('actions:search');
 
   const value = props.value ?? search;
 

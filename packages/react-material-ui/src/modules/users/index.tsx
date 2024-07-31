@@ -1,8 +1,16 @@
 'use client';
 
 import React from 'react';
+
 import CrudModule, { ModuleProps } from '../crud';
-import { CREATE_EDIT_FORM, DEFAULT_FILTERS, headers } from './constants';
+import {
+  getTableHeaders,
+  getDefaultFilters,
+  getFormSchema,
+  uiSchema,
+} from './constants';
+
+import { useTranslation } from '../../utils/i18n';
 
 type UsersModuleProps = {
   onEditSuccess: (data?: unknown) => void;
@@ -18,27 +26,34 @@ const UsersModule = ({
   onCreateError,
   ...props
 }: UsersModuleProps) => {
+  const { t } = useTranslation();
+
   return (
     <CrudModule
-      title="Users"
+      title={t('users:title')}
       resource="user"
       hideDeleteButton
       tableProps={{
-        tableSchema: headers,
+        tableSchema: getTableHeaders(),
         reordable: true,
-        filters: DEFAULT_FILTERS,
+        filters: getDefaultFilters(),
       }}
       createFormProps={{
-        ...CREATE_EDIT_FORM,
+        formSchema: getFormSchema(),
+        formUiSchema: uiSchema,
         onSuccess: onCreateSuccess,
         onError: onCreateError,
       }}
       editFormProps={{
-        ...CREATE_EDIT_FORM,
+        formSchema: getFormSchema(),
+        formUiSchema: uiSchema,
         onError: onEditError,
         onSuccess: onEditSuccess,
       }}
-      detailsFormProps={CREATE_EDIT_FORM}
+      detailsFormProps={{
+        formSchema: getFormSchema(),
+        formUiSchema: uiSchema,
+      }}
       {...props}
     />
   );

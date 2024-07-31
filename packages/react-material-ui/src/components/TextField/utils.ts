@@ -1,13 +1,13 @@
 import { PasswordStrengthBarVariants } from './PasswordStrengthBar';
 import { PasswordStrengthConfig } from './TextField';
-import { PASSWORD_DEFAULT_RULES, PasswordRule } from './constants';
+import { getTranslatedDefaultRules, PasswordRule } from './constants';
 
 export const validatePasswordScore = (
   password: string,
   // Fine to use `PASSWORD_DEFAULT_RULES` and `PASSWORD_MATCH_RULES` because this function is
   // supposed to be used outside of the component
-  rules: PasswordRule[] = PASSWORD_DEFAULT_RULES,
-  minValidationScore = PASSWORD_DEFAULT_RULES.length,
+  rules: PasswordRule[] = getTranslatedDefaultRules(),
+  minValidationScore = getTranslatedDefaultRules().length,
 ) => {
   const score = getPasswordScore(password, rules);
 
