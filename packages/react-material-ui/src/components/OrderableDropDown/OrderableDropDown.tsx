@@ -203,43 +203,47 @@ const OrderableDropDown = ({
     // No options selected
     if (!checked.length) {
       setChecked(list.map((item) => item.id));
-      setList((prevState) =>
-        prevState.map((item) => ({
+      setList((prevState) => {
+        const newItems = prevState.map((item) => ({
           ...item,
           hide: false,
-        })),
-      );
+        }));
+        updateSettings(newItems);
+        return newItems;
+      });
       return;
     }
 
     // All options selected
     if (checked.length === list.length) {
-      setList((prevState) =>
-        prevState.map((item) => ({
+      setList((prevState) => {
+        const newItems = prevState.map((item) => ({
           ...item,
           hide: true,
-        })),
-      );
+        }));
+        updateSettings(newItems);
+        return newItems;
+      });
       setChecked([]);
     } else {
       // Some options selected
       setChecked((prevState) => {
         const newState = [...prevState];
-
         list.forEach((item) => {
           if (!prevState.includes(item.id)) {
             newState.push(item.id);
           }
         });
-
         return newState;
       });
-      setList((prevState) =>
-        prevState.map((item) => ({
+      setList((prevState) => {
+        const newItems = prevState.map((item) => ({
           ...item,
           hide: false,
-        })),
-      );
+        }));
+        updateSettings(newItems);
+        return newItems;
+      });
     }
   };
 
