@@ -16,7 +16,7 @@ import { Box, Button, Container, Card, CircularProgress } from '@mui/material';
 import Text from '../../../components/Text';
 import Link from '../../../components/Link';
 import { SchemaForm } from '../../../components/SchemaForm';
-import Image from '../../../components/Image';
+import { Image } from '../../../components/Image';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 

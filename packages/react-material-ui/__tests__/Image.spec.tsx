@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Image from '../src/components/Image/Image';
+import { Image } from '../src/components/Image';
 
 describe('Image component', () => {
   const defaultSrc = 'fakeImage.jpg';
