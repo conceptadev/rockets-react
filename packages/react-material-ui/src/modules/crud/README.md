@@ -348,3 +348,36 @@ The input structure and layout of each form is composed by a set of values passe
 The `formUiSchema` prop describes how specific input(s) of the form should appear, and follows the structure of the `UiSchema` interface, also imported from `@rjsf/utils`.
 
 Feedback handlers can be passed as values to the `onSuccess` and `onError` props, having `data` and `error` arguments received directly from the query performed on each action.
+
+## Filter/Table storage and cache related props
+
+The Filter and Table features inside the module can be saved in localStorage by default, in a way that if the user changes the order or visibility of filter inputs and table columns, the order will be the same after a logout or page reload.
+
+```jsx
+<CrudModule
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+    filters: [
+      {
+        id: 'email',
+        label: 'Email',
+        type: 'text',
+        operator: 'contL',
+        columns: 3,
+      },
+    ],
+  }}
+  filterSettingsId="filter1"
+  filterSettingsCacheUri="/cache/filter"
+  tableSettingsId="table1"
+  tableSettingsCacheUri="/cache/table"
+/>
+```
+
+The `filterSettingsId` and `tableSettingsId` are optional props that identify the specific page or context where the CrudModule is being rendered and will serve to fetch the right storage or cache entry when the page is reloaded. The default for those props is the current route path.
+
+`filterSettingsCacheUri` and `tableSettingsCacheUri` identify the API route that will save the filter and table settings as cache. Those are optional, and not passing either one of them disables the API integration and the settings are saved only on localStorage.
