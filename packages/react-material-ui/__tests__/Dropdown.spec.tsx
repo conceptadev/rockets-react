@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import Dropdown, { DropdownItem } from '../src/components/Dropdown/Dropdown';
+import { Dropdown, DropdownItem } from '../src/components/Dropdown/Dropdown';
 
 describe('Dropdown component', () => {
   const options: DropdownItem[] = [
