@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Dialog from '../src/components/Dialog/Dialog';
+import { Dialog } from '../src/components/Dialog/Dialog';
 
 describe('Dialog Component', () => {
   const props = {
