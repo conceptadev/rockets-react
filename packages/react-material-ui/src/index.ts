@@ -11,8 +11,7 @@ export { Dialog, DialogProps } from './components/Dialog';
 
 export { Drawer, DrawerProps, DrawerItemProps } from './components/Drawer';
 
-import Dropdown, { DropdownItem } from './components/Dropdown';
-export { Dropdown, DropdownItem };
+export { Dropdown, DropdownItem, DropdownProps } from './components/Dropdown';
 
 import OrderableDropDown, { ListItem } from './components/OrderableDropDown';
 export { OrderableDropDown, ListItem };
