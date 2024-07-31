@@ -7,7 +7,7 @@ export { AppBarDrawer } from './components/AppBar/AppBarDrawer';
 export { AppBarMain } from './components/AppBar/AppBarMain';
 export { AppBarNav } from './components/AppBar/AppBarNav';
 
-export { default as Dialog } from './components/Dialog';
+export { Dialog, DialogProps } from './components/Dialog';
 
 export { Drawer, DrawerProps, DrawerItemProps } from './components/Drawer';
 
