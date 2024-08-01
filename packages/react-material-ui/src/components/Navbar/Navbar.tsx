@@ -2,7 +2,7 @@ import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
-import Notifications from '../Notifications';
+import { Notifications } from '../Notifications';
 import Text from '../Text';
 import HeaderAccount, { HeaderAccountProps } from '../HeaderAccount';
 import { SxProps, Theme } from '@mui/material/styles';

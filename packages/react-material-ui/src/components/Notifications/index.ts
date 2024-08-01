@@ -1,1 +1,1 @@
-export { default } from './Notifications';
+export { Notifications, NotificationsProps } from './Notifications';

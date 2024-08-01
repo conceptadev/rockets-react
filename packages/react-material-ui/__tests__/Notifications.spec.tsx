@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Notifications from '../src/components/Notifications/Notifications';
+import { Notifications } from '../src/components/Notifications/Notifications';
 
 describe('Notifications', () => {
   it('should render correctly', () => {
