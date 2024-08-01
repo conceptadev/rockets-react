@@ -26,7 +26,7 @@ export { default as Link } from './components/Link';
 
 export { Navbar, NavbarProps } from './components/Navbar';
 
-export { default as Notifications } from './components/Notifications';
+export { Notifications, NotificationsProps } from './components/Notifications';
 export { default as RadioGroup } from './components/RadioGroup';
 export { SideModal, SideModalProps } from './components/SideModal';
 export { default as Select } from './components/Select';
