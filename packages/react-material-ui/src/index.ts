@@ -51,8 +51,10 @@ export {
 } from './components/Filter';
 export { SchemaForm, SchemaFormProps } from './components/SchemaForm';
 
-import FormFieldSkeleton from './components/FormFieldSkeleton';
-export { FormFieldSkeleton };
+export {
+  FormFieldSkeleton,
+  FormFieldSkeletonProps,
+} from './components/FormFieldSkeleton';
 
 export { default as ComposedTable } from './components/ComposedTable';
 
