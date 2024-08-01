@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
-import FormFieldSkeleton from '../src/components/FormFieldSkeleton';
+import { FormFieldSkeleton } from '../src/components/FormFieldSkeleton';
 import { TextField } from '../src/components/TextField';
 
 describe('FormFieldSkeleton Component', () => {

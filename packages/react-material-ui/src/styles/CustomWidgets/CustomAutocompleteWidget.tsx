@@ -10,7 +10,7 @@ import {
 } from '@rjsf/utils';
 import { Autocomplete, createFilterOptions } from '@mui/material';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import FormFieldSkeleton from '../../components/FormFieldSkeleton';
+import { FormFieldSkeleton } from '../../components/FormFieldSkeleton';
 import { allOption } from '../../components/SelectField/SelectField';
 import { TextField } from '../../components/TextField';
 

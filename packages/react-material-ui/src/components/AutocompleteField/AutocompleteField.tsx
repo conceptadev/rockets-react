@@ -11,7 +11,7 @@ import {
   SelectOption,
   allOption,
 } from '../../components/SelectField/SelectField';
-import FormFieldSkeleton from '../../components/FormFieldSkeleton';
+import { FormFieldSkeleton } from '../../components/FormFieldSkeleton';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { SimpleFilter } from 'components/Table/types';
 
