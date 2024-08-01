@@ -1,4 +1,1 @@
-import OrderableDropDown, { ListItem } from './OrderableDropDown';
-export { ListItem };
-
-export default OrderableDropDown;
+export { OrderableDropDown, ListItem } from './OrderableDropDown';

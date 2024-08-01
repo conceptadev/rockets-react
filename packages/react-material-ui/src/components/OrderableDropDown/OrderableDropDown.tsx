@@ -34,20 +34,37 @@ import { CSS } from '@dnd-kit/utilities';
 import DragIndicator from '@mui/icons-material/DragIndicator';
 import SettingsSuggest from '@mui/icons-material/SettingsSuggest';
 
+/**
+ * Interface for a single list item.
+ */
 export interface ListItem {
+  /** Unique identifier for the list item */
   id: string;
+  /** Display label for the list item */
   label: string;
+  /** Flag indicating whether the item is hidden */
   hide?: boolean;
+  /** Optional reset function for the item's filters */
   resetFilters?: () => void;
+  /** Additional properties */
   [key: string]: unknown;
 }
 
-interface Props {
+/**
+ * Props for the OrderableDropDown component.
+ */
+export interface OrderableDropDownProps {
+  /** List of items to be displayed in the dropdown */
   list: ListItem[];
+  /** Optional icon to display */
   icon?: ReactNode;
+  /** Minimum number of items to display */
   minimumItems?: number;
+  /** Flag indicating whether to include an 'All' option */
   hasAllOption?: boolean;
+  /** State setter for the list of items */
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
+  /** Optional text to display */
   text?: string;
 }
 
@@ -133,14 +150,33 @@ const SortableItem = (props: SortableItemProps) => {
   );
 };
 
-const OrderableDropDown = ({
-  list,
-  setList,
-  minimumItems = 0,
-  hasAllOption = false,
-  icon = <SettingsSuggest />,
-  text,
-}: Props) => {
+/**
+ * OrderableDropDown component for displaying a sortable dropdown list.
+ *
+ *
+ * @see [Storybook - OrderableDropDown](https://storybook.rockets.tools/?path=/docs/orderabledropdown)
+ *
+ * @example
+ * ```tsx
+ * <OrderableDropDown
+ *   list={[{ id: '1', label: 'Item 1' }, { id: '2', label: 'Item 2' }]}
+ *   setList={setList}
+ *   text="Options"
+ * />
+ * ```
+ *
+ * @param props - OrderableDropDown component props
+ */
+export const OrderableDropDown = (props: OrderableDropDownProps) => {
+  const {
+    list,
+    setList,
+    minimumItems = 0,
+    hasAllOption = false,
+    icon = <SettingsSuggest />,
+    text,
+  } = props;
+
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -325,5 +361,3 @@ const OrderableDropDown = ({
     </Box>
   );
 };
-
-export default OrderableDropDown;

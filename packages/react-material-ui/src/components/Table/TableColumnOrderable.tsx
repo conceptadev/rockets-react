@@ -3,7 +3,7 @@
 import React, { useEffect, useState, ReactNode } from 'react';
 
 import { useTableRoot } from './hooks/useTableRoot';
-import OrderableDropDown, { ListItem } from '../OrderableDropDown';
+import { OrderableDropDown, ListItem } from '../OrderableDropDown';
 
 type TableColumnOrderableProps = {
   hasAllOption?: boolean;

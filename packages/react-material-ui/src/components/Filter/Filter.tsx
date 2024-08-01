@@ -16,7 +16,7 @@ import {
   allOption,
 } from '../../components/SelectField/SelectField';
 import { SearchFieldProps } from '../../components/SearchField/SearchField';
-import OrderableDropDown, { ListItem } from '../OrderableDropDown';
+import { OrderableDropDown, ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
 import { useSettingsStorage } from '../../hooks/useSettingsStorage';
