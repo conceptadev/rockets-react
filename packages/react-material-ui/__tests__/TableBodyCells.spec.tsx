@@ -8,12 +8,6 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Table as RocketsTable } from '../src/';
 import { TableBody, TableContainer } from '@mui/material';
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('TableBodyCells component', () => {
   const props = {
     rows: [

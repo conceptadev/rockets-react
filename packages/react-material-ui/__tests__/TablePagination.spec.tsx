@@ -8,12 +8,6 @@ import { render, fireEvent } from '@testing-library/react';
 import { TablePagination } from '../src/components/Table/TablePagination';
 import { Table as RocketsTable } from '../src/';
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('TablePagination component', () => {
   const props = {
     rows: [

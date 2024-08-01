@@ -9,16 +9,6 @@ import { FilterType } from '../src/components/Filter/Filter';
 import { HeaderProps } from '../src/components/Table/types';
 import ComposedTable from '../src/components/ComposedTable';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => {
-    return {
-      replace: jest.fn(),
-    };
-  },
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 const headers: HeaderProps[] = [
   {
     id: 'name',

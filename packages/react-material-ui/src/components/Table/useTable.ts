@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import {
@@ -27,6 +26,7 @@ interface UseTableOptions {
   search?: Search;
   callbacks?: DataProviderRequestOptions;
   noPagination?: boolean;
+  redirect?: (path: string) => void;
 }
 
 export interface UpdateSearch {
@@ -64,9 +64,7 @@ export type UseTableProps = (
  * @returns - An object containing data, state, and functions related to the table.
  */
 const useTable: UseTableProps = (resource, options) => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
+  const searchParams = new URLSearchParams(window.location.search);
   const { get } = useDataProvider();
   const firstRender = useRef(true);
 
@@ -77,7 +75,7 @@ const useTable: UseTableProps = (resource, options) => {
       simpleFilter: JSON.stringify(tableQueryState?.simpleFilter),
     });
 
-    router.replace(`${pathname}?${newSearchParam ?? ''}`);
+    options?.redirect(`${window.location.pathname}?${newSearchParam ?? ''}`);
   }, [JSON.stringify(tableQueryState.simpleFilter)]);
 
   useEffect(() => {
@@ -85,7 +83,7 @@ const useTable: UseTableProps = (resource, options) => {
       search: JSON.stringify(tableQueryState?.search),
     });
 
-    router.replace(`${pathname}?${newSearchParam ?? ''}`);
+    options?.redirect(`${window.location.pathname}?${newSearchParam ?? ''}`);
   }, [JSON.stringify(tableQueryState.search)]);
 
   const simpleFilterQuery = () => {

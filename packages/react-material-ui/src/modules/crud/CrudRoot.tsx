@@ -1,5 +1,4 @@
 import React, { useState, useEffect, PropsWithChildren } from 'react';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { CrudContext, CrudContextProps, FilterValues } from './useCrudRoot';
 import { getSearchParams } from '../../utils/http';
 
@@ -17,10 +16,9 @@ const CrudRoot = (props: PropsWithChildren<Props>) => {
     filterCallback,
     externalSearch,
     children,
+    redirect,
   } = props;
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
+  const searchParams = new URLSearchParams(window.location.search);
 
   const [filterValues, setFilterValues] = useState<FilterValues>(
     (searchParams?.get('filterValues') &&
@@ -37,7 +35,10 @@ const CrudRoot = (props: PropsWithChildren<Props>) => {
     const hasValues =
       Object.values(filterValues).filter((value) => value).length > 0;
 
-    router.replace(`${pathname}?${hasValues ? newFilterValues : ''}`);
+    redirect &&
+      redirect(
+        `${window.location.pathname}?${hasValues ? newFilterValues : ''}`,
+      );
   }, [filterValues]);
 
   return (

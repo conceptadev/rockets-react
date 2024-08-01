@@ -9,16 +9,6 @@ import { Table as RocketsTable } from '../src';
 import { TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import { RowProps } from '../src/components/Table/types';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => {
-    return {
-      replace: jest.fn(),
-    };
-  },
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 type GenerateRowsProps = (length: number) => RowProps[];
 
 const generateRows: GenerateRowsProps = (length: number) => {

@@ -1,4 +1,3 @@
-import { ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import { Order, TableQueryStateProps } from '../types';
 import { useState } from 'react';
 
@@ -11,7 +10,7 @@ export const TABLE_QUERY_STATE_DEFAULT_VALUE: TableQueryStateProps = {
 
 export const getTableQueryState = (
   tableQuery: TableQueryStateProps,
-  searchParams?: ReadonlyURLSearchParams,
+  searchParams?: URLSearchParams,
 ) => ({
   order:
     (searchParams?.get('order') as Order) ||
@@ -41,7 +40,7 @@ export const getTableQueryState = (
 });
 
 export const useTableQueryState = (tableQuery?: TableQueryStateProps) => {
-  const searchParams = useSearchParams();
+  const searchParams = new URLSearchParams(window.location.search);
 
   const [tableQueryState, setTableQueryState] = useState<TableQueryStateProps>(
     getTableQueryState(tableQuery, searchParams),

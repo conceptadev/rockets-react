@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 import { useAuth } from '@concepta/react-auth-provider';
-import { usePathname } from 'next/navigation';
 
 import Table from '../Table';
 import { StyleDefinition, generateTableTheme } from './constants';
@@ -34,12 +33,11 @@ const ComposedTable = (props: ComposedTableProps) => {
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
   const auth = useAuth();
-  const pathname = usePathname();
 
   const [settings, setSettings] = useSettingsStorage({
     key: 'tableSettings',
     user: (auth?.user as { id: string })?.id ?? '',
-    settingsId: props.settingsId || pathname,
+    settingsId: props.settingsId || window.location.pathname,
     list: props.headers.map((header) => ({
       id: header.id,
       hide: Boolean(header.hide),

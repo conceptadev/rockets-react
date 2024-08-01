@@ -61,16 +61,6 @@ const mockData = [
   },
 ];
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => {
-    return {
-      replace: jest.fn(),
-    };
-  },
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 const executeMock = jest.fn();
 const refreshMock = jest.fn();
 

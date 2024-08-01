@@ -21,16 +21,6 @@ const mockData = [
   },
 ];
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => {
-    return {
-      replace: jest.fn(),
-    };
-  },
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 jest.mock('@concepta/react-data-provider', () => ({
   __esModule: true,
   default: jest.fn(() => ({

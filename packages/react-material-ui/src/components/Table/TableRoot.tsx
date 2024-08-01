@@ -2,7 +2,6 @@
 
 import React, { PropsWithChildren, useState } from 'react';
 import { Box, BoxProps } from '@mui/material';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { HeaderProps, Order, RowProps, TableQueryStateProps } from './types';
 import { useTableQueryState } from './hooks/useTableQueryState';
 import { TableContext } from './hooks/useTableRoot';
@@ -16,6 +15,7 @@ export type TableRootProps =
       pageCount?: never;
       tableQueryState?: never;
       updateTableQueryState?: never;
+      redirect?: (path: string) => void;
     }
   | {
       rows: RowProps[];
@@ -26,6 +26,7 @@ export type TableRootProps =
       updateTableQueryState: React.Dispatch<
         React.SetStateAction<TableQueryStateProps>
       >;
+      redirect?: (path: string) => void;
     };
 
 /**
@@ -42,11 +43,10 @@ export const TableRoot = ({
   pageCount,
   tableQueryState: controlledTableQueryState,
   updateTableQueryState: controlledUpdateTableQueryState,
+  redirect,
   ...rest
 }: PropsWithChildren<TableRootProps & BoxProps>) => {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const router = useRouter();
+  const searchParams = new URLSearchParams(window.location.search);
   const { tableQueryState, setTableQueryState } = useTableQueryState();
 
   const [selected, setSelected] = useState<RowProps[]>([]);
@@ -85,7 +85,7 @@ export const TableRoot = ({
     );
 
     if (newSearchParam) {
-      router.replace(`${pathname}?${newSearchParam}`);
+      redirect && redirect(`${window.location.pathname}?${newSearchParam}`);
     }
   };
 
@@ -161,7 +161,7 @@ export const TableRoot = ({
     const newSearchParam = getSearchParams(searchParams, newPageProperty);
 
     if (newSearchParam) {
-      router.replace(`${pathname}?${newSearchParam}`);
+      redirect && redirect(`${window.location.pathname}?${newSearchParam}`);
     }
   };
 
@@ -188,7 +188,7 @@ export const TableRoot = ({
     const newSearchParam = getSearchParams(searchParams, newOrderProperties);
 
     if (newSearchParam) {
-      router.replace(`${pathname}?${newSearchParam}`);
+      redirect && redirect(`${window.location.pathname}?${newSearchParam}`);
     }
   };
 

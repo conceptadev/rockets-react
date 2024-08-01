@@ -9,12 +9,6 @@ import { Table as RocketsTable } from '../src/';
 import { TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import { TableBodyRows } from '../src/components/Table/TableBody/TableBodyRows';
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('TableHeaderCheckbox component', () => {
   const props = {
     rows: [

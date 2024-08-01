@@ -4,7 +4,6 @@ import React, { ReactNode, useState, useEffect } from 'react';
 import { Box, Grid, GridProps } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 import { useAuth } from '@concepta/react-auth-provider';
-import { usePathname } from 'next/navigation';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
@@ -169,12 +168,11 @@ export type FilterProps = {
 const Filter = (props: FilterProps) => {
   const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
   const auth = useAuth();
-  const pathname = usePathname();
 
   const [settings, setSettings] = useSettingsStorage({
     key: 'filterSettings',
     user: (auth?.user as { id: string })?.id ?? '',
-    settingsId: props.settingsId || pathname,
+    settingsId: props.settingsId || window.location.pathname,
     list: filters.map((header) => ({
       id: header.id,
       hide: Boolean(header.hide),

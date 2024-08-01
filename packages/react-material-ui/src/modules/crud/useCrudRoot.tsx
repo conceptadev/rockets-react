@@ -16,6 +16,7 @@ export type CrudContextProps = {
   externalSearch: Search;
   filterValues: FilterValues;
   setFilterValues: React.Dispatch<React.SetStateAction<FilterValues>>;
+  redirect?: (path: string) => void;
 };
 
 export const CrudContext = createContext<CrudContextProps>(
