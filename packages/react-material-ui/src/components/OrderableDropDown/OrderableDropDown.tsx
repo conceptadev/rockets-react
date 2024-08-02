@@ -162,7 +162,7 @@ const OrderableDropDown = ({
       label: item.label,
       hide: Boolean(item.hide),
     })),
-    cacheApiUri: storage?.cacheApiPath,
+    cacheApiPath: storage?.cacheApiPath,
     setListCallback: (callbackData) =>
       storage?.onListUpdateFromCache(callbackData),
   });

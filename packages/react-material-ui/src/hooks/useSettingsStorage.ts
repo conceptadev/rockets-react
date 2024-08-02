@@ -47,12 +47,9 @@ type CacheResponse = {
   data: string;
 };
 
-/**
- * Type of useSettingsStorage hook props.
- */
 type Props = {
   setListCallback?: (list?: Settings['data']) => void;
-  cacheApiUri?: string;
+  cacheApiPath?: string;
 } & Omit<Settings, 'assignee'>;
 
 /**
@@ -77,17 +74,8 @@ const parseSettingsToDataString = (data: string) => {
   return data.replace(/"/g, "'");
 };
 
-/**
- * Default delay time for consecutive updateCache calls
- */
 const DEBOUNCE_TIME_IN_MILLISECONDS = 1500;
 
-/**
- * Get an array of settings from localStorage based on key, type and assignee.
- *
- * @returns An array of orderable items to be set on hook state or returned to
- * parent component.
- */
 const getSettingsFromStorage = (params: Omit<Settings, 'data'>) => {
   const storageItem = JSON.parse(localStorage.getItem(params.type));
 
@@ -103,13 +91,6 @@ const getSettingsFromStorage = (params: Omit<Settings, 'data'>) => {
   return settingsItem ? settingsItem.data : [];
 };
 
-/**
- * Get an array of settings from a list returned by the API
- * based on key, type and assignee.
- *
- * @returns An array of orderable items to be set on hook state or returned to
- * parent component.
- */
 const getSettingsFromCacheList = (
   params: Omit<Settings, 'data'> & { cacheList: CacheResponse[] },
 ) => {
@@ -130,9 +111,6 @@ const getSettingsFromCacheList = (
   };
 };
 
-/**
- * Updates settings on localStorage based on key, type and assignee.
- */
 const updateSettingsStorage = (params: Settings) => {
   const storageItem = JSON.parse(localStorage.getItem(params.type));
 
@@ -155,9 +133,6 @@ const updateSettingsStorage = (params: Settings) => {
   localStorage.setItem(params.type, JSON.stringify(storageItem));
 };
 
-/**
- * Deletes settings on localStorage based on key, type and assignee.
- */
 const deleteSettingsStorage = (params: Omit<Settings, 'data'>) => {
   const storageItem = JSON.parse(localStorage.getItem(params.type));
 
@@ -192,34 +167,23 @@ export const useSettingsStorage = (props: Props) => {
   const [cacheId, setCacheId] = useState<CacheResponse['id']>('');
   const [settings, setSettings] = useState<Settings['data']>([]);
 
-  if (!props.type) {
-    return {
-      settings,
-      setSettings,
-      clearSettings: () => null,
-    };
-  }
-
   const auth = useAuth();
   const pathname = usePathname();
 
   const { get, put, del } = useDataProvider();
 
-  const orderableListCacheKey = props.key || pathname;
-  const assignee = {
-    id: (auth?.user as { id: string })?.id ?? '',
-  };
-
   const cacheConfig = {
-    key: orderableListCacheKey,
+    key: props.key || pathname,
     type: props.type,
-    assignee,
+    assignee: {
+      id: auth?.user ? (auth.user as { id: string }).id : '',
+    },
   };
 
   const { execute: createCache } = useQuery(
-    (cache: Record<string, unknown>) =>
+    (cache: string) =>
       put({
-        uri: `${props.cacheApiUri}/${crypto.randomUUID()}`,
+        uri: `${props.cacheApiPath}/${crypto.randomUUID()}`,
         body: {
           ...cacheConfig,
           data: cache,
@@ -234,7 +198,7 @@ export const useSettingsStorage = (props: Props) => {
   const { execute: updateCache } = useQuery(
     (list: Settings['data']) =>
       put({
-        uri: `${props.cacheApiUri}/${cacheId}`,
+        uri: `${props.cacheApiPath}/${cacheId}`,
         body: {
           ...cacheConfig,
           data: parseSettingsToDataString(JSON.stringify(list)),
@@ -247,17 +211,16 @@ export const useSettingsStorage = (props: Props) => {
   );
 
   const { execute: deleteCache } = useQuery(
-    () => del({ uri: `${props.cacheApiUri}/${cacheId}` }),
+    () => del({ uri: `${props.cacheApiPath}/${cacheId}` }),
     false,
     { onSuccess: () => setCacheId('') },
   );
 
-  const { execute: fetchSettingsCache } = useQuery(
-    () => get({ uri: props.cacheApiUri }),
+  const { execute: fetchOrCreateCache } = useQuery(
+    () => get({ uri: props.cacheApiPath }),
     false,
     {
       onSuccess: (fetchedData: CacheResponse[]) => {
-        const storageData = getSettingsFromStorage(cacheConfig);
         const cachedSettings = getSettingsFromCacheList({
           ...cacheConfig,
           cacheList: fetchedData,
@@ -270,8 +233,7 @@ export const useSettingsStorage = (props: Props) => {
 
         if (cachedSettings) {
           setCacheId(cachedSettings.id);
-
-          if (!storageData.length) {
+          if (!getSettingsFromStorage(cacheConfig).length) {
             setSettings(cachedSettings.data);
             props.setListCallback(cachedSettings.data);
           }
@@ -285,12 +247,6 @@ export const useSettingsStorage = (props: Props) => {
     DEBOUNCE_TIME_IN_MILLISECONDS,
   );
 
-  /**
-   * Updates localStorage entry related to an orderable list.
-   * If useSettingsStorage cacheApiUri prop is valid, also updates cache api entry.
-   *
-   * @param items - array of items that composes the orderable list.
-   */
   const updateSettings = (items: Settings['data']) => {
     setSettings(items);
     updateSettingsStorage({
@@ -298,19 +254,15 @@ export const useSettingsStorage = (props: Props) => {
       data: items,
     });
 
-    if (props.cacheApiUri && cacheId) {
+    if (props.cacheApiPath) {
       debouncedCacheUpdate(items);
     }
   };
 
-  /**
-   * Deletes localStorage entry related to an orderable list.
-   * If useSettingsStorage cacheApiUri prop is valid, also deletes cache api entry.
-   */
   const clearSettings = () => {
     deleteSettingsStorage(cacheConfig);
 
-    if (props.cacheApiUri && cacheId) {
+    if (props.cacheApiPath) {
       deleteCache();
     }
   };
@@ -319,12 +271,12 @@ export const useSettingsStorage = (props: Props) => {
     const storageData = getSettingsFromStorage(cacheConfig);
 
     if (storageData.length) {
-      props.setListCallback(storageData);
       setSettings(storageData);
+      props.setListCallback(storageData);
     }
 
-    if (props.cacheApiUri) {
-      fetchSettingsCache();
+    if (props.cacheApiPath) {
+      fetchOrCreateCache();
     }
   }, []);
 
