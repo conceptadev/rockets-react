@@ -10,7 +10,7 @@ type TableColumnOrderableProps = {
   text?: string;
   icon?: ReactNode;
   settingsId?: string;
-  settingsCacheUri?: string;
+  cacheApiPath?: string;
 };
 
 export const TableColumnOrderable = ({
@@ -18,13 +18,21 @@ export const TableColumnOrderable = ({
   text,
   icon,
   settingsId,
-  settingsCacheUri,
+  cacheApiPath,
 }: TableColumnOrderableProps) => {
   const { headers, setHeaders } = useTableRoot();
 
   const [headerOrder, setHeaderOrder] = useState<ListItem[]>(
     headers.map((header) => ({ id: header.id, label: header.label })),
   );
+
+  const handleListUpdateFromCache = (cacheList: ListItem[]) => {
+    const newHeaders = cacheList.map((header) => {
+      const originalHeader = headers.find(({ id }) => id === header.id);
+      return { ...originalHeader, hide: header.hide };
+    });
+    setHeaderOrder(newHeaders);
+  };
 
   useEffect(() => {
     const newOrderedHeaders = headerOrder.map((header) => {
@@ -44,15 +52,8 @@ export const TableColumnOrderable = ({
       storage={{
         type: 'table',
         key: settingsId,
-        cacheApiPath: settingsCacheUri,
-        actionCallback: (settings) => {
-          const newHeaders = settings.map((header) => {
-            const originalHeader = headers.find((h) => h.id === header.id);
-            return { ...originalHeader, hide: header.hide };
-          });
-
-          setHeaderOrder(newHeaders);
-        },
+        cacheApiPath: cacheApiPath,
+        onListUpdateFromCache: handleListUpdateFromCache,
       }}
     />
   );

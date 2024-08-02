@@ -44,21 +44,14 @@ export interface ListItem {
   [key: string]: unknown;
 }
 
-type StorageSettings =
-  | {
-      key?: string;
-      type?: string;
-      cacheApiPath?: string;
-      actionCallback?: (
-        data: Pick<ListItem, 'id' | 'label' | 'hide'>[],
-      ) => void;
-    }
-  | {
-      key?: string;
-      type: string;
-      cacheApiPath?: string;
-      actionCallback: (data: Pick<ListItem, 'id' | 'label' | 'hide'>[]) => void;
-    };
+type StorageSettings = {
+  key?: string;
+  type: string;
+  cacheApiPath?: string;
+  onListUpdateFromCache: (
+    data: Pick<ListItem, 'id' | 'label' | 'hide'>[],
+  ) => void;
+};
 
 interface Props {
   list: ListItem[];
@@ -170,7 +163,8 @@ const OrderableDropDown = ({
       hide: Boolean(item.hide),
     })),
     cacheApiUri: storage?.cacheApiPath,
-    setListCallback: (callbackData) => storage?.actionCallback(callbackData),
+    setListCallback: (callbackData) =>
+      storage?.onListUpdateFromCache(callbackData),
   });
 
   const sensors = useSensors(

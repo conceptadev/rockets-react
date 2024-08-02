@@ -200,7 +200,7 @@ export type FilterProps = {
   /** Identifier for filter settings on localStorage */
   settingsId?: string;
   /** Identifier for filter settings api endpoint path */
-  settingsCacheUri?: string;
+  cacheApiPath?: string;
 } & GridProps;
 
 export const Filter = (props: FilterProps) => {
@@ -223,6 +223,40 @@ export const Filter = (props: FilterProps) => {
       resetFilters: resetFilters(filter),
     })),
   );
+
+  const handleListUpdateFromCache = (cacheList) => {
+    const originalFilters = [...filters];
+    const newFiltersOrder = [];
+
+    cacheList.forEach((item: ListItem) => {
+      const filterItemIndex = originalFilters.findIndex(
+        (filter) => filter?.id === item.id,
+      );
+      const filterItem = originalFilters[filterItemIndex];
+
+      if (filterItem) {
+        newFiltersOrder.push({
+          ...item,
+          ...filterItem,
+          resetFilters: resetFilters(filterItem),
+        });
+        originalFilters[filterItemIndex] = null;
+      }
+    });
+
+    originalFilters.forEach((filter) => {
+      if (filter) {
+        newFiltersOrder.push({
+          id: filter.id,
+          label: filter.label,
+          hide: filter.hide ?? false,
+          resetFilters: resetFilters(filter),
+        });
+      }
+    });
+
+    setFilterOrder(newFiltersOrder);
+  };
 
   return (
     <Box
@@ -292,40 +326,8 @@ export const Filter = (props: FilterProps) => {
             storage={{
               type: 'filter',
               key: props.settingsId,
-              cacheApiPath: props.settingsCacheUri,
-              actionCallback: (settings) => {
-                const originalFilters = [...filters];
-                const newFiltersOrder = [];
-
-                settings.forEach((item: ListItem) => {
-                  const filterItemIndex = originalFilters.findIndex(
-                    (filter) => filter?.id === item.id,
-                  );
-                  const filterItem = originalFilters[filterItemIndex];
-
-                  if (filterItem) {
-                    newFiltersOrder.push({
-                      ...item,
-                      ...filterItem,
-                      resetFilters: resetFilters(filterItem),
-                    });
-                    originalFilters[filterItemIndex] = null;
-                  }
-                });
-
-                originalFilters.forEach((filter) => {
-                  if (filter) {
-                    newFiltersOrder.push({
-                      id: filter.id,
-                      label: filter.label,
-                      hide: filter.hide ?? false,
-                      resetFilters: resetFilters(filter),
-                    });
-                  }
-                });
-
-                setFilterOrder(newFiltersOrder);
-              },
+              cacheApiPath: props.cacheApiPath,
+              onListUpdateFromCache: handleListUpdateFromCache,
             }}
           />
         ) : null}

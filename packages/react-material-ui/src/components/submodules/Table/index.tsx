@@ -267,7 +267,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
           {filters && (
             <FilterSubmodule
               settingsId={props.filterSettingsId}
-              settingsCacheUri={props.filterSettingsCacheUri}
+              cacheApiPath={props.filterSettingsCacheUri}
             />
           )}
           <Box
@@ -284,7 +284,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
               <Table.ColumnOrderable
                 hasAllOption={props.hasAllOption}
                 settingsId={props.tableSettingsId}
-                settingsCacheUri={props.tableSettingsCacheUri}
+                cacheApiPath={props.tableSettingsCacheUri}
               />
             )}
             {!props.hideAddButton && (
