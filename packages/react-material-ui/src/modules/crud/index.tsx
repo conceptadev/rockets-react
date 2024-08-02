@@ -61,10 +61,9 @@ export interface ModuleProps {
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
-  filterSettingsId?: string;
-  filterSettingsCacheUri?: string;
-  tableSettingsId?: string;
-  tableSettingsCacheUri?: string;
+  filterCacheKey?: string;
+  tableCacheKey?: string;
+  cacheApiPath?: string;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -157,10 +156,9 @@ const CrudModule = (props: ModuleProps) => {
           hideDetailsButton={!props.detailsFormProps}
           filterCallback={props.filterCallback}
           externalSearch={props.externalSearch}
-          filterSettingsId={props.filterSettingsId}
-          filterSettingsCacheUri={props.filterSettingsCacheUri}
-          tableSettingsId={props.tableSettingsId}
-          tableSettingsCacheUri={props.tableSettingsCacheUri}
+          filterCacheKey={props.filterCacheKey}
+          tableCacheKey={props.tableCacheKey}
+          cacheApiPath={props.cacheApiPath}
           {...useTableReturn}
           {...tableSubmoduleProps}
         />

@@ -371,13 +371,12 @@ The Filter and Table features inside the module can be saved in localStorage by 
       },
     ],
   }}
-  filterSettingsId="filter1"
-  filterSettingsCacheUri="/cache/filter"
-  tableSettingsId="table1"
-  tableSettingsCacheUri="/cache/table"
+  filterCacheKey="filter1"
+  tableCacheKey="table1"
+  cacheApiPath="/cache/user"
 />
 ```
 
-The `filterSettingsId` and `tableSettingsId` are optional props that identify the specific page or context where the CrudModule is being rendered and will serve to fetch the right storage or cache entry when the page is reloaded. The default for those props is the current route path.
+The `filterCacheKey` and `tableCacheKey` are optional props that identify the specific page or context where the CrudModule is being rendered and will serve to fetch the right storage or cache entry when the page is reloaded. The default for those props is the current route path.
 
-`filterSettingsCacheUri` and `tableSettingsCacheUri` identify the API route that will save the filter and table settings as cache. Those are optional, and not passing either one of them disables the API integration and the settings are saved only on localStorage.
+`cacheApiPath` identifies the API route that will save the filter and table settings as cache. This is optional, and not passing it disables the API integration and the settings are saved only on localStorage.

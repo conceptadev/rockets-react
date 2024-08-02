@@ -205,13 +205,13 @@ export const useSettingsStorage = (props: Props) => {
 
   const { get, put, del } = useDataProvider();
 
-  const settingsKey = props.key || pathname;
+  const orderableListCacheKey = props.key || pathname;
   const assignee = {
     id: (auth?.user as { id: string })?.id ?? '',
   };
 
   const cacheConfig = {
-    key: settingsKey,
+    key: orderableListCacheKey,
     type: props.type,
     assignee,
   };

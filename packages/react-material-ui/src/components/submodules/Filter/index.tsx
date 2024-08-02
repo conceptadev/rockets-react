@@ -40,7 +40,7 @@ export type FilterDetails = {
 export type FilterCallback = (filter: FilterValues) => void;
 
 type Props = {
-  settingsId?: string;
+  orderableListCacheKey?: string;
   cacheApiPath?: string;
 };
 

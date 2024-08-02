@@ -9,7 +9,7 @@ type TableColumnOrderableProps = {
   hasAllOption?: boolean;
   text?: string;
   icon?: ReactNode;
-  settingsId?: string;
+  orderableListCacheKey?: string;
   cacheApiPath?: string;
 };
 
@@ -17,7 +17,7 @@ export const TableColumnOrderable = ({
   hasAllOption,
   text,
   icon,
-  settingsId,
+  orderableListCacheKey,
   cacheApiPath,
 }: TableColumnOrderableProps) => {
   const { headers, setHeaders } = useTableRoot();
@@ -51,7 +51,7 @@ export const TableColumnOrderable = ({
       text={text}
       storage={{
         type: 'table',
-        key: settingsId,
+        key: orderableListCacheKey,
         cacheApiPath: cacheApiPath,
         onListUpdateFromCache: handleListUpdateFromCache,
       }}

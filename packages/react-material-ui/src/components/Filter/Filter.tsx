@@ -198,7 +198,7 @@ export type FilterProps = {
   /** Additional actions to render */
   complementaryActions?: ReactNode | ((filters: ListItem[]) => ReactNode);
   /** Identifier for filter settings on localStorage */
-  settingsId?: string;
+  orderableListCacheKey?: string;
   /** Identifier for filter settings api endpoint path */
   cacheApiPath?: string;
 } & GridProps;
@@ -325,7 +325,7 @@ export const Filter = (props: FilterProps) => {
             setList={setFilterOrder}
             storage={{
               type: 'filter',
-              key: props.settingsId,
+              key: props.orderableListCacheKey,
               cacheApiPath: props.cacheApiPath,
               onListUpdateFromCache: handleListUpdateFromCache,
             }}
