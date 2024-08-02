@@ -238,8 +238,6 @@ export const Filter = (props: FilterProps) => {
       };
     });
 
-    console.log('mew items: ', newItems);
-
     setFilterOrder(newItems);
   };
 
