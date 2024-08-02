@@ -53,10 +53,7 @@ type Props = {
 } & Omit<Settings, 'assignee'>;
 
 /**
- * Transforms the BE stringified data into a string that can
- * be parsed via the JSON.parse method.
- *
- * @param data - Stringified data array returned from the backend.
+ * @param data - Stringified data array returned from the API.
  * @returns Parseable settings array string.
  */
 const parseDataStringToSettings = (data: string) => {
@@ -64,17 +61,14 @@ const parseDataStringToSettings = (data: string) => {
 };
 
 /**
- * Transforms the string returned from JSON.stringify into
- * one that can be accepted by the BE.
- *
  * @param data - Stringified settings array.
- * @returns Stringified array that can be read by BE endpoints.
+ * @returns Stringified array that can be read by API endpoints.
  */
 const parseSettingsToDataString = (data: string) => {
   return data.replace(/"/g, "'");
 };
 
-const DEBOUNCE_TIME_IN_MILLISECONDS = 1500;
+const DEBOUNCE_TIME_IN_MS = 1500;
 
 const getSettingsFromStorage = (params: Omit<Settings, 'data'>) => {
   const storageItem = JSON.parse(localStorage.getItem(params.type));
@@ -156,8 +150,8 @@ const deleteSettingsStorage = (params: Omit<Settings, 'data'>) => {
 
 /**
  * Hook for managing fetch/update state and cache for the OrderableDropDown
- * component. The local storage and cache module are used for this, with local storage
- * being the primary source of information. If settings are present in local storage, BE
+ * component. The localStorage and cache module are used for this, with localStorage
+ * being the primary source of information. If settings are present in localStorage, BE
  * data is not used. If not, a lookup is performed in the api to check if there's cache of
  * the type passed via props.
  *
@@ -244,7 +238,7 @@ export const useSettingsStorage = (props: Props) => {
 
   const debouncedCacheUpdate = debounce(
     (items: Settings['data']) => updateCache(items),
-    DEBOUNCE_TIME_IN_MILLISECONDS,
+    DEBOUNCE_TIME_IN_MS,
   );
 
   const updateSettings = (items: Settings['data']) => {

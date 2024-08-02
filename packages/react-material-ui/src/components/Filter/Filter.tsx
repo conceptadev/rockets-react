@@ -224,38 +224,23 @@ export const Filter = (props: FilterProps) => {
     })),
   );
 
-  const handleListUpdateFromCache = (cacheList) => {
-    const originalFilters = [...filters];
-    const newFiltersOrder = [];
-
-    cacheList.forEach((item: ListItem) => {
-      const filterItemIndex = originalFilters.findIndex(
-        (filter) => filter?.id === item.id,
+  const handleListUpdateFromCache = (cacheList: ListItem[]) => {
+    const newItems = cacheList.map((item) => {
+      const filterItemIndex = filters.findIndex(
+        (filter) => filter.id === item.id,
       );
-      const filterItem = originalFilters[filterItemIndex];
+      const filterItem = filters[filterItemIndex];
 
-      if (filterItem) {
-        newFiltersOrder.push({
-          ...item,
-          ...filterItem,
-          resetFilters: resetFilters(filterItem),
-        });
-        originalFilters[filterItemIndex] = null;
-      }
+      return {
+        ...item,
+        ...filterItem,
+        resetFilters: resetFilters(filterItem),
+      };
     });
 
-    originalFilters.forEach((filter) => {
-      if (filter) {
-        newFiltersOrder.push({
-          id: filter.id,
-          label: filter.label,
-          hide: filter.hide ?? false,
-          resetFilters: resetFilters(filter),
-        });
-      }
-    });
+    console.log('mew items: ', newItems);
 
-    setFilterOrder(newFiltersOrder);
+    setFilterOrder(newItems);
   };
 
   return (
