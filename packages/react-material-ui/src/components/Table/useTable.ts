@@ -20,116 +20,116 @@ import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/i
 
 interface UseTableOptions {
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Quantity of items displayed in a Table page.
    */
   rowsPerPage?: number;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Current page number.
    */
   page?: number;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * String that indicates which Table column will be the sorting parameter.
    */
   orderBy?: string;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * String that indicates Ascending or Descending order of Tbale rows.
    */
   order?: Order;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Object that represents filters for Table data.
    */
   simpleFilter?: SimpleFilter;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Object for filtering Table data in a more intricate way, including contain and equal operators.
    */
   search?: Search;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Object where each field is a callback: onSuccess, onError, onFinish and formatData.
    */
   callbacks?: DataProviderRequestOptions;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Boolean that indicates if Table pagination should be displayed.
    */
   noPagination?: boolean;
-  /**
-   * Hook that wraps the implementation of the Table Root Context.
-   */
 }
 
 export interface UpdateSearch {
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Callback for updating Table filtering based on URL params.
+   *
+   * @param search - The new value for the search attribute.
+   * @param resetPage - Boolean that indicates if the current page should be set to one.
    */
   (search: Search | null, resetPage?: boolean): void;
 }
 
 export interface UseTableResult {
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Array of objects returned form the API where each contain the data displayed in Table rows.
    */
   data: unknown[];
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Boolean that indicates loading state for Table rows.
    */
   isPending: boolean;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Error returned from the Table API call.
    */
   error: unknown;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Total of items displayed in the Table.
    */
   total: number;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Total of pages rendered by the Table.
    */
   pageCount: number;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Callback for performing an API call for the Table API resource.
    */
   execute: () => void;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Callback for performing an API call for the Table API resource and refreshing Table data.
    */
   refresh: () => void;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Callback for updating the Table filter object.
    */
   updateSimpleFilter: UpdateSimpleFilter;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Callback for updating Table filtering based on URL params.
+   *
+   * @param search - The new value for the search attribute.
+   * @param resetPage - Boolean that indicates if the current page should be set to one.
    */
-  updateSearch: (search: Search | null, resetPage?: boolean) => void;
+  updateSearch: UpdateSearch;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Object that represents filters for Table data.
    */
   simpleFilter: SimpleFilter;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Object for filtering Table data in a more intricate way, including contain and equal operators.
    */
   search: Search;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Table state containing page, order and search properties.
    */
   tableQueryState: TableQueryStateProps;
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Callback for changing Table state dinamically.
    */
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
   >;
-  /**
-   * Hook that wraps the implementation of the Table Root Context.
-   */
 }
 
 export type UseTableProps = (
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * API resource that will be used for fetching and updating Table data.
    */
   resource: string,
   /**
-   * Hook that wraps the implementation of the Table Root Context.
+   * Custom parameters for the Table data, sorting and pagination.
    */
   options?: UseTableOptions,
 ) => UseTableResult;
@@ -206,7 +206,7 @@ const useTable: UseTableProps = (resource, options) => {
     useQuery<TableResponseData>(getResource, false, options?.callbacks);
 
   // TODO: This will be refactored with Query Builder
-  // For now it works even though not optmized
+  // For now it works even though not optimized
   const updateSimpleFilter = (
     simpleFilter: SimpleFilter | null,
     resetPage = true,
@@ -258,7 +258,7 @@ const useTable: UseTableProps = (resource, options) => {
   };
 
   // TODO: This will be refactored with Query Builder
-  // For now it works even though not optmized
+  // For now it works even though not optimized
   const updateSearch: UpdateSearch = (
     search: Search | null,
     resetPage = true,
