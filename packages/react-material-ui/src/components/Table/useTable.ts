@@ -19,40 +19,118 @@ import { getSearchParams } from '../../utils/http';
 import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/interfaces';
 
 interface UseTableOptions {
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   rowsPerPage?: number;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   page?: number;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   orderBy?: string;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   order?: Order;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   simpleFilter?: SimpleFilter;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   search?: Search;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   callbacks?: DataProviderRequestOptions;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   noPagination?: boolean;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
 }
 
 export interface UpdateSearch {
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   (search: Search | null, resetPage?: boolean): void;
 }
 
 export interface UseTableResult {
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   data: unknown[];
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   isPending: boolean;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   error: unknown;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   total: number;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   pageCount: number;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   execute: () => void;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   refresh: () => void;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   updateSimpleFilter: UpdateSimpleFilter;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   updateSearch: (search: Search | null, resetPage?: boolean) => void;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   simpleFilter: SimpleFilter;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   search: Search;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   tableQueryState: TableQueryStateProps;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   setTableQueryState: React.Dispatch<
     React.SetStateAction<TableQueryStateProps>
   >;
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
 }
 
 export type UseTableProps = (
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   resource: string,
+  /**
+   * Hook that wraps the implementation of the Table Root Context.
+   */
   options?: UseTableOptions,
 ) => UseTableResult;
 
