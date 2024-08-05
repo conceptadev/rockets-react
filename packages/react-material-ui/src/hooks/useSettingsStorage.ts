@@ -1,15 +1,30 @@
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import debounce from 'lodash/debounce';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
+import { useAuth } from '@concepta/react-auth-provider';
 
+/**
+ * Type of the cache assignee info, with id being an user id.
+ */
 type Assignee = {
   id: string;
 };
 
+/**
+ * Type of the orderable items used in the OrderableDropDown component.
+ *
+ * @see {@link OrderableDropDown}
+ */
 type ListItem = {
   id: string;
+  label: string;
   hide?: boolean;
 };
 
+/**
+ * Type of the object containing info related to cache, orderable items and localStorage.
+ */
 type Settings = {
   key: string;
   assignee: Assignee;
@@ -17,7 +32,10 @@ type Settings = {
   data: ListItem[];
 };
 
-type CommonCacheInfo = {
+/**
+ * Common data returned by the cache module endpoints.
+ */
+type CacheResponse = {
   id: string;
   dateCreated: string;
   dateUpdated: string;
@@ -26,58 +44,55 @@ type CommonCacheInfo = {
   key: string;
   type: string;
   assignee: Assignee;
+  data: string;
 };
 
-type CacheResponse = {
-  data: string;
-} & CommonCacheInfo;
-
-type CacheState = {
-  data: ListItem[];
-} & CommonCacheInfo;
-
 type Props = {
-  setListCallback?: (list?: CacheState['data']) => void;
-  cacheApiUri?: string;
-} & Settings;
+  setListCallback?: (list?: Settings['data']) => void;
+  cacheApiPath?: string;
+} & Omit<Settings, 'assignee'>;
 
+/**
+ * @param data - Stringified data array returned from the API.
+ * @returns Parseable settings array string.
+ */
 const parseDataStringToSettings = (data: string) => {
   return JSON.parse(data.replace(/'/g, '"'));
 };
 
+/**
+ * @param data - Stringified settings array.
+ * @returns Stringified array that can be read by API endpoints.
+ */
 const parseSettingsToDataString = (data: string) => {
   return data.replace(/"/g, "'");
 };
 
-const getSettingsFromStorage = ({
-  key,
-  type,
-  assignee,
-}: Omit<Settings, 'data'>) => {
-  const storageItem = JSON.parse(localStorage.getItem(type));
+const DEBOUNCE_TIME_IN_MS = 1500;
+
+const getSettingsFromStorage = (params: Omit<Settings, 'data'>) => {
+  const storageItem = JSON.parse(localStorage.getItem(params.type));
 
   if (!storageItem) {
     return [];
   }
 
   const settingsItem = storageItem.find(
-    (item: Settings) => item.assignee.id === assignee.id && item.key === key,
+    ({ assignee, key }: Settings) =>
+      assignee.id === params.assignee.id && key === params.key,
   );
 
   return settingsItem ? settingsItem.data : [];
 };
 
-const getSettingsFromCacheList = ({
-  key,
-  type,
-  assignee,
-  cacheList,
-}: Omit<Settings, 'data'> & { cacheList: CacheResponse[] }) => {
-  const settingsItem = cacheList.find(
+const getSettingsFromCacheList = (
+  params: Omit<Settings, 'data'> & { cacheList: CacheResponse[] },
+) => {
+  const settingsItem = params.cacheList.find(
     (item) =>
-      item.key === key &&
-      item.type === type &&
-      item.assignee.id === assignee.id,
+      item.key === params.key &&
+      item.type === params.type &&
+      item.assignee.id === params.assignee.id,
   );
 
   if (!settingsItem) {
@@ -90,39 +105,30 @@ const getSettingsFromCacheList = ({
   };
 };
 
-const updateSettingsStorage = ({ key, type, assignee, data }: Settings) => {
-  const storageItem = JSON.parse(localStorage.getItem(type));
-
-  const newSettings = {
-    key,
-    assignee,
-    data,
-  };
+const updateSettingsStorage = (params: Settings) => {
+  const storageItem = JSON.parse(localStorage.getItem(params.type));
 
   if (!storageItem) {
-    localStorage.setItem(type, JSON.stringify([newSettings]));
+    localStorage.setItem(params.type, JSON.stringify([params]));
     return;
   }
 
   const settingsItemIndex = storageItem.findIndex(
-    (item: Settings) => item.assignee.id === assignee.id && item.key === key,
+    (item: Settings) =>
+      item.assignee.id === params.assignee.id && item.key === params.key,
   );
 
   if (settingsItemIndex > -1) {
-    storageItem[settingsItemIndex] = newSettings;
+    storageItem[settingsItemIndex] = params;
   } else {
-    storageItem.push(newSettings);
+    storageItem.push(params);
   }
 
-  localStorage.setItem(type, JSON.stringify(storageItem));
+  localStorage.setItem(params.type, JSON.stringify(storageItem));
 };
 
-const deleteSettingsStorage = ({
-  key,
-  type,
-  assignee,
-}: Omit<Settings, 'data'>) => {
-  const storageItem = JSON.parse(localStorage.getItem(type));
+const deleteSettingsStorage = (params: Omit<Settings, 'data'>) => {
+  const storageItem = JSON.parse(localStorage.getItem(params.type));
 
   if (!storageItem || !storageItem?.length) {
     return;
@@ -131,37 +137,49 @@ const deleteSettingsStorage = ({
   let updatedStorageItem = [...storageItem];
 
   const settingsItemIndex = storageItem.findIndex(
-    (item: Settings) => item.assignee.id === assignee.id && item.key === key,
+    ({ assignee, key }: Settings) =>
+      assignee.id === params.assignee.id && key === params.key,
   );
 
   if (settingsItemIndex > -1) {
     updatedStorageItem = storageItem.splice(settingsItemIndex, 1);
   }
 
-  localStorage.setItem(type, JSON.stringify(updatedStorageItem));
+  localStorage.setItem(params.type, JSON.stringify(updatedStorageItem));
 };
 
-export const useSettingsStorage = ({
-  key,
-  type,
-  assignee,
-  data,
-  setListCallback,
-  cacheApiUri,
-}: Props) => {
-  const [cacheId, setCacheId] = useState<CacheState['id']>('');
-  const [settings, setSettings] = useState<CacheState['data']>([]);
+/**
+ * Hook for managing fetch/update state and cache for the OrderableDropDown
+ * component. The localStorage and cache module are used for this, with localStorage
+ * being the primary source of information. If settings are present in localStorage, BE
+ * data is not used. If not, a lookup is performed in the api to check if there's cache of
+ * the type passed via props.
+ *
+ * @returns Object containing the settings array and the updateSettings and clearSettings methods.
+ */
+export const useSettingsStorage = (props: Props) => {
+  const [cacheId, setCacheId] = useState<CacheResponse['id']>('');
+  const [settings, setSettings] = useState<Settings['data']>([]);
 
-  const { get, post, patch, del } = useDataProvider();
+  const auth = useAuth();
+  const pathname = usePathname();
+
+  const { get, put, del } = useDataProvider();
+
+  const cacheConfig = {
+    key: props.key || pathname,
+    type: props.type,
+    assignee: {
+      id: auth?.user ? (auth.user as { id: string }).id : '',
+    },
+  };
 
   const { execute: createCache } = useQuery(
-    (cache: Record<string, unknown>) =>
-      post({
-        uri: cacheApiUri,
+    (cache: string) =>
+      put({
+        uri: `${props.cacheApiPath}/${crypto.randomUUID()}`,
         body: {
-          key,
-          type,
-          assignee,
+          ...cacheConfig,
           data: cache,
         },
       }),
@@ -172,13 +190,11 @@ export const useSettingsStorage = ({
   );
 
   const { execute: updateCache } = useQuery(
-    (list: CacheState['data']) =>
-      patch({
-        uri: `${cacheApiUri}/${cacheId}`,
+    (list: Settings['data']) =>
+      put({
+        uri: `${props.cacheApiPath}/${cacheId}`,
         body: {
-          key,
-          type,
-          assignee,
+          ...cacheConfig,
           data: parseSettingsToDataString(JSON.stringify(list)),
         },
       }),
@@ -189,75 +205,74 @@ export const useSettingsStorage = ({
   );
 
   const { execute: deleteCache } = useQuery(
-    () => del({ uri: `${cacheApiUri}/${cacheId}` }),
+    () => del({ uri: `${props.cacheApiPath}/${cacheId}` }),
     false,
     { onSuccess: () => setCacheId('') },
   );
 
-  const { execute: fetchSettingsCache } = useQuery(
-    () => get({ uri: cacheApiUri }),
+  const { execute: fetchOrCreateCache } = useQuery(
+    () => get({ uri: props.cacheApiPath }),
     false,
     {
       onSuccess: (fetchedData: CacheResponse[]) => {
-        if (!fetchedData.length) {
-          createCache(parseSettingsToDataString(JSON.stringify(data)));
-          return;
-        }
-
         const cachedSettings = getSettingsFromCacheList({
-          key,
-          type,
-          assignee,
+          ...cacheConfig,
           cacheList: fetchedData,
         });
 
+        if (!cachedSettings) {
+          createCache(parseSettingsToDataString(JSON.stringify(props.data)));
+          return;
+        }
+
         if (cachedSettings) {
           setCacheId(cachedSettings.id);
-
-          if (!settings.length) {
+          if (!getSettingsFromStorage(cacheConfig).length) {
             setSettings(cachedSettings.data);
-            setListCallback(cachedSettings.data);
+            props.setListCallback(cachedSettings.data);
           }
         }
       },
     },
   );
 
-  const clearSettings = () => {
-    deleteSettingsStorage({ key, type, assignee });
+  const debouncedCacheUpdate = debounce(
+    (items: Settings['data']) => updateCache(items),
+    DEBOUNCE_TIME_IN_MS,
+  );
 
-    if (cacheApiUri && cacheId) {
+  const updateSettings = (items: Settings['data']) => {
+    setSettings(items);
+    updateSettingsStorage({
+      ...cacheConfig,
+      data: items,
+    });
+
+    if (props.cacheApiPath) {
+      debouncedCacheUpdate(items);
+    }
+  };
+
+  const clearSettings = () => {
+    deleteSettingsStorage(cacheConfig);
+
+    if (props.cacheApiPath) {
       deleteCache();
     }
   };
 
   useEffect(() => {
-    if (settings.length) {
-      updateSettingsStorage({
-        key,
-        type,
-        assignee,
-        data: settings,
-      });
-
-      if (cacheApiUri && cacheId) {
-        updateCache(settings);
-      }
-    }
-  }, [settings, cacheApiUri]);
-
-  useEffect(() => {
-    const storageData = getSettingsFromStorage({ key, type, assignee });
+    const storageData = getSettingsFromStorage(cacheConfig);
 
     if (storageData.length) {
-      setListCallback(storageData);
       setSettings(storageData);
+      props.setListCallback(storageData);
     }
 
-    if (!storageData.length && cacheApiUri) {
-      fetchSettingsCache();
+    if (props.cacheApiPath) {
+      fetchOrCreateCache();
     }
   }, []);
 
-  return { settings, setSettings, clearSettings };
+  return { settings, updateSettings, clearSettings };
 };

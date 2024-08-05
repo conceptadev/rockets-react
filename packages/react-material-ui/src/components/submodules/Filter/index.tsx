@@ -40,8 +40,8 @@ export type FilterDetails = {
 export type FilterCallback = (filter: FilterValues) => void;
 
 type Props = {
-  settingsId?: string;
-  settingsCacheUri?: string;
+  orderableListCacheKey?: string;
+  cacheApiPath?: string;
 };
 
 const FilterSubmodule = (props: Props) => {

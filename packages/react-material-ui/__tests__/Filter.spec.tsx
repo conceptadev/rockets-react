@@ -7,7 +7,7 @@ import React from 'react';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Filter, FilterType } from '../src/components/Filter/Filter';
 
-const SETTINGS_ID = 'testing';
+const SETTINGS_KEY = 'testing';
 
 describe('Filter Component', () => {
   const allFilters: FilterType[] = [
@@ -52,7 +52,7 @@ describe('Filter Component', () => {
 
   it('renders textfield component if type is "Text"', () => {
     const { getByPlaceholderText } = render(
-      <Filter filters={[allFilters[0]]} settingsId={SETTINGS_ID} />,
+      <Filter filters={[allFilters[0]]} orderableListCacheKey={SETTINGS_KEY} />,
     );
 
     const input = getByPlaceholderText('Text Test Placeholder');
@@ -61,7 +61,7 @@ describe('Filter Component', () => {
 
   it('renders autocomplete component if type is "Autocomplete"', () => {
     const { getByRole } = render(
-      <Filter filters={[allFilters[1]]} settingsId={SETTINGS_ID} />,
+      <Filter filters={[allFilters[1]]} orderableListCacheKey={SETTINGS_KEY} />,
     );
 
     const input = getByRole('combobox');
@@ -70,7 +70,7 @@ describe('Filter Component', () => {
 
   it('renders select component if type is "Select"', () => {
     const { getByLabelText } = render(
-      <Filter filters={[allFilters[2]]} settingsId={SETTINGS_ID} />,
+      <Filter filters={[allFilters[2]]} orderableListCacheKey={SETTINGS_KEY} />,
     );
 
     const input = getByLabelText('Select Test Label');
@@ -79,7 +79,7 @@ describe('Filter Component', () => {
 
   it('renders array of filters correctly', () => {
     const { container } = render(
-      <Filter filters={allFilters} settingsId={SETTINGS_ID} />,
+      <Filter filters={allFilters} orderableListCacheKey={SETTINGS_KEY} />,
     );
 
     const inputs = container.querySelectorAll('input');
@@ -99,7 +99,7 @@ describe('Filter Component', () => {
 
   it('renders dropdown button', () => {
     const { queryByTestId } = render(
-      <Filter filters={allFilters} settingsId={SETTINGS_ID} />,
+      <Filter filters={allFilters} orderableListCacheKey={SETTINGS_KEY} />,
     );
 
     const dropdownButton = queryByTestId('FilterAltIcon');
@@ -108,7 +108,7 @@ describe('Filter Component', () => {
 
   it('opens dropdown button on click', () => {
     const { queryByTestId, queryAllByTestId } = render(
-      <Filter filters={allFilters} settingsId={SETTINGS_ID} />,
+      <Filter filters={allFilters} orderableListCacheKey={SETTINGS_KEY} />,
     );
 
     const dropdownButton = queryByTestId('FilterAltIcon');
@@ -128,7 +128,9 @@ describe('Filter Component', () => {
       getByPlaceholderText,
       getByRole,
       queryByPlaceholderText,
-    } = render(<Filter filters={[allFilters[0]]} settingsId={SETTINGS_ID} />);
+    } = render(
+      <Filter filters={[allFilters[0]]} orderableListCacheKey={SETTINGS_KEY} />,
+    );
 
     const textInput = getByPlaceholderText('Text Test Placeholder');
     expect(textInput).toBeInTheDocument();

@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    settingsId: 'filter-default',
+    orderableListCacheKey: 'filter-default',
     filters: [
       {
         id: 'text-filter',
@@ -62,7 +62,7 @@ export const Default: Story = {
 
 export const AdditionalGridItems: Story = {
   args: {
-    settingsId: 'filter-additionalGridItems',
+    orderableListCacheKey: 'filter-additionalGridItems',
     filters: [
       {
         id: 'text-filter',
@@ -99,7 +99,7 @@ export const AdditionalGridItems: Story = {
  */
 export const ComplementaryActions: Story = {
   args: {
-    settingsId: 'filter-complementaryActions',
+    orderableListCacheKey: 'filter-complementaryActions',
     filters: [
       {
         id: 'text-filter',
