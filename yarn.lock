@@ -1973,13 +1973,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@concepta/react-auth-provider@workspace:packages/react-auth-provider"
   dependencies:
-    "@concepta/react-data-provider": "npm:^1.0.0-alpha.29"
+    "@concepta/react-data-provider": "npm:^1.0.0"
   peerDependencies:
     react: ^18.2.0
   languageName: unknown
   linkType: soft
 
-"@concepta/react-data-provider@npm:^1.0.0-alpha.29, @concepta/react-data-provider@workspace:packages/react-data-provider":
+"@concepta/react-data-provider@npm:^1.0.0, @concepta/react-data-provider@workspace:packages/react-data-provider":
   version: 0.0.0-use.local
   resolution: "@concepta/react-data-provider@workspace:packages/react-data-provider"
   dependencies:
