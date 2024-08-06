@@ -4,8 +4,9 @@ import {
   BoxProps,
   FormControl,
   InputAdornment,
-  TextField as MuiTextField,
   TextFieldProps as MuiTextFieldProps,
+  InputProps,
+  OutlinedInput as MuiOutlinedInput,
   TypographyProps,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
@@ -116,6 +117,8 @@ export const TextField = (props: TextFieldProps) => {
     options,
     containerProps,
     labelProps,
+    InputProps,
+    InputLabelProps,
     name,
     passwordStrengthConfig,
     ...rest
@@ -150,6 +153,7 @@ export const TextField = (props: TextFieldProps) => {
     value as string,
     passwordStrengthConfigDefault.rules,
   );
+
   const [passwordStrengthText, passwordRuleVariant] = getPasswordMatchInfo(
     passwordScore,
     passwordStrengthConfigDefault.matchRules,
@@ -157,19 +161,21 @@ export const TextField = (props: TextFieldProps) => {
 
   return (
     <Box {...containerProps}>
-      <FormControl fullWidth>
+      <FormControl hiddenLabel={label ? true : ishiddenLabel} fullWidth>
         {!ishiddenLabel && !!label && typeof label === 'string' && (
           <FormLabel
             name={name}
             label={label}
             required={required}
             labelProps={labelProps}
+            {...InputLabelProps}
           />
         )}
-        {!ishiddenLabel && !!label && typeof label != 'string' && label}
 
-        <MuiTextField
-          {...rest}
+        {!ishiddenLabel && !!label && typeof label !== 'string' && label}
+
+        <MuiOutlinedInput
+          {...(rest as InputProps)}
           sx={[
             {
               marginTop: 0.5,
@@ -182,53 +188,49 @@ export const TextField = (props: TextFieldProps) => {
           name={name}
           size={size || 'small'}
           value={value || value === 0 ? value : ''}
-          hiddenLabel={label ? true : ishiddenLabel}
-          label={''}
-          fullWidth
           type={isPassword ? (showPassword ? 'text' : 'password') : type}
-          InputProps={{
-            ...(isPassword && {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={togglePassword}
-                    onMouseDown={handleMouseDownPassword}
-                    data-testid="toggle-password-button"
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }),
-            ...props.InputProps,
-          }}
+          endAdornment={
+            isPassword && (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={togglePassword}
+                  onMouseDown={handleMouseDownPassword}
+                  data-testid="toggle-password-button"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }
           data-testid="text-field"
+          fullWidth
+          {...InputProps}
         />
-
-        {isPassword && (
-          <>
-            {!passwordStrengthConfigDefault.hideStrengthBar && (
-              <PasswordStrength
-                passwordRuleVariant={passwordRuleVariant}
-                passwordStrengthText={passwordStrengthText}
-                renderStrengthBar={
-                  passwordStrengthConfigDefault.renderStrengthBar
-                }
-              />
-            )}
-
-            {!passwordStrengthConfigDefault.hideRulesText && (
-              <PasswordStrengthRules
-                name={name}
-                value={value}
-                rules={passwordStrengthConfigDefault.rules}
-                renderRulesText={passwordStrengthConfigDefault.renderRulesText}
-              />
-            )}
-          </>
-        )}
       </FormControl>
+
+      {isPassword && (
+        <>
+          {!passwordStrengthConfigDefault.hideStrengthBar && (
+            <PasswordStrength
+              passwordRuleVariant={passwordRuleVariant}
+              passwordStrengthText={passwordStrengthText}
+              renderStrengthBar={
+                passwordStrengthConfigDefault.renderStrengthBar
+              }
+            />
+          )}
+
+          {!passwordStrengthConfigDefault.hideRulesText && (
+            <PasswordStrengthRules
+              name={name}
+              value={value}
+              rules={passwordStrengthConfigDefault.rules}
+              renderRulesText={passwordStrengthConfigDefault.renderRulesText}
+            />
+          )}
+        </>
+      )}
     </Box>
   );
 };
