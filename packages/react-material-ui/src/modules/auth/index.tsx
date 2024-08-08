@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema } from '@rjsf/utils';
 
@@ -16,22 +16,25 @@ import {
 type Route = 'signIn' | 'signUp' | 'forgotPassword' | 'resetPassword';
 
 interface FormProps {
+  title?: string | ReactNode;
+  hideTitle?: boolean;
   formSchema?: RJSFSchema;
   formUiSchema?: UiSchema;
   customValidation?: ValidationRule<Record<string, string>>[];
   overrideDefaults?: boolean;
+  submitButtonTitle?: string;
 }
 
 interface ModuleProps {
-  title?: string;
+  headerComponent?: ReactNode;
   signInRequestPath?: string;
   forgotPasswordPath?: string;
   signUpPath?: string;
   signInPath?: string;
   queryUri?: string;
   queryMethod?: string;
-  submitButtonTitle?: string;
   logoSrc?: string;
+  hideLogo?: boolean;
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
 }
