@@ -17,6 +17,13 @@ import { TableRowSkeleton } from './TableRowSkeleton';
 import { TableCellSkeleton } from './TableCellSkeleton';
 import { TableColumnOrderable } from './TableColumnOrderable';
 
+import useTable, {
+  UseTableProps,
+  UseTableResult,
+  UseTableOptions,
+  UpdateSearch,
+} from './useTable';
+
 const TableComponent = {
   Table,
   BodyCell: TableBodyCells,
@@ -34,6 +41,14 @@ const TableComponent = {
   CellSkeleton: TableCellSkeleton,
   RowSkeleton: TableRowSkeleton,
   ColumnOrderable: TableColumnOrderable,
+};
+
+export {
+  useTable,
+  UseTableProps,
+  UseTableResult,
+  UseTableOptions,
+  UpdateSearch,
 };
 
 export default TableComponent;

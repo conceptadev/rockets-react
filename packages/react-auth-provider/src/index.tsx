@@ -18,6 +18,9 @@ import {
 
 const AuthContext = createContext<AuthProviderTypes | null>(null);
 
+/**
+ * Custom hook that wraps the implementation of the Auth context.
+ */
 const useAuth = () => useContext<AuthProviderTypes>(AuthContext);
 
 const AuthProvider = ({
@@ -67,8 +70,6 @@ const AuthProvider = ({
   const doLogout = async () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    localStorage.removeItem('filterSettings');
-    localStorage.removeItem('tableSettings');
   };
 
   return (
@@ -88,4 +89,10 @@ const AuthProvider = ({
   );
 };
 
-export { LoginParams, useAuth, AuthProvider };
+export {
+  LoginParams,
+  useAuth,
+  AuthProvider,
+  AuthProviderTypes,
+  AuthProviderProps,
+};

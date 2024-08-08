@@ -20,6 +20,13 @@ import CrudRoot from './CrudRoot';
 import { FilterDetails } from '../../components/submodules/Filter';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 
+import {
+  useCrudRoot,
+  CrudContext,
+  CrudContextProps,
+  FilterValues,
+} from './useCrudRoot';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type SelectedRow = Record<string, unknown> | null;
@@ -191,5 +198,7 @@ const CrudModule = (props: ModuleProps) => {
     </CrudRoot>
   );
 };
+
+export { useCrudRoot, CrudContext, CrudContextProps, FilterValues };
 
 export default CrudModule;

@@ -4,7 +4,7 @@ import { useAppBarRoot } from './hooks/useAppBarRoot';
 
 /**
  * The list of the app routes rendered as a vertical navigation list on the Drawer component.
- * 
+ *
  * @see {@link AppBar}
  * @see {@link Drawer}
  * @param props - {@link DrawerProps}
