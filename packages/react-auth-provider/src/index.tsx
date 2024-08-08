@@ -89,4 +89,10 @@ const AuthProvider = ({
   );
 };
 
-export { LoginParams, useAuth, AuthProvider };
+export {
+  LoginParams,
+  useAuth,
+  AuthProvider,
+  AuthProviderTypes,
+  AuthProviderProps,
+};

@@ -3,7 +3,7 @@
 import React, { createContext, useContext } from 'react';
 import { HeaderProps, RowProps, TableQueryStateProps } from '../types';
 
-type TableContextProps = {
+export type TableContextProps = {
   /**
    * Array of objects, where each contain the data displayed in Table rows.
    */

@@ -18,7 +18,7 @@ import {
 import { getSearchParams } from '../../utils/http';
 import { DataProviderRequestOptions } from '@concepta/react-data-provider/dist/interfaces';
 
-interface UseTableOptions {
+export interface UseTableOptions {
   /**
    * Quantity of items displayed in a Table page.
    */

@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react';
 
-type AppBarContextProps = {
+export type AppBarContextProps = {
   /**
    * Boolean that indicates if the AppBar Drawer is open on a mobile screen.
    */
