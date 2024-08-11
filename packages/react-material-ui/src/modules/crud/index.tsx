@@ -71,6 +71,7 @@ export interface ModuleProps {
   filterCacheKey?: string;
   tableCacheKey?: string;
   cacheApiPath?: string;
+  enableTableRowSelection?: boolean;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -166,6 +167,7 @@ const CrudModule = (props: ModuleProps) => {
           filterCacheKey={props.filterCacheKey}
           tableCacheKey={props.tableCacheKey}
           cacheApiPath={props.cacheApiPath}
+          hasCheckboxes={props.enableTableRowSelection}
           {...useTableReturn}
           {...tableSubmoduleProps}
         />

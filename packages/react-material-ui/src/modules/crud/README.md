@@ -380,3 +380,31 @@ The Filter and Table features inside the module can be saved in localStorage by 
 The `filterCacheKey` and `tableCacheKey` are optional props that identify the specific page or context where the CrudModule is being rendered and will serve to fetch the right storage or cache entry when the page is reloaded. The default for those props is the current route path.
 
 `cacheApiPath` identifies the API route that will save the filter and table settings as cache. This is optional, and not passing it disables the API integration and the settings are saved only on localStorage.
+
+## Rendering a checkbox column
+
+The Tbale component has a feature for selecting one or all rows displayed in the page, but this is not enabled by default. The `enableTableRowSelection` is used for this purpose.
+
+```jsx
+<CrudModule
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+    filters: [
+      {
+        id: 'email',
+        label: 'Email',
+        type: 'text',
+        operator: 'contL',
+        columns: 3,
+      },
+    ],
+  }}
+  enableRowSelection
+/>
+```
+
+With that, checkbox inputs are rendered in the first column (left to right) of the Table and batch operations can be performed in the rows.
