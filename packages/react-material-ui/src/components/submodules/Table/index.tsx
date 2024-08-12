@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 
 import type {
   CustomTableCell,
@@ -111,6 +111,9 @@ export interface TableSubmoduleProps {
   tableCacheKey?: string;
   cacheApiPath?: string;
   hasCheckboxes?: boolean;
+  addButtonStartIcon?: ReactNode;
+  addButtonEndIcon?: ReactNode;
+  addButtonContent?: ReactNode;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -292,14 +295,15 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
               <Button
                 variant="contained"
                 onClick={props.onAddNew}
-                startIcon={<AddIcon />}
+                startIcon={props.addButtonStartIcon || <AddIcon />}
+                endIcon={props.addButtonEndIcon}
                 sx={{
                   textTransform: 'capitalize',
                   textWrap: 'nowrap',
                   marginLeft: 2,
                 }}
               >
-                Add new
+                {props.addButtonContent || 'Add new'}
               </Button>
             )}
           </Box>
