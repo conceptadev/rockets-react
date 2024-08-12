@@ -114,6 +114,7 @@ export interface TableSubmoduleProps {
   addButtonStartIcon?: ReactNode;
   addButtonEndIcon?: ReactNode;
   addButtonContent?: ReactNode;
+  additionalFilterRowContent?: ReactNode;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -291,21 +292,24 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                 cacheApiPath={props.cacheApiPath}
               />
             )}
-            {!props.hideAddButton && (
-              <Button
-                variant="contained"
-                onClick={props.onAddNew}
-                startIcon={props.addButtonStartIcon || <AddIcon />}
-                endIcon={props.addButtonEndIcon}
-                sx={{
-                  textTransform: 'capitalize',
-                  textWrap: 'nowrap',
-                  marginLeft: 2,
-                }}
-              >
-                {props.addButtonContent || 'Add new'}
-              </Button>
-            )}
+            <Box display="flex" alignItems="center" justifyContent="flex-end">
+              {props.additionalFilterRowContent}
+              {!props.hideAddButton && (
+                <Button
+                  variant="contained"
+                  onClick={props.onAddNew}
+                  startIcon={props.addButtonStartIcon || <AddIcon />}
+                  endIcon={props.addButtonEndIcon}
+                  sx={{
+                    textTransform: 'capitalize',
+                    textWrap: 'nowrap',
+                    marginLeft: 2,
+                  }}
+                >
+                  {props.addButtonContent || 'Add new'}
+                </Button>
+              )}
+            </Box>
           </Box>
         </Box>
 

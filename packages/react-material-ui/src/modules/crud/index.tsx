@@ -75,6 +75,7 @@ export interface ModuleProps {
   addButtonStartIcon?: ReactNode;
   addButtonEndIcon?: ReactNode;
   addButtonContent?: ReactNode;
+  additionalFilterRowContent?: ReactNode;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -174,6 +175,7 @@ const CrudModule = (props: ModuleProps) => {
           addButtonStartIcon={props.addButtonStartIcon}
           addButtonEndIcon={props.addButtonEndIcon}
           addButtonContent={props.addButtonContent}
+          additionalFilterRowContent={props.additionalFilterRowContent}
           {...useTableReturn}
           {...tableSubmoduleProps}
         />
