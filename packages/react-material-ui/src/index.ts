@@ -6,6 +6,7 @@ export { AppBarRoot, AppBarRootProps } from './components/AppBar/AppBarRoot';
 export { AppBarDrawer } from './components/AppBar/AppBarDrawer';
 export { AppBarMain } from './components/AppBar/AppBarMain';
 export { AppBarNav } from './components/AppBar/AppBarNav';
+export * from './components/AppBar/hooks';
 
 export { Dialog, DialogProps } from './components/Dialog';
 
@@ -32,9 +33,23 @@ export { SideModal, SideModalProps } from './components/SideModal';
 export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
 
-import Table from './components/Table';
+import Table, {
+  useTable,
+  UseTableOptions,
+  UseTableResult,
+  UseTableProps,
+  UpdateSearch,
+} from './components/Table';
 export * from './components/Table/utils';
-export { Table };
+export * from './components/Table/hooks';
+export {
+  Table,
+  useTable,
+  UseTableOptions,
+  UseTableResult,
+  UseTableProps,
+  UpdateSearch,
+};
 
 export { default as Text } from './components/Text';
 export { TextField, TextFieldProps } from './components/TextField';
