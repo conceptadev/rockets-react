@@ -13,7 +13,11 @@ export { Drawer, DrawerProps, DrawerItemProps } from './components/Drawer';
 
 export { Dropdown, DropdownItem, DropdownProps } from './components/Dropdown';
 
-export { OrderableDropDown, ListItem } from './components/OrderableDropDown';
+export {
+  OrderableDropDown,
+  OrderableDropDownProps,
+  ListItem,
+} from './components/OrderableDropDown';
 
 export { default as FormTemplate } from './components/FormTemplate';
 

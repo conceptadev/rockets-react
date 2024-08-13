@@ -1,1 +1,5 @@
-export { OrderableDropDown, ListItem } from './OrderableDropDown';
+export {
+  OrderableDropDown,
+  OrderableDropDownProps,
+  ListItem,
+} from './OrderableDropDown';
