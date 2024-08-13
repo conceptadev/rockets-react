@@ -107,8 +107,9 @@ export interface TableSubmoduleProps {
   paginationStyle?: PaginationStyle;
   allowModalPreview?: boolean;
   mobileModalTitleSrc?: string;
-  filterSettingsId?: string;
-  filterSettingsCacheUri?: string;
+  filterCacheKey?: string;
+  tableCacheKey?: string;
+  cacheApiPath?: string;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -264,8 +265,8 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         >
           {filters && (
             <FilterSubmodule
-              settingsId={props.filterSettingsId}
-              settingsCacheUri={props.filterSettingsCacheUri}
+              orderableListCacheKey={props.filterCacheKey}
+              cacheApiPath={props.cacheApiPath}
             />
           )}
           <Box
@@ -279,7 +280,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             }}
           >
             {props.reordable !== false && (
-              <Table.ColumnOrderable hasAllOption={props.hasAllOption} />
+              <Table.ColumnOrderable
+                hasAllOption={props.hasAllOption}
+                orderableListCacheKey={props.tableCacheKey}
+                cacheApiPath={props.cacheApiPath}
+              />
             )}
             {!props.hideAddButton && (
               <Button

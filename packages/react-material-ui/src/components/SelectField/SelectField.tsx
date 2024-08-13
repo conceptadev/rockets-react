@@ -11,7 +11,7 @@ import {
   SelectProps,
 } from '@mui/material';
 
-import FormFieldSkeleton from '../../components/FormFieldSkeleton';
+import { FormFieldSkeleton } from '../../components/FormFieldSkeleton';
 
 export const allOption: SelectOption = {
   value: 'all',

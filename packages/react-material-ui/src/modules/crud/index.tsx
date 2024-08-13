@@ -20,6 +20,13 @@ import CrudRoot from './CrudRoot';
 import { FilterDetails } from '../../components/submodules/Filter';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 
+import {
+  useCrudRoot,
+  CrudContext,
+  CrudContextProps,
+  FilterValues,
+} from './useCrudRoot';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type SelectedRow = Record<string, unknown> | null;
@@ -61,8 +68,9 @@ export interface ModuleProps {
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
-  filterSettingsId?: string;
-  filterSettingsCacheUri?: string;
+  filterCacheKey?: string;
+  tableCacheKey?: string;
+  cacheApiPath?: string;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -155,8 +163,9 @@ const CrudModule = (props: ModuleProps) => {
           hideDetailsButton={!props.detailsFormProps}
           filterCallback={props.filterCallback}
           externalSearch={props.externalSearch}
-          filterSettingsId={props.filterSettingsId}
-          filterSettingsCacheUri={props.filterSettingsCacheUri}
+          filterCacheKey={props.filterCacheKey}
+          tableCacheKey={props.tableCacheKey}
+          cacheApiPath={props.cacheApiPath}
           {...useTableReturn}
           {...tableSubmoduleProps}
         />
@@ -189,5 +198,7 @@ const CrudModule = (props: ModuleProps) => {
     </CrudRoot>
   );
 };
+
+export { useCrudRoot, CrudContext, CrudContextProps, FilterValues };
 
 export default CrudModule;

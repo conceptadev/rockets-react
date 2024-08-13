@@ -1,6 +1,6 @@
 {
   "entryPoints": ["packages/*"],
-  "plugin": ["typedoc-plugin-coverage"],
+  "plugin": ["typedoc-plugin-coverage", "typedoc-plugin-rename-defaults"],
   "exclude": [
     "packages/react-common",
     "packages/react-notification-provider",

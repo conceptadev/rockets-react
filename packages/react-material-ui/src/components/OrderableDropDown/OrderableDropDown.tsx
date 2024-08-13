@@ -34,6 +34,8 @@ import { CSS } from '@dnd-kit/utilities';
 import DragIndicator from '@mui/icons-material/DragIndicator';
 import SettingsSuggest from '@mui/icons-material/SettingsSuggest';
 
+import { useSettingsStorage } from '../../hooks/useSettingsStorage';
+
 /**
  * Interface for a single list item.
  */
@@ -53,6 +55,15 @@ export interface ListItem {
 /**
  * Props for the OrderableDropDown component.
  */
+type StorageSettings = {
+  key?: string;
+  type: string;
+  cacheApiPath?: string;
+  onListUpdateFromCache: (
+    data: Pick<ListItem, 'id' | 'label' | 'hide'>[],
+  ) => void;
+};
+
 export interface OrderableDropDownProps {
   /** List of items to be displayed in the dropdown */
   list: ListItem[];
@@ -66,6 +77,7 @@ export interface OrderableDropDownProps {
   setList: React.Dispatch<React.SetStateAction<ListItem[]>>;
   /** Optional text to display */
   text?: string;
+  storage?: StorageSettings;
 }
 
 interface SortableItemProps {
@@ -167,15 +179,28 @@ const SortableItem = (props: SortableItemProps) => {
  *
  * @param props - OrderableDropDown component props
  */
-export const OrderableDropDown = (props: OrderableDropDownProps) => {
-  const {
-    list,
-    setList,
-    minimumItems = 0,
-    hasAllOption = false,
-    icon = <SettingsSuggest />,
-    text,
-  } = props;
+
+export const OrderableDropDown = ({
+  list,
+  setList,
+  minimumItems = 0,
+  hasAllOption = false,
+  icon = <SettingsSuggest />,
+  text,
+  storage,
+}: OrderableDropDownProps) => {
+  const { updateSettings } = useSettingsStorage({
+    key: storage?.key,
+    type: storage?.type,
+    data: list.map((item) => ({
+      id: item.id,
+      label: item.label,
+      hide: Boolean(item.hide),
+    })),
+    cacheApiPath: storage?.cacheApiPath,
+    setListCallback: (callbackData) =>
+      storage?.onListUpdateFromCache(callbackData),
+  });
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -207,43 +232,47 @@ export const OrderableDropDown = (props: OrderableDropDownProps) => {
     // No options selected
     if (!checked.length) {
       setChecked(list.map((item) => item.id));
-      setList((prevState) =>
-        prevState.map((item) => ({
+      setList((prevState) => {
+        const newItems = prevState.map((item) => ({
           ...item,
           hide: false,
-        })),
-      );
+        }));
+        updateSettings(newItems);
+        return newItems;
+      });
       return;
     }
 
     // All options selected
     if (checked.length === list.length) {
-      setList((prevState) =>
-        prevState.map((item) => ({
+      setList((prevState) => {
+        const newItems = prevState.map((item) => ({
           ...item,
           hide: true,
-        })),
-      );
+        }));
+        updateSettings(newItems);
+        return newItems;
+      });
       setChecked([]);
     } else {
       // Some options selected
       setChecked((prevState) => {
         const newState = [...prevState];
-
         list.forEach((item) => {
           if (!prevState.includes(item.id)) {
             newState.push(item.id);
           }
         });
-
         return newState;
       });
-      setList((prevState) =>
-        prevState.map((item) => ({
+      setList((prevState) => {
+        const newItems = prevState.map((item) => ({
           ...item,
           hide: false,
-        })),
-      );
+        }));
+        updateSettings(newItems);
+        return newItems;
+      });
     }
   };
 
@@ -257,8 +286,8 @@ export const OrderableDropDown = (props: OrderableDropDownProps) => {
       newChecked.splice(currentIndex, 1);
     }
 
-    setList((prevState) =>
-      prevState.map((listItem) => {
+    setList((prevState) => {
+      const newItems = prevState.map((listItem) => {
         const isHidden = newChecked.includes(listItem.id) ? false : true;
 
         if (isHidden && listItem.resetFilters) {
@@ -269,8 +298,12 @@ export const OrderableDropDown = (props: OrderableDropDownProps) => {
           ...listItem,
           hide: isHidden,
         };
-      }),
-    );
+      });
+
+      updateSettings(newItems);
+
+      return newItems;
+    });
 
     setChecked(newChecked);
   };
@@ -281,8 +314,10 @@ export const OrderableDropDown = (props: OrderableDropDownProps) => {
     if (active.id !== over?.id) {
       const oldIndex = list.findIndex((item) => item.id === active.id);
       const newIndex = list.findIndex((item) => item.id === over?.id);
+      const newItems = arrayMove(list, oldIndex, newIndex);
 
-      setList(arrayMove(list, oldIndex, newIndex));
+      updateSettings(newItems);
+      setList(newItems);
     }
   };
 

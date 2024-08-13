@@ -6,6 +6,7 @@ export { AppBarRoot, AppBarRootProps } from './components/AppBar/AppBarRoot';
 export { AppBarDrawer } from './components/AppBar/AppBarDrawer';
 export { AppBarMain } from './components/AppBar/AppBarMain';
 export { AppBarNav } from './components/AppBar/AppBarNav';
+export * from './components/AppBar/hooks';
 
 export { Dialog, DialogProps } from './components/Dialog';
 
@@ -29,15 +30,29 @@ export { default as Link } from './components/Link';
 
 export { Navbar, NavbarProps } from './components/Navbar';
 
-export { default as Notifications } from './components/Notifications';
+export { Notifications, NotificationsProps } from './components/Notifications';
 export { default as RadioGroup } from './components/RadioGroup';
 export { SideModal, SideModalProps } from './components/SideModal';
 export { default as Select } from './components/Select';
 export { default as Switch } from './components/Switch';
 
-import Table from './components/Table';
+import Table, {
+  useTable,
+  UseTableOptions,
+  UseTableResult,
+  UseTableProps,
+  UpdateSearch,
+} from './components/Table';
 export * from './components/Table/utils';
-export { Table };
+export * from './components/Table/hooks';
+export {
+  Table,
+  useTable,
+  UseTableOptions,
+  UseTableResult,
+  UseTableProps,
+  UpdateSearch,
+};
 
 export { default as Text } from './components/Text';
 export { TextField, TextFieldProps } from './components/TextField';
@@ -54,10 +69,10 @@ export {
 } from './components/Filter';
 export { SchemaForm, SchemaFormProps } from './components/SchemaForm';
 
-import FormFieldSkeleton from './components/FormFieldSkeleton';
-export { FormFieldSkeleton };
-
-export { default as ComposedTable } from './components/ComposedTable';
+export {
+  FormFieldSkeleton,
+  FormFieldSkeletonProps,
+} from './components/FormFieldSkeleton';
 
 export { default as AuthModule } from './modules/auth';
 export { default as CrudModule } from './modules/crud';

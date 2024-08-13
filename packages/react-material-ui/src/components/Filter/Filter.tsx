@@ -4,8 +4,6 @@ import React, { ReactNode, useState } from 'react';
 import Box from '@mui/material/Box';
 import Grid, { GridProps } from '@mui/material/Grid';
 import FilterAlt from '@mui/icons-material/FilterAlt';
-import { useAuth } from '@concepta/react-auth-provider';
-import { usePathname } from 'next/navigation';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
@@ -19,7 +17,6 @@ import { SearchFieldProps } from '../../components/SearchField/SearchField';
 import { OrderableDropDown, ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
-import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
 /**
  * Type of filter variants available.
@@ -200,16 +197,14 @@ export type FilterProps = {
   }[];
   /** Additional actions to render */
   complementaryActions?: ReactNode | ((filters: ListItem[]) => ReactNode);
-  /** Settings identifier */
-  settingsId?: string;
-  settingsCacheUri?: string;
+  /** Identifier for filter settings on localStorage */
+  orderableListCacheKey?: string;
+  /** Identifier for filter settings api endpoint path */
+  cacheApiPath?: string;
 } & GridProps;
 
 export const Filter = (props: FilterProps) => {
   const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
-
-  const auth = useAuth();
-  const pathname = usePathname();
 
   const resetFilters = (item) => () => {
     if (item && item?.onDebouncedSearchChange) {
@@ -229,55 +224,21 @@ export const Filter = (props: FilterProps) => {
     })),
   );
 
-  const { setSettings } = useSettingsStorage({
-    key: props.settingsId || pathname,
-    type: 'filter',
-    assignee: {
-      id: (auth?.user as { id: string })?.id ?? '',
-    },
-    data: filters.map((header) => ({
-      id: header.id,
-      hide: Boolean(header.hide),
-    })),
-    cacheApiUri: props.settingsCacheUri,
-    setListCallback: (settings) => {
-      const originalFilters = [...filters];
-      const newFiltersOrder = [];
+  const handleListUpdateFromCache = (cacheList: ListItem[]) => {
+    const newItems = cacheList.map((item) => {
+      const filterItemIndex = filters.findIndex(
+        (filter) => filter.id === item.id,
+      );
+      const filterItem = filters[filterItemIndex];
 
-      settings.forEach((item: ListItem) => {
-        const filterItemIndex = originalFilters.findIndex(
-          (filter) => filter?.id === item.id,
-        );
-        const filterItem = originalFilters[filterItemIndex];
+      return {
+        ...item,
+        ...filterItem,
+        resetFilters: resetFilters(filterItem),
+      };
+    });
 
-        if (filterItem) {
-          newFiltersOrder.push({
-            ...item,
-            ...filterItem,
-            resetFilters: resetFilters(filterItem),
-          });
-          originalFilters[filterItemIndex] = null;
-        }
-      });
-
-      originalFilters.forEach((filter) => {
-        if (filter) {
-          newFiltersOrder.push({
-            id: filter.id,
-            label: filter.label,
-            hide: filter.hide ?? false,
-            resetFilters: resetFilters(filter),
-          });
-        }
-      });
-
-      setFilterOrder(newFiltersOrder);
-    },
-  });
-
-  const handleFilterOrderChange = (list: ListItem[]) => {
-    setFilterOrder(list);
-    setSettings(list);
+    setFilterOrder(newItems);
   };
 
   return (
@@ -344,7 +305,13 @@ export const Filter = (props: FilterProps) => {
             minimumItems={minimumFilters}
             icon={<FilterAlt />}
             list={filterOrder}
-            setList={handleFilterOrderChange}
+            setList={setFilterOrder}
+            storage={{
+              type: 'filter',
+              key: props.orderableListCacheKey,
+              cacheApiPath: props.cacheApiPath,
+              onListUpdateFromCache: handleListUpdateFromCache,
+            }}
           />
         ) : null}
         {typeof props.complementaryActions === 'function'
