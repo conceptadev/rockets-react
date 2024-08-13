@@ -383,7 +383,7 @@ The `filterCacheKey` and `tableCacheKey` are optional props that identify the sp
 
 ## Rendering a checkbox column
 
-The Tbale component has a feature for selecting one or all rows displayed in the page, but this is not enabled by default. The `enableTableRowSelection` is used for this purpose.
+The Table component has a feature for selecting one or all rows displayed in the page, but this is not enabled by default. The `enableTableRowSelection` is used for this purpose.
 
 ```jsx
 <CrudModule
@@ -407,4 +407,30 @@ The Tbale component has a feature for selecting one or all rows displayed in the
 />
 ```
 
-With that, checkbox inputs are rendered in the first column (left to right) of the Table and batch operations can be performed in the rows.
+With that, checkbox cells are rendered in the first column (left to right) of the Table and batch operations can be performed in the rows.
+
+## Rendering other nodes next to default Add button
+
+Other components can be rendered to the left of the Add button by passing them via the `additionalFilterRowContent` prop, as follows:
+
+```jsx
+<CrudModule
+  tableProps={{
+    tableSchema: [
+      { id: 'id', label: 'ID' },
+      { id: 'email', label: 'Email' },
+      { id: 'active', label: 'Status' },
+    ],
+    filters: [
+      {
+        id: 'email',
+        label: 'Email',
+        type: 'text',
+        operator: 'contL',
+        columns: 3,
+      },
+    ],
+  }}
+  additionalFilterRowContent={<button>Custom Button</button>}
+/>
+```
