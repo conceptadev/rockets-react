@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Checkbox from '../src/components/Checkbox/Checkbox';
+import { Checkbox } from '../src/components/Checkbox/Checkbox';
 
 describe('Checkbox Component', () => {
   test('should render correctly', () => {

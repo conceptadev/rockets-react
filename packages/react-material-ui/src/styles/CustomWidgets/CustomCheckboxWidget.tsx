@@ -1,5 +1,5 @@
 import React from 'react';
-import Checkbox from '../../components/Checkbox';
+import { Checkbox } from '../../components/Checkbox';
 import { WidgetProps } from '@rjsf/utils';
 
 const CustomCheckboxWidget = (props: WidgetProps) => (

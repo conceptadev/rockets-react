@@ -10,6 +10,7 @@ const meta = {
   argTypes: {
     label: { control: 'text' },
     onChange: { action: 'changed' },
+    textProps: { control: 'object' },
   },
 } satisfies Meta<typeof Switch>;
 
