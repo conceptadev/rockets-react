@@ -34,7 +34,7 @@ export { Notifications, NotificationsProps } from './components/Notifications';
 export { default as RadioGroup } from './components/RadioGroup';
 export { SideModal, SideModalProps } from './components/SideModal';
 export { default as Select } from './components/Select';
-export { default as Switch } from './components/Switch';
+export { Switch, SwitchProps } from './components/Switch';
 
 import Table, {
   useTable,
