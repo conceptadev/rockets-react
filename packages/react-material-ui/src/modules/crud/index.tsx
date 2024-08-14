@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
@@ -51,6 +51,8 @@ interface FormProps {
   formUiSchema?: UiSchema;
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
+  hideCancelButton?: boolean;
+  customFooterContent?: ReactNode;
   customValidate?: CustomValidator;
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
@@ -172,7 +174,9 @@ const CrudModule = (props: ModuleProps) => {
   // we remove it from `formProps` and store it separately.
   const formOnSuccess = formProps?.onSuccess;
   const formOnDeleteSuccess = formProps?.onDeleteSuccess;
+
   const enhancedFormProps = { ...formProps };
+
   delete enhancedFormProps.onSuccess;
   delete enhancedFormProps.onDeleteSuccess;
 

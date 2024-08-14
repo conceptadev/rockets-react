@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
@@ -45,6 +45,8 @@ type ModalFormSubmoduleProps = PropsWithChildren<
   formData?: Record<string, unknown> | null;
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
+  hideCancelButton?: boolean;
+  customFooterContent?: ReactNode;
   onClose?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
@@ -184,6 +186,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
           formData={isLoading ? null : formData}
           widgets={_widgets}
           customValidate={customValidate}
+          readonly={viewMode === 'details'}
           {...otherProps}
         >
           <>
@@ -228,12 +231,13 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                 mt={2}
                 gap={2}
               >
-                {viewMode === 'creation' && (
+                {props.customFooterContent}
+                {viewMode === 'creation' && !props.hideCancelButton && (
                   <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
                     {cancelButtonTitle || 'Cancel'}
                   </Button>
                 )}
-                {viewMode === 'edit' && (
+                {viewMode === 'edit' && !props.hideCancelButton && (
                   <Button
                     variant="contained"
                     color="error"
@@ -247,7 +251,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                     )}
                   </Button>
                 )}
-                {viewMode === 'details' && (
+                {viewMode === 'details' && !props.hideCancelButton && (
                   <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
                     {cancelButtonTitle || 'Close'}
                   </Button>

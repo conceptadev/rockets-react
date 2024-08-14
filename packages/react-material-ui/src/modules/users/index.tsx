@@ -22,30 +22,44 @@ const UsersModule = ({
   onDeleteError,
   ...props
 }: UsersModuleProps) => {
+  const tableProps = {
+    tableSchema: headers,
+    reordable: true,
+    filters: DEFAULT_FILTERS,
+    ...props.tableProps,
+  };
+  const createFormProps = {
+    ...CREATE_EDIT_FORM,
+    onSuccess: onCreateSuccess,
+    onError: onCreateError,
+    ...props.createFormProps,
+  };
+  const editFormProps = {
+    ...CREATE_EDIT_FORM,
+    onError: onEditError,
+    onSuccess: onEditSuccess,
+    onDeleteSuccess: onDeleteSuccess,
+    onDeleteError: onDeleteError,
+    ...props.editFormProps,
+  };
+  const detailsFormProps = { ...CREATE_EDIT_FORM, ...props.detailsFormProps };
+
+  const enhancedProps = { ...props };
+  delete enhancedProps.tableProps;
+  delete enhancedProps.createFormProps;
+  delete enhancedProps.editFormProps;
+  delete enhancedProps.detailsFormProps;
+
   return (
     <CrudModule
       title="Users"
       resource="user"
       hideDeleteButton
-      tableProps={{
-        tableSchema: headers,
-        reordable: true,
-        filters: DEFAULT_FILTERS,
-      }}
-      createFormProps={{
-        ...CREATE_EDIT_FORM,
-        onSuccess: onCreateSuccess,
-        onError: onCreateError,
-      }}
-      editFormProps={{
-        ...CREATE_EDIT_FORM,
-        onError: onEditError,
-        onSuccess: onEditSuccess,
-        onDeleteSuccess: onDeleteSuccess,
-        onDeleteError: onDeleteError,
-      }}
-      detailsFormProps={CREATE_EDIT_FORM}
-      {...props}
+      tableProps={tableProps}
+      createFormProps={createFormProps}
+      editFormProps={editFormProps}
+      detailsFormProps={detailsFormProps}
+      {...enhancedProps}
     />
   );
 };

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
@@ -45,6 +45,8 @@ type DrawerFormSubmoduleProps = PropsWithChildren<
   formData?: Record<string, unknown> | null;
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
+  hideCancelButton?: boolean;
+  customFooterContent?: ReactNode;
   onClose?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
@@ -204,6 +206,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
           formData={formData}
           widgets={_widgets}
           customValidate={customValidate}
+          readonly={viewMode === 'details'}
           {...otherProps}
         >
           {children}
@@ -239,12 +242,13 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             </Box>
           )}
           <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-            {viewMode === 'creation' && (
+            {props.customFooterContent}
+            {viewMode === 'creation' && !props.hideCancelButton && (
               <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
                 {cancelButtonTitle || 'Cancel'}
               </Button>
             )}
-            {viewMode === 'edit' && (
+            {viewMode === 'edit' && !props.hideCancelButton && (
               <Button
                 variant="contained"
                 color="error"
@@ -258,7 +262,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
                 )}
               </Button>
             )}
-            {viewMode === 'details' && (
+            {viewMode === 'details' && !props.hideCancelButton && (
               <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
                 {cancelButtonTitle || 'Close'}
               </Button>
