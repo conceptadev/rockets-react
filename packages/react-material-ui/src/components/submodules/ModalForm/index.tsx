@@ -12,11 +12,9 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import {
-  Close as CloseIcon,
-  ChevronLeft,
-  ChevronRight,
-} from '@mui/icons-material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
