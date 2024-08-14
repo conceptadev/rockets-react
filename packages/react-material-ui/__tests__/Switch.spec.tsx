@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Switch from '../src/components/Switch/Switch';
+import { Switch } from '../src/components/Switch/Switch';
 
 describe('Switch Component', () => {
   it('should render correctly', () => {
