@@ -157,8 +157,12 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
         mt={2}
         ml={1}
       >
-        <Typography variant="h5" sx={{ marginLeft: 3 }}>
-          {viewMode === 'creation' ? 'Add Data' : 'Edit Data'}
+        <Typography variant="h5" sx={{ marginLeft: 3, fontSize: '20px' }}>
+          {viewMode === 'creation'
+            ? 'Add Data'
+            : viewMode === 'edit'
+            ? 'Edit Data'
+            : 'View Data'}
         </Typography>
         <IconButton
           aria-label="close"
@@ -264,6 +268,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
                 type="submit"
                 variant="contained"
                 disabled={isLoadingCreation || isLoadingEdit || isLoadingDelete}
+                onClick={() => editItem(formData)}
                 sx={{ flex: 1 }}
               >
                 {isLoadingCreation || isLoadingEdit ? (

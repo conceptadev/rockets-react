@@ -150,7 +150,11 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
   return (
     <Dialog open={viewMode !== null} maxWidth="md" fullWidth onClose={onClose}>
       <DialogTitle>
-        {viewMode === 'creation' ? 'Add Data' : 'Edit Data'}
+        {viewMode === 'creation'
+          ? 'Add Data'
+          : viewMode === 'edit'
+          ? 'Edit Data'
+          : 'View Data'}
       </DialogTitle>
       <IconButton
         aria-label="close"
@@ -255,6 +259,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                     disabled={
                       isLoadingCreation || isLoadingEdit || isLoadingDelete
                     }
+                    onClick={() => editItem(formData)}
                     sx={{ flex: 1 }}
                   >
                     {isLoadingCreation || isLoadingEdit ? (
