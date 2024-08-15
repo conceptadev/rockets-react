@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
-import FormLabel from '../src/components/FormLabel';
+import { FormLabel } from '../src/components/FormLabel';
 
 describe('FormLabel Component', () => {
   it('should render correctly', () => {

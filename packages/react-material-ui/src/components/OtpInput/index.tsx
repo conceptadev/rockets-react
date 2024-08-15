@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import type { BoxProps as MuiBoxProps } from '@mui/material/Box';
 import type { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
 import { TextField } from '../../components/TextField';
-import FormLabel from '../../components/FormLabel';
+import { FormLabel } from '../../components/FormLabel';
 import { TypographyProps } from '@mui/material';
 
 const NUMBER_REGEX = /^\d$/;

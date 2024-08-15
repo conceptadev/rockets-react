@@ -81,3 +81,5 @@ export { default as UsersModule } from './modules/users';
 export { default as OtpInput } from './components/OtpInput';
 
 export { default as Breadcrumbs } from './components/Breadcrumbs';
+
+export { FormLabel, FormLabelProps } from './components/FormLabel';

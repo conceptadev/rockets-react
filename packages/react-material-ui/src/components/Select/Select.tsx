@@ -7,7 +7,7 @@ import {
   TextField,
   TextFieldProps,
 } from '@mui/material';
-import FormLabel from '../FormLabel';
+import { FormLabel } from '../FormLabel';
 import { TextProps } from 'interfaces';
 
 export type SelectOptions = {
