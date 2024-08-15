@@ -11,7 +11,7 @@ import {
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
-import FormLabel from '../FormLabel';
+import { FormLabel } from '../FormLabel';
 import { getPasswordMatchInfo, getPasswordScore } from './utils';
 import {
   PASSWORD_DEFAULT_RULES,
