@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 
@@ -71,6 +71,11 @@ export interface ModuleProps {
   filterCacheKey?: string;
   tableCacheKey?: string;
   cacheApiPath?: string;
+  enableTableRowSelection?: boolean;
+  addButtonStartIcon?: ReactNode;
+  addButtonEndIcon?: ReactNode;
+  addButtonContent?: ReactNode;
+  additionalFilterRowContent?: ReactNode;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -166,6 +171,11 @@ const CrudModule = (props: ModuleProps) => {
           filterCacheKey={props.filterCacheKey}
           tableCacheKey={props.tableCacheKey}
           cacheApiPath={props.cacheApiPath}
+          hasCheckboxes={props.enableTableRowSelection}
+          addButtonStartIcon={props.addButtonStartIcon}
+          addButtonEndIcon={props.addButtonEndIcon}
+          addButtonContent={props.addButtonContent}
+          additionalFilterRowContent={props.additionalFilterRowContent}
           {...useTableReturn}
           {...tableSubmoduleProps}
         />

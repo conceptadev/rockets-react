@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ReactNode } from 'react';
 
 import type {
   CustomTableCell,
@@ -28,13 +28,13 @@ import AddIcon from '@mui/icons-material/Add';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import get from 'lodash/get';
 
-import Table from '../../../components/Table';
+import Table from '../../Table';
 import { generateTableTheme } from './constants';
-import { TableRootProps } from '../../../components/Table/TableRoot';
-import { TableProps } from '../../../components/Table/Table';
-import FilterSubmodule from '../../../components/submodules/Filter';
-import { Search } from '../../../components/Table/types';
-import { UpdateSearch } from '../../../components/Table/useTable';
+import { TableRootProps } from '../../Table/TableRoot';
+import { TableProps } from '../../Table/Table';
+import FilterSubmodule from '../../submodules/Filter';
+import { Search } from '../../Table/types';
+import { UpdateSearch } from '../../Table/useTable';
 import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
@@ -110,6 +110,11 @@ export interface TableSubmoduleProps {
   filterCacheKey?: string;
   tableCacheKey?: string;
   cacheApiPath?: string;
+  hasCheckboxes?: boolean;
+  addButtonStartIcon?: ReactNode;
+  addButtonEndIcon?: ReactNode;
+  addButtonContent?: ReactNode;
+  additionalFilterRowContent?: ReactNode;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -269,6 +274,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
               cacheApiPath={props.cacheApiPath}
             />
           )}
+
           <Box
             sx={{
               display: 'flex',
@@ -286,20 +292,24 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                 cacheApiPath={props.cacheApiPath}
               />
             )}
-            {!props.hideAddButton && (
-              <Button
-                variant="contained"
-                onClick={props.onAddNew}
-                startIcon={<AddIcon />}
-                sx={{
-                  textTransform: 'capitalize',
-                  textWrap: 'nowrap',
-                  marginLeft: 2,
-                }}
-              >
-                Add new
-              </Button>
-            )}
+            <Box display="flex" alignItems="center" justifyContent="flex-end">
+              {props.additionalFilterRowContent}
+              {!props.hideAddButton && (
+                <Button
+                  variant="contained"
+                  onClick={props.onAddNew}
+                  startIcon={props.addButtonStartIcon || <AddIcon />}
+                  endIcon={props.addButtonEndIcon}
+                  sx={{
+                    textTransform: 'capitalize',
+                    textWrap: 'nowrap',
+                    marginLeft: 2,
+                  }}
+                >
+                  {props.addButtonContent || 'Add new'}
+                </Button>
+              )}
+            </Box>
           </Box>
         </Box>
 
@@ -312,6 +322,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
           >
             <TableHead>
               <TableRow sx={tableTheme.tableHeaderRow}>
+                {props.hasCheckboxes && <Table.HeaderCheckbox />}
                 <Table.HeaderCells
                   renderCell={(cell: HeaderProps) => (
                     <Table.HeaderCell
@@ -337,17 +348,20 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                 </TableRow>
               )}
               <Table.BodyRows
-                renderRow={(row) => (
+                renderRow={(row, labelId) => (
                   <Table.BodyRow
+                    key={row.id}
                     row={row}
-                    hasCheckboxes={false}
-                    hover={false}
+                    hasCheckboxes={props.hasCheckboxes}
                     sx={tableTheme.tableBodyRow}
                     {...(isMobile &&
                       props.allowModalPreview && {
                         onClick: () => setMobileCurrentRow(row),
                       })}
                   >
+                    {props.hasCheckboxes && (
+                      <Table.BodyCheckboxes row={row} labelId={labelId} />
+                    )}
                     <Table.BodyCell row={row} sx={tableTheme.tableBodyCell} />
                   </Table.BodyRow>
                 )}
@@ -355,6 +369,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             </TableBody>
           </Table.Table>
         </TableContainer>
+
         {props.paginationStyle === 'numeric' ? (
           <Box mt={2}>
             <Table.PaginationNumbers />
@@ -387,6 +402,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             })}
           />
         )}
+
         {props.allowModalPreview && isMobile && (
           <MobileRowModal
             currentRow={mobileCurrentRow}
