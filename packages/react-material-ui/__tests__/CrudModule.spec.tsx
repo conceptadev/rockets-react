@@ -237,7 +237,7 @@ describe('CrudModule Component', () => {
     }
   });
 
-  it('should show "save" and "close" button on create form', async () => {
+  it('should show "save" and "cancel" button on create form', async () => {
     const { getByText, findByRole } = render(<CrudModule {...props} />);
 
     const addButton = getByText('Add new');
@@ -246,7 +246,7 @@ describe('CrudModule Component', () => {
     await findByRole('presentation');
 
     const saveButton = getByText('Save');
-    const closeButton = getByText('Close');
+    const closeButton = getByText('Cancel');
 
     expect(saveButton).toBeInTheDocument();
     expect(closeButton).toBeInTheDocument();
@@ -304,7 +304,7 @@ describe('CrudModule Component', () => {
     await findByRole('presentation');
 
     const saveButton = getByText('Save');
-    const closeButton = getByText('Close');
+    const closeButton = getByText('Delete');
 
     expect(saveButton).toBeInTheDocument();
     expect(closeButton).toBeInTheDocument();

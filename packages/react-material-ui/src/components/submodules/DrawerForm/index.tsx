@@ -1,9 +1,19 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
 
-import { Box, Drawer, Button, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Drawer,
+  Button,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from '@mui/material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+import CloseIcon from '@mui/icons-material/Close';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
@@ -35,11 +45,22 @@ type DrawerFormSubmoduleProps = PropsWithChildren<
   formData?: Record<string, unknown> | null;
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
+  hideCancelButton?: boolean;
+  customFooterContent?: ReactNode;
   onClose?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
+  onDeleteSuccess?: (data: unknown) => void;
+  onDeleteError?: (error: unknown) => void;
+  onPrevious?: (data: unknown) => void;
+  onNext?: (data: unknown) => void;
+  isLoading?: boolean;
+  viewIndex?: number;
+  rowsPerPage?: number;
+  currentPage?: number;
+  pageCount?: number;
 };
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
@@ -57,9 +78,19 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     children,
     onSuccess,
     onError,
+    onDeleteSuccess,
+    onDeleteError,
+    onPrevious,
+    onNext,
+    isLoading,
+    viewIndex,
+    rowsPerPage,
+    currentPage,
+    pageCount,
     ...otherProps
   } = props;
-  const { post, patch } = useDataProvider();
+
+  const { post, patch, del } = useDataProvider();
 
   const { execute: createItem, isPending: isLoadingCreation } = useQuery(
     (data: Record<string, unknown>) =>
@@ -87,6 +118,18 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     },
   );
 
+  const { execute: deleteItem, isPending: isLoadingDelete } = useQuery(
+    (data: Record<string, unknown>) =>
+      del({
+        uri: `/${queryResource}/${data.id}`,
+      }),
+    false,
+    {
+      onSuccess: onDeleteSuccess,
+      onError: onDeleteError,
+    },
+  );
+
   const handleFormSubmit = async (
     values: IChangeEvent<Record<string, unknown>>,
   ) => {
@@ -108,7 +151,43 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
 
   return (
     <Drawer open={viewMode !== null} anchor="right">
-      <Box padding={4} mb={2}>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        gap={2}
+        mt={2}
+        ml={1}
+      >
+        <Typography variant="h5" sx={{ marginLeft: 3, fontSize: '20px' }}>
+          {viewMode === 'creation'
+            ? 'Add Data'
+            : viewMode === 'edit'
+            ? 'Edit Data'
+            : 'View Data'}
+        </Typography>
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: (theme) => theme.spacing(1),
+            top: (theme) => theme.spacing(1),
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </Box>
+      <Box
+        padding={4}
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <SchemaForm.Form
           schema={{
             ...formSchema,
@@ -118,46 +197,93 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
           }}
           uiSchema={{
             ...formUiSchema,
+            'ui:submitButtonOptions': { norender: true },
           }}
           validator={validator}
           onSubmit={handleFormSubmit}
           noHtml5Validate={true}
           showErrorList={false}
           formData={formData}
-          readonly={viewMode === 'details'}
           widgets={_widgets}
           customValidate={customValidate}
+          readonly={viewMode === 'details'}
           {...otherProps}
         >
-          <>
-            {children}
-            <Box
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mt={4}
-            >
-              {viewMode !== 'details' && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={isLoadingCreation || isLoadingEdit}
-                  sx={{ flex: 1, mr: 2 }}
-                >
-                  {isLoadingCreation || isLoadingEdit ? (
-                    <CircularProgress sx={{ color: 'white' }} size={24} />
-                  ) : (
-                    submitButtonTitle || 'Save'
-                  )}
-                </Button>
-              )}
+          {children}
+        </SchemaForm.Form>
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent={
+            viewMode === 'creation' ? 'flex-end' : 'space-between'
+          }
+        >
+          {viewMode !== 'creation' && (
+            <Box display="flex" alignItems="center" gap={2}>
+              <IconButton
+                onClick={() => onPrevious(formData)}
+                disabled={isLoading || (currentPage === 1 && viewIndex === 1)}
+              >
+                <ChevronLeft sx={{ color: '#333' }} />
+              </IconButton>
+              <Typography>
+                {isLoading ? '' : `Row ${viewIndex}/${rowsPerPage}`}
+              </Typography>
+              <IconButton
+                onClick={() => onNext(formData)}
+                disabled={
+                  isLoading ||
+                  (currentPage === pageCount && viewIndex === rowsPerPage)
+                }
+              >
+                <ChevronRight sx={{ color: '#333' }} />
+              </IconButton>
+            </Box>
+          )}
+          <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
+            {props.customFooterContent}
+            {viewMode === 'creation' && !props.hideCancelButton && (
+              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                {cancelButtonTitle || 'Cancel'}
+              </Button>
+            )}
+            {viewMode === 'edit' && !props.hideCancelButton && (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => deleteItem(formData)}
+                sx={{ flex: 1 }}
+              >
+                {isLoadingDelete ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  cancelButtonTitle || 'Delete'
+                )}
+              </Button>
+            )}
+            {viewMode === 'details' && !props.hideCancelButton && (
               <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
                 {cancelButtonTitle || 'Close'}
               </Button>
-            </Box>
-          </>
-        </SchemaForm.Form>
+            )}
+            {viewMode !== 'details' && (
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={isLoadingCreation || isLoadingEdit || isLoadingDelete}
+                onClick={() => editItem(formData)}
+                sx={{ flex: 1 }}
+              >
+                {isLoadingCreation || isLoadingEdit ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  submitButtonTitle || 'Save'
+                )}
+              </Button>
+            )}
+          </Box>
+        </Box>
       </Box>
     </Drawer>
   );
