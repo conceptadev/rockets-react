@@ -1,5 +1,5 @@
 export { Avatar, AvatarProps } from './components/Avatar';
-export { default as Checkbox } from './components/Checkbox';
+export { Checkbox, CheckboxProps } from './components/Checkbox';
 
 export { AppBar } from './components/AppBar';
 export { AppBarRoot, AppBarRootProps } from './components/AppBar/AppBarRoot';
