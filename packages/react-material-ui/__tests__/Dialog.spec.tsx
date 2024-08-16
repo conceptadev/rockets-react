@@ -16,9 +16,17 @@ describe('Dialog Component', () => {
     render(<Dialog open={true} {...props} />);
   });
 
-  it('renders title correctly', () => {
+  it('renders title string correctly', () => {
     const { getByText } = render(
       <Dialog open={true} {...props} title="Test Title" />,
+    );
+    const title = getByText('Test Title');
+    expect(title).toBeInTheDocument();
+  });
+
+  it('renders title element correctly', () => {
+    const { getByText } = render(
+      <Dialog open={true} {...props} title={<div>Test Title</div>} />,
     );
     const title = getByText('Test Title');
     expect(title).toBeInTheDocument();
