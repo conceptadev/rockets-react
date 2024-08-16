@@ -1,8 +1,16 @@
 'use client';
 
 import React from 'react';
+
 import CrudModule, { ModuleProps } from '../crud';
-import { CREATE_EDIT_FORM, DEFAULT_FILTERS, headers } from './constants';
+import {
+  getTableHeaders,
+  getDefaultFilters,
+  getFormSchema,
+  uiSchema,
+} from './constants';
+
+import { useTranslation } from '../../utils/i18n';
 
 type UsersModuleProps = {
   onEditSuccess: (data?: unknown) => void;
@@ -22,27 +30,35 @@ const UsersModule = ({
   onDeleteError,
   ...props
 }: UsersModuleProps) => {
+  const { t } = useTranslation();
+
   const tableProps = {
-    tableSchema: headers,
+    tableSchema: getTableHeaders(),
     reordable: true,
-    filters: DEFAULT_FILTERS,
+    filters: getDefaultFilters(),
     ...props.tableProps,
   };
   const createFormProps = {
-    ...CREATE_EDIT_FORM,
+    ...getFormSchema(),
+    formUiSchema: uiSchema,
     onSuccess: onCreateSuccess,
     onError: onCreateError,
     ...props.createFormProps,
   };
   const editFormProps = {
-    ...CREATE_EDIT_FORM,
+    ...getFormSchema(),
+    formUiSchema: uiSchema,
     onError: onEditError,
     onSuccess: onEditSuccess,
     onDeleteSuccess: onDeleteSuccess,
     onDeleteError: onDeleteError,
     ...props.editFormProps,
   };
-  const detailsFormProps = { ...CREATE_EDIT_FORM, ...props.detailsFormProps };
+  const detailsFormProps = {
+    ...getFormSchema(),
+    formUiSchema: uiSchema,
+    ...props.detailsFormProps,
+  };
 
   const enhancedProps = { ...props };
   delete enhancedProps.tableProps;
@@ -52,7 +68,7 @@ const UsersModule = ({
 
   return (
     <CrudModule
-      title="Users"
+      title={t('users:title')}
       resource="user"
       hideDeleteButton
       tableProps={tableProps}

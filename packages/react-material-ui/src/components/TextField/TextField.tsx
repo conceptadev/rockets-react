@@ -15,8 +15,8 @@ import IconButton from '@mui/material/IconButton';
 import { FormLabel } from '../FormLabel';
 import { getPasswordMatchInfo, getPasswordScore } from './utils';
 import {
-  PASSWORD_DEFAULT_RULES,
-  PASSWORD_MATCH_RULES,
+  getTranslatedDefaultRules,
+  getPasswordMatchRules,
   PasswordRule,
 } from './constants';
 
@@ -127,8 +127,8 @@ export const TextField = (props: TextFieldProps) => {
   const passwordStrengthConfigDefault = {
     hideStrengthBar: passwordStrengthConfig?.hideStrengthBar ?? true,
     hideRulesText: passwordStrengthConfig?.hideRulesText ?? true,
-    rules: passwordStrengthConfig?.rules ?? PASSWORD_DEFAULT_RULES,
-    matchRules: passwordStrengthConfig?.matchRules ?? PASSWORD_MATCH_RULES,
+    rules: passwordStrengthConfig?.rules ?? getTranslatedDefaultRules(),
+    matchRules: passwordStrengthConfig?.matchRules ?? getPasswordMatchRules(),
     renderStrengthBar: passwordStrengthConfig?.renderStrengthBar,
     renderRulesText: passwordStrengthConfig?.renderRulesText,
   };

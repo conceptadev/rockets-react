@@ -83,3 +83,23 @@ export { default as OtpInput } from './components/OtpInput';
 export { default as Breadcrumbs } from './components/Breadcrumbs';
 
 export { FormLabel, FormLabelProps } from './components/FormLabel';
+
+import {
+  useTranslation,
+  addResource,
+  addResources,
+  addResourceBundle,
+  setI18n,
+  i18nInstance,
+} from './utils/i18n';
+export {
+  useTranslation,
+  addResource,
+  addResources,
+  addResourceBundle,
+  setI18n,
+  i18nInstance,
+};
+
+import LanguageSwitcher from './components/LanguageSwitcher';
+export { LanguageSwitcher };

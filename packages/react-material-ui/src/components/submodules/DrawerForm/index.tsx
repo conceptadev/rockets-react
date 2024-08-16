@@ -21,6 +21,8 @@ import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
+import { useTranslation } from '../../../utils/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type DrawerFormSubmoduleProps = PropsWithChildren<
@@ -91,6 +93,8 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
   } = props;
 
   const { post, patch, del } = useDataProvider();
+
+  const { t } = useTranslation();
 
   const { execute: createItem, isPending: isLoadingCreation } = useQuery(
     (data: Record<string, unknown>) =>
@@ -264,7 +268,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             )}
             {viewMode === 'details' && !props.hideCancelButton && (
               <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                {cancelButtonTitle || 'Close'}
+                {cancelButtonTitle || t('actions:close')}
               </Button>
             )}
             {viewMode !== 'details' && (

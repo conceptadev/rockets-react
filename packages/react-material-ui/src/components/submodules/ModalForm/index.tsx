@@ -21,6 +21,8 @@ import validator from '@rjsf/validator-ajv6';
 import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
+import { useTranslation } from '../../../utils/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type ModalFormSubmoduleProps = PropsWithChildren<
@@ -89,6 +91,8 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
     pageCount,
     ...otherProps
   } = props;
+
+  const { t } = useTranslation();
 
   const { post, patch, del } = useDataProvider();
 

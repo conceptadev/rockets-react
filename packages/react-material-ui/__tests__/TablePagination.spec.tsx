@@ -71,7 +71,7 @@ describe('TablePagination component', () => {
     const tablePagination = getByTestId('table-pagination');
     const paginationText = tablePagination.textContent;
 
-    expect(paginationText).toContain('1–5');
+    expect(paginationText).toContain('1-5');
   });
 
   it('should render the correct number of rows per page', () => {

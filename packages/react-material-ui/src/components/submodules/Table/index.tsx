@@ -39,6 +39,8 @@ import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
 import { isMobile } from '../../../utils/isMobile';
 import MobileRowModal from './MobileRowModal';
 
+import { useTranslation } from '../../../utils/i18n';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type BasicType = string | number | boolean;
@@ -120,6 +122,9 @@ export interface TableSubmoduleProps {
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
   const theme = useTheme();
+
+  const { t } = useTranslation();
+
   const { filters } = useCrudRoot();
   const [mobileCurrentRow, setMobileCurrentRow] = useState<RowProps | null>(
     null,
@@ -298,6 +303,20 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                 cacheApiPath={props.cacheApiPath}
               />
             )}
+            {!props.hideAddButton && (
+              <Button
+                variant="contained"
+                onClick={props.onAddNew}
+                startIcon={<AddIcon />}
+                sx={{
+                  textTransform: 'capitalize',
+                  textWrap: 'nowrap',
+                  marginLeft: 2,
+                }}
+              >
+                {t('crud:addNew')}
+              </Button>
+            )}
             <Box display="flex" alignItems="center" justifyContent="flex-end">
               {props.additionalFilterRowContent}
               {!props.hideAddButton && (
@@ -349,7 +368,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                       textAlign: 'center',
                     }}
                   >
-                    No records found.
+                    {t('crud:emptyTable')}
                   </TableCell>
                 </TableRow>
               )}

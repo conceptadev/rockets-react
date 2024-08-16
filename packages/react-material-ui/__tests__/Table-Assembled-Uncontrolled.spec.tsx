@@ -228,11 +228,11 @@ describe('Assembled Table - Controlled', () => {
     const paginationInfo = container.querySelector(
       '.MuiTablePagination-displayedRows',
     );
-    expect(paginationInfo).toHaveTextContent('1–5 of 7');
+    expect(paginationInfo).toHaveTextContent('1-5 of 7');
 
     nextPageButton && fireEvent.click(nextPageButton);
 
-    expect(paginationInfo).toHaveTextContent('6–7 of 7');
+    expect(paginationInfo).toHaveTextContent('6-7 of 7');
   });
 
   it('should handle change of rows per page', () => {

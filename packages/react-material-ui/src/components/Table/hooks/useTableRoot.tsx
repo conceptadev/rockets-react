@@ -3,6 +3,8 @@
 import React, { createContext, useContext } from 'react';
 import { HeaderProps, RowProps, TableQueryStateProps } from '../types';
 
+import { useTranslation } from '../../../utils/i18n';
+
 export type TableContextProps = {
   /**
    * Array of objects, where each contain the data displayed in Table rows.
@@ -91,10 +93,11 @@ export const TableContext = createContext<TableContextProps>(
  * Custom hook that wraps the implementation of the Table Root context.
  */
 export const useTableRoot = () => {
+  const { t } = useTranslation();
   const tableRootContext = useContext(TableContext);
 
   if (!tableRootContext) {
-    throw new Error('You must use table root under TableRootContext');
+    throw new Error(t('table:noContext'));
   }
 
   return tableRootContext;

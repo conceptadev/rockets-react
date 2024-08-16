@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useTransition } from 'react';
 import { Text } from '../../';
 import Box from '@mui/material/Box';
 import Button, { ButtonProps } from '@mui/material/Button';
@@ -23,6 +23,8 @@ import {
   CustomSwitchWidget,
   ArrayFieldTemplate,
 } from '../../styles/CustomWidgets';
+
+import { useTranslation } from '../../utils/i18n';
 
 type FieldTypeTypes =
   | 'string'
@@ -83,6 +85,8 @@ const SimpleForm = ({
   validate,
   onError,
 }: Props) => {
+  const { t } = useTranslation();
+
   const { fields, titleTextProps, formProps, submitButtonProps } = form;
 
   const generateRequired = (_fields: Fields) => {
@@ -284,7 +288,7 @@ const SimpleForm = ({
             sx={{ mt: 3 }}
             {...submitButtonProps}
           >
-            {form.submitButtonLabel || 'Submit'}
+            {form.submitButtonLabel || t('actions:submit')}
           </Button>
         </Form>
       </Box>
