@@ -16,7 +16,7 @@ const CrudRoot = (props: PropsWithChildren<Props>) => {
     filterCallback,
     externalSearch,
     children,
-    redirect,
+    navigate,
   } = props;
   const searchParams = new URLSearchParams(window.location.search);
 
@@ -35,8 +35,8 @@ const CrudRoot = (props: PropsWithChildren<Props>) => {
     const hasValues =
       Object.values(filterValues).filter((value) => value).length > 0;
 
-    redirect &&
-      redirect(
+    navigate &&
+      navigate(
         `${window.location.pathname}?${hasValues ? newFilterValues : ''}`,
       );
   }, [filterValues]);

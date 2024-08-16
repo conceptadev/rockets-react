@@ -15,7 +15,7 @@ export type TableRootProps =
       pageCount?: never;
       tableQueryState?: never;
       updateTableQueryState?: never;
-      redirect?: (path: string) => void;
+      navigate?: (path: string) => void;
     }
   | {
       rows: RowProps[];
@@ -26,7 +26,7 @@ export type TableRootProps =
       updateTableQueryState: React.Dispatch<
         React.SetStateAction<TableQueryStateProps>
       >;
-      redirect?: (path: string) => void;
+      navigate?: (path: string) => void;
     };
 
 /**
@@ -43,7 +43,7 @@ export const TableRoot = ({
   pageCount,
   tableQueryState: controlledTableQueryState,
   updateTableQueryState: controlledUpdateTableQueryState,
-  redirect,
+  navigate,
   ...rest
 }: PropsWithChildren<TableRootProps & BoxProps>) => {
   const searchParams = new URLSearchParams(window.location.search);
@@ -85,7 +85,7 @@ export const TableRoot = ({
     );
 
     if (newSearchParam) {
-      redirect && redirect(`${window.location.pathname}?${newSearchParam}`);
+      navigate && navigate(`${window.location.pathname}?${newSearchParam}`);
     }
   };
 
@@ -161,7 +161,7 @@ export const TableRoot = ({
     const newSearchParam = getSearchParams(searchParams, newPageProperty);
 
     if (newSearchParam) {
-      redirect && redirect(`${window.location.pathname}?${newSearchParam}`);
+      navigate && navigate(`${window.location.pathname}?${newSearchParam}`);
     }
   };
 
@@ -188,7 +188,7 @@ export const TableRoot = ({
     const newSearchParam = getSearchParams(searchParams, newOrderProperties);
 
     if (newSearchParam) {
-      redirect && redirect(`${window.location.pathname}?${newSearchParam}`);
+      navigate && navigate(`${window.location.pathname}?${newSearchParam}`);
     }
   };
 

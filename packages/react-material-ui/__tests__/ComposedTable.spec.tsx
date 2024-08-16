@@ -4,7 +4,7 @@
 
 import '@testing-library/jest-dom';
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { FilterType } from '../src/components/Filter/Filter';
 import { HeaderProps } from '../src/components/Table/types';
 import ComposedTable from '../src/components/ComposedTable';

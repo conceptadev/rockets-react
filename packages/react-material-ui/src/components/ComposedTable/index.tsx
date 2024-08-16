@@ -28,7 +28,7 @@ export type ComposedTableProps = {
 } & TableRootProps &
   Partial<FilterProps>;
 
-const ComposedTable = (props: ComposedTableProps) => {
+const ComposedTable = ({ navigate, ...props }: ComposedTableProps) => {
   const theme = useTheme();
   const tableTheme = generateTableTheme(theme, props.tableTheme);
 
@@ -72,6 +72,7 @@ const ComposedTable = (props: ComposedTableProps) => {
     <Box>
       <Table.Root
         {...props}
+        navigate={navigate}
         headers={orderableHeaders}
         sx={tableTheme.root}
         key={JSON.stringify(orderableHeaders)}

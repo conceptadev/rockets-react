@@ -1,5 +1,7 @@
 export { default as Avatar } from './components/Avatar';
 export { default as Checkbox } from './components/Checkbox';
+export { default as RocketsProvider } from './components/RocketsProvider';
+export { default as createConfig } from './components/RocketsProvider/utils';
 
 import AppBar from './components/AppBar';
 export { AppBar };

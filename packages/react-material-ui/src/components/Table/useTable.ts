@@ -26,7 +26,7 @@ interface UseTableOptions {
   search?: Search;
   callbacks?: DataProviderRequestOptions;
   noPagination?: boolean;
-  redirect?: (path: string) => void;
+  navigate?: (path: string) => void;
 }
 
 export interface UpdateSearch {
@@ -75,7 +75,7 @@ const useTable: UseTableProps = (resource, options) => {
       simpleFilter: JSON.stringify(tableQueryState?.simpleFilter),
     });
 
-    options?.redirect(`${window.location.pathname}?${newSearchParam ?? ''}`);
+    options?.navigate?.(`${window.location.pathname}?${newSearchParam ?? ''}`);
   }, [JSON.stringify(tableQueryState.simpleFilter)]);
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const useTable: UseTableProps = (resource, options) => {
       search: JSON.stringify(tableQueryState?.search),
     });
 
-    options?.redirect(`${window.location.pathname}?${newSearchParam ?? ''}`);
+    options?.navigate?.(`${window.location.pathname}?${newSearchParam ?? ''}`);
   }, [JSON.stringify(tableQueryState.search)]);
 
   const simpleFilterQuery = () => {

@@ -58,6 +58,7 @@ export interface ModuleProps {
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
+  navigate?: (path: string) => void;
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -68,6 +69,7 @@ const CrudModule = (props: ModuleProps) => {
     callbacks: {
       onError: props.onFetchError,
     },
+    navigate: props.navigate,
   });
 
   const FormComponent = useMemo(() => {
@@ -117,6 +119,7 @@ const CrudModule = (props: ModuleProps) => {
       updateSimpleFilter={useTableReturn.updateSimpleFilter}
       filterCallback={props.filterCallback}
       externalSearch={props.externalSearch}
+      navigate={props.navigate}
     >
       <Box>
         {props.title ? (
