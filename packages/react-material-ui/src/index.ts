@@ -20,7 +20,7 @@ export {
   ListItem,
 } from './components/OrderableDropDown';
 
-export { default as FormTemplate } from './components/FormTemplate';
+export { FormTemplate, FormTemplateProps } from './components/FormTemplate';
 
 import HeaderAccount, { HeaderAccountProps } from './components/HeaderAccount';
 export { HeaderAccount, HeaderAccountProps };

@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '@testing-library/react';
-import FormTemplate from '../src/components/FormTemplate/FormTemplate';
+import { FormTemplate } from '../src/components/FormTemplate/FormTemplate';
 
 describe('FormTemplate Component', () => {
   it('should render correctly', () => {
