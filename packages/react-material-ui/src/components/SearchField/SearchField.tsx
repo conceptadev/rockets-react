@@ -15,7 +15,7 @@ import {
   TextField,
   TextFieldProps,
 } from '@mui/material';
-import { Clear } from '@mui/icons-material';
+import Clear from '@mui/icons-material/Clear';
 
 const SearchIcon = () => (
   <MuiSearchIcon
@@ -25,14 +25,43 @@ const SearchIcon = () => (
   />
 );
 
+/**
+ * SearchField component props.
+ */
 export type SearchFieldProps = {
+  /** Position of the search icon */
   searchIconPlacement?: 'start' | 'end';
+  /** Default value of the search field */
   defaultValue?: string;
+  /** Debounce wait time in milliseconds */
   wait?: number;
+  /** Handler for debounced search value changes */
   onDebouncedSearchChange?: (value: string) => void;
+  /** Handler for clear action */
   onClear?: () => void;
 } & TextFieldProps;
 
+/**
+ * The SearchField component is a custom text field with additional functionality
+ * for debounced search input and clearable input field. It supports customization
+ * of the search icon placement and integrates with Material-UI components.
+ *
+ * @see [Storybook - SearchField](https://storybook.rockets.tools/?path=/docs/searchfield)
+ *
+ * @example
+ * ```tsx
+ * <SearchField
+ *   searchIconPlacement="start"
+ *   defaultValue="Initial search"
+ *   wait={300}
+ *   onDebouncedSearchChange={(value) => console.log(value)}
+ *   onClear={() => console.log('Cleared')}
+ *   placeholder="Search something..."
+ * />
+ * ```
+ *
+ * @param props - SearchField component props
+ */
 const SearchField = ({
   searchIconPlacement = 'end',
   defaultValue = '',

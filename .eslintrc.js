@@ -5,17 +5,28 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./packages/*/tsconfig.json'],
   },
-  plugins: ['import', 'jsdoc', '@typescript-eslint/eslint-plugin'],
+  plugins: [
+    'import',
+    'jsdoc',
+    'tsdoc',
+    '@typescript-eslint/eslint-plugin'
+  ],
   extends: [
     'eslint:recommended',
+    'plugin:jsdoc/recommended-typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
-    'plugin:jsdoc/recommended',
+    'plugin:storybook/recommended',
   ],
   root: true,
   env: {
     node: true,
     jest: true,
+  },
+  settings: {
+    jsdoc: {
+      mode: 'typescript',
+    },
   },
   ignorePatterns: ['.eslintrc.js', 'packages/*/dist'],
   rules: {
@@ -28,12 +39,19 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-empty-interface': 'off',
     'no-console': ['error', { allow: ['warn', 'error'] }],
-    'jsdoc/require-param-type': 0,
-    'jsdoc/require-returns-type': 0,
+    'jsdoc/require-jsdoc': 'off',
+    'jsdoc/require-param': 'off',
+    'jsdoc/require-returns': 'off',
+    'jsdoc/tag-lines': ['error', 'any', { startLines: 1 }],
+    'tsdoc/syntax': 'error',
   },
-  settings: {
-    jsdoc: {
-      mode: 'typescript',
+  overrides: [
+    {
+      files: ['*.spec.tsx'],
+      rules: {
+        'jsdoc/tag-lines': 'off',
+        'tsdoc/syntax': 'off',
+      },
     },
-  },
+  ],
 };

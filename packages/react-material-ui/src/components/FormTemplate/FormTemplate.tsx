@@ -8,18 +8,54 @@ import {
   CardProps,
 } from '@mui/material';
 
-interface FormTemplateProps {
+/**
+ * Props for the `FormTemplate` component.
+ */
+export interface FormTemplateProps {
+  /** The title text displayed at the top of the form. */
   title?: string;
+  /** The subtitle text displayed below the title. */
   subtitle?: string;
+  /** An optional icon to display above the title. */
   icon?: React.ReactNode;
+  /** Child components or elements (your form) to render inside the form card. */
   children?: React.ReactNode;
+  /** Props to customize the text component for the title. */
   titleTextProps?: TypographyProps;
+  /** Props to customize the `Container` component that wraps the form. */
   containerProps?: ContainerProps;
+  /** Props to customize the text component for the subtitle. */
   subtitleTextProps?: TypographyProps;
+  /** Props to customize the `Card` component that contains the children. */
   cardProps?: CardProps;
 }
 
-const FormTemplate = ({
+/**
+ * The `FormTemplate` component provides a structured layout for forms,
+ * including an optional title, subtitle, icon, and children content. It
+ * utilizes Material-UI's `Container` and `Card` components to organize
+ * the content and allows for extensive customization via props.
+ *
+ * @see [Storybook - FormTemplate](https://storybook.rockets.tools/?path=/docs/formtemplate)
+ *
+ * @example
+ * ```tsx
+ * <FormTemplate
+ *   title="Login"
+ *   subtitle="Please enter your credentials"
+ *   icon={<LoginIcon />}
+ *   containerProps={{ sx: { backgroundColor: '#f0f0f0' } }}
+ *   cardProps={{ sx: { padding: '20px' } }}
+ * >
+ *   <LoginForm />
+ * </FormTemplate>
+ * ```
+ *
+ * @param props - Props for the `FormTemplate` component
+ * @see [MuiContainerProps](https://mui.com/material-ui/api/container/#props)
+ * @see [MuiCardProps](https://mui.com/material-ui/api/card/#props)
+ */
+export const FormTemplate = ({
   title,
   subtitle,
   icon,
@@ -80,5 +116,3 @@ const FormTemplate = ({
     </Container>
   );
 };
-
-export default FormTemplate;

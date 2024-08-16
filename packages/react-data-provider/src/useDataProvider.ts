@@ -31,6 +31,7 @@ const useDataProvider = () => {
 
   /**
    * Asynchronously refreshes an access token using a stored refresh token.
+   *
    * @returns A promise that resolves with the response from the token refresh request or rejects with an error.
    * @throws If an exception occurs while refreshing the token.
    */

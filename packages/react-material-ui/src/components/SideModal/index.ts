@@ -1,4 +1,1 @@
-import SideModal, { SideModalProps } from './SideModal';
-
-export type { SideModalProps };
-export default SideModal;
+export { SideModal, SideModalProps } from './SideModal';

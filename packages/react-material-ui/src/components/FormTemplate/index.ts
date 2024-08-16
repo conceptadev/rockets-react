@@ -1,3 +1,1 @@
-import FormTemplate from './FormTemplate';
-
-export default FormTemplate;
+export { FormTemplate, FormTemplateProps } from './FormTemplate';

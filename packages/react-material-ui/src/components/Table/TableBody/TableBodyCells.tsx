@@ -3,9 +3,11 @@
 import React, { ReactNode } from 'react';
 import Text from '../../Text';
 import { TableCell, TableCellProps, Tooltip } from '@mui/material';
+import get from 'lodash/get';
+
 import { CustomTableCell, RowProps } from '../types';
 import { useTableRoot } from '../hooks/useTableRoot';
-import get from 'lodash/get';
+import { isMobile } from '../../../utils/isMobile';
 
 const renderTextCell = (value: string | number | null) => (
   <Text fontSize={14} fontWeight={400} color="text.primary">
@@ -54,6 +56,7 @@ export const TableBodyCells = ({ row, ...rest }: TableBodyCellsProps) => {
     <>
       {headers.map((header) => {
         if (header.hide) return null;
+        if (isMobile && header.hideOnMobile) return null;
 
         return (
           <TableCell key={header.id} {...rest}>

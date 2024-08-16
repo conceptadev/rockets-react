@@ -5,7 +5,8 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import SideModal, {
+import {
+  SideModal,
   SideModalProps,
 } from '../src/components/SideModal/SideModal';
 

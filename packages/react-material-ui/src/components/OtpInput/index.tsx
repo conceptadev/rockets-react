@@ -1,12 +1,22 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import type { BoxProps as MuiBoxProps } from '@mui/material/Box';
 import type { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
+import { TextField } from '../../components/TextField';
+import { FormLabel } from '../../components/FormLabel';
+import { TypographyProps } from '@mui/material';
+
+const NUMBER_REGEX = /^\d$/;
 
 type OmittedTextFieldProps = Omit<
   MuiTextFieldProps,
-  'onChange' | 'select' | 'multiline' | 'defaultValue' | 'value' | 'autoFocus'
+  | 'onChange'
+  | 'select'
+  | 'multiline'
+  | 'defaultValue'
+  | 'value'
+  | 'autoFocus'
+  | 'variant'
 >;
 
 type OmittedBoxProps = Omit<MuiBoxProps, 'onChange' | 'onBlur'>;
@@ -18,6 +28,9 @@ export interface BaseOtpInputProps {
   textFieldProps?:
     | OmittedTextFieldProps
     | ((index: number) => OmittedTextFieldProps);
+  name?: string;
+  label?: string;
+  labelProps?: TypographyProps;
   onComplete?: (value: string) => void;
   onChange?: (value: string) => void;
   onBlur?: (value: string, isComplete: boolean) => void;
@@ -44,10 +57,13 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       value = '',
       length = 4,
       autoFocus = false,
-      onChange,
       textFieldProps,
-      onComplete,
+      name,
+      label,
+      labelProps,
       className,
+      onComplete,
+      onChange,
       onBlur,
       ...restBoxProps
     }: OtpInputProps,
@@ -84,10 +100,13 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
       }
 
       const char = event.target.value[0] ?? '';
+
+      if (char && !NUMBER_REGEX.test(char)) return;
+
       const newValue = updateValue(index, char);
       onChange?.(newValue);
 
-      if (char && /[A-Za-z0-9]/.test(char)) {
+      if (char !== '' && NUMBER_REGEX.test(char)) {
         focusInput(newValue.length - 1 < index ? newValue.length : index + 1);
       } else if (newValue.length <= index) {
         focusInput(index - 1);
@@ -167,68 +186,84 @@ const OtpInput = React.forwardRef<HTMLDivElement, OtpInputProps>(
     return (
       <Box
         display="flex"
-        gap="20px"
+        flexDirection="column"
         alignItems="center"
-        ref={ref}
-        className={`otp-input-box ${className || ''}`}
-        {...restBoxProps}
+        justifyContent="center"
       >
-        {inputData.map(({ character, inputRef }, index) => {
-          const {
-            onPaste,
-            onFocus,
-            onKeyDown,
-            className,
-            onBlur: textFieldBlur,
-            ...restTextFieldProps
-          } = typeof textFieldProps === 'function'
-            ? textFieldProps(index) || {}
-            : textFieldProps || {};
+        {!!label && (
+          <FormLabel name={`${name}-0`} label={label} labelProps={labelProps} />
+        )}
+        <Box
+          display="flex"
+          gap="20px"
+          alignItems="center"
+          justifyContent="center"
+          ref={ref}
+          className={`otp-input-box ${className || ''}`}
+          {...restBoxProps}
+        >
+          {inputData.map(({ character, inputRef }, index) => {
+            const {
+              onPaste,
+              onFocus,
+              onKeyDown,
+              className,
+              onBlur: textFieldBlur,
+              error,
+              name,
+              ...restTextFieldProps
+            } = typeof textFieldProps === 'function'
+              ? textFieldProps(index) || {}
+              : textFieldProps || {};
 
-          return (
-            <TextField
-              key={`otp-input-${index}`}
-              autoFocus={autoFocus && index === 0}
-              autoComplete="one-time-code"
-              value={character}
-              inputRef={inputRef}
-              inputProps={{
-                sx: {
-                  textAlign: 'center',
-                },
-              }}
-              InputProps={{
-                sx: {
-                  caretColor: 'transparent',
-                  '.MuiInputBase-input::selection': {
-                    backgroundColor: 'transparent',
+            return (
+              <TextField
+                id={index === 0 ? `${name}-${index}` : undefined}
+                key={`otp-input-${index}`}
+                autoFocus={autoFocus && index === 0}
+                autoComplete="one-time-code"
+                value={character}
+                error={error}
+                inputRef={inputRef}
+                inputProps={{
+                  sx: {
+                    textAlign: 'center',
                   },
-                },
-              }}
-              className={className}
-              onPaste={(event) => {
-                event.preventDefault();
-                handlePaste(event, index);
-                onPaste?.(event);
-              }}
-              onFocus={(event) => {
-                event.preventDefault();
-                event.target.select();
-                onFocus?.(event);
-              }}
-              onChange={(event) => handleChange(event, index)}
-              onKeyDown={(event) => {
-                handleKeyDown(event, index);
-                onKeyDown?.(event);
-              }}
-              onBlur={(event) => {
-                textFieldBlur?.(event);
-                handleBlurEvent(event);
-              }}
-              {...restTextFieldProps}
-            />
-          );
-        })}
+                }}
+                InputProps={{
+                  sx: {
+                    caretColor: 'transparent',
+                    '.MuiInputBase-input::selection': {
+                      backgroundColor: 'transparent',
+                    },
+                  },
+                }}
+                className={className}
+                onPaste={(event) => {
+                  event.preventDefault();
+                  handlePaste(event, index);
+                  onPaste?.(event);
+                }}
+                onFocus={(event) => {
+                  event.preventDefault();
+                  event.target.select();
+                  onFocus?.(event);
+                }}
+                onChange={(event) => handleChange(event, index)}
+                onKeyDown={(event) => {
+                  handleKeyDown(event, index);
+                  onKeyDown?.(event);
+                }}
+                onBlur={(event) => {
+                  textFieldBlur?.(event);
+                  handleBlurEvent(event);
+                }}
+                name={`${name}-${index}`}
+                {...restTextFieldProps}
+              />
+            );
+          })}
+        </Box>
       </Box>
     );
   },

@@ -100,10 +100,11 @@ describe('CrudModule Component', () => {
   });
 
   it('should render title correctly', () => {
-    const { getByText } = render(<CrudModule {...props} />);
+    const { getAllByText } = render(<CrudModule {...props} />);
 
-    const title = getByText('Test title');
-    expect(title).toBeInTheDocument();
+    // title will be rendered twice as it also appears in the page breadcrumbs
+    const titleElements = getAllByText('Test title');
+    expect(titleElements).toHaveLength(2);
   });
 
   it('formContainerVariation displays the form in a Drawer according to its value', async () => {
@@ -170,9 +171,9 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
-    const deleteIcons = queryAllByTestId('DeleteIcon');
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const editIcons = queryAllByTestId('edit-button');
+    const deleteIcons = queryAllByTestId('delete-button');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     expect(editIcons).toHaveLength(0);
     expect(deleteIcons).toHaveLength(0);
@@ -186,9 +187,9 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
-    const deleteIcons = queryAllByTestId('DeleteIcon');
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const editIcons = queryAllByTestId('edit-button');
+    const deleteIcons = queryAllByTestId('delete-button');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     expect(editIcons).toHaveLength(2);
     expect(deleteIcons).toHaveLength(0);
@@ -226,7 +227,7 @@ describe('CrudModule Component', () => {
     }
   });
 
-  it('should show "save" and "close" button on create form', async () => {
+  it('should show "save" and "cancel" button on create form', async () => {
     const { getByText, findByRole } = render(<CrudModule {...props} />);
 
     const addButton = getByText('Add new');
@@ -235,20 +236,23 @@ describe('CrudModule Component', () => {
     await findByRole('presentation');
 
     const saveButton = getByText('Save');
-    const closeButton = getByText('Close');
+    const closeButton = getByText('Cancel');
 
     expect(saveButton).toBeInTheDocument();
     expect(closeButton).toBeInTheDocument();
   });
 
   it('should hide edit icon if editFormProps is not passed', () => {
-    const _props = { ...props, editFormProps: undefined };
+    const { editFormProps, ...restProps } = props;
 
-    const { container, queryAllByTestId } = render(<CrudModule {..._props} />);
+    const { container, queryAllByTestId } = render(
+      <CrudModule {...restProps} />,
+    );
+
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
+    const editIcons = queryAllByTestId('edit-button');
     expect(editIcons).toHaveLength(0);
   });
 
@@ -259,7 +263,7 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
+    const editIcons = queryAllByTestId('edit-button');
 
     editIcons[0] && fireEvent.click(editIcons[0]);
 
@@ -283,14 +287,14 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const editIcons = queryAllByTestId('EditIcon');
+    const editIcons = queryAllByTestId('edit-button');
 
     editIcons[0] && fireEvent.click(editIcons[0]);
 
     await findByRole('presentation');
 
     const saveButton = getByText('Save');
-    const closeButton = getByText('Close');
+    const closeButton = getByText('Delete');
 
     expect(saveButton).toBeInTheDocument();
     expect(closeButton).toBeInTheDocument();
@@ -300,7 +304,7 @@ describe('CrudModule Component', () => {
     const _props = { ...props, detailsFormProps: undefined };
     const { queryAllByTestId } = render(<CrudModule {..._props} />);
 
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const chevronRightIcons = queryAllByTestId('details-button');
     expect(chevronRightIcons).toHaveLength(0);
   });
 
@@ -311,7 +315,7 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     chevronRightIcons[0] && fireEvent.click(chevronRightIcons[0]);
 
@@ -335,7 +339,7 @@ describe('CrudModule Component', () => {
     const tableBody = container.querySelector('tbody');
     expect(tableBody).toBeInTheDocument();
 
-    const chevronRightIcons = queryAllByTestId('ChevronRightIcon');
+    const chevronRightIcons = queryAllByTestId('details-button');
 
     chevronRightIcons[0] && fireEvent.click(chevronRightIcons[0]);
 

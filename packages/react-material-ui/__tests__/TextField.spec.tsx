@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import TextField from '../src/components/TextField/TextField';
+import { TextField } from '../src/components/TextField/TextField';
 
 describe('TextField Component', () => {
   it('should render correctly', () => {

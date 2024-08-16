@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Navbar, { NavbarProps } from '../src/components/Navbar/Navbar';
+import { Navbar, NavbarProps } from '../src/components/Navbar/Navbar';
 
 describe('Navbar', () => {
   const defaultProps: NavbarProps = {

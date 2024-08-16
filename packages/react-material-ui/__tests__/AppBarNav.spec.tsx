@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import AppBar from '../src/components/AppBar';
+import { AppBar } from '../src/components/AppBar';
 
 describe('AppBar.Nav Component', () => {
   it('should render correctly', () => {

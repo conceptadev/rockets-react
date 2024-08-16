@@ -5,7 +5,8 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import SchemaForm, {
+import {
+  SchemaForm,
   SchemaFormProps,
 } from '../src/components/SchemaForm/SchemaForm';
 
@@ -65,6 +66,40 @@ describe('SchemaForm Component', () => {
       </SchemaForm.Form>,
     );
     const title = getByText('Test button');
+    expect(title).toBeInTheDocument();
+  });
+
+  it('renders button title prop correctly', () => {
+    const schema: SchemaFormProps['schema'] = {
+      type: 'object',
+      properties: {
+        name: { type: 'string', title: 'Name' },
+      },
+    };
+    const { getByText } = render(
+      <SchemaForm.Form schema={schema} buttonTitle="Testing"></SchemaForm.Form>,
+    );
+    const title = getByText('Testing');
+    expect(title).toBeInTheDocument();
+  });
+
+  it('renders button component prop correctly', () => {
+    const schema: SchemaFormProps['schema'] = {
+      type: 'object',
+      properties: {
+        name: { type: 'string', title: 'Name' },
+      },
+    };
+    const CustomButton = () => {
+      return <button>Testing</button>;
+    };
+    const { getByText } = render(
+      <SchemaForm.Form
+        schema={schema}
+        buttonComponent={CustomButton}
+      ></SchemaForm.Form>,
+    );
+    const title = getByText('Testing');
     expect(title).toBeInTheDocument();
   });
 

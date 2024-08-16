@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema } from '@rjsf/utils';
 import type { IChangeEvent } from '@rjsf/core';
@@ -13,8 +13,8 @@ import { Box, Button, Container, Card, CircularProgress } from '@mui/material';
 
 import Text from '../../../components/Text';
 import Link from '../../../components/Link';
-import SchemaForm from '../../../components/SchemaForm';
-import Image from '../../../components/Image';
+import { SchemaForm } from '../../../components/SchemaForm';
+import { Image } from '../../../components/Image';
 
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
@@ -37,7 +37,8 @@ interface AuthFormSubmoduleProps {
   route: string;
   queryUri?: string;
   queryMethod?: string;
-  title?: string;
+  title?: string | ReactNode;
+  hideTitle?: boolean;
   formSchema?: RJSFSchema;
   formUiSchema?: UiSchema;
   advancedProperties?: Record<string, AdvancedProperty>;
@@ -49,10 +50,31 @@ interface AuthFormSubmoduleProps {
   customValidation?: ValidationRule<Record<string, string>>[];
   submitButtonTitle?: string;
   logoSrc?: string;
+  hideLogo?: boolean;
+  headerComponent?: ReactNode;
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
   overrideDefaults?: boolean;
 }
+
+const renderTitle = (title: string | ReactNode) => {
+  if (typeof title === 'string') {
+    return (
+      <Text
+        variant="h4"
+        fontFamily="Inter"
+        fontSize={30}
+        fontWeight={800}
+        mt={1}
+        gutterBottom
+      >
+        {title}
+      </Text>
+    );
+  }
+
+  return title;
+};
 
 const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
@@ -121,19 +143,14 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
 
   return (
     <Container maxWidth="xs" sx={{ textAlign: 'center', padding: '48px 0' }}>
-      <Image src={props.logoSrc || '/logo.svg'} alt="logo" />
+      {!props.hideLogo && (
+        <Image src={props.logoSrc || '/logo.svg'} alt="logo" />
+      )}
+
+      {props.headerComponent || null}
 
       <Card sx={{ padding: '24px', marginTop: '32px' }}>
-        <Text
-          variant="h4"
-          fontFamily="Inter"
-          fontSize={30}
-          fontWeight={800}
-          mt={1}
-          gutterBottom
-        >
-          {props.title || defaultRouteTitle}
-        </Text>
+        {!props.hideTitle && renderTitle(props.title ?? defaultRouteTitle)}
 
         <SchemaForm.Form
           schema={{

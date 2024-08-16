@@ -2,24 +2,73 @@ import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
-import Notifications from '../Notifications';
+import { Notifications } from '../Notifications';
 import Text from '../Text';
 import HeaderAccount, { HeaderAccountProps } from '../HeaderAccount';
 import { SxProps, Theme } from '@mui/material/styles';
 
+/**
+ * Properties for the Navbar component.
+ */
 export type NavbarProps = {
+  /**
+   * Handler for click events on the Menu button.
+   */
   drawerToggle?: () => void;
+  /**
+   * Flag for showing or hiding the notifications indicator.
+   */
   showNotifications?: boolean;
+  /**
+   * Indicator for notifications counter.
+   */
   notificationsNumber?: number;
+  /**
+   * Handler for click events on the notifications indicator.
+   */
   notificationsOnClick?: () => void;
+  /**
+   * Source of the user profile picture.
+   */
   avatar?: string;
+  /**
+   * String that can contain the current user name or username.
+   */
   text?: string;
+  /**
+   * String rendered below the text content.
+   */
   subText?: string;
+  /**
+   * List of menu actions.
+   */
   headerMenuOptions?: HeaderAccountProps['menuOptions'];
+  /**
+   * Object or array containing custom styles, following the sx pattern. @see {@link https://mui.com/system/getting-started/the-sx-prop/}
+   */
   sx?: SxProps<Theme>;
 };
 
-const Navbar = ({
+/**
+ * The Navbar component is a UI element used to display a navigation bar
+ * that includes a menu icon for drawer toggling, notification icon, and
+ * user account information.
+ *
+ * @example
+ * ```tsx
+ * <Navbar
+ *   showNotifications={true}
+ *   notificationsNumber={5}
+ *   notificationsOnClick={handleNotificationsClick}
+ *   avatar="https://example.com/avatar.jpg"
+ *   text="John Doe"
+ *   subText="Administrator"
+ * />
+ * ```
+ *
+ * @param props - Navbar component props
+ */
+export const Navbar = ({
   drawerToggle,
   showNotifications,
   notificationsNumber,
@@ -86,5 +135,3 @@ const Navbar = ({
     </Box>
   );
 };
-
-export default Navbar;

@@ -1,9 +1,10 @@
 'use client';
 
-import React, { ReactNode, useState, useEffect } from 'react';
-import { Box, Grid, GridProps } from '@mui/material';
-import { FilterAlt } from '@mui/icons-material';
+import React, { ReactNode, useState } from 'react';
 import { useAuth } from '@concepta/react-auth-provider';
+import Box from '@mui/material/Box';
+import Grid, { GridProps } from '@mui/material/Grid';
+import FilterAlt from '@mui/icons-material/FilterAlt';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
@@ -14,13 +15,18 @@ import {
   allOption,
 } from '../../components/SelectField/SelectField';
 import { SearchFieldProps } from '../../components/SearchField/SearchField';
-import OrderableDropDown, { ListItem } from '../OrderableDropDown';
+import { OrderableDropDown, ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
 import DatePickerField from '../../components/DatePickerField';
-import { useSettingsStorage } from '../../hooks/useSettingsStorage';
 
+/**
+ * Type of filter variants available.
+ */
 export type FilterVariant = 'text' | 'autocomplete' | 'select' | 'date';
 
+/**
+ * Common properties for all filters.
+ */
 export type FilterCommon = {
   id: string;
   label: string;
@@ -31,6 +37,9 @@ export type FilterCommon = {
   hide?: boolean;
 };
 
+/**
+ * Properties for the text filter.
+ */
 export type TextFilter = {
   type: 'text';
   helperText?: string;
@@ -42,6 +51,9 @@ export type TextFilter = {
   searchIconPlacement?: SearchFieldProps['searchIconPlacement'];
 } & FilterCommon;
 
+/**
+ * Properties for the date filter.
+ */
 type DateFilter = {
   type: 'date';
   onChange: (value: Date | null) => void;
@@ -49,6 +61,9 @@ type DateFilter = {
 } & FilterCommon &
   DatePickerProps<Date>;
 
+/**
+ * Properties for the autocomplete filter.
+ */
 type AutocompleteFilter = {
   type: 'autocomplete';
   value?: string | null;
@@ -60,6 +75,9 @@ type AutocompleteFilter = {
   onChange: (value: string | null) => void;
 } & FilterCommon;
 
+/**
+ * Properties for the select filter.
+ */
 type SelectFilter = {
   type: 'select';
   options: SelectOption[];
@@ -70,12 +88,21 @@ type SelectFilter = {
   value?: string | string[] | null;
 } & FilterCommon;
 
+/**
+ * Type for filter properties that can be text, date, autocomplete, or select.
+ */
 export type FilterType =
   | TextFilter
   | DateFilter
   | AutocompleteFilter
   | SelectFilter;
 
+/**
+ * Renders the appropriate component based on the filter type.
+ *
+ * @param filter - The filter object containing type and properties
+ * @returns The corresponding React component for the filter type
+ */
 const renderComponent = (filter: FilterType) => {
   switch (filter.type) {
     case 'autocomplete': {
@@ -152,38 +179,38 @@ const renderComponent = (filter: FilterType) => {
   }
 };
 
+/**
+ * Properties for the Filter component.
+ */
 export type FilterProps = {
+  /** Array of filter objects */
   filters: FilterType[];
+  /** Minimum number of filters to enable sortable item in the orderable dropdown */
   minimumFilters?: number;
+  /** Include an "all" option in the filter dropdown */
   hasAllOption?: boolean;
+  /** Children elements */
   children?: ReactNode;
+  /** Additional items to render in the grid */
   additionalGridItems?: {
     component: ReactNode | ((filters: ListItem[]) => ReactNode);
     columns?: number;
   }[];
+  /** Additional actions to render */
   complementaryActions?: ReactNode | ((filters: ListItem[]) => ReactNode);
-  settingsId?: string;
+  /** Identifier for filter settings on localStorage */
+  orderableListCacheKey?: string;
+  /** Identifier for filter settings api endpoint path */
+  cacheApiPath?: string;
 } & GridProps;
 
-const Filter = (props: FilterProps) => {
+export const Filter = (props: FilterProps) => {
   const { filters, minimumFilters = 0, hasAllOption, ...rest } = props;
-  const auth = useAuth();
-
-  const [settings, setSettings] = useSettingsStorage({
-    key: 'filterSettings',
-    user: (auth?.user as { id: string })?.id ?? '',
-    settingsId: props.settingsId || window.location.pathname,
-    list: filters.map((header) => ({
-      id: header.id,
-      hide: Boolean(header.hide),
-    })),
-  });
 
   const resetFilters = (item) => () => {
     if (item && item?.onDebouncedSearchChange) {
       item.onDebouncedSearchChange(null);
     }
-
     if (item && item?.onChange) {
       item.onChange(null);
     }
@@ -198,26 +225,22 @@ const Filter = (props: FilterProps) => {
     })),
   );
 
-  const handleFilterOrderChange = (list: ListItem[]) => {
-    setFilterOrder(list);
-    setSettings(list);
-  };
-
-  useEffect(() => {
-    if (settings.length) {
-      setFilterOrder(
-        settings.map((item: ListItem) => {
-          const filterItem = filters.find((filter) => filter.id === item.id);
-
-          return {
-            ...item,
-            ...filterItem,
-            resetFilters: resetFilters(filterItem),
-          };
-        }),
+  const handleListUpdateFromCache = (cacheList: ListItem[]) => {
+    const newItems = cacheList.map((item) => {
+      const filterItemIndex = filters.findIndex(
+        (filter) => filter.id === item.id,
       );
-    }
-  }, []);
+      const filterItem = filters[filterItemIndex];
+
+      return {
+        ...item,
+        ...filterItem,
+        resetFilters: resetFilters(filterItem),
+      };
+    });
+
+    setFilterOrder(newItems);
+  };
 
   return (
     <Box
@@ -283,7 +306,13 @@ const Filter = (props: FilterProps) => {
             minimumItems={minimumFilters}
             icon={<FilterAlt />}
             list={filterOrder}
-            setList={handleFilterOrderChange}
+            setList={setFilterOrder}
+            storage={{
+              type: 'filter',
+              key: props.orderableListCacheKey,
+              cacheApiPath: props.cacheApiPath,
+              onListUpdateFromCache: handleListUpdateFromCache,
+            }}
           />
         ) : null}
         {typeof props.complementaryActions === 'function'
@@ -293,5 +322,3 @@ const Filter = (props: FilterProps) => {
     </Box>
   );
 };
-
-export default Filter;

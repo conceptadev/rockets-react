@@ -2,8 +2,8 @@ import { Order } from '../types';
 import descendingComparator from './descendingComparator';
 
 /**
- * @param order
- * @param orderBy
+ * @param order - Order
+ * @param orderBy - Order by
  */
 function getComparator<Key extends keyof any>(
   order: Order,

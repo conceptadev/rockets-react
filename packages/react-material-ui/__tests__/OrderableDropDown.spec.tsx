@@ -5,7 +5,8 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
-import OrderableDropDown, {
+import {
+  OrderableDropDown,
   ListItem,
 } from '../src/components/OrderableDropDown';
 

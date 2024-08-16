@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, ReactNode } from 'react';
 
 import type {
   CustomTableCell,
@@ -21,23 +21,23 @@ import {
   Theme,
   SxProps,
 } from '@mui/material';
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  ChevronRight as ChevronRightIcon,
-  Add as AddIcon,
-} from '@mui/icons-material';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Edit';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import AddIcon from '@mui/icons-material/Add';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import get from 'lodash/get';
 
-import Table from '../../../components/Table';
+import Table from '../../Table';
 import { generateTableTheme } from './constants';
-import { TableRootProps } from '../../../components/Table/TableRoot';
-import { TableProps } from '../../../components/Table/Table';
-import FilterSubmodule from '../../../components/submodules/Filter';
-import { Search } from '../../../components/Table/types';
-import { UpdateSearch } from '../../../components/Table/useTable';
+import { TableRootProps } from '../../Table/TableRoot';
+import { TableProps } from '../../Table/Table';
+import FilterSubmodule from '../../submodules/Filter';
+import { Search } from '../../Table/types';
+import { UpdateSearch } from '../../Table/useTable';
 import { useCrudRoot } from '../../../modules/crud/useCrudRoot';
+import { isMobile } from '../../../utils/isMobile';
+import MobileRowModal from './MobileRowModal';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -48,6 +48,7 @@ type SimpleFilter = Record<string, BasicType | BasicType[] | null>;
 type ActionCallbackPayload = {
   action: Action;
   row: Record<string, unknown>;
+  index?: number;
 };
 
 export type PaginationStyle = 'default' | 'numeric';
@@ -75,7 +76,7 @@ export interface TableSubmoduleProps {
   tableTheme?: StyleDefinition;
   queryResource: string;
   tableSchema: TableSchemaItem[];
-  onAction?: ({ action, row }: ActionCallbackPayload) => void;
+  onAction?: ({ action, row, index }: ActionCallbackPayload) => void;
   onAddNew?: () => void;
   refresh: () => void;
   data: unknown[];
@@ -105,11 +106,24 @@ export interface TableSubmoduleProps {
   search?: Search;
   updateSearch?: UpdateSearch;
   paginationStyle?: PaginationStyle;
+  allowModalPreview?: boolean;
+  mobileModalTitleSrc?: string;
+  filterCacheKey?: string;
+  tableCacheKey?: string;
+  cacheApiPath?: string;
+  hasCheckboxes?: boolean;
+  addButtonStartIcon?: ReactNode;
+  addButtonEndIcon?: ReactNode;
+  addButtonContent?: ReactNode;
+  additionalFilterRowContent?: ReactNode;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
   const theme = useTheme();
   const { filters } = useCrudRoot();
+  const [mobileCurrentRow, setMobileCurrentRow] = useState<RowProps | null>(
+    null,
+  );
 
   const { del } = useDataProvider();
 
@@ -150,7 +164,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
   const tableRows: RowProps[] = useMemo(() => {
     const data = props.data || [];
 
-    return data.map((row) => {
+    return data.map((row, index) => {
       const rowData = row as Record<string, unknown>;
       const newData = { ...rowData, id: String(rowData.id) };
 
@@ -184,32 +198,46 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         ...newData,
         actions: {
           component: (
-            <Box>
+            <Box display="flex">
               {!props.hideEditButton && (
                 <IconButton
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     if (props.onAction) {
-                      props.onAction({ action: 'edit', row: rowData });
+                      props.onAction({ action: 'edit', row: rowData, index });
                     }
                   }}
+                  data-testid="edit-button"
                 >
                   <EditIcon />
                 </IconButton>
               )}
 
               {!props.hideDeleteButton && (
-                <IconButton onClick={() => deleteItem(rowData.id)}>
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteItem(rowData.id);
+                  }}
+                  data-testid="delete-button"
+                >
                   <DeleteIcon />
                 </IconButton>
               )}
 
               {!props.hideDetailsButton && (
                 <IconButton
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     if (props.onAction) {
-                      props.onAction({ action: 'details', row: rowData });
+                      props.onAction({
+                        action: props.hideEditButton ? 'edit' : 'details',
+                        row: rowData,
+                        index,
+                      });
                     }
                   }}
+                  data-testid="details-button"
                 >
                   <ChevronRightIcon />
                 </IconButton>
@@ -219,7 +247,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
         },
       };
     });
-  }, [props, tableHeaders, deleteItem]);
+  }, [props, tableHeaders]);
+
+  const closeModal = () => {
+    setMobileCurrentRow(null);
+  };
 
   return (
     <Box>
@@ -242,7 +274,13 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             my: 4,
           }}
         >
-          {filters && <FilterSubmodule />}
+          {filters && (
+            <FilterSubmodule
+              orderableListCacheKey={props.filterCacheKey}
+              cacheApiPath={props.cacheApiPath}
+            />
+          )}
+
           <Box
             sx={{
               display: 'flex',
@@ -254,22 +292,30 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             }}
           >
             {props.reordable !== false && (
-              <Table.ColumnOrderable hasAllOption={props.hasAllOption} />
+              <Table.ColumnOrderable
+                hasAllOption={props.hasAllOption}
+                orderableListCacheKey={props.tableCacheKey}
+                cacheApiPath={props.cacheApiPath}
+              />
             )}
-            {!props.hideAddButton && (
-              <Button
-                variant="contained"
-                onClick={props.onAddNew}
-                startIcon={<AddIcon />}
-                sx={{
-                  textTransform: 'capitalize',
-                  textWrap: 'nowrap',
-                  marginLeft: 2,
-                }}
-              >
-                Add new
-              </Button>
-            )}
+            <Box display="flex" alignItems="center" justifyContent="flex-end">
+              {props.additionalFilterRowContent}
+              {!props.hideAddButton && (
+                <Button
+                  variant="contained"
+                  onClick={props.onAddNew}
+                  startIcon={props.addButtonStartIcon || <AddIcon />}
+                  endIcon={props.addButtonEndIcon}
+                  sx={{
+                    textTransform: 'capitalize',
+                    textWrap: 'nowrap',
+                    marginLeft: 2,
+                  }}
+                >
+                  {props.addButtonContent || 'Add new'}
+                </Button>
+              )}
+            </Box>
           </Box>
         </Box>
 
@@ -282,6 +328,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
           >
             <TableHead>
               <TableRow sx={tableTheme.tableHeaderRow}>
+                {props.hasCheckboxes && <Table.HeaderCheckbox />}
                 <Table.HeaderCells
                   renderCell={(cell: HeaderProps) => (
                     <Table.HeaderCell
@@ -307,13 +354,20 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                 </TableRow>
               )}
               <Table.BodyRows
-                renderRow={(row) => (
+                renderRow={(row, labelId) => (
                   <Table.BodyRow
+                    key={row.id}
                     row={row}
-                    hasCheckboxes={false}
-                    hover={false}
+                    hasCheckboxes={props.hasCheckboxes}
                     sx={tableTheme.tableBodyRow}
+                    {...(isMobile &&
+                      props.allowModalPreview && {
+                        onClick: () => setMobileCurrentRow(row),
+                      })}
                   >
+                    {props.hasCheckboxes && (
+                      <Table.BodyCheckboxes row={row} labelId={labelId} />
+                    )}
                     <Table.BodyCell row={row} sx={tableTheme.tableBodyCell} />
                   </Table.BodyRow>
                 )}
@@ -321,12 +375,46 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             </TableBody>
           </Table.Table>
         </TableContainer>
+
         {props.paginationStyle === 'numeric' ? (
           <Box mt={2}>
             <Table.PaginationNumbers />
           </Box>
         ) : (
-          <Table.Pagination variant="outlined" />
+          <Table.Pagination
+            variant="outlined"
+            {...(isMobile && {
+              labelRowsPerPage: 'per page:',
+              sx: {
+                display: 'flex',
+                justifyContent: 'center',
+                '& .MuiTablePagination-selectLabel': {
+                  paddingLeft: '10px',
+                },
+                '& .MuiToolbar-root': {
+                  padding: 0,
+                },
+                '& .MuiTablePagination-spacer': {
+                  display: 'none',
+                },
+                '& .MuiTablePagination-input': {
+                  marginRight: 0,
+                  marginLeft: 0,
+                },
+                '& .MuiTablePagination-actions': {
+                  marginLeft: '0 !important',
+                },
+              },
+            })}
+          />
+        )}
+
+        {props.allowModalPreview && isMobile && (
+          <MobileRowModal
+            currentRow={mobileCurrentRow}
+            onClose={closeModal}
+            titleSrc={props.mobileModalTitleSrc}
+          />
         )}
       </Table.Root>
     </Box>

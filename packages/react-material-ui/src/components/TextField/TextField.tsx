@@ -4,14 +4,15 @@ import {
   BoxProps,
   FormControl,
   InputAdornment,
-  TextField as MuiTextField,
-  TextFieldProps,
+  TextFieldProps as MuiTextFieldProps,
+  InputProps,
+  OutlinedInput as MuiOutlinedInput,
   TypographyProps,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
-import FormLabel from '../FormLabel';
+import { FormLabel } from '../FormLabel';
 import { getPasswordMatchInfo, getPasswordScore } from './utils';
 import {
   PASSWORD_DEFAULT_RULES,
@@ -23,25 +24,43 @@ import PasswordStrengthRules from './PasswordStrengthRules';
 import PasswordStrength from './PasswordStrength';
 import { PasswordStrengthBarVariants } from './PasswordStrengthBar';
 
+/**
+ * TextArea properties for multiline text fields.
+ */
 interface TextAreaProps {
+  /** Indicates if the TextField should be multiline */
   multiline?: boolean;
+  /** Number of rows to display when multiline */
   rows?: number;
+  /** Maximum number of rows to display when multiline */
   maxRows?: number;
+  /** Indicates if the label should be hidden */
   hiddenLabel?: boolean;
 }
 
+/**
+ * Configuration for password strength evaluation.
+ */
 export type PasswordStrengthConfig = {
+  /** Hides the text displaying password rules */
   hideRulesText?: boolean;
+  /** Hides the password strength bar */
   hideStrengthBar?: boolean;
+  /** List of password rules to be applied */
   rules?: PasswordRule[];
+  /** Rules for matching password strength */
   matchRules?: {
+    /** List of match rule texts */
     text: string[];
+    /** Corresponding scores for the match rules */
     score: number[];
   };
+  /** Custom renderer for the strength bar */
   renderStrengthBar?: (
     variant: PasswordStrengthBarVariants,
     text: string,
   ) => ReactNode;
+  /** Custom renderer for the rules text */
   renderRulesText?: (
     name: string,
     value: string,
@@ -49,14 +68,44 @@ export type PasswordStrengthConfig = {
   ) => ReactNode;
 };
 
-interface Props {
+/**
+ * Props for the TextField component.
+ */
+export type TextFieldProps = MuiTextFieldProps & {
+  /** Props for the container Box */
   containerProps?: BoxProps;
+  /** Props for the label Typography */
   labelProps?: TypographyProps;
+  /** Options for the TextArea */
   options?: TextAreaProps;
+  /** Configuration for password strength display */
   passwordStrengthConfig?: PasswordStrengthConfig;
-}
+};
 
-const TextField = (props: TextFieldProps & Props) => {
+/**
+ * TextField component for inputting text with support for password strength
+ * evaluation and visibility toggle. Integrates with MUI TextField and supports
+ * custom rendering for password strength and rules. It's props extend from [Material UI's TextField](https://mui.com/material-ui/api/text-field/#props)
+ * component props, so every prop is interchangeable between those two.
+ *
+ * @see [Storybook - TextField](https://storybook.rockets.tools/?path=/docs/textfield)
+ *
+ * @example
+ * ```tsx
+ * <TextField
+ *   label="Password"
+ *   type="password"
+ *   passwordStrengthConfig={{
+ *     hideStrengthBar: false,
+ *     hideRulesText: false,
+ *   }}
+ * />
+ * ```
+ *
+ * @param props - Properties to customize the TextField component
+ */
+
+export const TextField = (props: TextFieldProps) => {
   const {
     label,
     required,
@@ -68,6 +117,8 @@ const TextField = (props: TextFieldProps & Props) => {
     options,
     containerProps,
     labelProps,
+    InputProps,
+    InputLabelProps,
     name,
     passwordStrengthConfig,
     ...rest
@@ -102,6 +153,7 @@ const TextField = (props: TextFieldProps & Props) => {
     value as string,
     passwordStrengthConfigDefault.rules,
   );
+
   const [passwordStrengthText, passwordRuleVariant] = getPasswordMatchInfo(
     passwordScore,
     passwordStrengthConfigDefault.matchRules,
@@ -109,19 +161,21 @@ const TextField = (props: TextFieldProps & Props) => {
 
   return (
     <Box {...containerProps}>
-      <FormControl fullWidth>
+      <FormControl hiddenLabel={label ? true : ishiddenLabel} fullWidth>
         {!ishiddenLabel && !!label && typeof label === 'string' && (
           <FormLabel
             name={name}
             label={label}
             required={required}
             labelProps={labelProps}
+            {...InputLabelProps}
           />
         )}
-        {!ishiddenLabel && !!label && typeof label != 'string' && label}
 
-        <MuiTextField
-          {...rest}
+        {!ishiddenLabel && !!label && typeof label !== 'string' && label}
+
+        <MuiOutlinedInput
+          {...(rest as InputProps)}
           sx={[
             {
               marginTop: 0.5,
@@ -134,55 +188,49 @@ const TextField = (props: TextFieldProps & Props) => {
           name={name}
           size={size || 'small'}
           value={value || value === 0 ? value : ''}
-          hiddenLabel={label ? true : ishiddenLabel}
-          label={''}
-          fullWidth
           type={isPassword ? (showPassword ? 'text' : 'password') : type}
-          InputProps={{
-            ...(isPassword && {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={togglePassword}
-                    onMouseDown={handleMouseDownPassword}
-                    data-testid="toggle-password-button"
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }),
-            ...props.InputProps,
-          }}
+          endAdornment={
+            isPassword && (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={togglePassword}
+                  onMouseDown={handleMouseDownPassword}
+                  data-testid="toggle-password-button"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            )
+          }
           data-testid="text-field"
+          fullWidth
+          {...InputProps}
         />
-
-        {isPassword && (
-          <>
-            {!passwordStrengthConfigDefault.hideStrengthBar && (
-              <PasswordStrength
-                passwordRuleVariant={passwordRuleVariant}
-                passwordStrengthText={passwordStrengthText}
-                renderStrengthBar={
-                  passwordStrengthConfigDefault.renderStrengthBar
-                }
-              />
-            )}
-
-            {!passwordStrengthConfigDefault.hideRulesText && (
-              <PasswordStrengthRules
-                name={name}
-                value={value}
-                rules={passwordStrengthConfigDefault.rules}
-                renderRulesText={passwordStrengthConfigDefault.renderRulesText}
-              />
-            )}
-          </>
-        )}
       </FormControl>
+
+      {isPassword && (
+        <>
+          {!passwordStrengthConfigDefault.hideStrengthBar && (
+            <PasswordStrength
+              passwordRuleVariant={passwordRuleVariant}
+              passwordStrengthText={passwordStrengthText}
+              renderStrengthBar={
+                passwordStrengthConfigDefault.renderStrengthBar
+              }
+            />
+          )}
+
+          {!passwordStrengthConfigDefault.hideRulesText && (
+            <PasswordStrengthRules
+              name={name}
+              value={value}
+              rules={passwordStrengthConfigDefault.rules}
+              renderRulesText={passwordStrengthConfigDefault.renderRulesText}
+            />
+          )}
+        </>
+      )}
     </Box>
   );
 };
-
-export default TextField;
