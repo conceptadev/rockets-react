@@ -1,6 +1,6 @@
-import { useAuth } from "@concepta/react-auth-provider";
-import { PropsWithChildren } from "react";
-import { Navigate } from "react-router";
+import { useAuth } from '@concepta/react-auth-provider';
+import React, { PropsWithChildren } from 'react';
+import { Navigate } from 'react-router';
 
 type ProtectedRouteProps = {
   redirectPath?: string;
@@ -8,17 +8,17 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute = ({
   children,
-  redirectPath = "/login",
+  redirectPath = '/sign-in',
 }: PropsWithChildren<ProtectedRouteProps>) => {
   const { accessToken: authAccessToken } = useAuth();
 
-  const accessToken = authAccessToken ?? localStorage.getItem("accessToken");
+  const accessToken = authAccessToken ?? localStorage.getItem('accessToken');
 
   if (!accessToken) {
     return <Navigate to={redirectPath} replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

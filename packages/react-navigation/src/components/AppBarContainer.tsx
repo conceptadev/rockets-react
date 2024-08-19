@@ -1,9 +1,9 @@
-import React, { type ReactNode, startTransition } from "react";
-import { useAuth } from "@concepta/react-auth-provider";
-import Container from "@mui/material/Container";
-import MenuItem from "@mui/material/MenuItem";
-import { useNavigate, useLocation } from "react-router-dom";
-import { AppBar, DrawerItemProps } from "@concepta/react-material-ui";
+import React, { type ReactNode, startTransition } from 'react';
+import { useAuth } from '@concepta/react-auth-provider';
+import Container from '@mui/material/Container';
+import MenuItem from '@mui/material/MenuItem';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { AppBar, DrawerItemProps } from '@concepta/react-material-ui';
 
 type HandleCloseMenu = () => void;
 
@@ -21,7 +21,7 @@ export default function AppBarContainer({
   const onLogoutClick = (handleCloseMenu: HandleCloseMenu) => {
     handleCloseMenu();
     doLogout();
-    startTransition(() => navigate("/login"));
+    startTransition(() => navigate('/sign-in'));
   };
 
   return (
@@ -35,7 +35,7 @@ export default function AppBarContainer({
       />
       <AppBar.Main>
         <AppBar.Nav
-          text={(user as any)?.username || ""}
+          text={(user as any)?.username || ''}
           avatar="https://source.unsplash.com/random"
           headerMenuOptions={(handleClose) => (
             <MenuItem onClick={() => onLogoutClick(handleClose)}>

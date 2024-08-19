@@ -1,15 +1,15 @@
-import React, { Children, ReactElement, ReactNode } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
-import LoginRoute from "./LoginRoute";
-import { DrawerItemProps } from "@concepta/react-material-ui";
-import DefaultRoute from "./DefaultRoute";
+import React, { Children, ReactElement, ReactNode } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import LoginRoute from './LoginRoute';
+import { DrawerItemProps } from '@concepta/react-material-ui';
+import DefaultRoute from './DefaultRoute';
 
 type RoutesRootProps = {
   items: DrawerItemProps[];
   routes: ReactElement[];
   renderAppBar?: (
     menuItems: DrawerItemProps[],
-    children: ReactNode
+    children: ReactNode,
   ) => ReactNode;
 };
 
@@ -17,7 +17,10 @@ const RoutesRoot = ({ routes, items, renderAppBar }: RoutesRootProps) => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to={routes[0].props.id} replace />} />
-      <Route path="/login" element={<LoginRoute />} />
+      <Route
+        path="/sign-in"
+        element={<LoginRoute home={routes[0].props.id} />}
+      />
       {Children.map(routes, (child) => {
         return (
           <Route

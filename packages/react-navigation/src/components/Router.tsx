@@ -4,15 +4,15 @@ import React, {
   PropsWithChildren,
   ReactElement,
   ReactNode,
-} from "react";
+} from 'react';
 import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
   Route,
-} from "react-router-dom";
-import { DrawerItemProps } from "@concepta/react-material-ui/";
-import RoutesRoot from "./RoutesRoot";
+} from 'react-router-dom';
+import { DrawerItemProps } from '@concepta/react-material-ui/';
+import RoutesRoot from './RoutesRoot';
 
 const router = (
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>,
@@ -20,8 +20,8 @@ const router = (
   items: DrawerItemProps[],
   renderAppBar?: (
     menuItems: DrawerItemProps[],
-    children: ReactNode
-  ) => ReactNode
+    children: ReactNode,
+  ) => ReactNode,
 ) => {
   const firstRoute = routes[0];
 
@@ -38,8 +38,8 @@ const router = (
             />
           </AdminProvider>
         }
-      />
-    )
+      />,
+    ),
   );
 };
 
@@ -52,7 +52,7 @@ const Router = ({
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
-    children: ReactNode
+    children: ReactNode,
   ) => ReactNode;
 }) => {
   const items = Children.map(children, (child) => {

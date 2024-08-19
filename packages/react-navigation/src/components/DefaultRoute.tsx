@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
-import AppBarContainer from "./AppBarContainer";
-import { CrudModule, DrawerItemProps } from "@concepta/react-material-ui/";
-import { ModuleProps } from "@concepta/react-material-ui/dist/modules/crud";
+import React, { ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import AppBarContainer from './AppBarContainer';
+import { CrudModule, DrawerItemProps } from '@concepta/react-material-ui/';
+import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
 
 type DefaultRouteProps = {
   resource: string;
@@ -12,7 +12,7 @@ type DefaultRouteProps = {
   items: DrawerItemProps[];
   renderAppBar?: (
     menuItems: DrawerItemProps[],
-    children: ReactNode
+    children: ReactNode,
   ) => ReactNode;
 };
 
@@ -43,7 +43,7 @@ const DefaultRoute = ({
             resource={resource}
             title={name}
             navigate={navigate}
-          />
+          />,
         )}
       </ProtectedRoute>
     );
