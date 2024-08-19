@@ -15,6 +15,13 @@ import {
 
 type Route = 'signIn' | 'signUp' | 'forgotPassword' | 'resetPassword';
 
+type Query = {
+  uri?: string;
+  method?: string;
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: unknown) => void;
+};
+
 interface FormProps {
   title?: string | ReactNode;
   hideTitle?: boolean;
@@ -25,24 +32,17 @@ interface FormProps {
   submitButtonTitle?: string;
 }
 
-interface ModuleProps {
+interface AuthModuleProps {
+  route: Route;
+  query?: Query;
   headerComponent?: ReactNode;
   signInRequestPath?: string;
   forgotPasswordPath?: string;
   signUpPath?: string;
   signInPath?: string;
-  queryUri?: string;
-  queryMethod?: string;
   logoSrc?: string;
   hideLogo?: boolean;
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: unknown) => void;
-}
-
-interface AuthModuleProps {
-  route: Route;
   formProps?: FormProps;
-  moduleProps?: ModuleProps;
 }
 
 const AuthModule = (props: AuthModuleProps) => {
@@ -53,12 +53,17 @@ const AuthModule = (props: AuthModuleProps) => {
     resetPassword: resetPasswordModuleProps,
   }[props.route];
 
+  const authQuery = {
+    ...defaultModuleProps.query,
+    ...props.query,
+  };
+
   return (
     <AuthFormSubmodule
-      route={props.route}
       {...props.formProps}
       {...defaultModuleProps}
-      {...props.moduleProps}
+      {...props}
+      query={authQuery}
     />
   );
 };

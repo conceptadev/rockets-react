@@ -34,10 +34,16 @@ const widgets = {
   TextWidget: CustomTextFieldWidget,
 };
 
+type Query = {
+  uri?: string;
+  method?: string;
+  onSuccess?: (data: unknown) => void;
+  onError?: (error: unknown) => void;
+};
+
 interface AuthFormSubmoduleProps {
   route: string;
-  queryUri?: string;
-  queryMethod?: string;
+  query?: Query;
   title?: string | ReactNode;
   hideTitle?: boolean;
   formSchema?: RJSFSchema;
@@ -53,8 +59,6 @@ interface AuthFormSubmoduleProps {
   logoSrc?: string;
   hideLogo?: boolean;
   headerComponent?: ReactNode;
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: unknown) => void;
   overrideDefaults?: boolean;
 }
 
@@ -91,18 +95,18 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
       post: post,
       patch: patch,
       put: put,
-    }[props.queryMethod || 'post'] || post;
+    }[props.query?.method || 'post'] || post;
 
   const { execute: performRequest, isPending: isLoadingRequest } = useQuery(
     (body: Record<string, unknown>) =>
       query({
-        uri: props.queryUri || '',
+        uri: props.query?.uri || '',
         body,
       }),
     false,
     {
-      onSuccess: props.onSuccess,
-      onError: props.onError,
+      onSuccess: props.query?.onSuccess,
+      onError: props.query?.onError,
     },
   );
 
@@ -112,13 +116,11 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
     if (props.route === 'signIn') {
       const { username, password } = fields;
       doLogin({ username, password, loginPath: props.signInRequestPath });
-
       return;
     }
 
     if (props.route === 'resetPassword') {
       await performRequest({ ...fields, passcode });
-
       return;
     }
 
