@@ -33,7 +33,7 @@ export const WithAvatar: Story = {
 export const WithLargeAvatar: Story = {
   args: {
     avatar: 'https://picsum.photos/200/200',
-    avatarSize: 60,
+    avatarSize: 80,
   },
 };
 
