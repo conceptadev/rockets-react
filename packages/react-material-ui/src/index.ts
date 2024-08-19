@@ -22,8 +22,7 @@ export {
 
 export { FormTemplate, FormTemplateProps } from './components/FormTemplate';
 
-import HeaderAccount, { HeaderAccountProps } from './components/HeaderAccount';
-export { HeaderAccount, HeaderAccountProps };
+export { HeaderAccount, HeaderAccountProps } from './components/HeaderAccount';
 
 export { Image, ImageProps } from './components/Image';
 export { default as Link } from './components/Link';

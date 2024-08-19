@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import HeaderAccount from '../src/components/HeaderAccount/HeaderAccount';
+import { HeaderAccount } from '../src/components/HeaderAccount/HeaderAccount';
 
 describe('HeaderAccount component', () => {
   const defaultText = 'John Doe';

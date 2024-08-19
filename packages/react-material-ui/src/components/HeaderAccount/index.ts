@@ -1,4 +1,1 @@
-import HeaderAccount, { HeaderAccountProps } from './HeaderAccount';
-
-export type { HeaderAccountProps };
-export default HeaderAccount;
+export { HeaderAccount, HeaderAccountProps } from './HeaderAccount';
