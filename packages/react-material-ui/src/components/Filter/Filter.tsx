@@ -1,6 +1,7 @@
 'use client';
 
 import React, { ReactNode, useState } from 'react';
+import { useAuth } from '@concepta/react-auth-provider';
 import Box from '@mui/material/Box';
 import Grid, { GridProps } from '@mui/material/Grid';
 import FilterAlt from '@mui/icons-material/FilterAlt';

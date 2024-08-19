@@ -43,6 +43,7 @@ export type CrudContextProps = {
    * Callback for managing filter values dinamically.
    */
   setFilterValues: React.Dispatch<React.SetStateAction<FilterValues>>;
+  navigate?: (path: string) => void;
 };
 
 export const CrudContext = createContext<CrudContextProps>(

@@ -1,0 +1,43 @@
+{
+  "name": "@concepta/react-navigation",
+  "version": "1.0.0-alpha.29",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "BSD-3-Clause",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    },
+    "@types/react-dom": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "@mui/material": "^5.16.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^6.26.0",
+    "react-router-dom": "^6.26.0",
+    "@concepta/react-auth-provider": "^1.0.0-alpha.29",
+    "@concepta/react-data-provider": "^1.0.0-alpha.29",
+    "@concepta/react-material-ui": "^1.0.0-alpha.29"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
+    }
+  }
+}

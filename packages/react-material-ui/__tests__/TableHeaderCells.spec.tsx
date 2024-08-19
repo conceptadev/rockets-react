@@ -10,12 +10,6 @@ import { TableBody, TableContainer, TableHead, TableRow } from '@mui/material';
 import { TableBodyRows } from '../src/components/Table/TableBody/TableBodyRows';
 import { HeaderProps } from '../src/components/Table/types';
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('TableHeaderCells component', () => {
   const props = {
     rows: [],

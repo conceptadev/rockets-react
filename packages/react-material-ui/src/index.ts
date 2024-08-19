@@ -1,3 +1,5 @@
+export { default as RocketsProvider } from './components/RocketsProvider';
+export { default as createConfig } from './components/RocketsProvider/utils';
 export { Avatar, AvatarProps } from './components/Avatar';
 export { Checkbox, CheckboxProps } from './components/Checkbox';
 

@@ -115,7 +115,7 @@ Represents the total of pages that the table data will be divided into.
 
 ### **simpleFilter**
 
-Object that represents how to filter data from the table, following the [nextjsx query](https://github.com/nestjsx/crud/wiki/Requests#filter) format.
+Object that represents how to filter data from the table, following the [nestjsx query](https://github.com/nestjsx/crud/wiki/Requests#filter) format.
 
 Can be passed via the `useTable` hook or independently.
 

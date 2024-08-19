@@ -25,12 +25,6 @@ const customRowOptions = (row: RowProps) => [
   { onClick: () => {}, key: `${row.id} key 1`, text: `row ${row.id} option 1` },
 ];
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('TableBodyOption component', () => {
   const props = {
     rows: generateRows(3),

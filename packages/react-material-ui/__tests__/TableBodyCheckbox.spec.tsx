@@ -20,12 +20,6 @@ const generateRows: GenerateRowsProps = (length: number) => {
   return rows;
 };
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('TableBodyCheckbox component', () => {
   const props = {
     rows: generateRows(3),

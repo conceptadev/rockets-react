@@ -5,16 +5,6 @@
 import { renderHook } from '@testing-library/react';
 import useTable from '../src/components/Table/useTable';
 
-jest.mock('next/navigation', () => ({
-  useRouter: () => {
-    return {
-      replace: jest.fn(),
-    };
-  },
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('useTable', () => {
   it('should return the initial state correctly', () => {
     const { result } = renderHook(() => useTable('test'));

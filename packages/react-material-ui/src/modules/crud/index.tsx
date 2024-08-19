@@ -74,6 +74,7 @@ export interface ModuleProps {
   onFetchError?: (error: unknown) => void;
   filterCallback?: (filter: unknown) => void;
   externalSearch?: Search;
+  navigate?: (path: string) => void;
   filterCacheKey?: string;
   tableCacheKey?: string;
   cacheApiPath?: string;
@@ -93,6 +94,7 @@ const CrudModule = (props: ModuleProps) => {
     callbacks: {
       onError: props.onFetchError,
     },
+    navigate: props.navigate,
   });
 
   const changeCurrentFormData = (direction: 'previous' | 'next') => {
@@ -198,6 +200,7 @@ const CrudModule = (props: ModuleProps) => {
       updateSimpleFilter={useTableReturn.updateSimpleFilter}
       filterCallback={props.filterCallback}
       externalSearch={props.externalSearch}
+      navigate={props.navigate}
     >
       <Box>
         <Box mt={4}>

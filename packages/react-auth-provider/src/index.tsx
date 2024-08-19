@@ -68,6 +68,8 @@ const AuthProvider = ({
   };
 
   const doLogout = async () => {
+    setAccessToken(undefined);
+    setRefreshToken(undefined);
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   };

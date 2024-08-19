@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
 import debounce from 'lodash/debounce';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import { useAuth } from '@concepta/react-auth-provider';
@@ -162,12 +161,11 @@ export const useSettingsStorage = (props: Props) => {
   const [settings, setSettings] = useState<Settings['data']>([]);
 
   const auth = useAuth();
-  const pathname = usePathname();
 
   const { get, put, del } = useDataProvider();
 
   const cacheConfig = {
-    key: props.key || pathname,
+    key: props.key || window.location.pathname,
     type: props.type,
     assignee: {
       id: auth?.user ? (auth.user as { id: string }).id : '',

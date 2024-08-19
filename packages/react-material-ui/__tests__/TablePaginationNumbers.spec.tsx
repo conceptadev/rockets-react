@@ -11,12 +11,6 @@ import { RowProps } from '../src/components/Table/types';
 
 type GenerateRowsProps = (length: number) => RowProps[];
 
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(),
-  useSearchParams: jest.fn(),
-  usePathname: jest.fn(),
-}));
-
 describe('TablePaginationNumbers component', () => {
   const generateRows: GenerateRowsProps = (length: number) => {
     const rows: RowProps[] = [];

@@ -8,8 +8,6 @@ import type { ValidationRule } from '../../../utils/form/validation';
 
 import { useState } from 'react';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import { useAuth } from '@concepta/react-auth-provider';
-import { useSearchParams } from 'next/navigation';
 import validator from '@rjsf/validator-ajv6';
 import { Box, Button, Container, Card, CircularProgress } from '@mui/material';
 
@@ -29,6 +27,7 @@ import {
   forgotPasswordFormSchema,
   resetPasswordFormSchema,
 } from './constants';
+import { useAuth } from '@concepta/react-auth-provider';
 
 const widgets = {
   TextWidget: CustomTextFieldWidget,
@@ -80,8 +79,8 @@ const renderTitle = (title: string | ReactNode) => {
 const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
-  const searchParams = useSearchParams();
-  const passcode = searchParams.get('token');
+  const searchParams = new URLSearchParams(window.location.search);
+  const passcode = '';
 
   const { post, patch, put } = useDataProvider();
   const { doLogin, isPending: isLoadingSignIn } = useAuth();
