@@ -7,19 +7,58 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 
+/**
+ * Props for the `HeaderAccount` component.
+ */
 export type HeaderAccountProps = {
+  /** URL or path to the avatar image */
   avatar?: string;
+  /** Size of the avatar in pixels */
   avatarSize?: number;
+  /** Main text displayed in the header account */
   text?: string;
+  /** Subtext displayed below the main text */
   subText?: string;
+  /** Custom `onClick` handler */
   onClick?: () => void;
+  /** Props passed to the main text component */
   textProps?: TextProps;
+  /** Props passed to the subtext component */
   subTextProps?: TextProps;
+  /** Color of the expand icon */
   iconColor?: string;
+  /** Function that returns menu options as React nodes */
   menuOptions?: (handleClose: () => void) => ReactNode;
 };
 
-const HeaderAccount = ({
+/**
+ * The `HeaderAccount` component is used in the application's header to display
+ * user information, such as an avatar, main text, subtext, and a dropdown menu with options.
+ * It provides customizable styling for the text, avatar, and icon colors.
+ *
+ * @see [Storybook - HeaderAccount](https://storybook.rockets.tools/?path=/docs/headeraccount)
+ *
+ * @example
+ * ```tsx
+ * <HeaderAccount
+ *   avatar="https://example.com/avatar.jpg"
+ *   avatarSize={40}
+ *   text="John Doe"
+ *   subText="Admin"
+ *   onClick={() => console.log('Avatar clicked')}
+ *   iconColor="primary.main"
+ *   menuOptions={(handleClose) => (
+ *     <>
+ *       <MenuItem onClick={handleClose}>Profile</MenuItem>
+ *       <MenuItem onClick={handleClose}>Logout</MenuItem>
+ *     </>
+ *   )}
+ * />
+ * ```
+ *
+ * @param props - Header account component props
+ */
+export const HeaderAccount = ({
   avatar,
   avatarSize = 36,
   text,
@@ -85,5 +124,3 @@ const HeaderAccount = ({
     </Box>
   );
 };
-
-export default HeaderAccount;
