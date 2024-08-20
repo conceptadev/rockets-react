@@ -1,5 +1,3 @@
-'use client';
-
 import React, { SyntheticEvent, useEffect, useState } from 'react';
 import {
   Autocomplete,

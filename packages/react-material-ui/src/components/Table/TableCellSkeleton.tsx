@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Skeleton, TableCell } from '@mui/material';
 import { useTableRoot } from './hooks/useTableRoot';

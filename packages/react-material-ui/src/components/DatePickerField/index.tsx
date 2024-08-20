@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import debounce from 'lodash/debounce';
 import { DatePicker, DatePickerProps } from '@mui/x-date-pickers';

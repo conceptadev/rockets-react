@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ReactNode } from 'react';
 import Text from '../../Text';
 import { TableCell, TableCellProps, Tooltip } from '@mui/material';

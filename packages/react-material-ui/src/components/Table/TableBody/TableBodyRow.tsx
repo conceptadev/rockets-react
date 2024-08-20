@@ -1,5 +1,3 @@
-'use client';
-
 import React, { PropsWithChildren } from 'react';
 import { TableRow, TableRowProps } from '@mui/material';
 import { RowProps } from '../types';

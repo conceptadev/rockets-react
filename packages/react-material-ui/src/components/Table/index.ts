@@ -1,5 +1,3 @@
-'use client';
-
 import { Table } from './Table';
 import { TablePagination } from './TablePagination';
 import { TablePaginationNumbers } from './TablePaginationNumbers';
