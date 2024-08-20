@@ -1,5 +1,3 @@
-'use client';
-
 import React, { PropsWithChildren, useState } from 'react';
 import { Box, BoxProps } from '@mui/material';
 import { HeaderProps, Order, RowProps, TableQueryStateProps } from './types';

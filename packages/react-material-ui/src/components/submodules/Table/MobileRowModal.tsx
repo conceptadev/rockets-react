@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import get from 'lodash/get';
 import { Tooltip, Box, Dialog, DialogContent, IconButton } from '@mui/material';

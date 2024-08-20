@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ReactNode } from 'react';
 import { CustomRowOptionsProps, RowProps, SimpleOptionButton } from '../types';
 import { TableCell } from '@mui/material';

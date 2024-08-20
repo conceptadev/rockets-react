@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ReactNode, Fragment } from 'react';
 import { useTableRoot } from '../hooks/useTableRoot';
 import { TableHeaderCell } from './TableHeaderCell';

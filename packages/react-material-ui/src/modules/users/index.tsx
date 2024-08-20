@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import CrudModule, { ModuleProps } from '../crud';
 import { CREATE_EDIT_FORM, DEFAULT_FILTERS, headers } from './constants';

@@ -1,5 +1,3 @@
-'use client';
-
 import { createContext, useContext } from 'react';
 import { UseTableResult } from '../../components/Table/useTable';
 import { Search } from '../../components/Table/types';

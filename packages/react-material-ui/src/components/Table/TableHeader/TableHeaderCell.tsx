@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import Box from '@mui/material/Box';
 import TableCell, { TableCellProps } from '@mui/material/TableCell';

@@ -1,5 +1,3 @@
-'use client';
-
 import React, { ReactNode, useState, MouseEvent, useMemo } from 'react';
 import Menu from '@mui/material/Menu';
 import Fade from '@mui/material/Fade';

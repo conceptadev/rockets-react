@@ -1,5 +1,3 @@
-'use client';
-
 import React, { Fragment } from 'react';
 import { sortTable } from '../utils';
 import { Order, RenderRowFunction, RowProps } from '../types';
