@@ -1,4 +1,4 @@
-import createTheme from '@mui/material/styles/createTheme';
+import { createTheme } from '@mui/material/styles';
 
 export const themeLight = createTheme({
   palette: {
