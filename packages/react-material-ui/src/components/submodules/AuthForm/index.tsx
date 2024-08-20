@@ -12,7 +12,7 @@ import validator from '@rjsf/validator-ajv6';
 import { Box, Button, Container, Card, CircularProgress } from '@mui/material';
 
 import Text from '../../../components/Text';
-import Link from '../../../components/Link';
+import { Link } from '../../../components/Link';
 import { SchemaForm } from '../../../components/SchemaForm';
 import { Image } from '../../../components/Image';
 

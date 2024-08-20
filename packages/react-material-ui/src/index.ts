@@ -27,7 +27,7 @@ export { FormTemplate, FormTemplateProps } from './components/FormTemplate';
 export { HeaderAccount, HeaderAccountProps } from './components/HeaderAccount';
 
 export { Image, ImageProps } from './components/Image';
-export { default as Link } from './components/Link';
+export { Link, LinkProps } from './components/Link';
 
 export { Navbar, NavbarProps } from './components/Navbar';
 
