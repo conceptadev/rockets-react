@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,17 +9,17 @@ import { CustomDialog, CustomDialogTitle } from './Styles';
 /**
  * Dialog component props.
  */
-export type DialogProps = MuiDialogProps & {
+export type DialogProps = Omit<MuiDialogProps, 'title'> & {
   /** Whether the dialog is open */
   open: boolean;
   /** Function to handle closing of the dialog */
   handleClose: () => void;
   /** Optional title of the dialog */
-  title?: string;
+  title?: ReactNode;
   /** Content to be displayed inside the dialog */
-  children?: React.ReactNode;
+  children?: ReactNode;
   /** Footer content to be displayed inside the dialog */
-  footer?: React.ReactNode;
+  footer?: ReactNode;
   /** Whether to display dividers in the dialog content */
   dividers?: boolean;
 };
@@ -70,6 +70,7 @@ export const Dialog = (props: DialogProps) => {
       onClose={handleClose}
       open={open}
       fullScreen={fullScreen}
+      title={null}
     >
       {title && (
         <CustomDialogTitle onClose={handleClose}>{title}</CustomDialogTitle>
