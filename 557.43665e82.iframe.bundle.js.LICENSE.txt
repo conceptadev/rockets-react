@@ -8,7 +8,15 @@
  */
 
 /**
- * @mui/x-date-pickers v6.19.7
+ * @mui/material v5.16.7
+ *
+ * @license MIT
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * @mui/x-date-pickers v6.20.2
  *
  * @license MIT
  * This source code is licensed under the MIT license found in the
