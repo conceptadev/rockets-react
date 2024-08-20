@@ -1,6 +1,5 @@
 import React from 'react';
-import RadioGroup from '../../components/RadioGroup';
-import { RadioOptions } from '../../components/RadioGroup/RadioGroup';
+import { RadioGroup, RadioOptions } from '../../components/RadioGroup';
 import { WidgetProps } from '@rjsf/utils';
 
 const CustomRadioWidget = (props: WidgetProps) => {

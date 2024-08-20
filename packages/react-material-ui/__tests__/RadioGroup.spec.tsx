@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Radio from '../src/components/RadioGroup/RadioGroup';
+import { RadioGroup } from '../src/components/RadioGroup/RadioGroup';
 
 describe('Radio Component', () => {
   const options = [
@@ -22,7 +22,7 @@ describe('Radio Component', () => {
   };
 
   it('should render correctly', () => {
-    const { getByLabelText } = render(<Radio options={props.options} />);
+    const { getByLabelText } = render(<RadioGroup options={props.options} />);
     const radioOption1 = getByLabelText('Option 1');
     const radioOption2 = getByLabelText('Option 2');
     const radioOption3 = getByLabelText('Option 3');
@@ -33,28 +33,28 @@ describe('Radio Component', () => {
   });
 
   it('renders label correctly', () => {
-    const { getByText } = render(<Radio {...props} />);
+    const { getByText } = render(<RadioGroup {...props} />);
     const radioGroupLabel = getByText('Radio Group');
 
     expect(radioGroupLabel).toBeInTheDocument();
   });
 
   it('renders * in label if is "required"', () => {
-    const { getByText } = render(<Radio {...props} required />);
+    const { getByText } = render(<RadioGroup {...props} required />);
     const radioGroupLabel = getByText('Radio Group *');
 
     expect(radioGroupLabel).toBeInTheDocument();
   });
 
   it('renders disabled option as disabled', () => {
-    const { getByLabelText } = render(<Radio {...props} />);
+    const { getByLabelText } = render(<RadioGroup {...props} />);
     const radioOption2 = getByLabelText('Option 2');
 
     expect(radioOption2).toBeDisabled();
   });
 
   it('should call onChange when a radio option is selected', () => {
-    const { getByLabelText } = render(<Radio {...props} />);
+    const { getByLabelText } = render(<RadioGroup {...props} />);
     const radioOption3 = getByLabelText('Option 3');
 
     fireEvent.click(radioOption3);
