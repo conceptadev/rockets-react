@@ -33,6 +33,7 @@ const RoutesRoot = ({ routes, items, renderAppBar }: RoutesRootProps) => {
                 name={child.props.name}
                 items={items}
                 module={child.props.module}
+                page={child.props.page}
               />
             }
           />

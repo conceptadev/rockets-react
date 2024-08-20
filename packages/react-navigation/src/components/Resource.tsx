@@ -6,7 +6,8 @@ type ResourceProps = {
   id: string;
   name: string;
   icon: ReactNode;
-  module: Partial<ModuleProps>;
+  module?: Partial<ModuleProps>;
+  page?: ReactNode;
 };
 
 const Resource = ({ id }: ResourceProps) => {
