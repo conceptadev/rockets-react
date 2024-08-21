@@ -80,7 +80,7 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
   const [formData, setFormData] = useState<Record<string, unknown>>({});
 
   const searchParams = new URLSearchParams(window.location.search);
-  const passcode = '';
+  const passcode = searchParams?.get('token');
 
   const { post, patch, put } = useDataProvider();
   const { doLogin, isPending: isLoadingSignIn } = useAuth();

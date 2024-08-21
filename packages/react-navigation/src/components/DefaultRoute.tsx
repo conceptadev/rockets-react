@@ -8,7 +8,8 @@ import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
 type DefaultRouteProps = {
   resource: string;
   name: string;
-  module: ModuleProps;
+  module?: ModuleProps;
+  page?: ReactNode;
   items: DrawerItemProps[];
   renderAppBar?: (
     menuItems: DrawerItemProps[],
@@ -20,6 +21,7 @@ const DefaultRoute = ({
   resource,
   name,
   module,
+  page,
   items,
   renderAppBar,
 }: DefaultRouteProps) => {
@@ -33,18 +35,27 @@ const DefaultRoute = ({
     },
   }));
 
+  let renderedChildren = null;
+
+  if (page) {
+    renderedChildren = page;
+  }
+
+  if (module) {
+    renderedChildren = (
+      <CrudModule
+        {...module}
+        resource={resource}
+        title={name}
+        navigate={navigate}
+      />
+    );
+  }
+
   if (renderAppBar) {
     return (
       <ProtectedRoute>
-        {renderAppBar(
-          menuItems,
-          <CrudModule
-            {...module}
-            resource={resource}
-            title={name}
-            navigate={navigate}
-          />,
-        )}
+        {renderAppBar(menuItems, renderedChildren)}
       </ProtectedRoute>
     );
   }
@@ -52,12 +63,7 @@ const DefaultRoute = ({
   return (
     <ProtectedRoute>
       <AppBarContainer menuItems={menuItems}>
-        <CrudModule
-          {...module}
-          resource={resource}
-          title={name}
-          navigate={navigate}
-        />
+        {renderedChildren}
       </AppBarContainer>
     </ProtectedRoute>
   );
