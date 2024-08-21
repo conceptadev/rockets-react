@@ -21,8 +21,8 @@ const SignUpRoute = ({ home }: SignUpRouteProps) => {
   return (
     <AuthModule
       route="signUp"
-      moduleProps={{
-        signInPath: '/sign-in',
+      signInPath="/sign-in"
+      query={{
         onSuccess: () => toast.success('Success!'),
         onError: (error: any) =>
           toast.error(
