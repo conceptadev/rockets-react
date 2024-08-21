@@ -1,4 +1,4 @@
-import { ThemeProviderProps } from '@emotion/react';
+import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 import { RocketsAuthProps, RocketsDataProviderProps } from './types';
 
 type RocketsConfig = {

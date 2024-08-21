@@ -7,11 +7,12 @@ import {
   RocketsLayoutProps,
 } from './types';
 import { ThemeProvider } from '../../styles';
-import { ThemeProviderProps } from '@emotion/react';
+import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 import { themeLight } from '../../styles/theme';
 import { ToastContainer } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
 
-import 'react-toastify/dist/ReactToastify.css';
+injectStyle();
 
 export type RocketsProps = {
   /**
