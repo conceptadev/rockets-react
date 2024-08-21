@@ -29,7 +29,7 @@ const RoutesRoot = ({ routes, items, renderAppBar }: RoutesRootProps) => {
             element={
               <DefaultRoute
                 renderAppBar={renderAppBar}
-                resource={child.props?.module?.resource}
+                resource={child.props.id}
                 name={child.props.name}
                 items={items}
                 module={child.props.module}
