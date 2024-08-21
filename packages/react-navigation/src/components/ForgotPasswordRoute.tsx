@@ -21,8 +21,8 @@ const ForgotPasswordRoute = ({ home }: ForgotPasswordRouteProps) => {
   return (
     <AuthModule
       route="forgotPassword"
-      moduleProps={{
-        signInPath: '/sign-in',
+      signInPath="/sign-in"
+      query={{
         onSuccess: () => toast.success('Success!'),
         onError: (error: any) =>
           toast.error(
