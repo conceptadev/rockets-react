@@ -63,7 +63,7 @@ export { default as Text } from './components/Text';
 export { TextField, TextFieldProps } from './components/TextField';
 export { default as SearchField } from './components/SearchField';
 export { default as AutocompleteField } from './components/AutocompleteField';
-export { default as SelectField } from './components/SelectField';
+export { SelectField, SelectFieldProps } from './components/SelectField';
 export { default as SimpleForm } from './components/SimpleForm';
 export {
   Filter,

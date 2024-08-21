@@ -5,7 +5,7 @@ import FilterAlt from '@mui/icons-material/FilterAlt';
 
 import SearchField from '../../components/SearchField';
 import AutocompleteField from '../../components/AutocompleteField';
-import SelectField from '../../components/SelectField';
+import { SelectField } from '../../components/SelectField';
 import {
   SelectFieldProps,
   SelectOption,
