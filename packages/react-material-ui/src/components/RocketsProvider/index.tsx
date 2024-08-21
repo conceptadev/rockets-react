@@ -9,6 +9,9 @@ import {
 import { ThemeProvider } from '../../styles';
 import { ThemeProviderProps } from '@emotion/react';
 import { themeLight } from '../../styles/theme';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 export type RocketsProps = {
   /**
@@ -63,7 +66,13 @@ const RocketsProvider = ({
       baseUrl={dataProvider.apiUrl}
       onRefreshTokenError={auth.handleRefreshTokenError}
     >
-      <ThemeProvider theme={themeLight}>
+      <ThemeProvider theme={theme ?? themeLight}>
+        <ToastContainer
+          hideProgressBar
+          position="top-center"
+          limit={3}
+          autoClose={3000}
+        />
         <AuthProvider onSuccess={auth.onAuthSuccess} onError={auth.onAuthError}>
           {children}
         </AuthProvider>

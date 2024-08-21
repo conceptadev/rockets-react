@@ -22,6 +22,9 @@ const router = (
     menuItems: DrawerItemProps[],
     children: ReactNode,
   ) => ReactNode,
+  renderSignUp?: (home: string) => ReactNode,
+  renderForgotPassword?: (home: string) => ReactNode,
+  renderResetPassword?: (home: string) => ReactNode,
 ) => {
   const firstRoute = routes[0];
 
@@ -35,6 +38,9 @@ const router = (
               routes={routes}
               items={items}
               renderAppBar={renderAppBar}
+              renderSignUp={renderSignUp}
+              renderForgotPassword={renderForgotPassword}
+              renderResetPassword={renderResetPassword}
             />
           </AdminProvider>
         }
@@ -43,18 +49,26 @@ const router = (
   );
 };
 
-const Router = ({
-  children,
-  AdminProvider,
-  renderAppBar,
-}: {
+type RouterProps = {
   children: ReactElement[];
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
     children: ReactNode,
   ) => ReactNode;
-}) => {
+  renderSignUp?: (home: string) => ReactNode;
+  renderForgotPassword?: (home: string) => ReactNode;
+  renderResetPassword?: (home: string) => ReactNode;
+};
+
+const Router = ({
+  children,
+  AdminProvider,
+  renderAppBar,
+  renderSignUp,
+  renderForgotPassword,
+  renderResetPassword,
+}: RouterProps) => {
   const items = Children.map(children, (child) => {
     return {
       id: child.props.id,
@@ -65,7 +79,15 @@ const Router = ({
 
   return (
     <RouterProvider
-      router={router(AdminProvider, children, items, renderAppBar)}
+      router={router(
+        AdminProvider,
+        children,
+        items,
+        renderAppBar,
+        renderSignUp,
+        renderForgotPassword,
+        renderResetPassword,
+      )}
     />
   );
 };

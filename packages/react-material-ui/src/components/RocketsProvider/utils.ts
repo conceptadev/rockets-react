@@ -1,3 +1,4 @@
+import { ThemeProviderProps } from '@emotion/react';
 import { RocketsAuthProps, RocketsDataProviderProps } from './types';
 
 type RocketsConfig = {
@@ -9,6 +10,8 @@ type RocketsConfig = {
    * Configuration for authentication.
    */
   auth: Partial<RocketsAuthProps>;
+
+  theme?: ThemeProviderProps['theme'];
 };
 
 /**
