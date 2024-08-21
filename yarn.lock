@@ -1739,6 +1739,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+    react-toastify: "npm:^10.0.5"
   peerDependencies:
     "@concepta/react-auth-provider": ^1.0.0-alpha.23
     "@concepta/react-data-provider": ^1.0.0-alpha.23
@@ -1764,6 +1765,7 @@ __metadata:
     react-dom: "npm:^18.2.0"
     react-router: "npm:^6.26.0"
     react-router-dom: "npm:^6.26.0"
+    react-toastify: "npm:^10.0.5"
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -15884,6 +15886,18 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 10c0/463078e740462b42bb5ba8004448f33fc9e63778f432a4ed55c57b93c5b519e25fb17913ee8435b0fda33c6b9f75df8ef6fcb2c3a4f8db84fb546d202e29aa51
+  languageName: node
+  linkType: hard
+
+"react-toastify@npm:^10.0.5":
+  version: 10.0.5
+  resolution: "react-toastify@npm:10.0.5"
+  dependencies:
+    clsx: "npm:^2.1.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 10c0/66c68ec3d6c017d9f32652d73bb925224921c6a80b629b9d481430d5b4fd504abb7a99995a64b9aef0fc31326c74f3cbe088b3287b978dd0c355079c4bbf4158
   languageName: node
   linkType: hard
 

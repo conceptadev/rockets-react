@@ -7,8 +7,12 @@ import {
   RocketsLayoutProps,
 } from './types';
 import { ThemeProvider } from '../../styles';
-import { ThemeProviderProps } from '@emotion/react';
+import { ThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 import { themeLight } from '../../styles/theme';
+import { ToastContainer } from 'react-toastify';
+import { injectStyle } from 'react-toastify/dist/inject-style';
+
+injectStyle();
 
 export type RocketsProps = {
   /**
@@ -63,7 +67,13 @@ const RocketsProvider = ({
       baseUrl={dataProvider.apiUrl}
       onRefreshTokenError={auth.handleRefreshTokenError}
     >
-      <ThemeProvider theme={themeLight}>
+      <ThemeProvider theme={theme ?? themeLight}>
+        <ToastContainer
+          hideProgressBar
+          position="top-center"
+          limit={3}
+          autoClose={3000}
+        />
         <AuthProvider onSuccess={auth.onAuthSuccess} onError={auth.onAuthError}>
           {children}
         </AuthProvider>
