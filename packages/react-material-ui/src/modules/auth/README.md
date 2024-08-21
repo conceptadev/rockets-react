@@ -16,14 +16,14 @@ For the module to work out of the box, a minimal configuration is required, layi
 
 With this implementation, a form with `username` and `password` fields should appear in the screen, performing a request for `API_URL/auth/login`, which can be modified by passing a value to the `signInRequestPath` prop. This is available only for the `signIn` route, as the request performed in this flow is made by a custom `doLogin` method, present in the `useAuth` hook imported from the `@concepta/react-auth-provider` package.
 
-The request url and method can be modified passing both the `queryUri` and `queryMethod` props inside a `moduleProps` object, as follows:
+The request url and method can be modified passing a `query` object as props, as follows:
 
 ```jsx
 <AuthModule
   route="signIn"
-  moduleProps={{
-    queryUri: '/auth/sign-in',
-    queryMethod: 'post',
+  query={{
+    uri: '/auth/sign-in',
+    method: 'post',
   }}
 />
 ```
@@ -112,12 +112,12 @@ Each field of an auth form can be validated in a custom way by passing an array 
 
 ## Action feedback
 
-To use custom handlers for success/error on any auth form, the `onSuccess` and `onError` props can be passed to the `moduleProps` object, as follows:
+To use custom handlers for success/error on any auth form, the `onSuccess` and `onError` props can be passed to the `query` object, as follows:
 
 ```jsx
 <AuthModule
   route="signIn"
-  moduleProps={{
+  query={{
     onSuccess: () => window.alert('Success!'),
     onError: (error) => window.alert(error?.response?.data?.message),
   }}
@@ -138,7 +138,7 @@ No link prop is avalable for the Reset Password page, as this flow is made by a 
 
 ## Other modifications
 
-Some parts of the page like logo and title can be modified by passing custom props to the `moduleProps` object, as follows:
+Some parts of the page like logo and title can be modified by passing custom props to the component, as follows:
 
 - `title`: modifies the title displayed in each page, overriding the default title that corresponds to the page;
 - `submitButtonTitle`: changes the text displayed in the form's submit button;
