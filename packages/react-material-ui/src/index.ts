@@ -38,7 +38,7 @@ export {
   RadioGroupProps,
 } from './components/RadioGroup';
 export { SideModal, SideModalProps } from './components/SideModal';
-export { default as Select } from './components/Select';
+export { Select, SelectProps, SelectOptions } from './components/Select';
 export { Switch, SwitchProps } from './components/Switch';
 
 import Table, {

@@ -5,7 +5,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import Select, { SelectOptions } from '../src/components/Select/Select';
+import { Select, SelectOptions } from '../src/components/Select/Select';
 
 describe('Select Component', () => {
   const options: SelectOptions[] = [

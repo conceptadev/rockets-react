@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from '../../components/Select';
+import { Select } from '../../components/Select';
 import { WidgetProps } from '@rjsf/utils';
 
 const CustomSelectWidget = ({
