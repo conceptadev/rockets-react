@@ -27,6 +27,8 @@ const DefaultRoute = ({
 }: DefaultRouteProps) => {
   const navigate = useNavigate();
 
+  const resourceName = resource.substring(1);
+
   const menuItems = items?.map((item) => ({
     ...item,
     onClick: () => {
@@ -45,7 +47,7 @@ const DefaultRoute = ({
     renderedChildren = (
       <CrudModule
         {...module}
-        resource={resource}
+        resource={resourceName}
         title={name}
         navigate={navigate}
       />

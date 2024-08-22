@@ -79,7 +79,7 @@ export {
   FormFieldSkeletonProps,
 } from './components/FormFieldSkeleton';
 
-export { default as AuthModule } from './modules/auth';
+export { AuthModule, AuthModuleProps } from './modules/auth';
 export { default as CrudModule } from './modules/crud';
 export { default as UsersModule } from './modules/users';
 

@@ -64,18 +64,6 @@ ReactDOM.render(
 - `baseUrl` (optional): The base URL for all HTTP requests. This can be an environment variable instead.
 - `onRefreshTokenError` (optional): A callback function that handles errors occurring during the token refresh process.
 
-### BaseUrl in the .env file
-
-If you don't provide a `baseUrl` prop to your `ClientProvider`, you have to add a variable to your .env file called NEXT_PUBLIC_API_URL.
-
-#### **`.env`**
-
-```typescript filename=".env"
-NEXT_PUBLIC_API_URL="[YOUR API BASE URL]
-```
-
-If you apply both methods, Data Provider will use the url provided for the `baseUrl` prop in `<ClientProvider>`
-
 ## API Request Methods and Parameters in useDataProvider
 
 The `useDataProvider` hook provides an easy way to make HTTP requests using various methods: `POST`, `GET`, `PUT`, `PATCH`, and `DELETE`. Each method accepts specific parameters that help configure the request. Below is a detailed explanation of each method and its parameters.

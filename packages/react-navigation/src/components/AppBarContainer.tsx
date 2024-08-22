@@ -5,20 +5,20 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { AppBar, DrawerItemProps } from '@concepta/react-material-ui';
 
-type HandleCloseMenu = () => void;
+type AppBarContainer = {
+  children: ReactNode;
+  menuItems: DrawerItemProps[];
+};
 
 export default function AppBarContainer({
   children,
   menuItems,
-}: {
-  children: ReactNode;
-  menuItems: DrawerItemProps[];
-}) {
+}: AppBarContainer) {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, doLogout } = useAuth();
 
-  const onLogoutClick = (handleCloseMenu: HandleCloseMenu) => {
+  const onLogoutClick = (handleCloseMenu: () => void) => {
     handleCloseMenu();
     doLogout();
     startTransition(() => navigate('/sign-in'));

@@ -6,14 +6,17 @@ import DefaultRoute from './DefaultRoute';
 import SignUpRoute from './SignUpRoute';
 import ResetPasswordRoute from './ResetPasswordRoute';
 import ForgotPasswordRoute from './ForgotPasswordRoute';
+import { AuthModule } from './Router';
 
 type RoutesRootProps = {
   items: DrawerItemProps[];
   routes: ReactElement[];
+  authModuleProps?: AuthModule;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
     children: ReactNode,
   ) => ReactNode;
+  renderSignIn?: (home: string) => ReactNode;
   renderSignUp?: (home: string) => ReactNode;
   renderForgotPassword?: (home: string) => ReactNode;
   renderResetPassword?: (home: string) => ReactNode;
@@ -22,25 +25,35 @@ type RoutesRootProps = {
 const RoutesRoot = ({
   routes,
   items,
+  authModuleProps,
   renderAppBar,
+  renderSignIn,
   renderSignUp,
   renderForgotPassword,
   renderResetPassword,
 }: RoutesRootProps) => {
+  const home = routes[0].props.id;
+
   return (
     <Routes>
-      <Route path="/" element={<Navigate to={routes[0].props.id} replace />} />
+      <Route path="/" element={<Navigate to={home} replace />} />
       <Route
         path="/sign-in"
-        element={<LoginRoute home={routes[0].props.id} />}
+        element={
+          renderSignIn ? (
+            renderSignIn(home)
+          ) : (
+            <LoginRoute home={home} moduleProps={authModuleProps?.signIn} />
+          )
+        }
       />
       <Route
         path="/sign-up"
         element={
           renderSignUp ? (
-            renderSignUp(routes[0].props.id)
+            renderSignUp(home)
           ) : (
-            <SignUpRoute home={routes[0].props.id} />
+            <SignUpRoute home={home} moduleProps={authModuleProps?.signUp} />
           )
         }
       />
@@ -48,9 +61,12 @@ const RoutesRoot = ({
         path="/forgot-password"
         element={
           renderForgotPassword ? (
-            renderForgotPassword(routes[0].props.id)
+            renderForgotPassword(home)
           ) : (
-            <ForgotPasswordRoute home={routes[0].props.id} />
+            <ForgotPasswordRoute
+              home={home}
+              moduleProps={authModuleProps?.forgotPassword}
+            />
           )
         }
       />
@@ -58,9 +74,12 @@ const RoutesRoot = ({
         path="/reset-password"
         element={
           renderResetPassword ? (
-            renderResetPassword(routes[0].props.id)
+            renderResetPassword(home)
           ) : (
-            <ResetPasswordRoute home={routes[0].props.id} />
+            <ResetPasswordRoute
+              home={home}
+              moduleProps={authModuleProps?.resetPassword}
+            />
           )
         }
       />

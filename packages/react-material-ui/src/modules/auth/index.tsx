@@ -32,7 +32,7 @@ interface FormProps {
   submitButtonTitle?: string;
 }
 
-interface AuthModuleProps {
+export interface AuthModuleProps {
   route: Route;
   query?: Query;
   headerComponent?: ReactNode;
@@ -45,7 +45,7 @@ interface AuthModuleProps {
   formProps?: FormProps;
 }
 
-const AuthModule = (props: AuthModuleProps) => {
+export const AuthModule = (props: AuthModuleProps) => {
   const defaultModuleProps = {
     signIn: signInModuleProps,
     signUp: signUpModuleProps,
@@ -67,5 +67,3 @@ const AuthModule = (props: AuthModuleProps) => {
     />
   );
 };
-
-export default AuthModule;

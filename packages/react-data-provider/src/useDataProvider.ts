@@ -21,9 +21,6 @@ const maxAge = 10000;
 
 const useDataProvider = () => {
   const { baseUrl, onRefreshTokenError } = useClient();
-  const envBaseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  const _baseUrl = baseUrl || envBaseUrl;
 
   //TODO
   //let user inject any http instance that match the HttpClient interface requirements
@@ -64,7 +61,7 @@ const useDataProvider = () => {
   );
 
   client.defaultConfig({
-    baseURL: _baseUrl,
+    baseURL: baseUrl,
     skipAuthUris: ['login', 'refresh'],
     headers: {
       'Content-Type': 'application/json',

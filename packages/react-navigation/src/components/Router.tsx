@@ -6,29 +6,44 @@ import React, {
   ReactNode,
 } from 'react';
 import {
+  createMemoryRouter,
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
   Route,
 } from 'react-router-dom';
-import { DrawerItemProps } from '@concepta/react-material-ui/';
+import { DrawerItemProps, AuthModuleProps } from '@concepta/react-material-ui/';
 import RoutesRoot from './RoutesRoot';
+
+export type AuthModule = {
+  signIn?: AuthModuleProps;
+  signUp?: AuthModuleProps;
+  forgotPassword?: AuthModuleProps;
+  resetPassword?: AuthModuleProps;
+};
 
 const router = (
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>,
   routes: ReactElement[],
   items: DrawerItemProps[],
+  authModuleProps?: AuthModule,
+  useMemoryRouter?: boolean,
   renderAppBar?: (
     menuItems: DrawerItemProps[],
     children: ReactNode,
   ) => ReactNode,
+  renderSignIn?: (home: string) => ReactNode,
   renderSignUp?: (home: string) => ReactNode,
   renderForgotPassword?: (home: string) => ReactNode,
   renderResetPassword?: (home: string) => ReactNode,
 ) => {
   const firstRoute = routes[0];
 
-  return createBrowserRouter(
+  const createRouter = useMemoryRouter
+    ? createMemoryRouter
+    : createBrowserRouter;
+
+  return createRouter(
     createRoutesFromElements(
       <Route
         path="/*"
@@ -37,7 +52,9 @@ const router = (
             <RoutesRoot
               routes={routes}
               items={items}
+              authModuleProps={authModuleProps}
               renderAppBar={renderAppBar}
+              renderSignIn={renderSignIn}
               renderSignUp={renderSignUp}
               renderForgotPassword={renderForgotPassword}
               renderResetPassword={renderResetPassword}
@@ -52,10 +69,13 @@ const router = (
 type RouterProps = {
   children: ReactElement[];
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>;
+  useMemoryRouter?: boolean;
+  authModuleProps?: AuthModule;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
     children: ReactNode,
   ) => ReactNode;
+  renderSignIn?: (home: string) => ReactNode;
   renderSignUp?: (home: string) => ReactNode;
   renderForgotPassword?: (home: string) => ReactNode;
   renderResetPassword?: (home: string) => ReactNode;
@@ -64,7 +84,10 @@ type RouterProps = {
 const Router = ({
   children,
   AdminProvider,
+  useMemoryRouter = false,
+  authModuleProps,
   renderAppBar,
+  renderSignIn,
   renderSignUp,
   renderForgotPassword,
   renderResetPassword,
@@ -83,7 +106,10 @@ const Router = ({
         AdminProvider,
         children,
         items,
+        authModuleProps,
+        useMemoryRouter,
         renderAppBar,
+        renderSignIn,
         renderSignUp,
         renderForgotPassword,
         renderResetPassword,
