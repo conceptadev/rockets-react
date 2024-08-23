@@ -1,7 +1,11 @@
 import React, { Children, ReactElement, ReactNode } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import LoginRoute from './LoginRoute';
-import { DrawerItemProps } from '@concepta/react-material-ui';
+import {
+  DrawerItemProps,
+  DrawerProps,
+  NavbarProps,
+} from '@concepta/react-material-ui';
 import DefaultRoute from './DefaultRoute';
 import SignUpRoute from './SignUpRoute';
 import ResetPasswordRoute from './ResetPasswordRoute';
@@ -12,6 +16,8 @@ type RoutesRootProps = {
   items: DrawerItemProps[];
   routes: ReactElement[];
   authModuleProps?: AuthModule;
+  drawerProps?: DrawerProps;
+  navbarProps?: NavbarProps;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
     children: ReactNode,
@@ -26,6 +32,8 @@ const RoutesRoot = ({
   routes,
   items,
   authModuleProps,
+  drawerProps,
+  navbarProps,
   renderAppBar,
   renderSignIn,
   renderSignUp,
@@ -93,9 +101,11 @@ const RoutesRoot = ({
                 renderAppBar={renderAppBar}
                 resource={child.props.id}
                 name={child.props.name}
-                items={items}
                 module={child.props.module}
                 page={child.props.page}
+                items={items}
+                drawerProps={drawerProps}
+                navbarProps={navbarProps}
               />
             }
           />

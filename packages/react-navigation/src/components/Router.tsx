@@ -12,7 +12,12 @@ import {
   RouterProvider,
   Route,
 } from 'react-router-dom';
-import { DrawerItemProps, AuthModuleProps } from '@concepta/react-material-ui/';
+import {
+  DrawerItemProps,
+  AuthModuleProps,
+  DrawerProps,
+  NavbarProps,
+} from '@concepta/react-material-ui/';
 import RoutesRoot from './RoutesRoot';
 
 export type AuthModule = {
@@ -27,6 +32,8 @@ const router = (
   routes: ReactElement[],
   items: DrawerItemProps[],
   authModuleProps?: AuthModule,
+  drawerProps?: DrawerProps,
+  navbarProps?: NavbarProps,
   useMemoryRouter?: boolean,
   renderAppBar?: (
     menuItems: DrawerItemProps[],
@@ -53,6 +60,8 @@ const router = (
               routes={routes}
               items={items}
               authModuleProps={authModuleProps}
+              drawerProps={drawerProps}
+              navbarProps={navbarProps}
               renderAppBar={renderAppBar}
               renderSignIn={renderSignIn}
               renderSignUp={renderSignUp}
@@ -71,6 +80,8 @@ type RouterProps = {
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>;
   useMemoryRouter?: boolean;
   authModuleProps?: AuthModule;
+  drawerProps?: DrawerProps;
+  navbarProps?: NavbarProps;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
     children: ReactNode,
@@ -86,6 +97,8 @@ const Router = ({
   AdminProvider,
   useMemoryRouter = false,
   authModuleProps,
+  drawerProps,
+  navbarProps,
   renderAppBar,
   renderSignIn,
   renderSignUp,
@@ -107,6 +120,8 @@ const Router = ({
         children,
         items,
         authModuleProps,
+        drawerProps,
+        navbarProps,
         useMemoryRouter,
         renderAppBar,
         renderSignIn,
