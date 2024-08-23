@@ -16,7 +16,7 @@ import { SxProps, Theme } from '@mui/material/styles';
  */
 export type DrawerProps = {
   /** Array of items to display in the drawer */
-  items: DrawerItemProps[];
+  items?: DrawerItemProps[];
   /** ID of the currently active item, changing the menu item to active when the page selected corresponds to the path name. */
   currentId?: string;
   /** Custom node that can be rendered on the bottom of the Drawer, serving as toggle for expanded/collapsed state. */
@@ -137,7 +137,7 @@ export const Drawer = (props: DrawerProps) => {
           {renderLogo()}
         </Toolbar>
 
-        {items.map((item, i) => {
+        {items?.map((item, i) => {
           const isActive = !!currentId && currentId.startsWith(item.id);
           if (item.component)
             return (

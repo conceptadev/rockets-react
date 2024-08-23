@@ -2,7 +2,12 @@ import React, { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import AppBarContainer from './AppBarContainer';
-import { CrudModule, DrawerItemProps } from '@concepta/react-material-ui/';
+import {
+  CrudModule,
+  DrawerItemProps,
+  DrawerProps,
+  NavbarProps,
+} from '@concepta/react-material-ui/';
 import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
 
 type DefaultRouteProps = {
@@ -11,6 +16,8 @@ type DefaultRouteProps = {
   module?: ModuleProps;
   page?: ReactNode;
   items: DrawerItemProps[];
+  drawerProps?: DrawerProps;
+  navbarProps?: NavbarProps;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
     children: ReactNode,
@@ -23,6 +30,8 @@ const DefaultRoute = ({
   module,
   page,
   items,
+  drawerProps,
+  navbarProps,
   renderAppBar,
 }: DefaultRouteProps) => {
   const navigate = useNavigate();
@@ -64,7 +73,11 @@ const DefaultRoute = ({
 
   return (
     <ProtectedRoute>
-      <AppBarContainer menuItems={menuItems}>
+      <AppBarContainer
+        menuItems={menuItems}
+        drawerProps={drawerProps}
+        navbarProps={navbarProps}
+      >
         {renderedChildren}
       </AppBarContainer>
     </ProtectedRoute>
