@@ -104,7 +104,12 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
       }),
     false,
     {
-      onSuccess: props.query?.onSuccess,
+      onSuccess: async (data) => {
+        // request para /me
+
+        // set no user using setUser
+        props.query?.onSuccess(data);
+      },
       onError: props.query?.onError,
     },
   );

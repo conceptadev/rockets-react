@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { useState, PropsWithChildren, ReactNode } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
@@ -90,6 +90,9 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     ...otherProps
   } = props;
 
+  const [fieldValues, setFieldValues] =
+    useState<DrawerFormSubmoduleProps['formData']>(null);
+
   const { post, patch, del } = useDataProvider();
 
   const { execute: createItem, isPending: isLoadingCreation } = useQuery(
@@ -130,17 +133,19 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     },
   );
 
-  const handleFormSubmit = async (
+  const handleFieldChange = async (
     values: IChangeEvent<Record<string, unknown>>,
   ) => {
-    const fields = values.formData || {};
+    setFieldValues(values.formData);
+  };
 
+  const handleFormSubmit = async () => {
     if (viewMode === 'creation') {
-      await createItem(fields);
+      await createItem(fieldValues);
     }
 
     if (viewMode === 'edit') {
-      await editItem(fields);
+      await editItem(fieldValues);
     }
   };
 
@@ -200,13 +205,13 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
             'ui:submitButtonOptions': { norender: true },
           }}
           validator={validator}
-          onSubmit={handleFormSubmit}
           noHtml5Validate={true}
           showErrorList={false}
           formData={formData}
           widgets={_widgets}
           customValidate={customValidate}
           readonly={viewMode === 'details'}
+          onChange={handleFieldChange}
           {...otherProps}
         >
           {children}
@@ -272,7 +277,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
                 type="submit"
                 variant="contained"
                 disabled={isLoadingCreation || isLoadingEdit || isLoadingDelete}
-                onClick={() => editItem(formData)}
+                onClick={handleFormSubmit}
                 sx={{ flex: 1 }}
               >
                 {isLoadingCreation || isLoadingEdit ? (

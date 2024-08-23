@@ -263,7 +263,6 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                     disabled={
                       isLoadingCreation || isLoadingEdit || isLoadingDelete
                     }
-                    onClick={() => editItem(formData)}
                     sx={{ flex: 1 }}
                   >
                     {isLoadingCreation || isLoadingEdit ? (
