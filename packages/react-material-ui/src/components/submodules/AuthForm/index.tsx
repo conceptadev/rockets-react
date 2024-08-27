@@ -33,6 +33,8 @@ const widgets = {
   TextWidget: CustomTextFieldWidget,
 };
 
+type Route = 'signIn' | 'signUp' | 'forgotPassword' | 'resetPassword';
+
 type Query = {
   uri?: string;
   method?: string;
@@ -40,8 +42,8 @@ type Query = {
   onError?: (error: unknown) => void;
 };
 
-interface AuthFormSubmoduleProps {
-  route: string;
+export interface AuthFormSubmoduleProps {
+  route: Route;
   query?: Query;
   title?: string | ReactNode;
   hideTitle?: boolean;
@@ -149,92 +151,94 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
     }[props.route] || {};
 
   return (
-    <Container maxWidth="xs" sx={{ textAlign: 'center', padding: '48px 0' }}>
+    <Container sx={{ textAlign: 'center', padding: '48px 0' }}>
       {!props.hideLogo && (
         <Image src={props.logoSrc || '/logo.svg'} alt="logo" />
       )}
 
       {props.headerComponent || null}
 
-      <Card sx={{ padding: '24px', marginTop: '32px' }}>
-        {!props.hideTitle && renderTitle(props.title ?? defaultRouteTitle)}
+      <Container maxWidth="xs">
+        <Card sx={{ padding: '24px', marginTop: '32px' }}>
+          {!props.hideTitle && renderTitle(props.title ?? defaultRouteTitle)}
 
-        <SchemaForm.Form
-          schema={{
-            ...defaultFormSchema,
-            ...props.formSchema,
-            required: props.overrideDefaults
-              ? props.formSchema?.required || []
-              : [
-                  ...(defaultFormSchema.required || []),
-                  ...(props.formSchema?.required || []),
-                ],
-            properties: props.overrideDefaults
-              ? props.formSchema?.properties || {}
-              : {
-                  ...(defaultFormSchema.properties || {}),
-                  ...(props.formSchema?.properties || {}),
-                },
-          }}
-          uiSchema={{ ...defaultAuthUiSchema, ...props.formUiSchema }}
-          validator={validator}
-          formData={props.formData || formData}
-          onChange={({ formData }) => setFormData(formData)}
-          onSubmit={handleSubmit}
-          noHtml5Validate={true}
-          showErrorList={false}
-          advancedProperties={props.advancedProperties}
-          customValidate={(formData, errors) =>
-            validateForm(formData, errors, props.customValidation || [])
-          }
-          widgets={widgets}
-        >
-          {props.forgotPasswordPath ? (
-            <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 2 }}>
-              <Link href={props.forgotPasswordPath} color="primary.dark">
-                Forgot your password?
+          <SchemaForm.Form
+            schema={{
+              ...defaultFormSchema,
+              ...props.formSchema,
+              required: props.overrideDefaults
+                ? props.formSchema?.required || []
+                : [
+                    ...(defaultFormSchema.required || []),
+                    ...(props.formSchema?.required || []),
+                  ],
+              properties: props.overrideDefaults
+                ? props.formSchema?.properties || {}
+                : {
+                    ...(defaultFormSchema.properties || {}),
+                    ...(props.formSchema?.properties || {}),
+                  },
+            }}
+            uiSchema={{ ...defaultAuthUiSchema, ...props.formUiSchema }}
+            validator={validator}
+            formData={props.formData || formData}
+            onChange={({ formData }) => setFormData(formData)}
+            onSubmit={handleSubmit}
+            noHtml5Validate={true}
+            showErrorList={false}
+            advancedProperties={props.advancedProperties}
+            customValidate={(formData, errors) =>
+              validateForm(formData, errors, props.customValidation || [])
+            }
+            widgets={widgets}
+          >
+            {props.forgotPasswordPath ? (
+              <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 2 }}>
+                <Link href={props.forgotPasswordPath} color="primary.dark">
+                  Forgot your password?
+                </Link>
+              </Text>
+            ) : null}
+
+            <Box
+              display="flex"
+              flexDirection="row"
+              alignItems="center"
+              justifyContent="space-between"
+              mt={2}
+            >
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={Boolean(isLoading)}
+                sx={{ flex: 1 }}
+              >
+                {isLoading ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  props.submitButtonTitle || 'Send'
+                )}
+              </Button>
+            </Box>
+          </SchemaForm.Form>
+
+          {props.signInPath ? (
+            <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
+              <Link href={props.signInPath} color="primary.dark">
+                Already have an account? Sign in
               </Link>
             </Text>
           ) : null}
 
-          <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mt={2}
-          >
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={Boolean(isLoading)}
-              sx={{ flex: 1 }}
-            >
-              {isLoading ? (
-                <CircularProgress sx={{ color: 'white' }} size={24} />
-              ) : (
-                props.submitButtonTitle || 'Send'
-              )}
-            </Button>
-          </Box>
-        </SchemaForm.Form>
-
-        {props.signInPath ? (
-          <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
-            <Link href={props.signInPath} color="primary.dark">
-              Already have an account? Sign in
-            </Link>
-          </Text>
-        ) : null}
-
-        {props.signUpPath ? (
-          <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
-            <Link href={props.signUpPath} color="primary.dark">
-              No account? Sign up
-            </Link>
-          </Text>
-        ) : null}
-      </Card>
+          {props.signUpPath ? (
+            <Text fontSize={14} fontWeight={500} gutterBottom sx={{ mt: 3 }}>
+              <Link href={props.signUpPath} color="primary.dark">
+                No account? Sign up
+              </Link>
+            </Text>
+          ) : null}
+        </Card>
+      </Container>
     </Container>
   );
 };

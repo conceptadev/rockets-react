@@ -1,10 +1,8 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
-import type { RJSFSchema, UiSchema } from '@rjsf/utils';
-
-import type { ValidationRule } from '../../utils/form/validation';
-
-import AuthFormSubmodule from '../../components/submodules/AuthForm';
+import AuthFormSubmodule, {
+  AuthFormSubmoduleProps,
+} from '../../components/submodules/AuthForm';
 
 import {
   signInModuleProps,
@@ -13,36 +11,8 @@ import {
   resetPasswordModuleProps,
 } from './constants';
 
-type Route = 'signIn' | 'signUp' | 'forgotPassword' | 'resetPassword';
-
-type Query = {
-  uri?: string;
-  method?: string;
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: unknown) => void;
-};
-
-interface FormProps {
-  title?: string | ReactNode;
-  hideTitle?: boolean;
-  formSchema?: RJSFSchema;
-  formUiSchema?: UiSchema;
-  customValidation?: ValidationRule<Record<string, string>>[];
-  overrideDefaults?: boolean;
-  submitButtonTitle?: string;
-}
-
-export interface AuthModuleProps {
-  route: Route;
-  query?: Query;
-  headerComponent?: ReactNode;
-  signInRequestPath?: string;
-  forgotPasswordPath?: string;
-  signUpPath?: string;
-  signInPath?: string;
-  logoSrc?: string;
-  hideLogo?: boolean;
-  formProps?: FormProps;
+export interface AuthModuleProps extends AuthFormSubmoduleProps {
+  formProps?: Omit<AuthFormSubmoduleProps, 'route'>;
 }
 
 export const AuthModule = (props: AuthModuleProps) => {
