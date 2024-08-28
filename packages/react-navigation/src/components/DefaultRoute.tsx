@@ -79,7 +79,11 @@ const DefaultRoute = ({
 
   if (!isUnprotected) {
     return (
-      <AppBarContainer menuItems={menuItems}>
+      <AppBarContainer
+        menuItems={menuItems}
+        drawerProps={drawerProps}
+        navbarProps={navbarProps}
+      >
         {renderedChildren}
       </AppBarContainer>
     );
