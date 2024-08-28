@@ -6,6 +6,7 @@ type ResourceProps = {
   id: string;
   name: string;
   icon: ReactNode;
+  isUnprotected?: boolean;
   module?: Partial<ModuleProps>;
   page?: ReactNode;
 };

@@ -13,6 +13,7 @@ import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
 type DefaultRouteProps = {
   resource: string;
   name: string;
+  isUnprotected?: boolean;
   module?: ModuleProps;
   page?: ReactNode;
   items: DrawerItemProps[];
@@ -27,6 +28,7 @@ type DefaultRouteProps = {
 const DefaultRoute = ({
   resource,
   name,
+  isUnprotected = false,
   module,
   page,
   items,
@@ -64,10 +66,22 @@ const DefaultRoute = ({
   }
 
   if (renderAppBar) {
+    if (!isUnprotected) {
+      return <>{renderAppBar(menuItems, renderedChildren)}</>;
+    }
+
     return (
       <ProtectedRoute>
         {renderAppBar(menuItems, renderedChildren)}
       </ProtectedRoute>
+    );
+  }
+
+  if (!isUnprotected) {
+    return (
+      <AppBarContainer menuItems={menuItems}>
+        {renderedChildren}
+      </AppBarContainer>
     );
   }
 
