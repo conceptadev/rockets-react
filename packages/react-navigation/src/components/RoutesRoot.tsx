@@ -11,6 +11,7 @@ import { AuthModule } from './Router';
 type RoutesRootProps = {
   items: DrawerItemProps[];
   routes: ReactElement[];
+  defaultRoute?: string;
   authModuleProps?: AuthModule;
   renderAppBar?: (
     menuItems: DrawerItemProps[],
@@ -25,6 +26,7 @@ type RoutesRootProps = {
 const RoutesRoot = ({
   routes,
   items,
+  defaultRoute,
   authModuleProps,
   renderAppBar,
   renderSignIn,
@@ -32,7 +34,7 @@ const RoutesRoot = ({
   renderForgotPassword,
   renderResetPassword,
 }: RoutesRootProps) => {
-  const home = routes[0].props.id;
+  const home = defaultRoute ?? routes[0].props.id;
 
   return (
     <Routes>
@@ -91,6 +93,7 @@ const RoutesRoot = ({
             element={
               <DefaultRoute
                 renderAppBar={renderAppBar}
+                isUnprotected={child.props.isUnprotected}
                 resource={child.props.id}
                 name={child.props.name}
                 items={items}
