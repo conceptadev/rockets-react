@@ -8,10 +8,7 @@ import {
   DialogTitle,
   DialogContent,
   IconButton,
-  Typography,
 } from '@mui/material';
-import ChevronLeft from '@mui/icons-material/ChevronLeft';
-import ChevronRight from '@mui/icons-material/ChevronRight';
 import CloseIcon from '@mui/icons-material/Close';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
@@ -19,6 +16,7 @@ import validator from '@rjsf/validator-ajv6';
 import { SchemaForm } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 import { FormSubmoduleProps } from '../types/Form';
+import TableRowControls from '../TableRowControls';
 
 const ModalFormSubmodule = (props: FormSubmoduleProps) => {
   const {
@@ -158,26 +156,20 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
             mt={4}
           >
             {viewMode !== 'creation' && (
-              <Box display="flex" alignItems="center" gap={2}>
-                <IconButton
-                  onClick={() => onPrevious(formData)}
-                  disabled={isLoading || (currentPage === 1 && viewIndex === 1)}
-                >
-                  <ChevronLeft sx={{ color: '#333' }} />
-                </IconButton>
-                <Typography>
-                  {isLoading ? '' : `Row ${viewIndex}/${rowsPerPage}`}
-                </Typography>
-                <IconButton
-                  onClick={() => onNext(formData)}
-                  disabled={
-                    isLoading ||
-                    (currentPage === pageCount && viewIndex === rowsPerPage)
-                  }
-                >
-                  <ChevronRight sx={{ color: '#333' }} />
-                </IconButton>
-              </Box>
+              <TableRowControls
+                isLoading={isLoading}
+                currentIndex={viewIndex}
+                rowsPerPage={rowsPerPage}
+                isPreviousDisabled={
+                  isLoading || (currentPage === 1 && viewIndex === 1)
+                }
+                isNextDisabled={
+                  isLoading ||
+                  (currentPage === pageCount && viewIndex === rowsPerPage)
+                }
+                onPrevious={() => onPrevious(formData)}
+                onNext={() => onNext(formData)}
+              />
             )}
             <Box
               display="flex"
