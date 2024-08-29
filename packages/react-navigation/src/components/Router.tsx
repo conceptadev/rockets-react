@@ -31,7 +31,7 @@ const router = (
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>,
   routes: ReactElement[],
   items: DrawerItemProps[],
-  defaultRoute?: string,
+  initialRoute?: string,
   authModuleProps?: AuthModule,
   drawerProps?: DrawerProps,
   navbarProps?: NavbarProps,
@@ -56,11 +56,11 @@ const router = (
       <Route
         path="/*"
         element={
-          <AdminProvider home={defaultRoute ?? firstRoute?.props.id}>
+          <AdminProvider home={initialRoute ?? firstRoute?.props.id}>
             <RoutesRoot
               routes={routes}
               items={items}
-              defaultRoute={defaultRoute}
+              initialRoute={initialRoute}
               authModuleProps={authModuleProps}
               drawerProps={drawerProps}
               navbarProps={navbarProps}
@@ -80,7 +80,7 @@ const router = (
 type RouterProps = {
   children: ReactElement[];
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>;
-  defaultRoute?: string;
+  initialRoute?: string;
   useMemoryRouter?: boolean;
   authModuleProps?: AuthModule;
   drawerProps?: DrawerProps;
@@ -98,7 +98,7 @@ type RouterProps = {
 const Router = ({
   children,
   AdminProvider,
-  defaultRoute,
+  initialRoute,
   useMemoryRouter = false,
   authModuleProps,
   drawerProps,
@@ -123,7 +123,7 @@ const Router = ({
         AdminProvider,
         children,
         items,
-        defaultRoute,
+        initialRoute,
         authModuleProps,
         drawerProps,
         navbarProps,

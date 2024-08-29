@@ -15,7 +15,7 @@ import { AuthModule } from './Router';
 type RoutesRootProps = {
   items: DrawerItemProps[];
   routes: ReactElement[];
-  defaultRoute?: string;
+  initialRoute?: string;
   authModuleProps?: AuthModule;
   drawerProps?: DrawerProps;
   navbarProps?: NavbarProps;
@@ -32,7 +32,7 @@ type RoutesRootProps = {
 const RoutesRoot = ({
   routes,
   items,
-  defaultRoute,
+  initialRoute,
   authModuleProps,
   drawerProps,
   navbarProps,
@@ -42,11 +42,14 @@ const RoutesRoot = ({
   renderForgotPassword,
   renderResetPassword,
 }: RoutesRootProps) => {
-  const home = defaultRoute ?? routes[0].props.id;
+  const home = routes[0].props.id;
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to={home} replace />} />
+      <Route
+        path="/"
+        element={<Navigate to={initialRoute ?? home} replace />}
+      />
       <Route
         path="/sign-in"
         element={
