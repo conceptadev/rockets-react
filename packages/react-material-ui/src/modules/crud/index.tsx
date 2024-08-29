@@ -89,6 +89,7 @@ const CrudModule = (props: ModuleProps) => {
   const [drawerViewMode, setDrawerViewMode] = useState<Action>(null);
   const [selectedRow, setSelectedRow] = useState<SelectedRow>(null);
   const [currentViewIndex, setCurrentViewIndex] = useState<number>(0);
+  const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   const useTableReturn = useTable(props.resource, {
     callbacks: {
@@ -224,11 +225,13 @@ const CrudModule = (props: ModuleProps) => {
             setSelectedRow(payload.row);
             setDrawerViewMode(payload.action);
             setCurrentViewIndex(payload.index);
+            setFormVisible(true);
           }}
           onAddNew={() => {
             setSelectedRow(null);
             setDrawerViewMode('creation');
             setCurrentViewIndex(0);
+            setFormVisible(true);
           }}
           hideAddButton={!props.createFormProps}
           hideEditButton={!props.editFormProps || props.hideEditButton}
@@ -250,37 +253,26 @@ const CrudModule = (props: ModuleProps) => {
 
         {enhancedFormProps && (
           <FormComponent
+            isVisible={isFormVisible}
             title={props.title}
             queryResource={props.resource}
             viewMode={drawerViewMode}
             formData={selectedRow}
             onSuccess={(data) => {
               useTableReturn.refresh();
-
-              setSelectedRow(null);
-              setDrawerViewMode(null);
-              setCurrentViewIndex(0);
-
+              setFormVisible(false);
               if (formOnSuccess) {
                 formOnSuccess(data);
               }
             }}
             onDeleteSuccess={(data) => {
               useTableReturn.refresh();
-
-              setSelectedRow(null);
-              setDrawerViewMode(null);
-              setCurrentViewIndex(0);
-
+              setFormVisible(false);
               if (formOnDeleteSuccess) {
                 formOnDeleteSuccess(data);
               }
             }}
-            onClose={() => {
-              setSelectedRow(null);
-              setDrawerViewMode(null);
-              setCurrentViewIndex(0);
-            }}
+            onClose={() => setFormVisible(false)}
             onPrevious={() => changeCurrentFormData('previous')}
             onNext={() => changeCurrentFormData('next')}
             isLoading={isPending}

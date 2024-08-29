@@ -1,8 +1,5 @@
-import React, { useState, PropsWithChildren, ReactNode } from 'react';
-
-import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
-import type { IChangeEvent, FormProps } from '@rjsf/core';
-
+import React, { useState } from 'react';
+import type { IChangeEvent } from '@rjsf/core';
 import {
   Box,
   Drawer,
@@ -17,53 +14,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
-import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
-
+import { SchemaForm } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
+import { FormSubmoduleProps } from '../types/Form';
 
-type Action = 'creation' | 'edit' | 'details' | null;
-
-type DrawerFormSubmoduleProps = PropsWithChildren<
-  Omit<
-    SchemaFormProps,
-    | 'schema'
-    | 'uiSchema'
-    | 'validator'
-    | 'onSubmit'
-    | 'noHtml5Validate'
-    | 'showErrorList'
-    | 'formData'
-    | 'readonly'
-    | 'customValidate'
-  >
-> & {
-  queryResource: string;
-  title?: string;
-  formSchema?: RJSFSchema;
-  viewMode?: Action | null;
-  formUiSchema?: UiSchema;
-  formData?: Record<string, unknown> | null;
-  submitButtonTitle?: string;
-  cancelButtonTitle?: string;
-  hideCancelButton?: boolean;
-  customFooterContent?: ReactNode;
-  onClose?: () => void;
-  customValidate?: CustomValidator;
-  widgets?: FormProps['widgets'];
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: unknown) => void;
-  onDeleteSuccess?: (data: unknown) => void;
-  onDeleteError?: (error: unknown) => void;
-  onPrevious?: (data: unknown) => void;
-  onNext?: (data: unknown) => void;
-  isLoading?: boolean;
-  viewIndex?: number;
-  rowsPerPage?: number;
-  currentPage?: number;
-  pageCount?: number;
-};
-
-const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
+const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
   const {
     queryResource,
     viewMode,
@@ -87,11 +42,12 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
     rowsPerPage,
     currentPage,
     pageCount,
+    isVisible,
     ...otherProps
   } = props;
 
   const [fieldValues, setFieldValues] =
-    useState<DrawerFormSubmoduleProps['formData']>(null);
+    useState<FormSubmoduleProps['formData']>(null);
 
   const { post, patch, del } = useDataProvider();
 
@@ -155,7 +111,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
   };
 
   return (
-    <Drawer open={viewMode !== null} anchor="right">
+    <Drawer open={isVisible} anchor="right">
       <Box
         display="flex"
         alignItems="center"
