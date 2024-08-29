@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, ReactNode } from 'react';
 import {
   Filter,
   FilterVariant,
@@ -42,6 +42,7 @@ export type FilterCallback = (filter: FilterValues) => void;
 type Props = {
   orderableListCacheKey?: string;
   cacheApiPath?: string;
+  complementaryActions?: ReactNode;
 };
 
 const FilterSubmodule = (props: Props) => {
