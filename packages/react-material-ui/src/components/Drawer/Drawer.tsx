@@ -123,95 +123,93 @@ export const Drawer = (props: DrawerProps) => {
     return logo;
   }, [logo, _collapsed]);
 
-  const drawerContent = useCallback(
-    (hideToggle?: boolean) => (
-      <Box display="flex" flexDirection="column" sx={sx} flex={1}>
+  const drawerContent = (hideToggle?: boolean) => (
+    <Box display="flex" flexDirection="column" sx={sx} flex={1}>
+      <Toolbar
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: horizontal ? 'start' : 'center',
+          p: '20px 16px 17px !important',
+        }}
+      >
+        {renderLogo()}
+      </Toolbar>
+
+      {items?.map((item, i) => {
+        const isActive = !!currentId && currentId.startsWith(item.id);
+        if (item.component)
+          return (
+            <Box onClick={item.onClick} className={isActive ? 'active' : ''}>
+              {typeof item.component === 'function'
+                ? item.component(
+                    !!currentId && currentId.startsWith(item.id),
+                    _collapsed,
+                  )
+                : item.component}
+            </Box>
+          );
+
+        return (
+          <DrawerItem
+            key={item.id || i}
+            {...item}
+            collapsed={!mobileIsOpen && _collapsed}
+            active={isActive}
+            textProps={textProps}
+            sx={[buttonSx, ...(Array.isArray(sx) ? sx : [sx])]}
+            horizontal={item.horizontal || horizontal}
+            iconColor={iconColor}
+            activeIconColor={activeIconColor}
+            temporary={hideToggle}
+          />
+        );
+      })}
+
+      {!hideToggle &&
+        collapsible &&
+        !!customToggle &&
+        customToggle(toggleDrawer, _collapsed)}
+
+      {!hideToggle && collapsible && !customToggle && (
         <Toolbar
           sx={{
+            marginTop: 'auto',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: horizontal ? 'start' : 'center',
-            p: '20px 16px 17px !important',
+            justifyContent: 'flex-end',
+            px: [1],
           }}
         >
-          {renderLogo()}
-        </Toolbar>
-
-        {items?.map((item, i) => {
-          const isActive = !!currentId && currentId.startsWith(item.id);
-          if (item.component)
-            return (
-              <Box onClick={item.onClick} className={isActive ? 'active' : ''}>
-                {typeof item.component === 'function'
-                  ? item.component(
-                      !!currentId && currentId.startsWith(item.id),
-                      _collapsed,
-                    )
-                  : item.component}
-              </Box>
-            );
-
-          return (
-            <DrawerItem
-              key={item.id || i}
-              {...item}
-              collapsed={!mobileIsOpen && _collapsed}
-              active={isActive}
-              textProps={textProps}
-              sx={[buttonSx, ...(Array.isArray(sx) ? sx : [sx])]}
-              horizontal={item.horizontal || horizontal}
-              iconColor={iconColor}
-              activeIconColor={activeIconColor}
-              temporary={hideToggle}
-            />
-          );
-        })}
-
-        {!hideToggle &&
-          collapsible &&
-          !!customToggle &&
-          customToggle(toggleDrawer, _collapsed)}
-
-        {!hideToggle && collapsible && !customToggle && (
-          <Toolbar
+          <IconButton
+            className="Rockets-CollapsibleButton"
+            onClick={toggleDrawer}
             sx={{
-              marginTop: 'auto',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              px: [1],
+              color: collapsibleIconColor || 'primary.contrastText',
+              backgroundColor: collapsibleIconBgColor || 'transparent',
+              ...(collapsibleIconBgColor && {
+                '&:hover': {
+                  backgroundColor: darken(collapsibleIconBgColor, 0.1),
+                },
+              }),
             }}
           >
-            <IconButton
-              className="Rockets-CollapsibleButton"
-              onClick={toggleDrawer}
-              sx={{
-                color: collapsibleIconColor || 'primary.contrastText',
-                backgroundColor: collapsibleIconBgColor || 'transparent',
-                ...(collapsibleIconBgColor && {
-                  '&:hover': {
-                    backgroundColor: darken(collapsibleIconBgColor, 0.1),
-                  },
-                }),
-              }}
-            >
-              {collapsibleIcon &&
-                typeof collapsibleIcon === 'function' &&
-                collapsibleIcon(_collapsed)}
+            {collapsibleIcon &&
+              typeof collapsibleIcon === 'function' &&
+              collapsibleIcon(_collapsed)}
 
-              {collapsibleIcon &&
-                typeof collapsibleIcon != 'function' &&
-                collapsibleIcon}
+            {collapsibleIcon &&
+              typeof collapsibleIcon != 'function' &&
+              collapsibleIcon}
 
-              {!collapsibleIcon &&
-                (_collapsed ? <ChevronRight /> : <ChevronLeft />)}
-            </IconButton>
-          </Toolbar>
-        )}
-      </Box>
-    ),
-    [_collapsed, mobileIsOpen],
+            {!collapsibleIcon &&
+              (_collapsed ? <ChevronRight /> : <ChevronLeft />)}
+          </IconButton>
+        </Toolbar>
+      )}
+    </Box>
   );
+
   return (
     <>
       <StyledDrawer
