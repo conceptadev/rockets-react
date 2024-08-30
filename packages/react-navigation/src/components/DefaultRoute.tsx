@@ -13,7 +13,9 @@ import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
 type DefaultRouteProps = {
   resource: string;
   name: string;
+  useNavigateFilter?: boolean;
   isUnprotected?: boolean;
+  showAppBar?: boolean;
   module?: ModuleProps;
   page?: ReactNode;
   items: DrawerItemProps[];
@@ -28,74 +30,58 @@ type DefaultRouteProps = {
 const DefaultRoute = ({
   resource,
   name,
+  useNavigateFilter = true,
   isUnprotected = false,
+  showAppBar = true,
   module,
   page,
   items,
   drawerProps,
   navbarProps,
   renderAppBar,
-}: DefaultRouteProps) => {
+}: DefaultRouteProps): JSX.Element => {
   const navigate = useNavigate();
-
   const resourceName = resource.substring(1);
 
-  const menuItems = items?.map((item) => ({
+  const menuItems = items.map((item) => ({
     ...item,
-    onClick: () => {
-      if (!item?.id) return;
-      navigate(item.id);
-    },
+    onClick: () => item?.id && navigate(item.id),
   }));
 
-  let renderedChildren = null;
+  const content = module ? (
+    <CrudModule
+      {...module}
+      resource={resourceName}
+      title={name}
+      navigate={useNavigateFilter ? navigate : undefined}
+    />
+  ) : (
+    page
+  );
 
-  if (page) {
-    renderedChildren = page;
-  }
-
-  if (module) {
-    renderedChildren = (
-      <CrudModule
-        {...module}
-        resource={resourceName}
-        title={name}
-        navigate={navigate}
-      />
-    );
-  }
-
-  if (renderAppBar) {
-    if (!isUnprotected) {
-      return <>{renderAppBar(menuItems, renderedChildren)}</>;
-    }
-
-    return (
-      <ProtectedRoute>
-        {renderAppBar(menuItems, renderedChildren)}
-      </ProtectedRoute>
-    );
-  }
-
-  if (!isUnprotected) {
-    return (
-      <AppBarContainer menuItems={menuItems}>
-        {renderedChildren}
-      </AppBarContainer>
-    );
-  }
-
-  return (
-    <ProtectedRoute>
+  const wrappedContent = showAppBar ? (
+    renderAppBar ? (
+      renderAppBar(menuItems, content)
+    ) : (
       <AppBarContainer
         menuItems={menuItems}
         drawerProps={drawerProps}
         navbarProps={navbarProps}
       >
-        {renderedChildren}
+        {content}
       </AppBarContainer>
-    </ProtectedRoute>
+    )
+  ) : (
+    content
   );
+
+  const finalContent = isUnprotected ? (
+    wrappedContent
+  ) : (
+    <ProtectedRoute>{wrappedContent}</ProtectedRoute>
+  );
+
+  return <>{finalContent}</>;
 };
 
 export default DefaultRoute;

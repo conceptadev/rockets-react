@@ -31,7 +31,8 @@ const router = (
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>,
   routes: ReactElement[],
   items: DrawerItemProps[],
-  defaultRoute?: string,
+  useNavigateFilter?: boolean,
+  initialRoute?: string,
   authModuleProps?: AuthModule,
   drawerProps?: DrawerProps,
   navbarProps?: NavbarProps,
@@ -56,11 +57,12 @@ const router = (
       <Route
         path="/*"
         element={
-          <AdminProvider home={defaultRoute ?? firstRoute?.props.id}>
+          <AdminProvider home={firstRoute?.props.id}>
             <RoutesRoot
               routes={routes}
               items={items}
-              defaultRoute={defaultRoute}
+              useNavigateFilter={useNavigateFilter}
+              initialRoute={initialRoute}
               authModuleProps={authModuleProps}
               drawerProps={drawerProps}
               navbarProps={navbarProps}
@@ -80,7 +82,8 @@ const router = (
 type RouterProps = {
   children: ReactElement[];
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>;
-  defaultRoute?: string;
+  useNavigateFilter?: boolean;
+  initialRoute?: string;
   useMemoryRouter?: boolean;
   authModuleProps?: AuthModule;
   drawerProps?: DrawerProps;
@@ -98,7 +101,8 @@ type RouterProps = {
 const Router = ({
   children,
   AdminProvider,
-  defaultRoute,
+  useNavigateFilter,
+  initialRoute,
   useMemoryRouter = false,
   authModuleProps,
   drawerProps,
@@ -110,12 +114,21 @@ const Router = ({
   renderResetPassword,
 }: RouterProps) => {
   const items = Children.map(children, (child) => {
+    // This validation is needed so `showDrawerItem`
+    // can be `true` by default
+    if (
+      child.props.showDrawerItem !== undefined &&
+      !child.props.showDrawerItem
+    ) {
+      return null;
+    }
+
     return {
       id: child.props.id,
       text: child.props.name,
       icon: child.props.icon,
     };
-  });
+  }).filter((item) => !!item);
 
   return (
     <RouterProvider
@@ -123,7 +136,8 @@ const Router = ({
         AdminProvider,
         children,
         items,
-        defaultRoute,
+        useNavigateFilter,
+        initialRoute,
         authModuleProps,
         drawerProps,
         navbarProps,
