@@ -15,6 +15,7 @@ import { AuthModule } from './Router';
 type RoutesRootProps = {
   items: DrawerItemProps[];
   routes: ReactElement[];
+  useNavigateFilter?: boolean;
   initialRoute?: string;
   authModuleProps?: AuthModule;
   drawerProps?: DrawerProps;
@@ -32,6 +33,7 @@ type RoutesRootProps = {
 const RoutesRoot = ({
   routes,
   items,
+  useNavigateFilter,
   initialRoute,
   authModuleProps,
   drawerProps,
@@ -105,8 +107,10 @@ const RoutesRoot = ({
               <DefaultRoute
                 renderAppBar={renderAppBar}
                 isUnprotected={child.props.isUnprotected}
+                useNavigateFilter={useNavigateFilter}
                 resource={child.props.id}
                 name={child.props.name}
+                showAppBar={child.props.showAppBar}
                 module={child.props.module}
                 page={child.props.page}
                 items={items}

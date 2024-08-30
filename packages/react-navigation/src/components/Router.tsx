@@ -31,6 +31,7 @@ const router = (
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>,
   routes: ReactElement[],
   items: DrawerItemProps[],
+  useNavigateFilter?: boolean,
   initialRoute?: string,
   authModuleProps?: AuthModule,
   drawerProps?: DrawerProps,
@@ -56,10 +57,11 @@ const router = (
       <Route
         path="/*"
         element={
-          <AdminProvider home={initialRoute ?? firstRoute?.props.id}>
+          <AdminProvider home={firstRoute?.props.id}>
             <RoutesRoot
               routes={routes}
               items={items}
+              useNavigateFilter={useNavigateFilter}
               initialRoute={initialRoute}
               authModuleProps={authModuleProps}
               drawerProps={drawerProps}
@@ -80,6 +82,7 @@ const router = (
 type RouterProps = {
   children: ReactElement[];
   AdminProvider: ComponentType<PropsWithChildren<{ home: string }>>;
+  useNavigateFilter?: boolean;
   initialRoute?: string;
   useMemoryRouter?: boolean;
   authModuleProps?: AuthModule;
@@ -98,6 +101,7 @@ type RouterProps = {
 const Router = ({
   children,
   AdminProvider,
+  useNavigateFilter,
   initialRoute,
   useMemoryRouter = false,
   authModuleProps,
@@ -110,12 +114,21 @@ const Router = ({
   renderResetPassword,
 }: RouterProps) => {
   const items = Children.map(children, (child) => {
+    // This validation is needed so `showDrawerItem`
+    // can be `true` by default
+    if (
+      child.props.showDrawerItem !== undefined &&
+      !child.props.showDrawerItem
+    ) {
+      return null;
+    }
+
     return {
       id: child.props.id,
       text: child.props.name,
       icon: child.props.icon,
     };
-  });
+  }).filter((item) => !!item);
 
   return (
     <RouterProvider
@@ -123,6 +136,7 @@ const Router = ({
         AdminProvider,
         children,
         items,
+        useNavigateFilter,
         initialRoute,
         authModuleProps,
         drawerProps,

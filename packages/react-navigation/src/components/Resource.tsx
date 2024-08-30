@@ -6,7 +6,9 @@ type ResourceProps = {
   id: string;
   name: string;
   icon: ReactNode;
+  showDrawerItem?: boolean;
   isUnprotected?: boolean;
+  showAppBar?: boolean;
   module?: Partial<ModuleProps>;
   page?: ReactNode;
 };
