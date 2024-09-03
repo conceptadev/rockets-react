@@ -7,6 +7,7 @@ import {
   DrawerItemProps,
   DrawerProps,
   NavbarProps,
+  FormModule,
 } from '@concepta/react-material-ui/';
 import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
 
@@ -18,6 +19,7 @@ type DefaultRouteProps = {
   showAppBar?: boolean;
   module?: ModuleProps;
   page?: ReactNode;
+  isFormPage?: boolean;
   items: DrawerItemProps[];
   drawerProps?: DrawerProps;
   navbarProps?: NavbarProps;
@@ -35,6 +37,7 @@ const DefaultRoute = ({
   showAppBar = true,
   module,
   page,
+  isFormPage = false,
   items,
   drawerProps,
   navbarProps,
@@ -48,16 +51,24 @@ const DefaultRoute = ({
     onClick: () => item?.id && navigate(item.id),
   }));
 
-  const content = module ? (
-    <CrudModule
-      {...module}
-      resource={resourceName}
-      title={name}
-      navigate={useNavigateFilter ? navigate : undefined}
-    />
-  ) : (
-    page
-  );
+  const content =
+    module && !isFormPage ? (
+      <CrudModule
+        {...module}
+        resource={resourceName}
+        title={name}
+        navigate={useNavigateFilter ? navigate : undefined}
+      />
+    ) : isFormPage ? (
+      <FormModule
+        {...module}
+        resource={resourceName}
+        title={name}
+        navigate={useNavigateFilter ? navigate : undefined}
+      />
+    ) : (
+      page
+    );
 
   const wrappedContent = showAppBar ? (
     renderAppBar ? (

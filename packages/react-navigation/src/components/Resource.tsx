@@ -4,13 +4,14 @@ import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
 
 type ResourceProps = {
   id: string;
-  name: string;
-  icon: ReactNode;
+  name?: string;
+  icon?: ReactNode;
   showDrawerItem?: boolean;
   isUnprotected?: boolean;
   showAppBar?: boolean;
   module?: Partial<ModuleProps>;
   page?: ReactNode;
+  isFormPage?: boolean;
 };
 
 const Resource = ({ id }: ResourceProps) => {

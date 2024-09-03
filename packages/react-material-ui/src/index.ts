@@ -81,6 +81,7 @@ export {
 
 export { AuthModule, AuthModuleProps } from './modules/auth';
 export { default as CrudModule } from './modules/crud';
+export { default as FormModule } from './modules/form';
 export { default as UsersModule } from './modules/users';
 
 export { default as OtpInput } from './components/OtpInput';
