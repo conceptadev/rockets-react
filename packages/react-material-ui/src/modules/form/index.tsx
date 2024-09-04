@@ -8,6 +8,7 @@ import type { IChangeEvent } from '@rjsf/core';
 
 import Text from '../../components/Text';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
+import ConfirmationModal from '../../components/submodules/ConfirmationModal';
 import { SchemaForm } from '../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../styles/CustomWidgets';
 
@@ -17,6 +18,8 @@ const FormModule = (props: ModuleProps) => {
   const [formData, setFormData] = useState<Record<string, unknown> | null>(
     null,
   );
+  const [isConfirmationModalOpen, setConfirmationModalOpen] =
+    useState<boolean>(false);
 
   const [, resource, viewMode, id] = window.location.pathname.split('/');
 
@@ -156,77 +159,79 @@ const FormModule = (props: ModuleProps) => {
         readonly={viewMode === 'details'}
         {...otherProps}
       >
-        <>
-          {children}
+        {children}
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="flex-start"
+          mt={4}
+        >
           <Box
             display="flex"
             flexDirection="row"
             alignItems="center"
-            justifyContent={
-              viewMode === 'creation' ? 'flex-end' : 'space-between'
-            }
-            mt={4}
+            mt={2}
+            gap={2}
           >
-            <Box
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              mt={2}
-              gap={2}
-            >
-              {customFooterContent}
-              {viewMode === 'creation' && !hideCancelButton && (
-                <Button
-                  variant="outlined"
-                  onClick={() => null}
-                  sx={{ flex: 1 }}
-                >
-                  {cancelButtonTitle || 'Cancel'}
-                </Button>
-              )}
-              {viewMode === 'edit' && !hideCancelButton && (
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteItem(formData)}
-                  sx={{ flex: 1 }}
-                >
-                  {isLoadingDelete ? (
-                    <CircularProgress sx={{ color: 'white' }} size={24} />
-                  ) : (
-                    cancelButtonTitle || 'Delete'
-                  )}
-                </Button>
-              )}
-              {viewMode === 'details' && !hideCancelButton && (
-                <Button
-                  variant="outlined"
-                  onClick={() => null}
-                  sx={{ flex: 1 }}
-                >
-                  {cancelButtonTitle || 'Close'}
-                </Button>
-              )}
-              {viewMode !== 'details' && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={
-                    isLoadingCreation || isLoadingEdit || isLoadingDelete
-                  }
-                  sx={{ flex: 1 }}
-                >
-                  {isLoadingCreation || isLoadingEdit ? (
-                    <CircularProgress sx={{ color: 'white' }} size={24} />
-                  ) : (
-                    submitButtonTitle || 'Save'
-                  )}
-                </Button>
-              )}
-            </Box>
+            {customFooterContent}
+            {viewMode === 'new' && !hideCancelButton && (
+              <Button
+                variant="outlined"
+                onClick={() => window.history.back()}
+                sx={{ flex: 1 }}
+              >
+                {cancelButtonTitle || 'Cancel'}
+              </Button>
+            )}
+            {viewMode === 'edit' && !hideCancelButton && (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => setConfirmationModalOpen(true)}
+                sx={{ flex: 1 }}
+              >
+                {isLoadingDelete ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  cancelButtonTitle || 'Delete'
+                )}
+              </Button>
+            )}
+            {viewMode === 'details' && !hideCancelButton && (
+              <Button
+                variant="outlined"
+                onClick={() => window.history.back()}
+                sx={{ flex: 1 }}
+              >
+                {cancelButtonTitle || 'Close'}
+              </Button>
+            )}
+            {viewMode !== 'details' && (
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={isLoadingCreation || isLoadingEdit || isLoadingDelete}
+                sx={{ flex: 1 }}
+              >
+                {isLoadingCreation || isLoadingEdit ? (
+                  <CircularProgress sx={{ color: 'white' }} size={24} />
+                ) : (
+                  submitButtonTitle || 'Save'
+                )}
+              </Button>
+            )}
           </Box>
-        </>
+        </Box>
       </SchemaForm.Form>
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setConfirmationModalOpen(false)}
+        onConfirm={() => {
+          setConfirmationModalOpen(false);
+          deleteItem(formData);
+        }}
+      />
     </Box>
   );
 };
