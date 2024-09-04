@@ -49,7 +49,7 @@ export default function AppBarContainer({
       />
       <AppBar.Main>
         <AppBar.Nav
-          text={(user as any)?.username || ''}
+          text={(user as { username: string })?.username || ''}
           headerMenuOptions={(handleClose) => (
             <MenuItem onClick={() => onLogoutClick(handleClose)}>
               Sign Out

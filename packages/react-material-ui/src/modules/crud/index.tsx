@@ -64,7 +64,7 @@ export interface ModuleProps {
   title?: string;
   resource: string;
   tableProps: TableProps;
-  formContainerVariation?: 'drawer' | 'modal';
+  formContainerVariation?: 'drawer' | 'modal' | 'page';
   detailsFormProps?: PropsWithChildren<FormProps>;
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
@@ -221,11 +221,21 @@ const CrudModule = (props: ModuleProps) => {
         <TableSubmodule
           queryResource={props.resource}
           onAction={(payload) => {
+            if (props.formContainerVariation === 'page') {
+              props.navigate(
+                `/${props.resource}/${payload.action}/${payload.row.id}`,
+              );
+            }
+
             setSelectedRow(payload.row);
             setDrawerViewMode(payload.action);
             setCurrentViewIndex(payload.index);
           }}
           onAddNew={() => {
+            if (props.formContainerVariation === 'page') {
+              props.navigate(`/${props.resource}/new`);
+            }
+
             setSelectedRow(null);
             setDrawerViewMode('creation');
             setCurrentViewIndex(0);

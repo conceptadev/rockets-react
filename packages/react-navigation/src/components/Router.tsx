@@ -134,6 +134,7 @@ const Router = ({
           name={child.props.name}
           showAppBar={child.props.showAppBar}
           module={child.props.module}
+          isFormPage={child.props.isFormPage}
           page={child.props.page}
           items={items}
           drawerProps={drawerProps}
