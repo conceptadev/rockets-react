@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode, useState } from 'react';
 
 import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import type { IChangeEvent, FormProps } from '@rjsf/core';
@@ -20,6 +20,7 @@ import validator from '@rjsf/validator-ajv6';
 
 import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
+import ConfirmationModal from '../ConfirmationModal';
 
 type Action = 'creation' | 'edit' | 'details' | null;
 
@@ -64,6 +65,9 @@ type ModalFormSubmoduleProps = PropsWithChildren<
 };
 
 const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
+  const [isConfirmationModalOpen, setConfirmationModalOpen] =
+    useState<boolean>(false);
+
   const {
     queryResource,
     viewMode,
@@ -241,7 +245,7 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
                   <Button
                     variant="contained"
                     color="error"
-                    onClick={() => deleteItem(formData)}
+                    onClick={() => setConfirmationModalOpen(true)}
                     sx={{ flex: 1 }}
                   >
                     {isLoadingDelete ? (
@@ -277,6 +281,14 @@ const ModalFormSubmodule = (props: ModalFormSubmoduleProps) => {
           </>
         </SchemaForm.Form>
       </DialogContent>
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setConfirmationModalOpen(false)}
+        onConfirm={() => {
+          setConfirmationModalOpen(false);
+          deleteItem(formData);
+        }}
+      />
     </Dialog>
   );
 };

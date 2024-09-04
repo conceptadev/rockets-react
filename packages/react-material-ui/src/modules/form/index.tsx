@@ -101,7 +101,12 @@ const FormModule = (props: ModuleProps) => {
       }),
     false,
     {
-      onSuccess: onSuccess,
+      onSuccess: (data) => {
+        if (onSuccess) {
+          onSuccess(data);
+        }
+        window.history.back();
+      },
       onError: onError,
     },
   );

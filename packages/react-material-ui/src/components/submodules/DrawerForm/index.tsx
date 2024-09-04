@@ -18,7 +18,7 @@ import useDataProvider, { useQuery } from '@concepta/react-data-provider';
 import validator from '@rjsf/validator-ajv6';
 
 import { SchemaForm, SchemaFormProps } from '../../../components/SchemaForm';
-
+import ConfirmationModal from '../ConfirmationModal';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
 
 type Action = 'creation' | 'edit' | 'details' | null;
@@ -64,6 +64,9 @@ type DrawerFormSubmoduleProps = PropsWithChildren<
 };
 
 const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
+  const [isConfirmationModalOpen, setConfirmationModalOpen] =
+    useState<boolean>(false);
+
   const {
     queryResource,
     viewMode,
@@ -257,7 +260,7 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
               <Button
                 variant="contained"
                 color="error"
-                onClick={() => deleteItem(formData)}
+                onClick={() => setConfirmationModalOpen(true)}
                 sx={{ flex: 1 }}
               >
                 {isLoadingDelete ? (
@@ -290,6 +293,14 @@ const DrawerFormSubmodule = (props: DrawerFormSubmoduleProps) => {
           </Box>
         </Box>
       </Box>
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setConfirmationModalOpen(false)}
+        onConfirm={() => {
+          setConfirmationModalOpen(false);
+          deleteItem(formData);
+        }}
+      />
     </Drawer>
   );
 };

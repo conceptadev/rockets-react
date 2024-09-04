@@ -18,7 +18,22 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }: Props) => {
           alignItems="center"
           textAlign="center"
         >
-          <ReportProblemOutlinedIcon />
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            sx={{
+              backgroundColor: '#FEE2E2',
+              width: '48px',
+              height: '48px',
+              borderRadius: '24px',
+            }}
+          >
+            <ReportProblemOutlinedIcon
+              color="error"
+              sx={{ width: '24px', height: '24px' }}
+            />
+          </Box>
           <Typography variant="h5" sx={{ marginTop: 2 }}>
             Alert Title
           </Typography>
@@ -28,10 +43,15 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }: Props) => {
           </Typography>
         </Box>
         <Box display="flex" justifyContent="center" sx={{ marginTop: 2 }}>
-          <Button onClick={onClose} variant="outlined" sx={{ marginRight: 2 }}>
+          <Button
+            onClick={onClose}
+            variant="outlined"
+            color="error"
+            sx={{ marginRight: 2 }}
+          >
             Cancel
           </Button>
-          <Button onClick={onConfirm} variant="contained">
+          <Button onClick={onConfirm} variant="contained" color="error">
             Confirm
           </Button>
         </Box>
