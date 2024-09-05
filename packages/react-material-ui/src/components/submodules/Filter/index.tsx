@@ -171,7 +171,7 @@ const FilterSubmodule = (props: Props) => {
           type,
           options,
           value: value as string,
-          onChange: (val: string | null) => onFilterChange(id, val, false),
+          onChange: (val: string | null) => onFilterChange(id, val, true),
         };
 
       case 'date':
