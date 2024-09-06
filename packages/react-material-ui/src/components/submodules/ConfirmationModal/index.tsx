@@ -35,11 +35,10 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm }: Props) => {
             />
           </Box>
           <Typography variant="h5" sx={{ marginTop: 2 }}>
-            Alert Title
+            Delete Item
           </Typography>
           <Typography sx={{ marginTop: 2 }}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut
-            lectus posuere, rutrum arcu non, blandit ipsum.
+            Are you sure you want to delete this item?
           </Typography>
         </Box>
         <Box display="flex" justifyContent="center" sx={{ marginTop: 2 }}>
