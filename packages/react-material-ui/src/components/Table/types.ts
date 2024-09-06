@@ -4,12 +4,16 @@ export type BasicType = string | number | boolean;
 
 export type SimpleFilter = Record<string, BasicType | BasicType[] | null>;
 
+export type CustomFilter = (data: unknown) => SimpleFilter;
+
 export type UpdateSimpleFilter = (
   simpleFilter: SimpleFilter | null,
   resetPage?: boolean,
 ) => void;
 
 export type Search = Record<string, any>;
+
+export type CustomSearch = (data: unknown) => Record<string, any>;
 
 export type HeaderProps = {
   disablePadding?: boolean;

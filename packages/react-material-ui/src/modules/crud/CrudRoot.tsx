@@ -8,6 +8,8 @@ type Props = Omit<CrudContextProps, 'filterValues' | 'setFilterValues'> & {
 
 const CrudRoot = (props: PropsWithChildren<Props>) => {
   const {
+    customFilter,
+    customSearch,
     filters,
     search,
     updateSearch,
@@ -44,6 +46,8 @@ const CrudRoot = (props: PropsWithChildren<Props>) => {
   return (
     <CrudContext.Provider
       value={{
+        customFilter,
+        customSearch,
         filters,
         search,
         updateSearch,

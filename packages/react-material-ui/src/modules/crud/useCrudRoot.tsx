@@ -1,11 +1,23 @@
 import { createContext, useContext } from 'react';
 import { UseTableResult } from '../../components/Table/useTable';
-import { Search } from '../../components/Table/types';
+import { Search, SimpleFilter } from '../../components/Table/types';
 import { FilterDetails } from '../../components/submodules/Filter';
 
 export type FilterValues = Record<string, string | Date | null>;
 
 export type CrudContextProps = {
+  /**
+   *
+   * @param data - Object containing values of filter inputs
+   * @returns - Object for filtering Table data in a more intricate way
+   */
+  customFilter?: (data: FilterValues) => SimpleFilter | null;
+  /**
+   *
+   * @param data - Object containing values of filter inputs
+   * @returns - Object for filtering Table data in a more intricate way
+   */
+  customSearch?: (data: FilterValues) => Search | null;
   /**
    * Array of objects, where each contain details regarding filter inputs.
    */
