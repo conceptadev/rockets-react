@@ -278,45 +278,41 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             <FilterSubmodule
               orderableListCacheKey={props.filterCacheKey}
               cacheApiPath={props.cacheApiPath}
+              complementaryActions={
+                <Box sx={{ display: 'flex' }}>
+                  {props.reordable !== false && (
+                    <Table.ColumnOrderable
+                      hasAllOption={props.hasAllOption}
+                      orderableListCacheKey={props.tableCacheKey}
+                      cacheApiPath={props.cacheApiPath}
+                    />
+                  )}
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                  >
+                    {props.additionalFilterRowContent}
+                    {!props.hideAddButton && (
+                      <Button
+                        variant="contained"
+                        onClick={props.onAddNew}
+                        startIcon={props.addButtonStartIcon || <AddIcon />}
+                        endIcon={props.addButtonEndIcon}
+                        sx={{
+                          textTransform: 'capitalize',
+                          textWrap: 'nowrap',
+                          marginLeft: 2,
+                        }}
+                      >
+                        {props.addButtonContent || 'Add new'}
+                      </Button>
+                    )}
+                  </Box>
+                </Box>
+              }
             />
           )}
-
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: { xs: 'space-between', lg: 'initial' },
-              mt: { xs: filters ? 2 : 0, lg: 0 },
-              ml: { xs: 0, lg: 2 },
-              width: { xs: '100%', lg: 'auto' },
-            }}
-          >
-            {props.reordable !== false && (
-              <Table.ColumnOrderable
-                hasAllOption={props.hasAllOption}
-                orderableListCacheKey={props.tableCacheKey}
-                cacheApiPath={props.cacheApiPath}
-              />
-            )}
-            <Box display="flex" alignItems="center" justifyContent="flex-end">
-              {props.additionalFilterRowContent}
-              {!props.hideAddButton && (
-                <Button
-                  variant="contained"
-                  onClick={props.onAddNew}
-                  startIcon={props.addButtonStartIcon || <AddIcon />}
-                  endIcon={props.addButtonEndIcon}
-                  sx={{
-                    textTransform: 'capitalize',
-                    textWrap: 'nowrap',
-                    marginLeft: 2,
-                  }}
-                >
-                  {props.addButtonContent || 'Add new'}
-                </Button>
-              )}
-            </Box>
-          </Box>
         </Box>
 
         <TableContainer sx={tableTheme.tableContainer}>

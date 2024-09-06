@@ -42,6 +42,7 @@ export type FilterCallback = (filter: FilterValues) => void;
 type Props = {
   orderableListCacheKey?: string;
   cacheApiPath?: string;
+  complementaryActions?: ReactNode;
 };
 
 const FilterSubmodule = (props: Props) => {
