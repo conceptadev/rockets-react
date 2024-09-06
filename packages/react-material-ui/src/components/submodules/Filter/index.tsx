@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, ReactNode } from 'react';
 import {
   Filter,
   FilterVariant,
