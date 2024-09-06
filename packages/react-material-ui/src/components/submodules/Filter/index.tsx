@@ -57,10 +57,15 @@ const FilterSubmodule = (props: Props) => {
     customSearch,
   } = useCrudRoot();
 
-  const customSearchData =
-    customSearch && useMemo(() => customSearch(filterValues), [filterValues]);
+  const customSearchData = useMemo(
+    () => customSearch?.(filterValues),
+    [filterValues],
+  );
 
-  const externalSearch = { ...customSearchData, ..._externalSearch };
+  const externalSearch = useMemo(
+    () => ({ ..._externalSearch, ...customSearchData }),
+    [customSearchData, _externalSearch],
+  );
 
   const hasExternalSearch =
     externalSearch &&
@@ -92,8 +97,8 @@ const FilterSubmodule = (props: Props) => {
     if (!hasExternalSearch) {
       updateSearch(null);
       const filterObj = {
-        ...customFilter?.(filterValues),
         ...reduceFilters(filterValues, 'simpleFilter'),
+        ...customFilter?.(filterValues),
       };
 
       updateSimpleFilter(filterObj, true);
@@ -101,8 +106,8 @@ const FilterSubmodule = (props: Props) => {
 
     if (hasExternalSearch) {
       const filterObj = {
-        ...customFilter?.(filterValues),
         ...reduceFilters(filterValues, 'search'),
+        ...customFilter?.(filterValues),
       };
 
       const combinedFilter = {
@@ -124,8 +129,8 @@ const FilterSubmodule = (props: Props) => {
 
       if (updateFilter) {
         const filterObj = {
-          ...customFilter?.(newFilterValues),
           ...reduceFilters(newFilterValues, 'simpleFilter'),
+          ...customFilter?.(newFilterValues),
         };
 
         updateSimpleFilter(filterObj, true);
