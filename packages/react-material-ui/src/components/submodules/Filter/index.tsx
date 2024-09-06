@@ -1,4 +1,4 @@
-import React, { useEffect, ReactNode } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Filter,
   FilterVariant,
@@ -51,10 +51,22 @@ const FilterSubmodule = (props: Props) => {
     updateSearch,
     simpleFilter,
     updateSimpleFilter,
-    externalSearch,
+    externalSearch: _externalSearch,
     filterValues,
     setFilterValues,
+    customFilter,
+    customSearch,
   } = useCrudRoot();
+
+  const customSearchData = useMemo(
+    () => customSearch?.(filterValues),
+    [filterValues],
+  );
+
+  const externalSearch = useMemo(
+    () => ({ ..._externalSearch, ...customSearchData }),
+    [customSearchData, _externalSearch],
+  );
 
   const hasExternalSearch =
     externalSearch &&
@@ -85,11 +97,22 @@ const FilterSubmodule = (props: Props) => {
   useEffect(() => {
     if (!hasExternalSearch) {
       updateSearch(null);
-      updateSimpleFilter(reduceFilters(filterValues, 'simpleFilter'), true);
+      const filterObj = {
+        ...reduceFilters(filterValues, 'simpleFilter'),
+        ...customFilter?.(filterValues),
+      };
+
+      updateSimpleFilter(filterObj, true);
     }
+
     if (hasExternalSearch) {
-      const combinedFilter = {
+      const filterObj = {
         ...reduceFilters(filterValues, 'search'),
+        ...customFilter?.(filterValues),
+      };
+
+      const combinedFilter = {
+        ...filterObj,
         ...externalSearch,
       };
 
@@ -106,10 +129,12 @@ const FilterSubmodule = (props: Props) => {
       const newFilterValues = { ...prv, [id]: value };
 
       if (updateFilter) {
-        updateSimpleFilter(
-          reduceFilters(newFilterValues, 'simpleFilter'),
-          true,
-        );
+        const filterObj = {
+          ...reduceFilters(newFilterValues, 'simpleFilter'),
+          ...customFilter?.(newFilterValues),
+        };
+
+        updateSimpleFilter(filterObj, true);
       }
       return newFilterValues;
     });

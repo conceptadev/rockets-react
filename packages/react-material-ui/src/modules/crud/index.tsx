@@ -15,7 +15,11 @@ import TableSubmodule, {
 } from '../../components/submodules/Table';
 import DrawerFormSubmodule from '../../components/submodules/DrawerForm';
 import ModalFormSubmodule from '../../components/submodules/ModalForm';
-import { Search } from '../../components/Table/types';
+import {
+  Search,
+  CustomFilter,
+  CustomSearch,
+} from '../../components/Table/types';
 import CrudRoot from './CrudRoot';
 import { FilterDetails } from '../../components/submodules/Filter';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
@@ -38,6 +42,8 @@ interface TableProps {
   hasAllOption?: boolean;
   hideActionsColumn?: boolean;
   reordable?: boolean;
+  customFilter?: CustomFilter;
+  customSearch?: CustomSearch;
   filters?: FilterDetails[];
   paginationStyle?: PaginationStyle;
   onDeleteSuccess?: (data: unknown) => void;
@@ -188,13 +194,16 @@ const CrudModule = (props: ModuleProps) => {
   delete enhancedFormProps.onSuccess;
   delete enhancedFormProps.onDeleteSuccess;
 
-  const { filters, ...tableSubmoduleProps } = props.tableProps;
+  const { customFilter, customSearch, filters, ...tableSubmoduleProps } =
+    props.tableProps;
 
   const { isPending, tableQueryState } = useTableReturn;
 
   return (
     <CrudRoot
       filters={filters}
+      customFilter={customFilter}
+      customSearch={customSearch}
       search={useTableReturn.search}
       updateSearch={useTableReturn.updateSearch}
       simpleFilter={useTableReturn.simpleFilter}
