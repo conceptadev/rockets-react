@@ -52,7 +52,7 @@ const DefaultRoute = ({
     <CrudModule
       {...module}
       resource={resourceName}
-      title={name}
+      title={module.title || name}
       navigate={useNavigateFilter ? navigate : undefined}
     />
   ) : (

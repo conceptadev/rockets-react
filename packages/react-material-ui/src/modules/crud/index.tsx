@@ -66,8 +66,14 @@ interface FormProps {
   onDeleteError?: (error: unknown) => void;
 }
 
+interface Title {
+  name: string;
+  component: ReactNode;
+}
+
 export interface ModuleProps {
-  title?: string;
+  title?: string | Title;
+  hideBreadcrumb?: boolean;
   resource: string;
   tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
@@ -199,6 +205,9 @@ const CrudModule = (props: ModuleProps) => {
 
   const { isPending, tableQueryState } = useTableReturn;
 
+  const titleName =
+    typeof props.title === 'string' ? props.title : props.title?.name;
+
   return (
     <CrudRoot
       filters={filters}
@@ -213,20 +222,29 @@ const CrudModule = (props: ModuleProps) => {
       navigate={props.navigate}
     >
       <Box>
-        <Box mt={4}>
-          <Breadcrumbs
-            routes={[
-              { href: '/', label: 'Home' },
-              { href: '#', label: props.title || 'Table' },
-            ]}
-          />
-        </Box>
+        {!props.hideBreadcrumb && (
+          <Box mt={4}>
+            <Breadcrumbs
+              routes={[
+                { href: '/', label: 'Home' },
+                {
+                  href: '#',
+                  label: titleName || 'Table',
+                },
+              ]}
+            />
+          </Box>
+        )}
 
-        {props.title ? (
+        {typeof props.title === 'string' ? (
           <Text fontFamily="Inter" fontSize={20} fontWeight={800} mt={4} mb={4}>
             {props.title}
           </Text>
         ) : null}
+
+        {!!props.title && typeof props.title != 'string'
+          ? props.title.component
+          : null}
 
         <TableSubmodule
           queryResource={props.resource}
@@ -263,7 +281,7 @@ const CrudModule = (props: ModuleProps) => {
         {enhancedFormProps && (
           <FormComponent
             isVisible={isFormVisible}
-            title={props.title}
+            title={titleName}
             queryResource={props.resource}
             viewMode={drawerViewMode}
             formData={selectedRow}
