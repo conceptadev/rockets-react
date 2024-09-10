@@ -281,7 +281,6 @@ const CrudModule = (props: ModuleProps) => {
         {enhancedFormProps && (
           <FormComponent
             isVisible={isFormVisible}
-            title={titleName}
             queryResource={props.resource}
             viewMode={drawerViewMode}
             formData={selectedRow}

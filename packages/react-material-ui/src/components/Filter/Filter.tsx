@@ -144,7 +144,7 @@ const renderComponent = (filter: FilterType) => {
           label={filter.label}
           isLoading={filter.isLoading}
           options={filter.options}
-          defaultValue={filter.defaultValue || ''}
+          defaultValue={filter.defaultValue ?? allOption.value}
           onChange={filter.onChange}
           value={filter.value}
           variant="outlined"

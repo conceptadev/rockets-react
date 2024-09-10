@@ -109,6 +109,19 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     ...widgets,
   };
 
+  const title = () => {
+    if (formSchema?.title) {
+      return formSchema.title;
+    }
+    if (viewMode === 'creation') {
+      return 'Add Data';
+    }
+    if (viewMode === 'edit') {
+      return 'Edit Data';
+    }
+    return 'View Data';
+  };
+
   return (
     <Drawer open={isVisible} anchor="right">
       <Box
@@ -120,11 +133,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
         ml={1}
       >
         <Typography variant="h5" sx={{ marginLeft: 3, fontSize: '20px' }}>
-          {viewMode === 'creation'
-            ? 'Add Data'
-            : viewMode === 'edit'
-            ? 'Edit Data'
-            : 'View Data'}
+          {title()}
         </Typography>
         <IconButton
           aria-label="close"

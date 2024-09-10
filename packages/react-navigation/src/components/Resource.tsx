@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
 import { Route } from 'react-router-dom';
 import { ModuleProps } from '@concepta/react-material-ui/dist/modules/crud';
+import { DrawerItemProps } from '@concepta/react-material-ui';
 
 type ResourceProps = {
   id: string;
   name: string;
-  icon: ReactNode;
+  icon: DrawerItemProps['icon'];
   showDrawerItem?: boolean;
   isUnprotected?: boolean;
   showAppBar?: boolean;

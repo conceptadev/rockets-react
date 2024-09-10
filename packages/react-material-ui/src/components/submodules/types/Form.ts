@@ -22,7 +22,6 @@ export type FormSubmoduleProps = PropsWithChildren<
 > & {
   isVisible: boolean;
   queryResource: string;
-  title?: string;
   formSchema?: RJSFSchema;
   viewMode?: Action | null;
   formUiSchema?: UiSchema;

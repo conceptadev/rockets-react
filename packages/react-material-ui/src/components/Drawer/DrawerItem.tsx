@@ -2,7 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { DrawerButton, DrawerButtonProps } from './Styles';
 import Text from '../Text';
-import { TextProps } from 'interfaces';
+import { TextProps } from '../../interfaces';
 
 export const DEFAULT_DRAWER_TEXT_PROPS = {
   fontSize: 12,
