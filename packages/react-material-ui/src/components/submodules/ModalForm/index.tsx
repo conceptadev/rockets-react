@@ -105,15 +105,22 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     ...widgets,
   };
 
+  const title = () => {
+    if (formSchema?.title) {
+      return formSchema.title;
+    }
+    if (viewMode === 'creation') {
+      return 'Add Data';
+    }
+    if (viewMode === 'edit') {
+      return 'Edit Data';
+    }
+    return 'View Data';
+  };
+
   return (
     <Dialog open={isVisible} maxWidth="md" fullWidth onClose={onClose}>
-      <DialogTitle>
-        {viewMode === 'creation'
-          ? 'Add Data'
-          : viewMode === 'edit'
-          ? 'Edit Data'
-          : 'View Data'}
-      </DialogTitle>
+      <DialogTitle>{title()}</DialogTitle>
       <IconButton
         aria-label="close"
         onClick={onClose}
