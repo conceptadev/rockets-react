@@ -1,6 +1,7 @@
 import { PropsWithChildren, ReactNode } from 'react';
 import { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
 import { FormProps } from '@rjsf/core';
+import { DrawerProps } from '@mui/material';
 
 import { SchemaFormProps } from '../../../components/SchemaForm';
 
@@ -44,4 +45,5 @@ export type FormSubmoduleProps = PropsWithChildren<
   rowsPerPage?: number;
   currentPage?: number;
   pageCount?: number;
+  sx?: DrawerProps['sx'];
 };

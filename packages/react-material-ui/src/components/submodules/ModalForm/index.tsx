@@ -43,6 +43,7 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     currentPage,
     pageCount,
     isVisible,
+    sx,
     ...otherProps
   } = props;
 
@@ -119,7 +120,15 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
   };
 
   return (
-    <Dialog open={isVisible} maxWidth="md" fullWidth onClose={onClose}>
+    <Dialog
+      open={isVisible}
+      maxWidth="md"
+      fullWidth
+      onClose={onClose}
+      sx={sx}
+      id="Rockets-FormDialog"
+      className="Rockets-FormDialog"
+    >
       <DialogTitle>{title()}</DialogTitle>
       <IconButton
         aria-label="close"
