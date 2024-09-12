@@ -1,7 +1,5 @@
 import React, { PropsWithChildren, ReactNode } from 'react';
 
-import type { RJSFSchema, UiSchema, CustomValidator } from '@rjsf/utils';
-
 import { useEffect, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 
@@ -21,6 +19,7 @@ import {
   CustomSearch,
 } from '../../components/Table/types';
 import CrudRoot from './CrudRoot';
+import { FormSubmoduleProps } from '../../components/submodules/types/Form';
 import { FilterDetails } from '../../components/submodules/Filter';
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 
@@ -52,19 +51,21 @@ interface TableProps {
   allowModalPreview?: boolean;
 }
 
-interface FormProps {
-  formSchema?: RJSFSchema;
-  formUiSchema?: UiSchema;
-  submitButtonTitle?: string;
-  cancelButtonTitle?: string;
-  hideCancelButton?: boolean;
-  customFooterContent?: ReactNode;
-  customValidate?: CustomValidator;
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: unknown) => void;
-  onDeleteSuccess?: (data: unknown) => void;
-  onDeleteError?: (error: unknown) => void;
-}
+type FormProps = Pick<
+  FormSubmoduleProps,
+  | 'formSchema'
+  | 'formUiSchema'
+  | 'submitButtonTitle'
+  | 'cancelButtonTitle'
+  | 'hideCancelButton'
+  | 'customFooterContent'
+  | 'customValidate'
+  | 'onSuccess'
+  | 'onError'
+  | 'onDeleteSuccess'
+  | 'onDeleteError'
+  | 'sx'
+>;
 
 interface Title {
   name: string;

@@ -42,6 +42,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     currentPage,
     pageCount,
     isVisible,
+    sx,
     ...otherProps
   } = props;
 
@@ -123,7 +124,13 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
   };
 
   return (
-    <Drawer open={isVisible} anchor="right">
+    <Drawer
+      open={isVisible}
+      anchor="right"
+      sx={sx}
+      id="Rockets-FormDrawer"
+      className="Rockets-FormDrawer"
+    >
       <Box
         display="flex"
         alignItems="center"
