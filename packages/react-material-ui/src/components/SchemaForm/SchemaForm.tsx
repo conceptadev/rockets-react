@@ -1,9 +1,8 @@
 'use client';
 
-import React, { Fragment, ReactNode, ComponentType } from 'react';
+import React, { ReactNode, ComponentType } from 'react';
 import validator from '@rjsf/validator-ajv6';
 import RJSFForm from '@rjsf/mui';
-import Box from '@mui/material/Box';
 import { RJSFSchema, SubmitButtonProps } from '@rjsf/utils';
 import { FormProps } from '@rjsf/core';
 
@@ -174,39 +173,35 @@ const Form = ({
     },
   };
 
+  if (!schema) return null;
+
   return (
-    <Fragment>
-      {schema && (
-        <Box>
-          <RJSFForm
-            schema={finalSchema}
-            uiSchema={
-              props.buttonTitle
-                ? uiSchemaWithButtonTitle
-                : {
-                    ...uiSchemaGenerator(finalSchema, advancedProperties),
-                    ...uiSchema,
-                  }
+    <RJSFForm
+      schema={finalSchema}
+      uiSchema={
+        props.buttonTitle
+          ? uiSchemaWithButtonTitle
+          : {
+              ...uiSchemaGenerator(finalSchema, advancedProperties),
+              ...uiSchema,
             }
-            formData={mergeFormData(finalSchema, formData)}
-            noHtml5Validate
-            showErrorList={false}
-            templates={
-              props.buttonComponent
-                ? templatesWithCustomButton
-                : {
-                    ArrayFieldTemplate,
-                    ObjectFieldTemplate,
-                  }
+      }
+      formData={mergeFormData(finalSchema, formData)}
+      noHtml5Validate
+      showErrorList={false}
+      templates={
+        props.buttonComponent
+          ? templatesWithCustomButton
+          : {
+              ArrayFieldTemplate,
+              ObjectFieldTemplate,
             }
-            validator={validator}
-            {...props}
-          >
-            {children}
-          </RJSFForm>
-        </Box>
-      )}
-    </Fragment>
+      }
+      validator={validator}
+      {...props}
+    >
+      {children}
+    </RJSFForm>
   );
 };
 
