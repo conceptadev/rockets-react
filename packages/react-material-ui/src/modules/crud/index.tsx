@@ -60,6 +60,8 @@ type FormProps = Pick<
   | 'hideCancelButton'
   | 'customFooterContent'
   | 'customValidate'
+  | 'prepareDataForEdit'
+  | 'submitDataFormatter'
   | 'onSuccess'
   | 'onError'
   | 'onDeleteSuccess'
@@ -284,7 +286,11 @@ const CrudModule = (props: ModuleProps) => {
             isVisible={isFormVisible}
             queryResource={props.resource}
             viewMode={drawerViewMode}
-            formData={selectedRow}
+            formData={
+              formProps?.prepareDataForEdit
+                ? formProps.prepareDataForEdit(selectedRow)
+                : selectedRow
+            }
             onSuccess={(data) => {
               useTableReturn.refresh();
               setFormVisible(false);

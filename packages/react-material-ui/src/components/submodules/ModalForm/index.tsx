@@ -183,8 +183,8 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
                   isLoading ||
                   (currentPage === pageCount && viewIndex === rowsPerPage)
                 }
-                onPrevious={() => onPrevious(formData)}
-                onNext={() => onNext(formData)}
+                onPrevious={() => onPrevious()}
+                onNext={() => onNext()}
               />
             )}
             <Box

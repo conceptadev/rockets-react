@@ -29,6 +29,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     onClose,
     cancelButtonTitle,
     children,
+    submitDataFormatter,
     onSuccess,
     onError,
     onDeleteSuccess,
@@ -54,7 +55,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       post({
         uri: `/${queryResource}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
@@ -67,7 +68,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       patch({
         uri: `/${queryResource}/${data.id}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
@@ -144,8 +145,8 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
               isLoading ||
               (currentPage === pageCount && viewIndex === rowsPerPage)
             }
-            onPrevious={() => onPrevious(formData)}
-            onNext={() => onNext(formData)}
+            onPrevious={() => onPrevious()}
+            onNext={() => onNext()}
           />
         )}
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
