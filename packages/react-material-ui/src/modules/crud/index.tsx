@@ -60,6 +60,8 @@ type FormProps = Pick<
   | 'hideCancelButton'
   | 'customFooterContent'
   | 'customValidate'
+  | 'prepareDataForForm'
+  | 'submitDataFormatter'
   | 'onSuccess'
   | 'onError'
   | 'onDeleteSuccess'
@@ -111,10 +113,10 @@ const CrudModule = (props: ModuleProps) => {
     navigate: props.navigate,
   });
 
-  const changeCurrentFormData = (direction: 'previous' | 'next') => {
-    const { data, tableQueryState, setTableQueryState, pageCount } =
-      useTableReturn;
+  const { data, tableQueryState, setTableQueryState, pageCount, isPending } =
+    useTableReturn;
 
+  const changeCurrentFormData = (direction: 'previous' | 'next') => {
     const isPrevious = direction === 'previous';
     const isNext = direction === 'next';
 
@@ -181,12 +183,9 @@ const CrudModule = (props: ModuleProps) => {
   ]);
 
   useEffect(() => {
-    const { data } = useTableReturn;
-
     if (!data || !data.length) {
       return;
     }
-
     setSelectedRow(data[currentViewIndex] as SelectedRow);
   }, [useTableReturn.data, currentViewIndex]);
 
@@ -203,8 +202,6 @@ const CrudModule = (props: ModuleProps) => {
 
   const { customFilter, customSearch, filters, ...tableSubmoduleProps } =
     props.tableProps;
-
-  const { isPending, tableQueryState } = useTableReturn;
 
   const titleName =
     typeof props.title === 'string' ? props.title : props.title?.name;
@@ -258,7 +255,6 @@ const CrudModule = (props: ModuleProps) => {
           onAddNew={() => {
             setSelectedRow(null);
             setDrawerViewMode('creation');
-            setCurrentViewIndex(0);
             setFormVisible(true);
           }}
           hideAddButton={!props.createFormProps}
@@ -284,8 +280,13 @@ const CrudModule = (props: ModuleProps) => {
             isVisible={isFormVisible}
             queryResource={props.resource}
             viewMode={drawerViewMode}
-            formData={selectedRow}
+            formData={
+              formProps?.prepareDataForForm
+                ? formProps.prepareDataForForm(selectedRow)
+                : selectedRow
+            }
             onSuccess={(data) => {
+              setSelectedRow(null);
               useTableReturn.refresh();
               setFormVisible(false);
               if (formOnSuccess) {
@@ -303,10 +304,17 @@ const CrudModule = (props: ModuleProps) => {
             onPrevious={() => changeCurrentFormData('previous')}
             onNext={() => changeCurrentFormData('next')}
             isLoading={isPending}
-            viewIndex={currentViewIndex + 1}
-            rowsPerPage={tableQueryState.rowsPerPage}
-            currentPage={tableQueryState.page}
-            pageCount={useTableReturn.pageCount}
+            tableRowsProps={{
+              currentIndex:
+                (tableQueryState.page - 1) * tableQueryState.rowsPerPage +
+                currentViewIndex +
+                1,
+              viewIndex: currentViewIndex + 1,
+              rowsPerPage: tableQueryState.rowsPerPage,
+              currentPage: tableQueryState.page,
+              pageCount: useTableReturn.pageCount,
+              total: useTableReturn.total,
+            }}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}

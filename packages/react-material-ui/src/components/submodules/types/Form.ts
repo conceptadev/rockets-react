@@ -7,6 +7,17 @@ import { SchemaFormProps } from '../../../components/SchemaForm';
 
 export type Action = 'creation' | 'edit' | 'details' | null;
 
+type FormData = Record<string, unknown> | null;
+
+export type TableRowsProps = {
+  currentIndex: number;
+  viewIndex: number;
+  rowsPerPage: number;
+  currentPage: number;
+  pageCount: number;
+  total: number;
+};
+
 export type FormSubmoduleProps = PropsWithChildren<
   Omit<
     SchemaFormProps,
@@ -26,7 +37,7 @@ export type FormSubmoduleProps = PropsWithChildren<
   formSchema?: RJSFSchema;
   viewMode?: Action | null;
   formUiSchema?: UiSchema;
-  formData?: Record<string, unknown> | null;
+  formData?: FormData;
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
   hideCancelButton?: boolean;
@@ -34,16 +45,15 @@ export type FormSubmoduleProps = PropsWithChildren<
   onClose?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
+  prepareDataForForm?: (data: FormData) => FormData;
+  submitDataFormatter?: (data: FormData) => FormData;
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
   onDeleteSuccess?: (data: unknown) => void;
   onDeleteError?: (error: unknown) => void;
-  onPrevious?: (data: unknown) => void;
-  onNext?: (data: unknown) => void;
+  onPrevious?: () => void;
+  onNext?: () => void;
   isLoading?: boolean;
-  viewIndex?: number;
-  rowsPerPage?: number;
-  currentPage?: number;
-  pageCount?: number;
   sx?: DrawerProps['sx'];
+  tableRowsProps: TableRowsProps;
 };

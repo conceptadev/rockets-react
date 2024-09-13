@@ -5,10 +5,12 @@ import ChevronRight from '@mui/icons-material/ChevronRight';
 
 type Props = {
   isLoading: boolean;
-  currentIndex: number;
+  viewIndex: number;
   rowsPerPage: number;
-  isPreviousDisabled: boolean;
-  isNextDisabled: boolean;
+  currentPage: number;
+  pageCount: number;
+  currentIndex: number;
+  total: number;
   onPrevious: () => void;
   onNext: () => void;
 };
@@ -16,13 +18,21 @@ type Props = {
 const TableRowControls = (props: Props) => {
   const {
     isLoading,
-    currentIndex,
+    viewIndex,
     rowsPerPage,
-    isPreviousDisabled,
-    isNextDisabled,
+    currentPage,
+    pageCount,
+    currentIndex,
+    total,
     onPrevious,
     onNext,
   } = props;
+
+  const isPreviousDisabled =
+    isLoading || (currentPage === 1 && viewIndex === 1);
+
+  const isNextDisabled =
+    isLoading || (currentPage === pageCount && viewIndex === rowsPerPage);
 
   return (
     <Box display="flex" alignItems="center" gap={2}>
@@ -38,7 +48,7 @@ const TableRowControls = (props: Props) => {
             height={22}
           />
         ) : (
-          `Row ${currentIndex}/${rowsPerPage}`
+          `Row ${currentIndex}/${total}`
         )}
       </Typography>
       <IconButton onClick={onNext} disabled={isNextDisabled}>

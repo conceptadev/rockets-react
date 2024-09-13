@@ -29,6 +29,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     onClose,
     cancelButtonTitle,
     children,
+    submitDataFormatter,
     onSuccess,
     onError,
     onDeleteSuccess,
@@ -36,14 +37,13 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     onPrevious,
     onNext,
     isLoading,
-    viewIndex,
-    rowsPerPage,
-    currentPage,
-    pageCount,
     isVisible,
     sx,
+    tableRowsProps,
     ...otherProps
   } = props;
+
+  const { viewIndex, rowsPerPage, currentPage, pageCount } = tableRowsProps;
 
   const [fieldValues, setFieldValues] =
     useState<FormSubmoduleProps['formData']>(null);
@@ -54,7 +54,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       post({
         uri: `/${queryResource}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
@@ -67,7 +67,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       patch({
         uri: `/${queryResource}/${data.id}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
@@ -134,18 +134,10 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
       >
         {viewMode !== 'creation' && (
           <TableRowControls
+            {...tableRowsProps}
             isLoading={isLoading}
-            currentIndex={viewIndex}
-            rowsPerPage={rowsPerPage}
-            isPreviousDisabled={
-              isLoading || (currentPage === 1 && viewIndex === 1)
-            }
-            isNextDisabled={
-              isLoading ||
-              (currentPage === pageCount && viewIndex === rowsPerPage)
-            }
-            onPrevious={() => onPrevious(formData)}
-            onNext={() => onNext(formData)}
+            onPrevious={() => onPrevious()}
+            onNext={() => onNext()}
           />
         )}
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
@@ -197,16 +189,12 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     rowsPerPage,
     currentPage,
     pageCount,
-    rowsPerPage,
     props.customFooterContent,
     viewMode,
     props.hideCancelButton,
     formData,
     isLoadingDelete,
     cancelButtonTitle,
-    isLoadingCreation,
-    isLoadingEdit,
-    isLoadingDelete,
     isLoadingCreation,
     isLoadingEdit,
     submitButtonTitle,

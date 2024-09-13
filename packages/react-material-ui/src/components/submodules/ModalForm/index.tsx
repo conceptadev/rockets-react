@@ -31,6 +31,7 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     submitButtonTitle,
     cancelButtonTitle,
     children,
+    submitDataFormatter,
     onSuccess,
     onError,
     onDeleteSuccess,
@@ -38,12 +39,9 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     onPrevious,
     onNext,
     isLoading,
-    viewIndex,
-    rowsPerPage,
-    currentPage,
-    pageCount,
     isVisible,
     sx,
+    tableRowsProps,
     ...otherProps
   } = props;
 
@@ -53,7 +51,7 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       post({
         uri: `/${queryResource}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
@@ -66,7 +64,7 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       patch({
         uri: `/${queryResource}/${data.id}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
@@ -173,18 +171,10 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
           >
             {viewMode !== 'creation' && (
               <TableRowControls
+                {...tableRowsProps}
                 isLoading={isLoading}
-                currentIndex={viewIndex}
-                rowsPerPage={rowsPerPage}
-                isPreviousDisabled={
-                  isLoading || (currentPage === 1 && viewIndex === 1)
-                }
-                isNextDisabled={
-                  isLoading ||
-                  (currentPage === pageCount && viewIndex === rowsPerPage)
-                }
-                onPrevious={() => onPrevious(formData)}
-                onNext={() => onNext(formData)}
+                onPrevious={() => onPrevious()}
+                onNext={() => onNext()}
               />
             )}
             <Box
