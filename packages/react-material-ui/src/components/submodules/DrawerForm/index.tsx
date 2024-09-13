@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import type { IChangeEvent } from '@rjsf/core';
 import {
   Box,
@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import useDataProvider, { useQuery } from '@concepta/react-data-provider';
-import validator from '@rjsf/validator-ajv6';
 
 import { SchemaForm } from '../../../components/SchemaForm';
 import { CustomTextFieldWidget } from '../../../styles/CustomWidgets';
@@ -123,6 +122,96 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     return 'View Data';
   };
 
+  const actionButtons = useMemo(() => {
+    return (
+      <Box
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent={viewMode === 'creation' ? 'flex-end' : 'space-between'}
+        id="Rockets-FormDrawerFooter"
+        mt="auto"
+      >
+        {viewMode !== 'creation' && (
+          <TableRowControls
+            isLoading={isLoading}
+            currentIndex={viewIndex}
+            rowsPerPage={rowsPerPage}
+            isPreviousDisabled={
+              isLoading || (currentPage === 1 && viewIndex === 1)
+            }
+            isNextDisabled={
+              isLoading ||
+              (currentPage === pageCount && viewIndex === rowsPerPage)
+            }
+            onPrevious={() => onPrevious(formData)}
+            onNext={() => onNext(formData)}
+          />
+        )}
+        <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
+          {props.customFooterContent}
+          {viewMode === 'creation' && !props.hideCancelButton && (
+            <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+              {cancelButtonTitle || 'Cancel'}
+            </Button>
+          )}
+          {viewMode === 'edit' && !props.hideCancelButton && (
+            <Button
+              variant="contained"
+              color="error"
+              onClick={() => deleteItem(formData)}
+              sx={{ flex: 1 }}
+            >
+              {isLoadingDelete ? (
+                <CircularProgress sx={{ color: 'white' }} size={24} />
+              ) : (
+                cancelButtonTitle || 'Delete'
+              )}
+            </Button>
+          )}
+          {viewMode === 'details' && !props.hideCancelButton && (
+            <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+              {cancelButtonTitle || 'Close'}
+            </Button>
+          )}
+          {viewMode !== 'details' && (
+            <Button
+              type="submit"
+              variant="contained"
+              disabled={isLoadingCreation || isLoadingEdit || isLoadingDelete}
+              sx={{ flex: 1 }}
+            >
+              {isLoadingCreation || isLoadingEdit ? (
+                <CircularProgress sx={{ color: 'white' }} size={24} />
+              ) : (
+                submitButtonTitle || 'Save'
+              )}
+            </Button>
+          )}
+        </Box>
+      </Box>
+    );
+  }, [
+    isLoading,
+    viewIndex,
+    rowsPerPage,
+    currentPage,
+    pageCount,
+    rowsPerPage,
+    props.customFooterContent,
+    viewMode,
+    props.hideCancelButton,
+    formData,
+    isLoadingDelete,
+    cancelButtonTitle,
+    isLoadingCreation,
+    isLoadingEdit,
+    isLoadingDelete,
+    isLoadingCreation,
+    isLoadingEdit,
+    submitButtonTitle,
+  ]);
+
   return (
     <Drawer
       open={isVisible}
@@ -138,6 +227,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
         gap={2}
         mt={2}
         ml={1}
+        className="Rockets-FormDrawer-Title"
       >
         <Typography variant="h5" sx={{ marginLeft: 3, fontSize: '20px' }}>
           {title()}
@@ -162,7 +252,13 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          '& .rjsf': {
+            display: 'flex',
+            flexDirection: 'column',
+            flex: 1,
+          },
         }}
+        className="Rockets-FormDrawer-SchemaWrapper"
       >
         <SchemaForm.Form
           schema={{
@@ -175,7 +271,6 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
             ...formUiSchema,
             'ui:submitButtonOptions': { norender: true },
           }}
-          validator={validator}
           noHtml5Validate={true}
           showErrorList={false}
           formData={formData}
@@ -183,77 +278,12 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
           customValidate={customValidate}
           readonly={viewMode === 'details'}
           onChange={handleFieldChange}
+          onSubmit={handleFormSubmit}
           {...otherProps}
         >
           {children}
+          {actionButtons}
         </SchemaForm.Form>
-        <Box
-          display="flex"
-          flexDirection="row"
-          alignItems="center"
-          justifyContent={
-            viewMode === 'creation' ? 'flex-end' : 'space-between'
-          }
-        >
-          {viewMode !== 'creation' && (
-            <TableRowControls
-              isLoading={isLoading}
-              currentIndex={viewIndex}
-              rowsPerPage={rowsPerPage}
-              isPreviousDisabled={
-                isLoading || (currentPage === 1 && viewIndex === 1)
-              }
-              isNextDisabled={
-                isLoading ||
-                (currentPage === pageCount && viewIndex === rowsPerPage)
-              }
-              onPrevious={() => onPrevious(formData)}
-              onNext={() => onNext(formData)}
-            />
-          )}
-          <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-            {props.customFooterContent}
-            {viewMode === 'creation' && !props.hideCancelButton && (
-              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                {cancelButtonTitle || 'Cancel'}
-              </Button>
-            )}
-            {viewMode === 'edit' && !props.hideCancelButton && (
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => deleteItem(formData)}
-                sx={{ flex: 1 }}
-              >
-                {isLoadingDelete ? (
-                  <CircularProgress sx={{ color: 'white' }} size={24} />
-                ) : (
-                  cancelButtonTitle || 'Delete'
-                )}
-              </Button>
-            )}
-            {viewMode === 'details' && !props.hideCancelButton && (
-              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                {cancelButtonTitle || 'Close'}
-              </Button>
-            )}
-            {viewMode !== 'details' && (
-              <Button
-                type="submit"
-                variant="contained"
-                disabled={isLoadingCreation || isLoadingEdit || isLoadingDelete}
-                onClick={handleFormSubmit}
-                sx={{ flex: 1 }}
-              >
-                {isLoadingCreation || isLoadingEdit ? (
-                  <CircularProgress sx={{ color: 'white' }} size={24} />
-                ) : (
-                  submitButtonTitle || 'Save'
-                )}
-              </Button>
-            )}
-          </Box>
-        </Box>
       </Box>
     </Drawer>
   );
