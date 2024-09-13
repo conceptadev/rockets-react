@@ -31,6 +31,7 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     submitButtonTitle,
     cancelButtonTitle,
     children,
+    submitDataFormatter,
     onSuccess,
     onError,
     onDeleteSuccess,
@@ -53,7 +54,7 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       post({
         uri: `/${queryResource}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
@@ -66,7 +67,7 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     (data: Record<string, unknown>) =>
       patch({
         uri: `/${queryResource}/${data.id}`,
-        body: data,
+        body: submitDataFormatter ? submitDataFormatter(data) : data,
       }),
     false,
     {
