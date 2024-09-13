@@ -45,7 +45,7 @@ export type FormSubmoduleProps = PropsWithChildren<
   onClose?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
-  prepareDataForEdit?: (data: FormData) => FormData;
+  prepareDataForForm?: (data: FormData) => FormData;
   submitDataFormatter?: (data: FormData) => FormData;
   onSuccess?: (data: unknown) => void;
   onError?: (error: unknown) => void;
