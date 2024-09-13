@@ -309,10 +309,14 @@ const CrudModule = (props: ModuleProps) => {
             onPrevious={() => changeCurrentFormData('previous')}
             onNext={() => changeCurrentFormData('next')}
             isLoading={isPending}
-            viewIndex={currentViewIndex + 1}
-            rowsPerPage={tableQueryState.rowsPerPage}
-            currentPage={tableQueryState.page}
-            pageCount={useTableReturn.pageCount}
+            tableRowsProps={{
+              currentIndex: currentViewIndex + 1,
+              viewIndex: currentViewIndex + 1,
+              rowsPerPage: tableQueryState.rowsPerPage,
+              currentPage: tableQueryState.page,
+              pageCount: useTableReturn.pageCount,
+              total: useTableReturn.total,
+            }}
             {...enhancedFormProps}
           >
             {enhancedFormProps.children}

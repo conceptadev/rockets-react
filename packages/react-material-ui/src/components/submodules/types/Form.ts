@@ -9,6 +9,15 @@ export type Action = 'creation' | 'edit' | 'details' | null;
 
 type FormData = Record<string, unknown> | null;
 
+export type TableRowsProps = {
+  currentIndex: number;
+  viewIndex: number;
+  rowsPerPage: number;
+  currentPage: number;
+  pageCount: number;
+  total: number;
+};
+
 export type FormSubmoduleProps = PropsWithChildren<
   Omit<
     SchemaFormProps,
@@ -45,9 +54,6 @@ export type FormSubmoduleProps = PropsWithChildren<
   onPrevious?: () => void;
   onNext?: () => void;
   isLoading?: boolean;
-  viewIndex?: number;
-  rowsPerPage?: number;
-  currentPage?: number;
-  pageCount?: number;
   sx?: DrawerProps['sx'];
+  tableRowsProps: TableRowsProps;
 };

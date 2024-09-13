@@ -39,12 +39,9 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     onPrevious,
     onNext,
     isLoading,
-    viewIndex,
-    rowsPerPage,
-    currentPage,
-    pageCount,
     isVisible,
     sx,
+    tableRowsProps,
     ...otherProps
   } = props;
 
@@ -174,16 +171,8 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
           >
             {viewMode !== 'creation' && (
               <TableRowControls
+                {...tableRowsProps}
                 isLoading={isLoading}
-                currentIndex={viewIndex}
-                rowsPerPage={rowsPerPage}
-                isPreviousDisabled={
-                  isLoading || (currentPage === 1 && viewIndex === 1)
-                }
-                isNextDisabled={
-                  isLoading ||
-                  (currentPage === pageCount && viewIndex === rowsPerPage)
-                }
                 onPrevious={() => onPrevious()}
                 onNext={() => onNext()}
               />
