@@ -305,12 +305,9 @@ const CrudModule = (props: ModuleProps) => {
             onNext={() => changeCurrentFormData('next')}
             isLoading={isPending}
             tableRowsProps={{
-              currentIndex:
-                (tableQueryState.page - 1) * tableQueryState.rowsPerPage +
-                currentViewIndex +
-                1,
+              currentIndex: currentViewIndex + 1,
               viewIndex: currentViewIndex + 1,
-              rowsPerPage: tableQueryState.rowsPerPage,
+              rowsPerPage: useTableReturn?.data?.length || 0,
               currentPage: tableQueryState.page,
               pageCount: useTableReturn.pageCount,
               total: useTableReturn.total,

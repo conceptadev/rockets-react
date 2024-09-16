@@ -23,7 +23,6 @@ const TableRowControls = (props: Props) => {
     currentPage,
     pageCount,
     currentIndex,
-    total,
     onPrevious,
     onNext,
   } = props;
@@ -48,7 +47,7 @@ const TableRowControls = (props: Props) => {
             height={22}
           />
         ) : (
-          `Row ${currentIndex}/${total}`
+          `Row ${currentIndex}/${rowsPerPage}`
         )}
       </Typography>
       <IconButton onClick={onNext} disabled={isNextDisabled}>
