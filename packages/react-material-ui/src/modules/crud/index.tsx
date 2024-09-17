@@ -275,7 +275,7 @@ const CrudModule = (props: ModuleProps) => {
           {...tableSubmoduleProps}
         />
 
-        {enhancedFormProps && (
+        {enhancedFormProps && isFormVisible && (
           <FormComponent
             isVisible={isFormVisible}
             queryResource={props.resource}
