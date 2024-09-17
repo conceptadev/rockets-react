@@ -46,7 +46,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
   const { viewIndex, rowsPerPage, currentPage, pageCount } = tableRowsProps;
 
   const [fieldValues, setFieldValues] =
-    useState<FormSubmoduleProps['formData']>(null);
+    useState<FormSubmoduleProps['formData']>(formData);
 
   const { post, patch, del } = useDataProvider();
 
@@ -98,7 +98,6 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
     if (viewMode === 'creation') {
       await createItem(fieldValues);
     }
-
     if (viewMode === 'edit') {
       await editItem(fieldValues);
     }
@@ -261,7 +260,7 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
           }}
           noHtml5Validate={true}
           showErrorList={false}
-          formData={formData}
+          formData={fieldValues}
           widgets={_widgets}
           customValidate={customValidate}
           readonly={viewMode === 'details'}

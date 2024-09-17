@@ -60,7 +60,7 @@ const AuthRoute = (props: AuthRouteProps) => {
       {...{
         ...moduleProps,
         query:
-          props.moduleProps.overrideDefaults && props.moduleProps?.query
+          props.moduleProps?.overrideDefaults && props.moduleProps?.query
             ? props.moduleProps?.query
             : routeProps[route].query,
       }}

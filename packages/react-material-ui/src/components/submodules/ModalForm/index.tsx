@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IChangeEvent } from '@rjsf/core';
 import {
   Box,
@@ -45,6 +45,9 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     ...otherProps
   } = props;
 
+  const [fieldValues, setFieldValues] =
+    useState<FormSubmoduleProps['formData']>(formData);
+
   const { post, patch, del } = useDataProvider();
 
   const { execute: createItem, isPending: isLoadingCreation } = useQuery(
@@ -85,17 +88,18 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
     },
   );
 
-  const handleFormSubmit = async (
+  const handleFieldChange = async (
     values: IChangeEvent<Record<string, unknown>>,
   ) => {
-    const fields = values.formData || {};
+    setFieldValues(values.formData);
+  };
 
+  const handleFormSubmit = async () => {
     if (viewMode === 'creation') {
-      await createItem(fields);
+      await createItem(fieldValues);
     }
-
     if (viewMode === 'edit') {
-      await editItem(fields);
+      await editItem(fieldValues);
     }
   };
 
@@ -153,8 +157,9 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
           onSubmit={handleFormSubmit}
           noHtml5Validate={true}
           showErrorList={false}
-          formData={isLoading ? null : formData}
+          formData={fieldValues}
           widgets={_widgets}
+          onChange={handleFieldChange}
           customValidate={customValidate}
           readonly={viewMode === 'details'}
           {...otherProps}
