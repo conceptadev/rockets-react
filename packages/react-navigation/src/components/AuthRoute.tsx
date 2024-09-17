@@ -14,7 +14,6 @@ type AuthRouteProps = {
 };
 
 const AuthRoute = (props: AuthRouteProps) => {
-  console.log('AuthRouteProps', props);
   const { home, moduleProps, route } = props;
   const { accessToken: authAccessToken } = useAuth();
 
@@ -60,7 +59,10 @@ const AuthRoute = (props: AuthRouteProps) => {
       {...routeProps[route]}
       {...{
         ...moduleProps,
-        query: routeProps[route].query,
+        query:
+          props.moduleProps.overrideDefaults && props.moduleProps?.query
+            ? props.moduleProps?.query
+            : routeProps[route].query,
       }}
     />
   );
