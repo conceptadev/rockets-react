@@ -30,7 +30,7 @@ const ClientProvider = ({
   onRefreshTokenError,
   children,
 }: Props) => {
-  const [baseUrl, setBaseUrl] = useState<string>();
+  const [baseUrl, setBaseUrl] = useState<string>(outerBaseUrl || '');
 
   useEffect(() => {
     if (outerBaseUrl) {

@@ -38,9 +38,11 @@ type Route = 'signIn' | 'signUp' | 'forgotPassword' | 'resetPassword';
 type Query = {
   uri?: string;
   method?: string;
-  onSuccess?: (data: unknown) => void;
-  onError?: (error: unknown) => void;
+  onSuccess?: ((data: unknown) => void) | null;
+  onError?: ((error: unknown) => void) | null;
 };
+
+type FormData = Record<string, unknown> | null;
 
 export interface AuthFormSubmoduleProps {
   route: Route;
@@ -50,7 +52,7 @@ export interface AuthFormSubmoduleProps {
   formSchema?: RJSFSchema;
   formUiSchema?: UiSchema;
   advancedProperties?: Record<string, AdvancedProperty>;
-  formData?: Record<string, unknown> | null;
+  formData?: FormData;
   signInRequestPath?: string;
   signInPath?: string;
   signUpPath?: string;
@@ -61,6 +63,7 @@ export interface AuthFormSubmoduleProps {
   hideLogo?: boolean;
   headerComponent?: ReactNode;
   overrideDefaults?: boolean;
+  submitDataFormatter?: (data: FormData) => FormData;
 }
 
 const renderTitle = (title: string | ReactNode) => {
@@ -110,9 +113,9 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
         // request para /me
 
         // set no user using setUser
-        props.query?.onSuccess(data);
+        props.query?.onSuccess?.(data);
       },
-      onError: props.query?.onError,
+      onError: (error) => props.query?.onError?.(error),
     },
   );
 
@@ -121,12 +124,19 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
 
     if (props.route === 'signIn') {
       const { username, password } = fields;
-      doLogin({ username, password, loginPath: props.signInRequestPath });
+      const loginData = props.submitDataFormatter
+        ? props.submitDataFormatter(fields)
+        : { username, password, loginPath: props.signInRequestPath };
+      doLogin(loginData);
       return;
     }
 
     if (props.route === 'resetPassword') {
-      await performRequest({ ...fields, passcode });
+      const fieldsWithPasscode = { ...fields, passcode };
+      const resetPassData = props.submitDataFormatter
+        ? props.submitDataFormatter(fieldsWithPasscode)
+        : fieldsWithPasscode;
+      await performRequest(resetPassData);
       return;
     }
 
@@ -163,23 +173,27 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
           {!props.hideTitle && renderTitle(props.title ?? defaultRouteTitle)}
 
           <SchemaForm.Form
-            schema={{
-              ...defaultFormSchema,
-              ...props.formSchema,
-              required: props.overrideDefaults
-                ? props.formSchema?.required || []
-                : [
-                    ...(defaultFormSchema.required || []),
-                    ...(props.formSchema?.required || []),
-                  ],
-              properties: props.overrideDefaults
-                ? props.formSchema?.properties || {}
+            schema={
+              props.overrideDefaults && props.formSchema
+                ? props.formSchema
                 : {
-                    ...(defaultFormSchema.properties || {}),
-                    ...(props.formSchema?.properties || {}),
-                  },
-            }}
-            uiSchema={{ ...defaultAuthUiSchema, ...props.formUiSchema }}
+                    ...defaultFormSchema,
+                    ...props.formSchema,
+                    required: [
+                      ...(defaultFormSchema.required || []),
+                      ...(props.formSchema?.required || []),
+                    ],
+                    properties: {
+                      ...defaultFormSchema.properties,
+                      ...props.formSchema?.properties,
+                    },
+                  }
+            }
+            uiSchema={
+              props.overrideDefaults && props.formUiSchema
+                ? props.formUiSchema
+                : { ...defaultAuthUiSchema, ...props.formUiSchema }
+            }
             validator={validator}
             formData={props.formData || formData}
             onChange={({ formData }) => setFormData(formData)}
@@ -187,8 +201,11 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
             noHtml5Validate={true}
             showErrorList={false}
             advancedProperties={props.advancedProperties}
-            customValidate={(formData, errors) =>
-              validateForm(formData, errors, props.customValidation || [])
+            customValidate={
+              props.customValidation
+                ? (formData, errors) =>
+                    validateForm(formData, errors, props.customValidation)
+                : undefined
             }
             widgets={widgets}
           >
