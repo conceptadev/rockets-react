@@ -12,11 +12,8 @@ import {
   NavbarProps,
 } from '@concepta/react-material-ui/';
 
-import LoginRoute from './LoginRoute';
 import DefaultRoute from './DefaultRoute';
-import SignUpRoute from './SignUpRoute';
-import ResetPasswordRoute from './ResetPasswordRoute';
-import ForgotPasswordRoute from './ForgotPasswordRoute';
+import AuthRoute from './AuthRoute';
 
 export type AuthModule = {
   signIn?: AuthModuleProps;
@@ -90,7 +87,11 @@ const Router = ({
       element: renderSignIn ? (
         renderSignIn(home)
       ) : (
-        <LoginRoute home={home} moduleProps={authModuleProps?.signIn} />
+        <AuthRoute
+          home={home}
+          moduleProps={authModuleProps?.signIn}
+          route="signIn"
+        />
       ),
     },
     {
@@ -98,7 +99,11 @@ const Router = ({
       element: renderSignUp ? (
         renderSignUp(home)
       ) : (
-        <SignUpRoute home={home} moduleProps={authModuleProps?.signUp} />
+        <AuthRoute
+          home={home}
+          moduleProps={authModuleProps?.signUp}
+          route="signUp"
+        />
       ),
     },
     {
@@ -106,9 +111,10 @@ const Router = ({
       element: renderForgotPassword ? (
         renderForgotPassword(home)
       ) : (
-        <ForgotPasswordRoute
+        <AuthRoute
           home={home}
           moduleProps={authModuleProps?.forgotPassword}
+          route={'forgotPassword'}
         />
       ),
     },
@@ -117,9 +123,10 @@ const Router = ({
       element: renderResetPassword ? (
         renderResetPassword(home)
       ) : (
-        <ResetPasswordRoute
+        <AuthRoute
           home={home}
           moduleProps={authModuleProps?.resetPassword}
+          route="resetPassword"
         />
       ),
     },
