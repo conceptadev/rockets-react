@@ -14,6 +14,7 @@ import {
   TextFieldProps,
 } from '@mui/material';
 import Clear from '@mui/icons-material/Clear';
+import { styled } from '@mui/material';
 
 const SearchIcon = () => (
   <MuiSearchIcon
@@ -22,6 +23,15 @@ const SearchIcon = () => (
     }}
   />
 );
+
+const MuiTextField = styled(TextField)({
+  '& label': {
+    paddingRight: '32px',
+  },
+  '& label.Mui-focused': {
+    paddingRight: '0',
+  },
+});
 
 /**
  * SearchField component props.
@@ -106,7 +116,7 @@ const SearchField = ({
   };
 
   return (
-    <TextField
+    <MuiTextField
       placeholder={placeholder}
       variant="outlined"
       onChange={handleChange}
