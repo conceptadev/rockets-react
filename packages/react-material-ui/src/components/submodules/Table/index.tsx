@@ -231,7 +231,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
                     e.stopPropagation();
                     if (props.onAction) {
                       props.onAction({
-                        action: props.hideEditButton ? 'edit' : 'details',
+                        action: 'details',
                         row: rowData,
                         index,
                       });
