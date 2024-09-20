@@ -153,6 +153,7 @@ const FilterSubmodule = (props: Props) => {
       resource,
       resourceValue,
       resourceLabel,
+      searchIconPlacement,
     } = filter;
 
     const initialValue = String(simpleFilter?.[id])?.split('||')[2];
@@ -166,6 +167,7 @@ const FilterSubmodule = (props: Props) => {
       isLoading,
       size,
       operator,
+      searchIconPlacement,
     };
 
     switch (type) {
