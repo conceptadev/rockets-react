@@ -141,12 +141,13 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
         )}
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
           {props.customFooterContent}
-          {viewMode === 'creation' && !props.hideCancelButton && (
-            <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-              {cancelButtonTitle || 'Cancel'}
-            </Button>
-          )}
-          {viewMode === 'edit' && !props.hideCancelButton && (
+          {(viewMode === 'creation' || viewMode === 'edit') &&
+            !props.hideCancelButton && (
+              <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                {cancelButtonTitle || 'Cancel'}
+              </Button>
+            )}
+          {viewMode === 'edit' && props.isDeleteButtonVisible && (
             <Button
               variant="contained"
               color="error"
