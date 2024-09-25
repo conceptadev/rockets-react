@@ -55,6 +55,7 @@ type FormProps = Pick<
   FormSubmoduleProps,
   | 'formSchema'
   | 'formUiSchema'
+  | 'onSubmit'
   | 'submitButtonTitle'
   | 'cancelButtonTitle'
   | 'hideCancelButton'

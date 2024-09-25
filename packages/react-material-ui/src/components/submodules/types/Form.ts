@@ -24,7 +24,6 @@ export type FormSubmoduleProps = PropsWithChildren<
     | 'schema'
     | 'uiSchema'
     | 'validator'
-    | 'onSubmit'
     | 'noHtml5Validate'
     | 'showErrorList'
     | 'formData'
