@@ -7,7 +7,7 @@ import { SchemaFormProps } from '../../../components/SchemaForm';
 
 export type Action = 'creation' | 'edit' | 'details' | null;
 
-type FormData = Record<string, unknown> | null;
+export type FormData = Record<string, unknown> | null;
 
 export type TableRowsProps = {
   currentIndex: number;
@@ -41,7 +41,7 @@ export type FormSubmoduleProps = PropsWithChildren<
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
   hideCancelButton?: boolean;
-  customFooterContent?: ReactNode;
+  customFooterContent?: ReactNode | ((data: FormData) => ReactNode);
   onClose?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];

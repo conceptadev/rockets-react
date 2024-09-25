@@ -189,7 +189,10 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
               mt={2}
               gap={2}
             >
-              {props.customFooterContent}
+              {props.customFooterContent &&
+                (typeof props.customFooterContent === 'function'
+                  ? props.customFooterContent(formData)
+                  : props.customFooterContent)}
               {viewMode === 'creation' && !props.hideCancelButton && (
                 <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
                   {cancelButtonTitle || 'Cancel'}

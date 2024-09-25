@@ -140,7 +140,10 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
           />
         )}
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
-          {props.customFooterContent}
+          {props.customFooterContent &&
+            (typeof props.customFooterContent === 'function'
+              ? props.customFooterContent(formData)
+              : props.customFooterContent)}
           {viewMode === 'creation' && !props.hideCancelButton && (
             <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
               {cancelButtonTitle || 'Cancel'}
