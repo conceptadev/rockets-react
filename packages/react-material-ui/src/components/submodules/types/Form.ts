@@ -41,6 +41,7 @@ export type FormSubmoduleProps = PropsWithChildren<
   submitButtonTitle?: string;
   cancelButtonTitle?: string;
   hideCancelButton?: boolean;
+  isDeleteButtonVisible?: boolean;
   customFooterContent?: ReactNode;
   onClose?: () => void;
   customValidate?: CustomValidator;
