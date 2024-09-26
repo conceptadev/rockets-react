@@ -58,6 +58,7 @@ type FormProps = Pick<
   | 'submitButtonTitle'
   | 'cancelButtonTitle'
   | 'hideCancelButton'
+  | 'isDeleteButtonVisible'
   | 'customFooterContent'
   | 'customValidate'
   | 'prepareDataForForm'
