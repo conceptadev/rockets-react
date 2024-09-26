@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import type { IChangeEvent } from '@rjsf/core';
 import {
   Box,
@@ -47,6 +47,10 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
 
   const [fieldValues, setFieldValues] =
     useState<FormSubmoduleProps['formData']>(formData);
+
+  useEffect(() => {
+    setFieldValues(formData);
+  }, [formData]);
 
   const { post, patch, del } = useDataProvider();
 
@@ -135,8 +139,8 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
           <TableRowControls
             {...tableRowsProps}
             isLoading={isLoading}
-            onPrevious={() => onPrevious()}
-            onNext={() => onNext()}
+            onPrevious={onPrevious}
+            onNext={onNext}
           />
         )}
         <Box display="flex" flexDirection="row" alignItems="center" gap={2}>
@@ -250,30 +254,43 @@ const DrawerFormSubmodule = (props: FormSubmoduleProps) => {
         }}
         className="Rockets-FormDrawer-SchemaWrapper"
       >
-        <SchemaForm.Form
-          schema={{
-            ...formSchema,
-            required: formSchema?.required || [],
-            properties: formSchema?.properties || {},
-            title: '',
-          }}
-          uiSchema={{
-            ...formUiSchema,
-            'ui:submitButtonOptions': { norender: true },
-          }}
-          noHtml5Validate={true}
-          showErrorList={false}
-          formData={fieldValues}
-          widgets={_widgets}
-          customValidate={customValidate}
-          readonly={viewMode === 'details'}
-          onChange={handleFieldChange}
-          onSubmit={handleFormSubmit}
-          {...otherProps}
-        >
-          {children}
-          {actionButtons}
-        </SchemaForm.Form>
+        {isLoading ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              my: 10,
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <SchemaForm.Form
+            schema={{
+              ...formSchema,
+              required: formSchema?.required || [],
+              properties: formSchema?.properties || {},
+              title: '',
+            }}
+            uiSchema={{
+              ...formUiSchema,
+              'ui:submitButtonOptions': { norender: true },
+            }}
+            noHtml5Validate={true}
+            showErrorList={false}
+            formData={fieldValues}
+            widgets={_widgets}
+            customValidate={customValidate}
+            readonly={viewMode === 'details'}
+            onChange={handleFieldChange}
+            onSubmit={handleFormSubmit}
+            {...otherProps}
+          >
+            {children}
+            {actionButtons}
+          </SchemaForm.Form>
+        )}
       </Box>
     </Drawer>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IChangeEvent } from '@rjsf/core';
 import {
   Box,
@@ -47,6 +47,10 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
 
   const [fieldValues, setFieldValues] =
     useState<FormSubmoduleProps['formData']>(formData);
+
+  useEffect(() => {
+    setFieldValues(formData);
+  }, [formData]);
 
   const { post, patch, del } = useDataProvider();
 
@@ -145,97 +149,110 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
         <CloseIcon />
       </IconButton>
       <DialogContent>
-        <SchemaForm.Form
-          schema={{
-            ...formSchema,
-            required: formSchema?.required || [],
-            properties: formSchema?.properties || {},
-            title: '',
-          }}
-          uiSchema={formUiSchema}
-          validator={validator}
-          onSubmit={handleFormSubmit}
-          noHtml5Validate={true}
-          showErrorList={false}
-          formData={fieldValues}
-          widgets={_widgets}
-          onChange={handleFieldChange}
-          customValidate={customValidate}
-          readonly={viewMode === 'details'}
-          {...otherProps}
-        >
-          {children}
+        {isLoading ? (
           <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent={
-              viewMode === 'creation' ? 'flex-end' : 'space-between'
-            }
-            mt={4}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              my: 10,
+            }}
           >
-            {viewMode !== 'creation' && (
-              <TableRowControls
-                {...tableRowsProps}
-                isLoading={isLoading}
-                onPrevious={() => onPrevious()}
-                onNext={() => onNext()}
-              />
-            )}
+            <CircularProgress />
+          </Box>
+        ) : (
+          <SchemaForm.Form
+            schema={{
+              ...formSchema,
+              required: formSchema?.required || [],
+              properties: formSchema?.properties || {},
+              title: '',
+            }}
+            uiSchema={formUiSchema}
+            validator={validator}
+            onSubmit={handleFormSubmit}
+            noHtml5Validate={true}
+            showErrorList={false}
+            formData={fieldValues}
+            widgets={_widgets}
+            onChange={handleFieldChange}
+            customValidate={customValidate}
+            readonly={viewMode === 'details'}
+            {...otherProps}
+          >
+            {children}
             <Box
               display="flex"
               flexDirection="row"
               alignItems="center"
-              mt={2}
-              gap={2}
+              justifyContent={
+                viewMode === 'creation' ? 'flex-end' : 'space-between'
+              }
+              mt={4}
             >
-              {props.customFooterContent &&
-                (typeof props.customFooterContent === 'function'
-                  ? props.customFooterContent(formData)
-                  : props.customFooterContent)}
-              {viewMode === 'creation' && !props.hideCancelButton && (
-                <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                  {cancelButtonTitle || 'Cancel'}
-                </Button>
+              {viewMode !== 'creation' && (
+                <TableRowControls
+                  {...tableRowsProps}
+                  isLoading={isLoading}
+                  onPrevious={onPrevious}
+                  onNext={onNext}
+                />
               )}
-              {viewMode === 'edit' && !props.hideCancelButton && (
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => deleteItem(formData)}
-                  sx={{ flex: 1 }}
-                >
-                  {isLoadingDelete ? (
-                    <CircularProgress sx={{ color: 'white' }} size={24} />
-                  ) : (
-                    cancelButtonTitle || 'Delete'
-                  )}
-                </Button>
-              )}
-              {viewMode === 'details' && !props.hideCancelButton && (
-                <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                  {cancelButtonTitle || 'Close'}
-                </Button>
-              )}
-              {viewMode !== 'details' && (
-                <Button
-                  type="submit"
-                  variant="contained"
-                  disabled={
-                    isLoadingCreation || isLoadingEdit || isLoadingDelete
-                  }
-                  sx={{ flex: 1 }}
-                >
-                  {isLoadingCreation || isLoadingEdit ? (
-                    <CircularProgress sx={{ color: 'white' }} size={24} />
-                  ) : (
-                    submitButtonTitle || 'Save'
-                  )}
-                </Button>
-              )}
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                mt={2}
+                gap={2}
+              >
+                {props.customFooterContent &&
+                  (typeof props.customFooterContent === 'function'
+                    ? props.customFooterContent(formData)
+                    : props.customFooterContent)}
+                {viewMode === 'creation' && !props.hideCancelButton && (
+                  <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                    {cancelButtonTitle || 'Cancel'}
+                  </Button>
+                )}
+                {viewMode === 'edit' && !props.hideCancelButton && (
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => deleteItem(formData)}
+                    sx={{ flex: 1 }}
+                  >
+                    {isLoadingDelete ? (
+                      <CircularProgress sx={{ color: 'white' }} size={24} />
+                    ) : (
+                      cancelButtonTitle || 'Delete'
+                    )}
+                  </Button>
+                )}
+                {viewMode === 'details' && !props.hideCancelButton && (
+                  <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
+                    {cancelButtonTitle || 'Close'}
+                  </Button>
+                )}
+                {viewMode !== 'details' && (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={
+                      isLoadingCreation || isLoadingEdit || isLoadingDelete
+                    }
+                    sx={{ flex: 1 }}
+                  >
+                    {isLoadingCreation || isLoadingEdit ? (
+                      <CircularProgress sx={{ color: 'white' }} size={24} />
+                    ) : (
+                      submitButtonTitle || 'Save'
+                    )}
+                  </Button>
+                )}
+              </Box>
             </Box>
-          </Box>
-        </SchemaForm.Form>
+          </SchemaForm.Form>
+        )}
       </DialogContent>
     </Dialog>
   );
