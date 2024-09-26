@@ -7,7 +7,7 @@ import { SchemaFormProps } from '../../../components/SchemaForm';
 
 export type Action = 'creation' | 'edit' | 'details' | null;
 
-type FormData = Record<string, unknown> | null;
+export type FormData = Record<string, unknown> | null;
 
 export type TableRowsProps = {
   currentIndex: number;
@@ -24,7 +24,6 @@ export type FormSubmoduleProps = PropsWithChildren<
     | 'schema'
     | 'uiSchema'
     | 'validator'
-    | 'onSubmit'
     | 'noHtml5Validate'
     | 'showErrorList'
     | 'formData'
@@ -42,7 +41,7 @@ export type FormSubmoduleProps = PropsWithChildren<
   cancelButtonTitle?: string;
   hideCancelButton?: boolean;
   isDeleteButtonVisible?: boolean;
-  customFooterContent?: ReactNode;
+  customFooterContent?: ReactNode | ((data: FormData) => ReactNode);
   onClose?: () => void;
   customValidate?: CustomValidator;
   widgets?: FormProps['widgets'];
