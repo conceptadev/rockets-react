@@ -30,6 +30,8 @@ import {
   FilterValues,
 } from './useCrudRoot';
 
+import { useCrudControls, ControlsActionEnum } from './useCrudControls';
+
 type Action = 'creation' | 'edit' | 'details' | null;
 
 type SelectedRow = Record<string, unknown> | null;
@@ -114,8 +116,45 @@ const CrudModule = (props: ModuleProps) => {
     navigate: props.navigate,
   });
 
-  const { data, tableQueryState, setTableQueryState, pageCount, isPending } =
-    useTableReturn;
+  // Assign functions and data to CrudControls
+  const {
+    data,
+    tableQueryState,
+    setTableQueryState,
+    pageCount,
+    isPending,
+    refresh,
+  } = useTableReturn;
+  const { refreshTable, dispatch } = useCrudControls();
+
+  useEffect(() => {
+    if (!refreshTable && refresh && dispatch) {
+      dispatch({
+        type: ControlsActionEnum.ASSIGN_REFRESH_TABLE,
+        payload: refresh,
+      });
+    }
+  }, [refresh]);
+
+  useEffect(() => {
+    if (dispatch) {
+      dispatch({ type: ControlsActionEnum.ASSIGN_TABLE_DATA, payload: data });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (dispatch) {
+      dispatch({
+        type: ControlsActionEnum.ASSIGN_IS_FORM_VISIBLE,
+        payload: isFormVisible,
+      });
+      dispatch({
+        type: ControlsActionEnum.ASSIGN_SET_FORM_VISIBLE,
+        payload: setFormVisible,
+      });
+    }
+  }, [isFormVisible]);
+  // End of CrudControls assignment
 
   const changeCurrentFormData = (direction: 'previous' | 'next') => {
     const isPrevious = direction === 'previous';
