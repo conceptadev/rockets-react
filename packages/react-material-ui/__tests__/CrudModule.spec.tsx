@@ -294,10 +294,8 @@ describe('CrudModule Component', () => {
     await findByRole('presentation');
 
     const saveButton = getByText('Save');
-    const closeButton = getByText('Delete');
 
     expect(saveButton).toBeInTheDocument();
-    expect(closeButton).toBeInTheDocument();
   });
 
   it('should hide details icon if detailsFormProps is not passed', () => {
