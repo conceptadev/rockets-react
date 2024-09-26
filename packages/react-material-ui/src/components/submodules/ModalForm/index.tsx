@@ -209,12 +209,17 @@ const ModalFormSubmodule = (props: FormSubmoduleProps) => {
                   (typeof props.customFooterContent === 'function'
                     ? props.customFooterContent(formData)
                     : props.customFooterContent)}
-                {viewMode === 'creation' && !props.hideCancelButton && (
-                  <Button variant="outlined" onClick={onClose} sx={{ flex: 1 }}>
-                    {cancelButtonTitle || 'Cancel'}
-                  </Button>
-                )}
-                {viewMode === 'edit' && !props.hideCancelButton && (
+                {(viewMode === 'creation' || viewMode === 'edit') &&
+                  !props.hideCancelButton && (
+                    <Button
+                      variant="outlined"
+                      onClick={onClose}
+                      sx={{ flex: 1 }}
+                    >
+                      {cancelButtonTitle || 'Cancel'}
+                    </Button>
+                  )}
+                {viewMode === 'edit' && props.isDeleteButtonVisible && (
                   <Button
                     variant="contained"
                     color="error"
