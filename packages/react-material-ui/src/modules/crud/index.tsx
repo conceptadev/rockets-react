@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 
 import useTable from '../../components/Table/useTable';
+import { Order } from '../../components/Table/types';
 import { TableProps as InnerTableProps } from '../../components/Table/Table';
 import Text from '../../components/Text';
 import TableSubmodule, {
@@ -51,6 +52,8 @@ interface TableProps {
   onDeleteError?: (error: unknown) => void;
   mobileModalTitleSrc?: string;
   allowModalPreview?: boolean;
+  order?: Order;
+  orderBy?: string;
 }
 
 type FormProps = Pick<
@@ -114,6 +117,8 @@ const CrudModule = (props: ModuleProps) => {
       onError: props.onFetchError,
     },
     navigate: props.navigate,
+    order: props.tableProps.order,
+    orderBy: props.tableProps.orderBy,
   });
 
   // Assign functions and data to CrudControls
