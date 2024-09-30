@@ -1693,17 +1693,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@concepta/react-auth-provider@npm:^2.0.0-alpha.9, @concepta/react-auth-provider@workspace:packages/react-auth-provider":
+"@concepta/react-auth-provider@npm:^2.0.0-alpha.10, @concepta/react-auth-provider@workspace:packages/react-auth-provider":
   version: 0.0.0-use.local
   resolution: "@concepta/react-auth-provider@workspace:packages/react-auth-provider"
   dependencies:
-    "@concepta/react-data-provider": "npm:^2.0.0-alpha.9"
+    "@concepta/react-data-provider": "npm:^2.0.0-alpha.10"
   peerDependencies:
     react: ^18.2.0
   languageName: unknown
   linkType: soft
 
-"@concepta/react-data-provider@npm:^2.0.0-alpha.9, @concepta/react-data-provider@workspace:packages/react-data-provider":
+"@concepta/react-data-provider@npm:^2.0.0-alpha.10, @concepta/react-data-provider@workspace:packages/react-data-provider":
   version: 0.0.0-use.local
   resolution: "@concepta/react-data-provider@workspace:packages/react-data-provider"
   dependencies:
@@ -1715,7 +1715,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@concepta/react-material-ui@npm:^2.0.0-alpha.9, @concepta/react-material-ui@workspace:packages/react-material-ui":
+"@concepta/react-material-ui@npm:^2.0.0-alpha.10, @concepta/react-material-ui@workspace:packages/react-material-ui":
   version: 0.0.0-use.local
   resolution: "@concepta/react-material-ui@workspace:packages/react-material-ui"
   dependencies:
@@ -1755,9 +1755,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@concepta/react-navigation@workspace:packages/react-navigation"
   dependencies:
-    "@concepta/react-auth-provider": "npm:^2.0.0-alpha.9"
-    "@concepta/react-data-provider": "npm:^2.0.0-alpha.9"
-    "@concepta/react-material-ui": "npm:^2.0.0-alpha.9"
+    "@concepta/react-auth-provider": "npm:^2.0.0-alpha.10"
+    "@concepta/react-data-provider": "npm:^2.0.0-alpha.10"
+    "@concepta/react-material-ui": "npm:^2.0.0-alpha.10"
     "@mui/material": "npm:^5.16.6"
     "@types/react": "npm:^18.2.0"
     "@types/react-dom": "npm:^18.2.0"
