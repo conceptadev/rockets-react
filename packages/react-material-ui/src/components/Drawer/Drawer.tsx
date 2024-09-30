@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, ReactNode } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  ReactNode,
+  PropsWithChildren,
+} from 'react';
 import { darken } from '@mui/material/styles';
 import { StyledDrawer, StyledDrawerProps } from './Styles';
 import Toolbar from '@mui/material/Toolbar';
@@ -80,7 +86,7 @@ export type DrawerProps = {
  *
  * @param props - Drawer component props
  */
-export const Drawer = (props: DrawerProps) => {
+export const Drawer = (props: PropsWithChildren<DrawerProps>) => {
   const {
     items,
     currentId,
@@ -103,6 +109,7 @@ export const Drawer = (props: DrawerProps) => {
     activeIconColor,
     collapsedWidth,
     expandedWidth,
+    children,
   } = props;
   const [_collapsed, _setCollapsed] = useState<boolean>(collapsed);
 
@@ -165,6 +172,8 @@ export const Drawer = (props: DrawerProps) => {
           />
         );
       })}
+
+      {children}
 
       {!hideToggle &&
         collapsible &&
