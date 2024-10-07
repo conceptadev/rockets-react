@@ -1756,6 +1756,9 @@ __metadata:
   dependencies:
     "@types/react": "npm:^18.2.0"
     "@types/react-dom": "npm:^18.2.0"
+    react-router: "npm:^6.26.0"
+    react-router-dom: "npm:^6.26.0"
+    react-toastify: "npm:^10.0.5"
   peerDependencies:
     "@concepta/react-auth-provider": ^2.0.0-alpha.10
     "@concepta/react-data-provider": ^2.0.0-alpha.10
@@ -1763,9 +1766,6 @@ __metadata:
     "@mui/material": ^5.16.6
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-router: ^6.26.0
-    react-router-dom: ^6.26.0
-    react-toastify: ^10.0.5
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -4031,6 +4031,13 @@ __metadata:
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
   checksum: 10c0/4681e682abc006d25eb380d0cf3efc7557043f53b6aea7a5057d0d1e7df849a00e281cd8ea79c902a35a414d7919621fc2ba293ecec05f413598e0b23d5a1e63
+  languageName: node
+  linkType: hard
+
+"@remix-run/router@npm:1.19.2":
+  version: 1.19.2
+  resolution: "@remix-run/router@npm:1.19.2"
+  checksum: 10c0/ac7fc813350686705f2c29219e70e1e299d9a8e3b301e9e81f7e84f578c40c6462b590cf0d78863bac40dbc325b68c71ae070f4a1465793d1d1971b619618295
   languageName: node
   linkType: hard
 
@@ -15739,6 +15746,42 @@ __metadata:
   version: 18.3.1
   resolution: "react-is@npm:18.3.1"
   checksum: 10c0/f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
+  languageName: node
+  linkType: hard
+
+"react-router-dom@npm:^6.26.0":
+  version: 6.26.2
+  resolution: "react-router-dom@npm:6.26.2"
+  dependencies:
+    "@remix-run/router": "npm:1.19.2"
+    react-router: "npm:6.26.2"
+  peerDependencies:
+    react: ">=16.8"
+    react-dom: ">=16.8"
+  checksum: 10c0/7515128a98eef0a6b2bf354ef9dfefad03556a06be00fa9220eda6526aaada8a42f294911083473d7ced6d7128c3088bd193218bbb3d62593f9f4f7053781c23
+  languageName: node
+  linkType: hard
+
+"react-router@npm:6.26.2, react-router@npm:^6.26.0":
+  version: 6.26.2
+  resolution: "react-router@npm:6.26.2"
+  dependencies:
+    "@remix-run/router": "npm:1.19.2"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/0d15a39b419c99fb5ccad76388bfc4ee2b01323b3b1b694595a9f9ea28e1fbeea25486b5398f5d3d93922f5c6a9aa751b6bb27419488d85279f6ca5ff9e0a6bb
+  languageName: node
+  linkType: hard
+
+"react-toastify@npm:^10.0.5":
+  version: 10.0.5
+  resolution: "react-toastify@npm:10.0.5"
+  dependencies:
+    clsx: "npm:^2.1.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 10c0/66c68ec3d6c017d9f32652d73bb925224921c6a80b629b9d481430d5b4fd504abb7a99995a64b9aef0fc31326c74f3cbe088b3287b978dd0c355079c4bbf4158
   languageName: node
   linkType: hard
 
