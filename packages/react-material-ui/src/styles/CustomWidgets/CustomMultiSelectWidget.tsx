@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { MultiSelectField } from '../../components/MultiSelectField';
+import { MultiSelect } from '../../components/MultiSelect';
 
 import {
   enumOptionsIndexForValue,
@@ -48,7 +48,7 @@ function CustomMultiSelectWidget<
     !selectedIndexes?.length || typeof value === 'undefined' ? [] : value;
 
   return (
-    <MultiSelectField
+    <MultiSelect
       id={id}
       label={label}
       value={_value}

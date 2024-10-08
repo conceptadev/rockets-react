@@ -64,10 +64,7 @@ export { TextField, TextFieldProps } from './components/TextField';
 export { default as SearchField } from './components/SearchField';
 export { default as AutocompleteField } from './components/AutocompleteField';
 export { SelectField, SelectFieldProps } from './components/SelectField';
-export {
-  MultiSelectField,
-  MultiSelectFieldProps,
-} from './components/MultiSelectField';
+export { MultiSelect, MultiSelectProps } from './components/MultiSelect';
 export { default as SimpleForm } from './components/SimpleForm';
 export {
   Filter,

@@ -1,1 +1,1 @@
-export { MultiSelectField, MultiSelectFieldProps } from './MultiSelectField';
+export { MultiSelect, MultiSelectProps } from './MultiSelect';
