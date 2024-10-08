@@ -3,7 +3,7 @@ import { UseTableResult } from '../../components/Table/useTable';
 import { Search, SimpleFilter } from '../../components/Table/types';
 import { FilterDetails } from '../../components/submodules/Filter';
 
-export type FilterValues = Record<string, string | Date | null>;
+export type FilterValues = Record<string, string | string[] | Date | null>;
 
 export type CrudContextProps = {
   /**

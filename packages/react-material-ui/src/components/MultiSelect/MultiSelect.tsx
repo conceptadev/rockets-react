@@ -76,15 +76,17 @@ export const MultiSelect = ({
   labelProps,
   ...rest
 }: MultiSelectProps) => {
+  const isChips = displayVariant === 'chips';
+
   const handleChange = (event: SelectChangeEvent<string[]>) => {
     const {
       target: { value },
     } = event;
     // On autofill we get a stringified value.
-    let values = typeof value === 'string' ? value.split(',') : value;
+    const values = typeof value === 'string' ? value.split(',') : value;
 
     if (values.includes(allOption.value) && hasAllOption) {
-      values = [];
+      return onChange([]);
     }
 
     onChange(values);
@@ -101,8 +103,7 @@ export const MultiSelect = ({
   const finalOptions = [...(hasAllOption ? [allOption] : []), ...options];
 
   const renderValues = (selected?: string[]) => {
-    const isChips = displayVariant === 'chips';
-    const valuesIds: string[] = selected || (value as string[]) || [];
+    const valuesIds: string[] = (selected as string[]) || value || [];
 
     const valueLabels = valuesIds.map(
       (selectedItem: string) =>
@@ -129,11 +130,11 @@ export const MultiSelect = ({
   };
 
   const renderInputValue = (selected: string[]) => {
-    if (displayVariant === 'chips') {
+    if (isChips) {
       return placeholder || label;
     }
 
-    if (selected.length === 0 && hasAllOption) return allOption.label;
+    if (selected?.length === 0 && hasAllOption) return allOption.label;
 
     return renderValues(selected);
   };
@@ -166,9 +167,7 @@ export const MultiSelect = ({
         <Select
           labelId={labelId}
           className="Rockets-MultiSelect"
-          defaultValue={
-            defaultValue || (hasAllOption && [allOption.value]) || []
-          }
+          defaultValue={defaultValue}
           onChange={handleChange}
           label={labelVariant === 'rockets' ? '' : label}
           fullWidth={fullWidth}
@@ -205,7 +204,7 @@ export const MultiSelect = ({
             );
           })}
         </Select>
-        {displayVariant === 'chips' && <Box>{renderValues()}</Box>}
+        {isChips && <Box>{renderValues()}</Box>}
       </FormControl>
     </FormFieldSkeleton>
   );
