@@ -20,12 +20,16 @@ type Operator =
   | 'ends'
   | 'cont'
   | 'excl'
+  | 'in'
+  | 'notin'
   | 'eqL'
   | 'neL'
   | 'startsL'
   | 'endsL'
   | 'contL'
-  | 'exclL';
+  | 'exclL'
+  | 'inL'
+  | 'notinL';
 
 export type FilterDetails = {
   type: FilterVariant;
@@ -82,6 +86,8 @@ const FilterSubmodule = (props: Props) => {
       if (!filter.operator) return acc;
       if (typeof value === 'undefined') return acc;
 
+      const emptyArray = Array.isArray(value) && value.length === 0;
+
       const data =
         format === 'simpleFilter'
           ? `||$${filter.operator}||${value}`
@@ -90,7 +96,9 @@ const FilterSubmodule = (props: Props) => {
       return {
         ...acc,
         [filter.id]:
-          value === null || value === 'all' || value === '' ? null : data,
+          value === null || value === 'all' || value === '' || emptyArray
+            ? null
+            : data,
       };
     }, {});
 
@@ -122,7 +130,7 @@ const FilterSubmodule = (props: Props) => {
 
   const onFilterChange = (
     id: string,
-    value: string | Date | null,
+    value: string | string[] | Date | null,
     updateFilter?: boolean,
   ) => {
     setFilterValues((prv) => {
@@ -200,6 +208,15 @@ const FilterSubmodule = (props: Props) => {
           options,
           value: value as string,
           onChange: (val: string | null) => onFilterChange(id, val, true),
+        };
+
+      case 'multiSelect':
+        return {
+          ...commonFields,
+          type,
+          options,
+          value: (value as unknown as string[]) || [],
+          onChange: (val: string[] | null) => onFilterChange(id, val, true),
         };
 
       case 'date':

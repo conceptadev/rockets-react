@@ -11,6 +11,7 @@ import {
   SelectOption,
   allOption,
 } from '../../components/SelectField/SelectField';
+import { MultiSelect } from '../../components/MultiSelect';
 import { SearchFieldProps } from '../../components/SearchField/SearchField';
 import { OrderableDropDown, ListItem } from '../OrderableDropDown';
 import { DatePickerProps } from '@mui/x-date-pickers';
@@ -19,7 +20,12 @@ import DatePickerField from '../../components/DatePickerField';
 /**
  * Type of filter variants available.
  */
-export type FilterVariant = 'text' | 'autocomplete' | 'select' | 'date';
+export type FilterVariant =
+  | 'text'
+  | 'autocomplete'
+  | 'select'
+  | 'multiSelect'
+  | 'date';
 
 /**
  * Common properties for all filters.
@@ -86,13 +92,27 @@ type SelectFilter = {
 } & FilterCommon;
 
 /**
- * Type for filter properties that can be text, date, autocomplete, or select.
+ * Properties for the multiSelect filter.
+ */
+type MultiSelectFilter = {
+  type: 'multiSelect';
+  options: SelectOption[];
+  multiple?: boolean;
+  defaultValue?: string[];
+  size?: SelectFieldProps['size'];
+  onChange: (value: string[] | null) => void;
+  value?: string[] | null;
+} & FilterCommon;
+
+/**
+ * Type for filter properties that can be text, date, autocomplete, select or MultiSelect.
  */
 export type FilterType =
   | TextFilter
   | DateFilter
   | AutocompleteFilter
-  | SelectFilter;
+  | SelectFilter
+  | MultiSelectFilter;
 
 /**
  * Renders the appropriate component based on the filter type.
@@ -145,6 +165,21 @@ const renderComponent = (filter: FilterType) => {
           isLoading={filter.isLoading}
           options={filter.options}
           defaultValue={filter.defaultValue ?? allOption.value}
+          onChange={filter.onChange}
+          value={filter.value}
+          variant="outlined"
+        />
+      );
+
+    case 'multiSelect':
+      return (
+        <MultiSelect
+          fullWidth
+          size={filter.size ?? 'small'}
+          label={filter.label}
+          isLoading={filter.isLoading}
+          options={filter.options}
+          defaultValue={filter.defaultValue}
           onChange={filter.onChange}
           value={filter.value}
           variant="outlined"
