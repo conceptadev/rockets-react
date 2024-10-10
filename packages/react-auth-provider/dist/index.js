@@ -87,6 +87,7 @@ const AuthProvider = ({ children, onSuccess, onError, }) => {
     const doLogout = () => __awaiter(void 0, void 0, void 0, function* () {
         setAccessToken(undefined);
         setRefreshToken(undefined);
+        setUser(undefined);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
     });

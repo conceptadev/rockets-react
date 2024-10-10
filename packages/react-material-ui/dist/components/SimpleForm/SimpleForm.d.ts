@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import { ButtonProps } from '@mui/material/Button';
 import { TypographyProps } from '@mui/material/Typography';
 import { FormValidation } from '@rjsf/utils';

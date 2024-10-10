@@ -50,10 +50,10 @@ const Router = ({ children, rootElement, useNavigateFilter, initialRoute, useMem
         {
             path: '/',
             element: rootElement ? (react_1.default.cloneElement(rootElement, {}, react_1.default.createElement("div", null,
-                "Home test",
+                "Home test root",
                 react_1.default.createElement(react_router_dom_1.Outlet, null),
                 react_1.default.createElement(react_router_dom_1.Navigate, { to: initialRoute !== null && initialRoute !== void 0 ? initialRoute : home, replace: true })))) : (react_1.default.createElement("div", null,
-                "Home test",
+                "Home test no root",
                 react_1.default.createElement(react_router_dom_1.Outlet, null))),
             children: [
                 {

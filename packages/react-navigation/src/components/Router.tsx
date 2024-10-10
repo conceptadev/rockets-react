@@ -97,14 +97,14 @@ const Router = ({
           rootElement,
           {},
           <div>
-            Home test
+            Home test root
             <Outlet />
             <Navigate to={initialRoute ?? home} replace />
           </div>,
         )
       ) : (
         <div>
-          Home test
+          Home test no root
           <Outlet />
         </div>
       ),

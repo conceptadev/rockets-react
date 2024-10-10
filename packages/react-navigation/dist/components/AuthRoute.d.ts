@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import { AuthModuleProps } from '@concepta/react-material-ui/';
 type Route = 'signIn' | 'signUp' | 'forgotPassword' | 'resetPassword';
 type AuthRouteProps = {

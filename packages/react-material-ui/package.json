@@ -13,10 +13,6 @@
   "peerDependencies": {
     "@concepta/react-auth-provider": "^2.0.0-alpha.10",
     "@concepta/react-data-provider": "^2.0.0-alpha.10",
-    "@rjsf/core": "^5.0.0-beta.13",
-    "@rjsf/mui": "^5.0.0-beta.13",
-    "@rjsf/utils": "^5.0.0-beta.13",
-    "@rjsf/validator-ajv6": "^5.0.0-beta.13",
     "json-schema": "0.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -40,6 +36,10 @@
     "@mui/material": "^5.10.6",
     "@mui/utils": "5.9.3",
     "@mui/x-date-pickers": "^6.19.7",
+    "@rjsf/core": "^5.0.0-beta.13",
+    "@rjsf/mui": "^5.0.0-beta.13",
+    "@rjsf/utils": "^5.0.0-beta.13",
+    "@rjsf/validator-ajv6": "^5.0.0-beta.13",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

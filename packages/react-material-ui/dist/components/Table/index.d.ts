@@ -19,7 +19,7 @@ declare const TableComponent: {
         hasCheckboxes?: boolean;
     } & import("@mui/material").TableRowOwnProps & import("@mui/material/OverridableComponent").CommonProps & Omit<Omit<import("react").DetailedHTMLProps<import("react").HTMLAttributes<HTMLTableRowElement>, HTMLTableRowElement>, "ref"> & {
         ref?: import("react").Ref<HTMLTableRowElement>;
-    }, "style" | "children" | "className" | "classes" | "sx" | "selected" | "hover"> & {
+    }, "className" | "style" | "children" | "classes" | "sx" | "selected" | "hover"> & {
         component?: import("react").ElementType<any>;
     }>) => JSX.Element;
     BodyRows: ({ renderRow, isLoading, }: {
@@ -28,7 +28,7 @@ declare const TableComponent: {
     }) => JSX.Element;
     Pagination: ({ variant, rowsPerPageOptions, sx, ...rest }: {
         variant: "outlined" | "contained" | "clean";
-    } & Omit<import("@mui/material").TablePaginationProps<import("react").JSXElementConstructor<import("@mui/material").TablePaginationBaseProps>, {}>, "page" | "variant" | "count" | "onPageChange" | "rowsPerPage">) => JSX.Element;
+    } & Omit<import("@mui/material").TablePaginationProps<import("react").JSXElementConstructor<import("@mui/material").TablePaginationBaseProps>, {}>, "variant" | "page" | "rowsPerPage" | "count" | "onPageChange">) => JSX.Element;
     PaginationNumbers: (props: import("@mui/material").PaginationProps) => JSX.Element;
     HeaderCell: ({ cell, ...rest }: {
         cell: import("./types").HeaderProps;
