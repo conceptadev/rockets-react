@@ -1693,17 +1693,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@concepta/react-auth-provider@npm:^2.0.0-alpha.10, @concepta/react-auth-provider@workspace:packages/react-auth-provider":
+"@concepta/react-auth-provider@workspace:packages/react-auth-provider":
   version: 0.0.0-use.local
   resolution: "@concepta/react-auth-provider@workspace:packages/react-auth-provider"
-  dependencies:
-    "@concepta/react-data-provider": "npm:^2.0.0-alpha.10"
   peerDependencies:
+    "@concepta/react-data-provider": ^2.0.0-alpha.10
     react: ^18.2.0
   languageName: unknown
   linkType: soft
 
-"@concepta/react-data-provider@npm:^2.0.0-alpha.10, @concepta/react-data-provider@workspace:packages/react-data-provider":
+"@concepta/react-data-provider@workspace:packages/react-data-provider":
   version: 0.0.0-use.local
   resolution: "@concepta/react-data-provider@workspace:packages/react-data-provider"
   dependencies:
@@ -1715,7 +1714,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@concepta/react-material-ui@npm:^2.0.0-alpha.10, @concepta/react-material-ui@workspace:packages/react-material-ui":
+"@concepta/react-material-ui@workspace:packages/react-material-ui":
   version: 0.0.0-use.local
   resolution: "@concepta/react-material-ui@workspace:packages/react-material-ui"
   dependencies:
@@ -1735,14 +1734,14 @@ __metadata:
     "@types/lodash": "npm:^4.14.198"
     "@types/react": "npm:^18.2.0"
     "@types/react-dom": "npm:^18.2.0"
-    json-schema: "npm:0.4.0"
     lodash: "npm:^4.17.21"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-toastify: "npm:^10.0.5"
   peerDependencies:
-    "@concepta/react-auth-provider": ^1.0.0-alpha.23
-    "@concepta/react-data-provider": ^1.0.0-alpha.23
+    "@concepta/react-auth-provider": ^2.0.0-alpha.10
+    "@concepta/react-data-provider": ^2.0.0-alpha.10
+    json-schema: 0.4.0
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-toastify: ^10.0.5
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -1755,17 +1754,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@concepta/react-navigation@workspace:packages/react-navigation"
   dependencies:
-    "@concepta/react-auth-provider": "npm:^2.0.0-alpha.10"
-    "@concepta/react-data-provider": "npm:^2.0.0-alpha.10"
-    "@concepta/react-material-ui": "npm:^2.0.0-alpha.10"
-    "@mui/material": "npm:^5.16.6"
     "@types/react": "npm:^18.2.0"
     "@types/react-dom": "npm:^18.2.0"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
     react-router: "npm:^6.26.0"
     react-router-dom: "npm:^6.26.0"
     react-toastify: "npm:^10.0.5"
+  peerDependencies:
+    "@concepta/react-auth-provider": ^2.0.0-alpha.10
+    "@concepta/react-data-provider": ^2.0.0-alpha.10
+    "@concepta/react-material-ui": ^2.0.0-alpha.10
+    "@mui/material": ^5.16.6
+    react: ^18.2.0
+    react-dom: ^18.2.0
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -3599,7 +3599,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mui/material@npm:^5.10.6, @mui/material@npm:^5.16.6":
+"@mui/material@npm:^5.10.6":
   version: 5.16.7
   resolution: "@mui/material@npm:5.16.7"
   dependencies:
@@ -4034,16 +4034,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@remix-run/router@npm:1.19.1":
-  version: 1.19.1
-  resolution: "@remix-run/router@npm:1.19.1"
-  checksum: 10c0/9101fc96646e5107b6b0ef248d4c93bd965590c37ac02d35bcc57d1902467db7fc6eeec0a1fb97d0ce5bc96fae58e75239555e44a983239a61badba18e82d3b8
+"@remix-run/router@npm:1.19.2":
+  version: 1.19.2
+  resolution: "@remix-run/router@npm:1.19.2"
+  checksum: 10c0/ac7fc813350686705f2c29219e70e1e299d9a8e3b301e9e81f7e84f578c40c6462b590cf0d78863bac40dbc325b68c71ae070f4a1465793d1d1971b619618295
   languageName: node
   linkType: hard
 
 "@rjsf/core@npm:^5.0.0-beta.13":
-  version: 5.20.0
-  resolution: "@rjsf/core@npm:5.20.0"
+  version: 5.21.2
+  resolution: "@rjsf/core@npm:5.21.2"
   dependencies:
     lodash: "npm:^4.17.21"
     lodash-es: "npm:^4.17.21"
@@ -4051,30 +4051,30 @@ __metadata:
     nanoid: "npm:^3.3.7"
     prop-types: "npm:^15.8.1"
   peerDependencies:
-    "@rjsf/utils": ^5.19.x
+    "@rjsf/utils": ^5.20.x
     react: ^16.14.0 || >=17
-  checksum: 10c0/709e8aca6c4072584565af1eb9017308ff4091097d92d2ac35d3264bbf2c17dffb732076281eaf7daa53eebafec0bb9da884551b1272d6f1d1b0baf0c0da6ca0
+  checksum: 10c0/96c0d494c792be6078e15f866ba4e474950a5a19cc36eebcb4ba3f87f017fb34e3d8061098bccd5c28c4c452855378a6d56f445def6ead5d9728217dbde304b0
   languageName: node
   linkType: hard
 
 "@rjsf/mui@npm:^5.0.0-beta.13":
-  version: 5.20.0
-  resolution: "@rjsf/mui@npm:5.20.0"
+  version: 5.21.2
+  resolution: "@rjsf/mui@npm:5.21.2"
   peerDependencies:
     "@emotion/react": ^11.7.0
     "@emotion/styled": ^11.6.0
-    "@mui/icons-material": ^5.2.0
-    "@mui/material": ^5.2.2
-    "@rjsf/core": ^5.19.x
-    "@rjsf/utils": ^5.19.x
+    "@mui/icons-material": ^5.2.0 || ^6.0.0
+    "@mui/material": ^5.2.2 || ^6.0.0
+    "@rjsf/core": ^5.20.x
+    "@rjsf/utils": ^5.20.x
     react: ">=17"
-  checksum: 10c0/6c66f59eae387c826ac88542ee6d918080fb7632a17b01b8e3b6ceb474bd1845bba887d0441c810904f226b31b90df8a12cca68393320749d61ddc2c3e4c2950
+  checksum: 10c0/4f4680536d3a846d7aa5d7914cf0bb68f9db70d291996c91c84d49b8e062fbd9271c6520082ef273471dc3deca79773c06caf0c514839683ec774deabe9d4ade
   languageName: node
   linkType: hard
 
 "@rjsf/utils@npm:^5.0.0-beta.13":
-  version: 5.20.0
-  resolution: "@rjsf/utils@npm:5.20.0"
+  version: 5.21.2
+  resolution: "@rjsf/utils@npm:5.21.2"
   dependencies:
     json-schema-merge-allof: "npm:^0.8.1"
     jsonpointer: "npm:^5.0.1"
@@ -4083,20 +4083,20 @@ __metadata:
     react-is: "npm:^18.2.0"
   peerDependencies:
     react: ^16.14.0 || >=17
-  checksum: 10c0/163e8dc9c749988f532665204ec44672248247b5c7335bd4b22c07b7c5fe5ba191c04e1f368926e29381f11b03835251c79dab474fbc73445715f59897ec926c
+  checksum: 10c0/5867e27d079fcc1b5485e34906fc8044cad335ee0189d3397b5c7345885c84f4276241ad8959539eb09ec19bde70764a816cd6f3ec684e10873ce2af42696e8a
   languageName: node
   linkType: hard
 
 "@rjsf/validator-ajv6@npm:^5.0.0-beta.13":
-  version: 5.20.0
-  resolution: "@rjsf/validator-ajv6@npm:5.20.0"
+  version: 5.21.2
+  resolution: "@rjsf/validator-ajv6@npm:5.21.2"
   dependencies:
     ajv: "npm:^6.12.6"
     lodash: "npm:^4.17.21"
     lodash-es: "npm:^4.17.21"
   peerDependencies:
-    "@rjsf/utils": ^5.19.x
-  checksum: 10c0/4995d7c7837ed68797fa8df47efcd36b0ac1d21454df8b05b174d52b29da45d381a0a119c341b274673fda87bdb522e2c3d94670f0d99bd7b66ffe5052e39859
+    "@rjsf/utils": ^5.20.x
+  checksum: 10c0/5ebf52b5f38fcaedce5b9c045001927041e64d356d88857236146e83f420cda4421ecc723643efb9277de3dbd924e4e786206b6f8102d54fb7af838950962043
   languageName: node
   linkType: hard
 
@@ -13552,7 +13552,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"markdown-to-jsx@npm:^7.4.1, markdown-to-jsx@npm:^7.4.5":
+"markdown-to-jsx@npm:^7.4.1":
+  version: 7.5.0
+  resolution: "markdown-to-jsx@npm:7.5.0"
+  peerDependencies:
+    react: ">= 0.14.0"
+  checksum: 10c0/88213e64afd41d6934fbb70bcea0e2ef1f9553db1ba4c6f423b17d6e9c2b99c82b0fcbed29036dd5b91704b170803d1fae730ab40ae27af5c7994e2717686ebc
+  languageName: node
+  linkType: hard
+
+"markdown-to-jsx@npm:^7.4.5":
   version: 7.4.7
   resolution: "markdown-to-jsx@npm:7.4.7"
   peerDependencies:
@@ -15811,7 +15820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0, react-dom@npm:^18.2.0":
+"react-dom@npm:^16.8.0 || ^17.0.0 || ^18.0.0":
   version: 18.3.1
   resolution: "react-dom@npm:18.3.1"
   dependencies:
@@ -15866,26 +15875,26 @@ __metadata:
   linkType: hard
 
 "react-router-dom@npm:^6.26.0":
-  version: 6.26.1
-  resolution: "react-router-dom@npm:6.26.1"
+  version: 6.26.2
+  resolution: "react-router-dom@npm:6.26.2"
   dependencies:
-    "@remix-run/router": "npm:1.19.1"
-    react-router: "npm:6.26.1"
+    "@remix-run/router": "npm:1.19.2"
+    react-router: "npm:6.26.2"
   peerDependencies:
     react: ">=16.8"
     react-dom: ">=16.8"
-  checksum: 10c0/9d9d8ed54d1c95497c6fa35a6ab46992efeccf1cfc6f0f6089c6c9b040af3eae09568fbb80c690bae08051a955d92d7aa3a0e730f626eb69285114993d31d430
+  checksum: 10c0/7515128a98eef0a6b2bf354ef9dfefad03556a06be00fa9220eda6526aaada8a42f294911083473d7ced6d7128c3088bd193218bbb3d62593f9f4f7053781c23
   languageName: node
   linkType: hard
 
-"react-router@npm:6.26.1, react-router@npm:^6.26.0":
-  version: 6.26.1
-  resolution: "react-router@npm:6.26.1"
+"react-router@npm:6.26.2, react-router@npm:^6.26.0":
+  version: 6.26.2
+  resolution: "react-router@npm:6.26.2"
   dependencies:
-    "@remix-run/router": "npm:1.19.1"
+    "@remix-run/router": "npm:1.19.2"
   peerDependencies:
     react: ">=16.8"
-  checksum: 10c0/463078e740462b42bb5ba8004448f33fc9e63778f432a4ed55c57b93c5b519e25fb17913ee8435b0fda33c6b9f75df8ef6fcb2c3a4f8db84fb546d202e29aa51
+  checksum: 10c0/0d15a39b419c99fb5ccad76388bfc4ee2b01323b3b1b694595a9f9ea28e1fbeea25486b5398f5d3d93922f5c6a9aa751b6bb27419488d85279f6ca5ff9e0a6bb
   languageName: node
   linkType: hard
 
@@ -15916,7 +15925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:^16.8.0 || ^17.0.0 || ^18.0.0, react@npm:^18.2.0":
+"react@npm:^16.8.0 || ^17.0.0 || ^18.0.0":
   version: 18.3.1
   resolution: "react@npm:18.3.1"
   dependencies:

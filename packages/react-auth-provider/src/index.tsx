@@ -70,6 +70,7 @@ const AuthProvider = ({
   const doLogout = async () => {
     setAccessToken(undefined);
     setRefreshToken(undefined);
+    setUser(undefined);
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
   };
