@@ -1,1 +1,0 @@
-{"version":3,"file":"useCrudRoot.js","sourceRoot":"","sources":["../../../src/modules/crud/useCrudRoot.tsx"],"names":[],"mappings":";;;AAAA,iCAAkD;AA0DrC,QAAA,WAAW,GAAG,IAAA,qBAAa,EACtC,EAAsB,CACvB,CAAC;AAKK,MAAM,WAAW,GAAG,GAAG,EAAE;IAC9B,MAAM,gBAAgB,GAAG,IAAA,kBAAU,EAAC,mBAAW,CAAC,CAAC;IAEjD,OAAO,gBAAgB,CAAC;AAC1B,CAAC,CAAC;AAJW,QAAA,WAAW,eAItB"}

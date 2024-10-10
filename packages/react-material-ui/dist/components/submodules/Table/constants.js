@@ -1,7 +1,0 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateTableTheme = void 0;
-const utils_1 = require("../../../components/Table/utils");
-const generateTableTheme = (theme, customTableTheme) => (0, utils_1.createTableStyles)(Object.assign({ root: Object.assign({ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'auto' }, customTableTheme === null || customTableTheme === void 0 ? void 0 : customTableTheme.root), table: Object.assign({ height: '100%' }, customTableTheme === null || customTableTheme === void 0 ? void 0 : customTableTheme.table), tableContainer: Object.assign({ flex: 1 }, customTableTheme === null || customTableTheme === void 0 ? void 0 : customTableTheme.tableContainer), tableHeader: Object.assign(Object.assign(Object.assign({}, theme.typography.caption), { lineHeight: 1, fontWeight: 500, color: theme.palette.grey[500] }), customTableTheme === null || customTableTheme === void 0 ? void 0 : customTableTheme.tableHeader), tableHeaderRow: Object.assign({ backgroundColor: '#F9FAFB' }, customTableTheme === null || customTableTheme === void 0 ? void 0 : customTableTheme.tableHeaderRow) }, customTableTheme));
-exports.generateTableTheme = generateTableTheme;
-//# sourceMappingURL=constants.js.map
