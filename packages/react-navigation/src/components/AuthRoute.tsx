@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Navigate } from 'react-router';
-import { useAuth } from '@concepta/react-auth-provider';
 import { AuthModule, AuthModuleProps } from '@concepta/react-material-ui/';
 import { toast } from 'react-toastify';
 
@@ -15,11 +14,8 @@ type AuthRouteProps = {
 
 const AuthRoute = (props: AuthRouteProps) => {
   const { home, moduleProps, route } = props;
-  const { accessToken: authAccessToken } = useAuth();
 
-  const accessToken = authAccessToken ?? localStorage.getItem('accessToken');
-
-  if (accessToken) {
+  if (localStorage.getItem('accessToken')) {
     return <Navigate to={home} replace />;
   }
 

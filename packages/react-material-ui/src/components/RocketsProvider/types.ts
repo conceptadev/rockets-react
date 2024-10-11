@@ -21,6 +21,10 @@ export type RocketsAuthProps = {
    * Function to handle token refresh errors.
    */
   handleRefreshTokenError: (error: unknown) => void;
+  /**
+   * Function to handle forbidden access errors.
+   */
+  handleForbiddenAccessError: (error: unknown) => void;
 };
 
 export type RocketsDataProviderProps = {
