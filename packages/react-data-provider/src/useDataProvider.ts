@@ -20,7 +20,7 @@ import { useClient } from './ClientProvider';
 const maxAge = 10000;
 
 const useDataProvider = () => {
-  const { baseUrl, onRefreshTokenError } = useClient();
+  const { baseUrl, onRefreshTokenError, onForbiddenAccessError } = useClient();
 
   //TODO
   //let user inject any http instance that match the HttpClient interface requirements
@@ -107,6 +107,9 @@ const useDataProvider = () => {
   const handleServerError = (err: HttpError) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { code, response, message } = err;
+    if (response.status === 403) {
+      onForbiddenAccessError?.(err);
+    }
     throw err;
   };
 

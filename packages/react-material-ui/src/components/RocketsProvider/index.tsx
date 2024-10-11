@@ -48,6 +48,7 @@ export type RocketsProps = {
  *     onAuthError: handleError,
  *     onLogout: handleLogout,
  *     handleRefreshTokenError: handleTokenError,
+ *     handleForbiddenAccessError: handleForbiddenError,
  *   }}
  *   dataProvider={{ apiUrl: 'https://api.example.com' }}
  *   layout={{ AppBar: MyAppBar, Layout: MyLayout, menuOptions: myMenuOptions }}
@@ -66,6 +67,7 @@ const RocketsProvider = ({
     <ClientProvider
       baseUrl={dataProvider.apiUrl}
       onRefreshTokenError={auth.handleRefreshTokenError}
+      onForbiddenAccessError={auth.handleForbiddenAccessError}
     >
       <ThemeProvider theme={theme ?? themeLight}>
         <ToastContainer
