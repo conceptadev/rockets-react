@@ -28,21 +28,19 @@ const Router = ({
     {
       path: '/',
       element: rootElement ? (
-        React.cloneElement(
-          rootElement,
-          {},
-          <>
-            <Outlet />
-            {initialRoute && <Navigate to={initialRoute} replace />}
-          </>,
-        )
+        React.cloneElement(rootElement, {}, <Outlet />)
       ) : (
-        <div>
-          Home test no root
-          <Outlet />
-        </div>
+        <Outlet />
       ),
       children: [
+        ...(initialRoute
+          ? [
+              {
+                path: '/',
+                element: <Navigate to={initialRoute} replace />,
+              },
+            ]
+          : []),
         {
           path: '*',
           element: childRoutes,
