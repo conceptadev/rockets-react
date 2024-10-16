@@ -226,7 +226,6 @@ const FilterSubmodule = (props: Props) => {
           options,
           value: value as unknown as Date,
           onChange: (val: Date | null) => onFilterChange(id, val, false),
-          onDebouncedSearchChange: (val: Date) => onFilterChange(id, val, true),
         };
 
       default:
