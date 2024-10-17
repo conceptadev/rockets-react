@@ -17,7 +17,7 @@ const DatePickerField = ({
   const [search, setSearch] = useState<Date | null>(null);
 
   const handleDebouncedSearch = useMemo(
-    () => debounce(onDebouncedSearchChange, wait),
+    () => onDebouncedSearchChange && debounce(onDebouncedSearchChange, wait),
     [wait, props?.value],
   );
 
@@ -27,7 +27,7 @@ const DatePickerField = ({
     // Keep track of the first render to avoid triggering onDebouncedSearchChange
     // on the initial render. Only trigger when the 'value' changes.
     if (!firstRender.current) {
-      handleDebouncedSearch(props?.value ?? search);
+      handleDebouncedSearch?.(props?.value ?? search);
     } else {
       firstRender.current = false;
     }
@@ -45,7 +45,7 @@ const DatePickerField = ({
         field: {
           clearable: true,
           onClear: () => {
-            handleDebouncedSearch(null);
+            handleDebouncedSearch?.(null);
           },
         },
         textField: {
