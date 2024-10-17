@@ -1,4 +1,4 @@
-import React, { Children, ReactElement, ReactNode } from 'react';
+import React, { Children, ReactElement, ReactNode, useState } from 'react';
 import { useRoutes } from 'react-router-dom';
 import {
   DrawerItemProps,
@@ -45,6 +45,10 @@ const ChildRoutes = ({
   renderForgotPassword,
   renderResetPassword,
 }: ChildRoutesProps) => {
+  const [isDrawerCollapsed, setDrawerCollapsed] = useState(
+    Boolean(drawerProps.collapsed),
+  );
+
   const items = Children.map(children, (child) => {
     // This validation is needed so `showDrawerItem`
     // can be `true` by default
@@ -126,7 +130,16 @@ const ChildRoutes = ({
           module={child.props.module}
           page={child.props.page}
           items={items}
-          drawerProps={drawerProps}
+          drawerProps={{
+            ...drawerProps,
+            collapsed: isDrawerCollapsed,
+            onCollapsedChange: (collapsed) => {
+              setDrawerCollapsed(collapsed);
+              if (drawerProps.onCollapsedChange) {
+                drawerProps.onCollapsedChange(collapsed);
+              }
+            },
+          }}
           navbarProps={navbarProps}
         />
       ),
