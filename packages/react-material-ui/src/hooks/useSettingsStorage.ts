@@ -270,7 +270,7 @@ export const useSettingsStorage = (props: Props) => {
     if (props.cacheApiPath) {
       fetchOrCreateCache();
     }
-  }, []);
+  }, [auth?.user]);
 
   return { settings, updateSettings, clearSettings };
 };
