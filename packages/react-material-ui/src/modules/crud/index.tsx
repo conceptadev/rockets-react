@@ -131,16 +131,16 @@ const CrudModule = (props: ModuleProps) => {
     isPending,
     refresh,
   } = useTableReturn;
-  const { refreshTable, dispatch } = useCrudControls();
+  const { dispatch } = useCrudControls();
 
   useEffect(() => {
-    if (!refreshTable && refresh && dispatch) {
+    if (refresh && dispatch) {
       dispatch({
         type: ControlsActionEnum.ASSIGN_REFRESH_TABLE,
         payload: refresh,
       });
     }
-  }, [refresh]);
+  }, [tableQueryState]);
 
   useEffect(() => {
     if (dispatch) {
