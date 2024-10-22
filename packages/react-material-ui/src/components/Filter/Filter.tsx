@@ -278,14 +278,17 @@ export const Filter = (props: FilterProps) => {
     <Box
       display="flex"
       width="100%"
-      alignItems="flex-start"
+      alignItems={{
+        xs: 'flex-end',
+        md: 'flex-start',
+      }}
       justifyContent="space-between"
       gap={2}
       sx={{
         flexDirection: { xs: 'column', md: 'row' },
       }}
     >
-      <Grid container spacing={2} {...rest}>
+      <Grid container spacing={2} xs={12} md={9.5} {...rest}>
         {filterOrder.map((filter) => {
           const filterIndex = filters.findIndex((f) => f.id === filter.id);
           if (filterIndex === -1) {
@@ -323,34 +326,38 @@ export const Filter = (props: FilterProps) => {
             ))
           : null}
       </Grid>
-      <Box
-        display="flex"
-        alignItems="center"
-        sx={{
-          width: { xs: '100%', md: 'auto' },
-          justifyContent: { xs: 'end', md: 'unset' },
-          gap: { xs: 4, md: 2 },
-        }}
-      >
-        {filters.length ? (
-          <OrderableDropDown
-            hasAllOption={hasAllOption}
-            minimumItems={minimumFilters}
-            icon={<FilterAlt />}
-            list={filterOrder}
-            setList={setFilterOrder}
-            storage={{
-              type: 'filter',
-              key: props.orderableListCacheKey,
-              cacheApiPath: props.cacheApiPath,
-              onListUpdateFromCache: handleListUpdateFromCache,
-            }}
-          />
-        ) : null}
-        {typeof props.complementaryActions === 'function'
-          ? props.complementaryActions(filterOrder)
-          : props.complementaryActions}
-      </Box>
+      <Grid container spacing={2} xs="auto">
+        <Grid
+          item
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="end"
+          alignItems="center"
+          xs={12}
+          sx={{
+            gap: 1,
+          }}
+        >
+          {filters.length ? (
+            <OrderableDropDown
+              hasAllOption={hasAllOption}
+              minimumItems={minimumFilters}
+              icon={<FilterAlt />}
+              list={filterOrder}
+              setList={setFilterOrder}
+              storage={{
+                type: 'filter',
+                key: props.orderableListCacheKey,
+                cacheApiPath: props.cacheApiPath,
+                onListUpdateFromCache: handleListUpdateFromCache,
+              }}
+            />
+          ) : null}
+          {typeof props.complementaryActions === 'function'
+            ? props.complementaryActions(filterOrder)
+            : props.complementaryActions}
+        </Grid>
+      </Grid>
     </Box>
   );
 };

@@ -78,18 +78,37 @@ export const MultiSelect = ({
 }: MultiSelectProps) => {
   const isChips = displayVariant === 'chips';
 
-  const handleChange = (event: SelectChangeEvent<string[]>) => {
+  const handleChange = (event: SelectChangeEvent<string[]>, checkbox) => {
     const {
       target: { value },
     } = event;
     // On autofill we get a stringified value.
     const values = typeof value === 'string' ? value.split(',') : value;
+    const filteredValues = values.filter((item) => item !== allOption.value);
 
-    if (values.includes(allOption.value) && hasAllOption) {
-      return onChange([]);
+    if (checkbox.key === `.$${allOption.value}`) {
+      // No options selected
+      if (!filteredValues.length) {
+        return onChange(
+          options
+            .filter((item) => item.value !== allOption.value)
+            .map((item) => item.value),
+        );
+      }
+
+      // All options selected
+      if (filteredValues.length === options.length) {
+        return onChange([]);
+      } else {
+        return onChange(
+          options
+            .filter((item) => item.value !== allOption.value)
+            .map((option) => option.value),
+        );
+      }
     }
 
-    onChange(values);
+    return onChange(filteredValues);
   };
 
   const removeValue = (id: string) => {
@@ -100,12 +119,10 @@ export const MultiSelect = ({
     onChange(newValue);
   };
 
-  const finalOptions = [...(hasAllOption ? [allOption] : []), ...options];
-
   const renderValues = (selected?: string[]) => {
     const valuesIds: string[] = (selected as string[]) || value || [];
 
-    const valueLabels = valuesIds.map(
+    const valueLabels = valuesIds?.map(
       (selectedItem: string) =>
         options?.find((item) => item.value === selectedItem)?.label,
     );
@@ -129,14 +146,21 @@ export const MultiSelect = ({
     return valueLabels.join(', ');
   };
 
-  const renderInputValue = (selected: string[]) => {
+  const renderInputValue = (selected: string | string[]) => {
     if (isChips) {
       return placeholder || label;
     }
 
-    if (selected?.length === 0 && hasAllOption) return allOption.label;
+    const selectedValues =
+      typeof selected === 'string' ? selected.split(',') : selected;
 
-    return renderValues(selected);
+    if (
+      selectedValues.length === options.length ||
+      (selected.length === 0 && hasAllOption)
+    )
+      return allOption.label;
+
+    return renderValues(selectedValues);
   };
 
   const labelId = `label-${name}`;
@@ -173,7 +197,7 @@ export const MultiSelect = ({
           fullWidth={fullWidth}
           size={size}
           variant={variant}
-          value={value}
+          value={typeof value === 'string' ? value.split(',') : value}
           multiple
           renderValue={renderInputValue}
           displayEmpty={hasAllOption || labelVariant === 'rockets'}
@@ -182,7 +206,24 @@ export const MultiSelect = ({
           hiddenLabel={labelVariant === 'rockets'}
           {...rest}
         >
-          {finalOptions?.map((opt) => {
+          {hasAllOption && (
+            <MenuItem
+              key={allOption.value}
+              value={allOption.value}
+              className="Rockets-MultiSelect-MenuItem"
+            >
+              <Checkbox
+                checked={value.length === options.length}
+                indeterminate={value.length && options.length !== value.length}
+                className="Rockets-MultiSelect-MenuItem-Checkbox"
+              />
+              <ListItemText
+                primary={allOption.label}
+                className="Rockets-MultiSelect-ListItemText"
+              />
+            </MenuItem>
+          )}
+          {options?.map((opt) => {
             const { value: val, label } = opt;
             const checked = value?.includes(val);
 
