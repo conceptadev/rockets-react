@@ -116,6 +116,7 @@ export interface TableSubmoduleProps {
   addButtonEndIcon?: ReactNode;
   addButtonContent?: ReactNode;
   additionalFilterRowContent?: ReactNode;
+  additionalTableContent?: ReactNode;
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -314,6 +315,8 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             />
           )}
         </Box>
+
+        {props.additionalTableContent && props.additionalTableContent}
 
         <TableContainer sx={tableTheme.tableContainer}>
           <Table.Table
