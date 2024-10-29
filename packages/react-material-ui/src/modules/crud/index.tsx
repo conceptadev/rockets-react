@@ -112,7 +112,7 @@ export interface ModuleProps {
 const CrudModule = (props: ModuleProps) => {
   const [drawerViewMode, setDrawerViewMode] = useState<Action>(null);
   const [selectedRow, setSelectedRow] = useState<SelectedRow>(null);
-  const [currentViewIndex, setCurrentViewIndex] = useState<number>(0);
+  const [currentViewIndex, setCurrentViewIndex] = useState<number | null>(null);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   const useTableReturn = useTable(props.resource, {
@@ -231,11 +231,7 @@ const CrudModule = (props: ModuleProps) => {
   ]);
 
   useEffect(() => {
-    if (
-      !data ||
-      !data.length ||
-      (drawerViewMode && drawerViewMode === 'creation')
-    ) {
+    if (!data || !data.length) {
       return;
     }
     setSelectedRow(data[currentViewIndex] as SelectedRow);
