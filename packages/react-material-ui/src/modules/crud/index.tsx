@@ -74,6 +74,7 @@ type FormProps = Pick<
   | 'onDeleteSuccess'
   | 'onDeleteError'
   | 'sx'
+  | 'transformErrors'
 >;
 
 interface Title {
@@ -87,6 +88,7 @@ export interface ModuleProps {
   resource: string;
   tableProps: TableProps;
   formContainerVariation?: 'drawer' | 'modal';
+  additionalTableContent?: ReactNode;
   detailsFormProps?: PropsWithChildren<FormProps>;
   createFormProps?: PropsWithChildren<FormProps>;
   editFormProps?: PropsWithChildren<FormProps>;
@@ -110,7 +112,7 @@ export interface ModuleProps {
 const CrudModule = (props: ModuleProps) => {
   const [drawerViewMode, setDrawerViewMode] = useState<Action>(null);
   const [selectedRow, setSelectedRow] = useState<SelectedRow>(null);
-  const [currentViewIndex, setCurrentViewIndex] = useState<number>(0);
+  const [currentViewIndex, setCurrentViewIndex] = useState<number | null>(null);
   const [isFormVisible, setFormVisible] = useState<boolean>(false);
 
   const useTableReturn = useTable(props.resource, {
@@ -303,6 +305,7 @@ const CrudModule = (props: ModuleProps) => {
             setDrawerViewMode('creation');
             setFormVisible(true);
           }}
+          additionalTableContent={props.additionalTableContent}
           hideAddButton={!props.createFormProps}
           hideEditButton={!props.editFormProps || props.hideEditButton}
           hideDeleteButton={props.hideDeleteButton}
