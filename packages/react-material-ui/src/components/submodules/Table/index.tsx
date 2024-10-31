@@ -343,7 +343,11 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
               {Boolean(!props.isPending && !props.data?.length) && (
                 <TableRow sx={tableTheme.tableBodyRow}>
                   <TableCell
-                    colSpan={tableHeaders.length}
+                    colSpan={
+                      props.hasCheckboxes
+                        ? tableHeaders.length + 1
+                        : tableHeaders.length
+                    }
                     sx={{
                       textAlign: 'center',
                     }}

@@ -104,6 +104,8 @@ const SearchField = ({
     }
     // Avoid adding handleDebouncedSearch to the dependency array
     // to prevent an infinite loop.
+
+    return () => handleDebouncedSearch?.cancel();
   }, [value]);
 
   const handleClear = () => {
@@ -120,7 +122,6 @@ const SearchField = ({
       placeholder={placeholder}
       variant="outlined"
       onChange={handleChange}
-      value={search}
       InputProps={{
         ...(searchIconPlacement === 'start' && {
           startAdornment: (
@@ -147,6 +148,7 @@ const SearchField = ({
         ),
       }}
       {...props}
+      value={search}
     />
   );
 };

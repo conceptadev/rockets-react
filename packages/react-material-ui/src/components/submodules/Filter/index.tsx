@@ -183,8 +183,7 @@ const FilterSubmodule = (props: Props) => {
         return {
           ...commonFields,
           type,
-          value: value as string,
-          onChange: (val: string | null) => onFilterChange(id, val, false),
+          defaultValue: value as string,
           onDebouncedSearchChange: (val: string) =>
             onFilterChange(id, val, true),
         };
@@ -224,7 +223,7 @@ const FilterSubmodule = (props: Props) => {
           ...commonFields,
           type,
           options,
-          value: value as unknown as Date,
+          value: typeof value === 'string' ? new Date(value) : (value as Date),
           onChange: (val: Date | null) => onFilterChange(id, val, false),
         };
 
