@@ -156,6 +156,8 @@ export const TableRoot = ({
       ...newPageProperty,
     }));
 
+    setSelected([]);
+
     const newSearchParam = getSearchParams(searchParams, newPageProperty);
 
     if (newSearchParam) {
