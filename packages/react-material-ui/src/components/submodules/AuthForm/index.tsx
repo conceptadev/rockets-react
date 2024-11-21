@@ -126,7 +126,11 @@ const AuthFormSubmodule = (props: AuthFormSubmoduleProps) => {
       const { username, password } = fields;
       const loginData = props.submitDataFormatter
         ? props.submitDataFormatter(fields)
-        : { username, password, loginPath: props.signInRequestPath };
+        : {
+            username: username?.trim(),
+            password,
+            loginPath: props.signInRequestPath,
+          };
       doLogin(loginData);
       return;
     }
