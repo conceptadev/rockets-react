@@ -1,6 +1,6 @@
 import React, { type ReactNode, startTransition } from 'react';
 import { useAuth } from '@concepta/react-auth-provider';
-import Container from '@mui/material/Container';
+import Container, { ContainerProps } from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -15,6 +15,7 @@ type AppBarContainer = {
   menuItems: DrawerItemProps[];
   drawerProps?: DrawerProps;
   navbarProps?: NavbarProps;
+  containerProps?: ContainerProps;
 };
 
 export default function AppBarContainer({
@@ -22,6 +23,7 @@ export default function AppBarContainer({
   menuItems,
   drawerProps,
   navbarProps,
+  containerProps,
 }: AppBarContainer) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -57,7 +59,9 @@ export default function AppBarContainer({
           )}
           {...navbarProps}
         />
-        <Container>{children}</Container>
+        <Container maxWidth={false} {...containerProps}>
+          {children}
+        </Container>
       </AppBar.Main>
     </AppBar.Root>
   );
