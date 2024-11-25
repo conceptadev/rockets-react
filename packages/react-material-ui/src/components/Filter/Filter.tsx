@@ -59,7 +59,7 @@ export type TextFilter = {
  */
 type DateFilter = {
   type: 'date';
-  onChange: (value: Date | null) => void;
+  onChange?: (value: Date | null) => void;
   onDebouncedSearchChange?: (value: Date) => void;
 } & FilterCommon &
   DatePickerProps<Date>;
@@ -148,6 +148,7 @@ const renderComponent = (filter: FilterType) => {
           }}
           label={filter.label}
           value={filter.value}
+          defaultValue={filter.defaultValue}
           onChange={filter.onChange}
           onDebouncedSearchChange={filter.onDebouncedSearchChange}
           minDate={filter.minDate}
