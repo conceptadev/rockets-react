@@ -39,6 +39,8 @@ export type FilterDetails = {
   operator?: Operator;
   options?: SelectOption[];
   searchIconPlacement?: TextFilter['searchIconPlacement'];
+  reference?: string;
+  referenceValidationFn?: (arg1: Date, arg2: Date) => boolean;
 } & Omit<FilterCommon, 'showOnMount' | 'hide'>;
 
 export type FilterCallback = (filter: FilterValues) => void;
@@ -132,6 +134,8 @@ const FilterSubmodule = (props: Props) => {
     id: string,
     value: string | string[] | Date | null,
     updateFilter?: boolean,
+    reference?: FilterDetails['reference'],
+    referenceValidationFn?: FilterDetails['referenceValidationFn'],
   ) => {
     setFilterValues((prv) => {
       const newFilterValues = { ...prv, [id]: value };
@@ -144,6 +148,18 @@ const FilterSubmodule = (props: Props) => {
 
         updateSimpleFilter(filterObj, true);
       }
+
+      if (reference && referenceValidationFn) {
+        const validation = referenceValidationFn(
+          newFilterValues[id] as unknown as Date,
+          newFilterValues[reference] as unknown as Date,
+        );
+
+        if (!validation) {
+          newFilterValues[reference] = null;
+        }
+      }
+
       return newFilterValues;
     });
   };
@@ -162,6 +178,8 @@ const FilterSubmodule = (props: Props) => {
       resourceValue,
       resourceLabel,
       searchIconPlacement,
+      reference,
+      referenceValidationFn,
     } = filter;
 
     const initialValue = String(simpleFilter?.[id])?.split('||')[2];
@@ -221,10 +239,20 @@ const FilterSubmodule = (props: Props) => {
       case 'date':
         return {
           ...commonFields,
+          key: JSON.stringify(filterValues),
           type,
           options,
-          value: typeof value === 'string' ? new Date(value) : (value as Date),
-          onChange: (val: Date | null) => onFilterChange(id, val, false),
+          // TODO: Improve the way we handle different filters.
+          // Handling multiple value types to ensure type safety and controlled component behavior
+          // Prevents passing `undefined`, which would make the component uncontrolled
+          value:
+            typeof value === 'string'
+              ? new Date(value)
+              : typeof value === 'undefined'
+              ? null
+              : (value as Date),
+          onDebouncedSearchChange: (val: Date | null) =>
+            onFilterChange(id, val, true, reference, referenceValidationFn),
         };
 
       default:

@@ -11,34 +11,41 @@ const DatePickerField = ({
   defaultValue,
   wait = 500,
   onDebouncedSearchChange,
+  onChange,
   ...props
 }: DatePickerFieldProps) => {
   const firstRender = useRef(true);
-  const [search, setSearch] = useState<Date | null>(null);
+  const [search, setSearch] = useState<Date | null>(defaultValue);
 
-  const handleDebouncedSearch = useMemo(
-    () => onDebouncedSearchChange && debounce(onDebouncedSearchChange, wait),
-    [wait, props?.value],
-  );
+  const value = typeof props.value !== 'undefined' ? props.value : search;
 
-  const handleChange = (value: Date | null) => setSearch(value);
+  const handleDebouncedSearch =
+    onDebouncedSearchChange &&
+    useMemo(() => debounce(onDebouncedSearchChange, wait), []);
+
+  const handleChange = (value: Date | null, context) => {
+    setSearch(value);
+    onChange?.(value, context);
+    handleDebouncedSearch?.(value);
+  };
 
   useEffect(() => {
     // Keep track of the first render to avoid triggering onDebouncedSearchChange
     // on the initial render. Only trigger when the 'value' changes.
     if (!firstRender.current) {
-      handleDebouncedSearch?.(props?.value ?? search);
+      handleDebouncedSearch?.(value);
     } else {
       firstRender.current = false;
     }
-    // Avoid adding onDebouncedSearchChange to the dependency array
+    // Avoid adding handleDebouncedSearch to the dependency array
     // to prevent an infinite loop.
-  }, [search, props.value]);
+
+    return () => handleDebouncedSearch?.cancel();
+  }, [value, defaultValue]);
 
   return (
     <DatePicker
       defaultValue={defaultValue}
-      value={search}
       onChange={handleChange}
       format="MM-dd-yyyy"
       slotProps={{
@@ -53,6 +60,7 @@ const DatePickerField = ({
         },
       }}
       {...props}
+      value={value}
     />
   );
 };
