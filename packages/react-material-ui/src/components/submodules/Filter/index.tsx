@@ -185,10 +185,6 @@ const FilterSubmodule = (props: Props) => {
     const initialValue = String(simpleFilter?.[id])?.split('||')[2];
 
     const value = filterValues[id] ?? initialValue;
-    console.log(
-      '🚀 ~ constfilterObjs:FilterType[]=filters.map ~ value:',
-      value,
-    );
 
     const commonFields = {
       id,
