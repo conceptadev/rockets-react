@@ -117,6 +117,7 @@ export interface TableSubmoduleProps {
   addButtonContent?: ReactNode;
   additionalFilterRowContent?: ReactNode;
   additionalTableContent?: ReactNode;
+  searchDependsOn?: string[];
 }
 
 const TableSubmodule = (props: TableSubmoduleProps) => {
@@ -279,6 +280,7 @@ const TableSubmodule = (props: TableSubmoduleProps) => {
             <FilterSubmodule
               orderableListCacheKey={props.filterCacheKey}
               cacheApiPath={props.cacheApiPath}
+              searchDependsOn={props.searchDependsOn}
               complementaryActions={
                 <Box sx={{ display: 'flex' }}>
                   {props.reordable !== false && (

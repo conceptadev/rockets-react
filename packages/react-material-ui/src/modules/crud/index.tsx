@@ -107,6 +107,7 @@ export interface ModuleProps {
   addButtonEndIcon?: ReactNode;
   addButtonContent?: ReactNode;
   additionalFilterRowContent?: ReactNode;
+  searchDependsOn?: string[];
 }
 
 const CrudModule = (props: ModuleProps) => {
@@ -320,6 +321,7 @@ const CrudModule = (props: ModuleProps) => {
           addButtonEndIcon={props.addButtonEndIcon}
           addButtonContent={props.addButtonContent}
           additionalFilterRowContent={props.additionalFilterRowContent}
+          searchDependsOn={props.searchDependsOn}
           {...useTableReturn}
           {...tableSubmoduleProps}
         />

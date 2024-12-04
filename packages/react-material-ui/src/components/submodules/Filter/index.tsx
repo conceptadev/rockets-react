@@ -49,6 +49,7 @@ type Props = {
   orderableListCacheKey?: string;
   cacheApiPath?: string;
   complementaryActions?: ReactNode;
+  searchDependsOn?: string[];
 };
 
 const FilterSubmodule = (props: Props) => {
@@ -64,9 +65,16 @@ const FilterSubmodule = (props: Props) => {
     customSearch,
   } = useCrudRoot();
 
+  const canMakeRequest =
+    !props.searchDependsOn?.length ||
+    props.searchDependsOn?.every(
+      (dependency) =>
+        !filters?.find((filter) => filter.id === dependency)?.isLoading,
+    );
+
   const customSearchData = useMemo(
     () => customSearch?.(filterValues),
-    [filterValues],
+    [filterValues, canMakeRequest],
   );
 
   const externalSearch = useMemo(
@@ -105,7 +113,7 @@ const FilterSubmodule = (props: Props) => {
     }, {});
 
   useEffect(() => {
-    if (!hasExternalSearch) {
+    if (!hasExternalSearch && canMakeRequest) {
       updateSearch(null);
       const filterObj = {
         ...reduceFilters(filterValues, 'simpleFilter'),
@@ -115,7 +123,7 @@ const FilterSubmodule = (props: Props) => {
       updateSimpleFilter(filterObj, true);
     }
 
-    if (hasExternalSearch) {
+    if (hasExternalSearch && canMakeRequest) {
       const filterObj = {
         ...reduceFilters(filterValues, 'search'),
         ...customFilter?.(filterValues),
