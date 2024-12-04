@@ -1,10 +1,11 @@
-import { AxiosRequestConfig } from 'axios';
+import { AxiosRequestConfig, ResponseType } from 'axios';
 
 export interface RequestParams {
   uri: string;
   method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
   headers?: Record<string, string>;
   queryParams?: Record<string, string | string[] | number | undefined>;
+  responseType?: ResponseType;
   signal?: AbortSignal;
 }
 
