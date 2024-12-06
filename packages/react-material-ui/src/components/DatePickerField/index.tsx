@@ -21,7 +21,10 @@ const DatePickerField = ({
 
   const handleDebouncedSearch =
     onDebouncedSearchChange &&
-    useMemo(() => debounce(onDebouncedSearchChange, wait), []);
+    useMemo(
+      () => debounce(onDebouncedSearchChange, wait),
+      [props?.value, search],
+    );
 
   const handleChange = (value: Date | null, context) => {
     setSearch(value);
