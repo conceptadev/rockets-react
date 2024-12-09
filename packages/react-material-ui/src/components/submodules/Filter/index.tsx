@@ -259,6 +259,8 @@ const FilterSubmodule = (props: Props) => {
               : typeof value === 'undefined'
               ? null
               : (value as Date),
+          onChange: (val: Date | null) =>
+            onFilterChange(id, val, false, reference, referenceValidationFn),
           onDebouncedSearchChange: (val: Date | null) =>
             onFilterChange(id, val, true, reference, referenceValidationFn),
         };
